@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "394542467734",
+    "firebase_url": "https://tron-wallet-android-fb424.firebaseio.com",
+    "project_id": "tron-wallet-android-fb424",
+    "storage_bucket": "tron-wallet-android-fb424.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394542467734:android:be12d96114e91645",
+        "android_client_info": {
+          "package_name": "com.eletac.tronwallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394542467734-r9hm7dk0blsfg7m732r20l4p42af9k0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ32h4Vb_oFbg7sd_f5Qajetex_J5Ya0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394542467734-r9hm7dk0blsfg7m732r20l4p42af9k0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
