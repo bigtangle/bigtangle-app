@@ -3,9 +3,9 @@ package com.eletac.tronwallet.wallet;
 import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -17,12 +17,6 @@ import com.eletac.tronwallet.R;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
-
-import org.tron.walletserver.DuplicateNameException;
-import org.tron.walletserver.InvalidNameException;
-import org.tron.walletserver.InvalidPasswordException;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 public class CreateWalletActivity extends AppCompatActivity {
 
@@ -94,34 +88,6 @@ public class CreateWalletActivity extends AppCompatActivity {
 
                 boolean coldWallet = mColdWallet_Switch.isChecked();
 
-                if(!WalletManager.isNameValid(name)) {
-                    new LovelyInfoDialog(CreateWalletActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.invalid_name)
-                            .setMessage(R.string.please_enter_a_valid_name)
-                            .show();
-                    return;
-                }
-                if(WalletManager.existWallet(name)) {
-                    new LovelyInfoDialog(CreateWalletActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.invalid_name)
-                            .setMessage(R.string.you_already_have_an_wallet_with_this_name)
-                            .show();
-                    return;
-                }
-                if(!WalletManager.isPasswordValid(password)) {
-                    new LovelyInfoDialog(CreateWalletActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.create_wallet_inv_password_dialog_title)
-                            .setMessage(R.string.create_wallet_inv_password_dialog_message)
-                            .show();
-                    return;
-                }
-
                 new LovelyStandardDialog(CreateWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
@@ -144,20 +110,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                                             @Override
                                             public void onTextInputConfirmed(String text) {
                                                 if (text.equals(password)) {
-                                                    try {
 
-                                                        Wallet wallet = new Wallet(true);
-                                                        wallet.setWalletName(name);
-                                                        wallet.setColdWallet(coldWallet);
-
-                                                        WalletManager.store(wallet, password);
-                                                        WalletManager.selectWallet(name);
-
-                                                    } catch (DuplicateNameException | InvalidPasswordException | InvalidNameException e) {
-                                                        // Should be already checked above
-                                                        e.printStackTrace();
-                                                        return;
-                                                    }
 
                                                     Intent intent = new Intent(CreateWalletActivity.this, AccountActivity.class);
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

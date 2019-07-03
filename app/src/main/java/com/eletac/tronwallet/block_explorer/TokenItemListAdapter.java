@@ -15,7 +15,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.wallet.ParticipateAssetActivity;
 
 import org.tron.protos.Contract;
-import org.tron.walletserver.WalletManager;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -121,7 +120,6 @@ public class TokenItemListAdapter extends RecyclerView.Adapter<TokenItemListAdap
             mName_TextView.setText(asset.getName().toStringUtf8());
             mDescription_TextView.setText(asset.getDescription().toStringUtf8());
             mSupply_TextView.setText(numberFormat.format(asset.getTotalSupply()));
-            mIssuer_TextView.setText(WalletManager.encode58Check(asset.getOwnerAddress().toByteArray()));
             mStart_TextView.setText(dateTimeInstance.format(start));
             mEnd_TextView.setText(dateTimeInstance.format(end));
 

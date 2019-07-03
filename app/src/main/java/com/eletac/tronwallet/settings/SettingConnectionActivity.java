@@ -2,18 +2,16 @@ package com.eletac.tronwallet.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.eletac.tronwallet.R;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import org.apache.commons.lang3.StringUtils;
-import org.tron.walletserver.WalletManager;
 
 public class SettingConnectionActivity extends AppCompatActivity {
 
@@ -48,131 +46,29 @@ public class SettingConnectionActivity extends AppCompatActivity {
         mReset_Solidty_Button= findViewById(R.id.SettingConnection_reset_sol_button);
         mSave_Solidty_Button= findViewById(R.id.SettingConnection_save_sol_button);
 
-        mIsColdWallet = WalletManager.getSelectedWallet().isColdWallet();
-
         loadNodes();
 
         mSave_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ip = mIP_EditText.getText().toString();
-                String portStr = mPort_EditText.getText().toString();
-
-                if(!portStr.isEmpty() && isIP(ip)) {
-                    int port = Integer.parseInt(portStr);
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    editor.putString(getString(R.string.ip_key), ip);
-                    editor.putInt(getString(R.string.port_key), port);
-
-                    editor.commit();
-
-                    loadNodes();
-
-                    new LovelyInfoDialog(SettingConnectionActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.saved_new_node_connection)
-                            .show();
-
-                    if(!mIsColdWallet) {
-                        WalletManager.initGRPC();
-                    }
-                } else {
-                    new LovelyInfoDialog(SettingConnectionActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(R.string.invalid_ip_or_port)
-                            .show();
-                }
             }
         });
 
         mReset_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                editor.remove(getString(R.string.ip_key));
-                editor.remove(getString(R.string.port_key));
-
-                editor.commit();
-
-                loadNodes();
-
-                new LovelyInfoDialog(SettingConnectionActivity.this)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
-                        .setTitle(R.string.node_connection_reset_to_default)
-                        .show();
-
-                if(!mIsColdWallet) {
-                    WalletManager.initGRPC();
-                }
             }
         });
-
-        // --------
 
         mSave_Solidty_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ip = mIP_Solidty_EditText.getText().toString();
-                String portStr = mPort_Solidty_EditText.getText().toString();
-
-                if(!portStr.isEmpty() && isIP(ip)) {
-                    int port = Integer.parseInt(portStr);
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    editor.putString(getString(R.string.ip_sol_key), ip);
-                    editor.putInt(getString(R.string.port_sol_key), port);
-
-                    editor.commit();
-
-                    loadNodes();
-
-                    new LovelyInfoDialog(SettingConnectionActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.saved_new_solidity_node_connection)
-                            .show();
-
-                    WalletManager.initGRPC();
-                } else {
-                    new LovelyInfoDialog(SettingConnectionActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(R.string.invalid_ip_or_port)
-                            .show();
-                }
             }
         });
 
         mReset_Solidty_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                editor.remove(getString(R.string.ip_sol_key));
-                editor.remove(getString(R.string.port_sol_key));
-
-                editor.commit();
-
-                loadNodes();
-
-                new LovelyInfoDialog(SettingConnectionActivity.this)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
-                        .setTitle(R.string.solidity_node_connection_reset_to_default)
-                        .show();
-
-                WalletManager.initGRPC();
             }
         });
     }
@@ -198,17 +94,5 @@ public class SettingConnectionActivity extends AppCompatActivity {
 
         mIP_Solidty_EditText.setText(ip_sol);
         mPort_Solidty_EditText.setText(!StringUtils.isEmpty(ip_sol) ? String.valueOf(port_sol) : "");
-    }
-
-    private boolean isIP(String input) {
-        if (input!= null && !input.isEmpty()) {
-            String regex = "^((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]\\d)|\\d)(\\.((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]\\d)|\\d)){3}$";
-            if (input.matches(regex)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
     }
 }

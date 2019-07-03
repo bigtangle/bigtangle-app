@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 public class WrapContentLinearLayoutManager extends LinearLayoutManager {
+
     public WrapContentLinearLayoutManager(Context context) {
         super(context);
     }

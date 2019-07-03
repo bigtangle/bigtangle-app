@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 
 import org.tron.api.GrpcAPI;
-import org.tron.common.utils.ByteArray;
 
 import java.util.List;
 
@@ -71,8 +70,6 @@ public class NodeItemListAdapter extends RecyclerView.Adapter<NodeItemListAdapte
         }
 
         public void bind(GrpcAPI.Node node) {
-            mIP_TextView.setText(ByteArray.toStr(node.getAddress().getHost().toByteArray()));
-            mPort_TextView.setText(String.valueOf(node.getAddress().getPort()));
         }
     }
 

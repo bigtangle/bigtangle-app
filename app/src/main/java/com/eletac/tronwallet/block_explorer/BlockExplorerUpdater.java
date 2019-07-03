@@ -8,21 +8,10 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.arasthel.asyncjob.AsyncJob;
 
-import org.tron.api.GrpcAPI;
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-import org.tron.walletserver.WalletManager;
-
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.grpc.StatusRuntimeException;
 
 public class BlockExplorerUpdater {
 
@@ -56,12 +45,6 @@ public class BlockExplorerUpdater {
 
     private static ExecutorService mExecutorService;
 
-    private static List<GrpcAPI.BlockExtention> mBlocks;
-    private static List<GrpcAPI.TransactionExtention> mTransactions;
-    private static List<Protocol.Witness> mWitnesses;
-    private static List<GrpcAPI.Node> mNodes;
-    private static List<Contract.AssetIssueContract> mTokens;
-    private static List<Protocol.Account> mAccounts;
 
     public static void init(Context context, Map<UpdateTask, Long> intervals) {
         if(mContext == null) {
@@ -81,12 +64,6 @@ public class BlockExplorerUpdater {
             mSingleShot.put(UpdateTask.Tokens, false);
             mSingleShot.put(UpdateTask.Accounts, false);
 
-            mBlocks = Collections.synchronizedList(new LinkedList<>());
-            mTransactions = Collections.synchronizedList(new LinkedList<>());
-            mWitnesses = Collections.synchronizedList(new LinkedList<>());
-            mNodes = Collections.synchronizedList(new LinkedList<>());
-            mTokens = Collections.synchronizedList(new LinkedList<>());
-            mAccounts = Collections.synchronizedList(new LinkedList<>());
 
             mTaskHandler = new Handler(Looper.getMainLooper());
             mBlockchainUpdaterRunnable = new BlockchainUpdaterRunnable();
@@ -152,52 +129,6 @@ public class BlockExplorerUpdater {
                     @Override
                     public void doOnBackground() {
                         if (mContext != null) {
-
-                            boolean gotSomeBlocks = false;
-                            int blockCount = 50;
-
-                            while(!gotSomeBlocks && blockCount > 0) {
-                                // Load Blocks and transactions
-                                try {
-                                    GrpcAPI.BlockListExtention result = WalletManager.getBlockByLatestNum(blockCount);
-                                    if (result != null) {
-                                        mBlocks.clear();
-                                        mBlocks.addAll(result.getBlockList());
-                                        Collections.sort(mBlocks, new Comparator<GrpcAPI.BlockExtention>() {
-                                            @Override
-                                            public int compare(GrpcAPI.BlockExtention o1, GrpcAPI.BlockExtention o2) {
-                                                return Long.compare(o1.getBlockHeader().getRawData().getNumber(), o2.getBlockHeader().getRawData().getNumber());
-                                            }
-                                        });
-                                    }
-
-                                    mTransactions.clear();
-                                    for (GrpcAPI.BlockExtention block : mBlocks) {
-                                        /*for (Protocol.Transaction transaction : block.getTransactionsList()) {
-                                            Protocol.Transaction.Builder builder = transaction.toBuilder();
-                                            Protocol.Transaction.raw.Builder rawBuilder = transaction.getRawData().toBuilder();
-
-                                            rawBuilder.setTimestamp(block.getBlockHeader().getRawData().getTimestamp());
-                                            builder.setRawData(rawBuilder.build());
-                                            mTransactions.add(builder.build());
-                                        }*/
-                                        mTransactions.addAll(block.getTransactionsList());
-                                    }
-                                    gotSomeBlocks = true;
-                                } catch (StatusRuntimeException e) {
-                                    e.printStackTrace();
-                                    switch (e.getStatus().getCode()) {
-                                        case RESOURCE_EXHAUSTED:
-                                            blockCount-=2;
-                                            break;
-                                        case UNAVAILABLE:
-                                            blockCount = 0;
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    blockCount = 0;
-                                }
-                            }
                         }
 
                         AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
@@ -227,17 +158,6 @@ public class BlockExplorerUpdater {
                 @Override
                 public void doOnBackground() {
                     if(mContext != null) {
-                        // Load nodes
-                        try {
-                            GrpcAPI.NodeList result = WalletManager.listNodes();
-                            if(result != null) {
-                                mNodes.clear();
-                                mNodes.addAll(result.getNodesList());
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
@@ -267,17 +187,6 @@ public class BlockExplorerUpdater {
                 @Override
                 public void doOnBackground() {
                     if(mContext != null) {
-                        // Load witnesses
-                        try {
-                            GrpcAPI.WitnessList result = WalletManager.listWitnesses(false);
-                            if(result != null) {
-                                mWitnesses.clear();
-                                mWitnesses.addAll(result.getWitnessesList());
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
@@ -307,35 +216,6 @@ public class BlockExplorerUpdater {
                 @Override
                 public void doOnBackground() {
                     if(mContext != null) {
-                        // Load tokens
-                        try {
-                            GrpcAPI.AssetIssueList result = WalletManager.getAssetIssueList(false);
-                            if(result != null) {
-                                mTokens.clear();
-
-                                for (Contract.AssetIssueContract token : result.getAssetIssueList())
-                                {
-                                    if(!(token.getName().toStringUtf8().equals("TronWatchmarket") ||
-                                            token.getName().toStringUtf8().equals("TWM")  ||
-                                            token.getName().toStringUtf8().equals("TronWatch")||
-                                            token.getName().toStringUtf8().equals("Tronwatchmarket")))
-                                    {
-                                        mTokens.add(token);
-                                    }
-                                }
-
-                                //mTokens.addAll(result.getAssetIssueList());
-                                Collections.sort(mTokens, new Comparator<Contract.AssetIssueContract>() {
-                                    @Override
-                                    public int compare(Contract.AssetIssueContract o1, Contract.AssetIssueContract o2) {
-                                        return o1.getName().toStringUtf8().compareTo(o2.getName().toStringUtf8());
-                                    }
-                                });
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
@@ -397,29 +277,6 @@ public class BlockExplorerUpdater {
         }
     }
 
-    public static List<GrpcAPI.BlockExtention> getBlocks() {
-        return mBlocks;
-    }
-
-    public static List<GrpcAPI.TransactionExtention> getTransactions() {
-        return mTransactions;
-    }
-
-    public static List<Protocol.Witness> getWitnesses() {
-        return mWitnesses;
-    }
-
-    public static List<GrpcAPI.Node> getNodes() {
-        return mNodes;
-    }
-
-    public static List<Contract.AssetIssueContract> getTokens() {
-        return mTokens;
-    }
-
-    public static List<Protocol.Account> getAccounts() {
-        return mAccounts;
-    }
 
     public static boolean isRunning(UpdateTask task) {
         return mRunning.get(task);

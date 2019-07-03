@@ -4,16 +4,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,15 +24,10 @@ import com.eletac.tronwallet.block_explorer.contract.ContractLoaderFragment;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.spongycastle.util.encoders.DecoderException;
-import org.spongycastle.util.encoders.Hex;
-import org.tron.common.crypto.Hash;
 import org.tron.protos.Protocol;
-import org.tron.walletserver.WalletManager;
 
 import java.text.DateFormat;
 import java.util.Date;
-
-import io.grpc.StatusRuntimeException;
 
 public class TransactionViewerActivity extends AppCompatActivity {
 
@@ -84,7 +74,7 @@ public class TransactionViewerActivity extends AppCompatActivity {
         mUpdateConfirmationHandler = new Handler();
         mUpdateConfirmationRunnable = new UpdateConfirmationRunnable();
 
-        if(mTransaction.getRawData().getContractCount() > 0) {
+        if (mTransaction.getRawData().getContractCount() > 0) {
             mContractLoaderFragment.setContract(mTransaction.getRawData().getContract(0));
         }
         mHash_TextView.setText(getTxID());
@@ -115,7 +105,7 @@ public class TransactionViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //https://tronscan.org/#/transaction/
-                Uri tronscanTxURL = Uri.parse("https://tronscan.org/#/transaction/"+getTxID());
+                Uri tronscanTxURL = Uri.parse("https://tronscan.org/#/transaction/" + getTxID());
                 Intent intent = new Intent(Intent.ACTION_VIEW, tronscanTxURL);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
@@ -128,7 +118,7 @@ public class TransactionViewerActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Tronscan_TX", "https://tronscan.org/#/transaction/"+getTxID());
+                ClipData clip = ClipData.newPlainText("Tronscan_TX", "https://tronscan.org/#/transaction/" + getTxID());
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(TransactionViewerActivity.this, getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
@@ -142,7 +132,7 @@ public class TransactionViewerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if ( id == android.R.id.home ) {
+        if (id == android.R.id.home) {
             finish();
             return true;
         }
@@ -151,7 +141,7 @@ public class TransactionViewerActivity extends AppCompatActivity {
     }
 
     private void loadConfirmationStatus() {
-        if(!mFirstConfirmationStateLoaded) {
+        if (!mFirstConfirmationStateLoaded) {
             mConfirmed_CardView.setVisibility(View.GONE);
             mLoadingConfirmation_ProgressBar.setVisibility(View.VISIBLE);
         }
@@ -160,44 +150,12 @@ public class TransactionViewerActivity extends AppCompatActivity {
             @Override
             public void doOnBackground() {
                 boolean isConfirmed = false;
-
-                try {
-                    isConfirmed = WalletManager.isTransactionConfirmed(mTransaction);
-
-                    boolean finalIsConfirmed = isConfirmed;
-                    AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
-                        @Override
-                        public void doInUIThread() {
-                            if(!mFirstConfirmationStateLoaded) {
-                                mConfirmed_CardView.setVisibility(View.VISIBLE);
-                                mLoadingConfirmation_ProgressBar.setVisibility(View.GONE);
-                            }
-                            mFirstConfirmationStateLoaded = true;
-
-                            if(finalIsConfirmed) {
-                                mConfirmed_TextView.setText(R.string.confirmed);
-                                mConfirmed_CardView.setCardBackgroundColor(ContextCompat.getColor(TransactionViewerActivity.this, R.color.positive));
-                            } else {
-                                mConfirmed_TextView.setText(R.string.unconfirmed);
-                                mConfirmed_CardView.setCardBackgroundColor(ContextCompat.getColor(TransactionViewerActivity.this, R.color.colorAccent));
-                                mUpdateConfirmationHandler.postDelayed(mUpdateConfirmationRunnable, 500);
-                            }
-                        }
-                    });
-
-                } catch (StatusRuntimeException e) {
-                    e.printStackTrace();
-                    mConfirmed_CardView.setVisibility(View.VISIBLE);
-                    mLoadingConfirmation_ProgressBar.setVisibility(View.GONE);
-                    mConfirmed_TextView.setText(R.string.unknown);
-                    mConfirmed_CardView.setCardBackgroundColor(Color.GRAY);
-                }
             }
         });
     }
 
     private String getTxID() {
-        return Hex.toHexString(Hash.sha256(mTransaction.getRawData().toByteArray()));
+        return "";
     }
 
     private class UpdateConfirmationRunnable implements Runnable {

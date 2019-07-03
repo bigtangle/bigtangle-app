@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer;
 
-
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,7 +30,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 
 import org.tron.protos.Protocol;
-import org.tron.walletserver.WalletManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +49,6 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private AccountsUpdatedBroadcastReceiver mAccountsUpdatedBroadcastReceiver;
 
-    private List<Protocol.Account> mAccounts;
-    private List<Protocol.Account> mAccountsFiltered;
-
     private int mSearchCardViewInitialHeight;
 
     public AccountsFragment() {
@@ -70,10 +65,6 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onCreate(savedInstanceState);
 
         mAccountsUpdatedBroadcastReceiver = new AccountsUpdatedBroadcastReceiver();
-        mAccounts = BlockExplorerUpdater.getAccounts();
-        mAccountsFiltered = new ArrayList<>();
-
-        mAccountItemListAdapter = new AccountItemListAdapter(getContext(), mAccounts, mAccountsFiltered);
     }
 
     @Override
@@ -130,7 +121,6 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
                 animator.start();
 
                 mAccountItemListAdapter.setShowFiltered(isChecked);
-                mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_accounts), mAccountItemListAdapter.isShowFiltered() ? mAccountsFiltered.size() : mAccounts.size()));
                 mAccountItemListAdapter.notifyDataSetChanged();
             }
         });
@@ -165,11 +155,6 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mAccountsUpdatedBroadcastReceiver, new IntentFilter(BlockExplorerUpdater.ACCOUNTS_UPDATED));
-        if(BlockExplorerUpdater.getAccounts().isEmpty())
-            onRefresh();
-        else if(!BlockExplorerUpdater.isRunning(BlockExplorerUpdater.UpdateTask.Accounts) && !BlockExplorerUpdater.isSingleShotting(BlockExplorerUpdater.UpdateTask.Accounts) ) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
     }
 
     @Override
@@ -179,21 +164,8 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void updateFilteredAccounts() {
-        mAccountsFiltered.clear();
-        for(Protocol.Account account : mAccounts) {
-            try {
-                if (checkFilterConditions(account)) {
-                    mAccountsFiltered.add(account);
-                }
-            }  catch (NullPointerException ignore) {}
-        }
         mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_accounts), mAccountItemListAdapter.isShowFiltered() ? mAccountsFiltered.size() : mAccounts.size()));
         mAccountItemListAdapter.notifyDataSetChanged();
-    }
-
-    private boolean checkFilterConditions(Protocol.Account account) {
-        String filter = mSearch_EditText.getText().toString();
-        return WalletManager.encode58Check(account.getAddress().toByteArray()).toLowerCase().contains(filter.toLowerCase());
     }
 
     private class AccountsUpdatedBroadcastReceiver extends BroadcastReceiver {

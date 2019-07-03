@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer;
 
-
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,7 +30,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 
 import org.tron.api.GrpcAPI;
-import org.tron.common.utils.ByteArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,8 +191,7 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private boolean checkFilterConditions(GrpcAPI.Node node) {
-        String filter = mSearch_EditText.getText().toString();
-        return ByteArray.toStr(node.getAddress().getHost().toByteArray()).toLowerCase().contains(filter.toLowerCase()) || String.valueOf(node.getAddress().getPort()).toLowerCase().contains(filter.toLowerCase());
+        return true;
     }
 
     private class NodesUpdatedBroadcastReceiver extends BroadcastReceiver {

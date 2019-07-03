@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer.contract.contract_type_fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,10 +10,7 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
-import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
-import com.google.protobuf.InvalidProtocolBufferException;
 
-import org.tron.common.utils.TransactionUtils;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 
@@ -60,12 +56,7 @@ public class FreezeContractFragment extends ContractFragment {
 
     @Override
     public void setContract(Protocol.Transaction.Contract contract) {
-        try {
-            mContract = TransactionUtils.unpackContract(contract, Contract.FreezeBalanceContract.class);
-            updateUI();
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+        updateUI();
     }
 
     public void updateUI() {

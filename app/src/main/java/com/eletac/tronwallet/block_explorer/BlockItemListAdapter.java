@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 
 import org.tron.api.GrpcAPI;
-import org.tron.protos.Protocol;
-import org.tron.walletserver.WalletManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,11 +103,10 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
             mBlockNumber_TextView.setText(blockNumberStr);
             updateElapsedTime();
             mBlockTransactionsAmount_TextView.setText(String.valueOf(block.getTransactionsCount()));
-            mBlockProducerAddress_TextView.setText(WalletManager.encode58Check(block.getBlockHeader().getRawData().getWitnessAddress().toByteArray()));
-        }
+         }
 
         public void updateElapsedTime() {
-            if(mBlock != null) {
+           if(mBlock != null) {
                 CharSequence timeString = DateUtils.getRelativeTimeSpanString(mBlock.getBlockHeader().getRawData().getTimestamp(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
                 mBlockElapsedTime_TextView.setText(timeString);
                 mBlockElapsedTime_TextView.setText(timeString);

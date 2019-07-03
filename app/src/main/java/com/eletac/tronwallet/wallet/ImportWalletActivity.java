@@ -1,12 +1,9 @@
 package com.eletac.tronwallet.wallet;
 
-import android.animation.Animator;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,20 +16,9 @@ import android.widget.TextView;
 import com.eletac.tronwallet.CaptureActivityPortrait;
 import com.eletac.tronwallet.MainActivity;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.bip39.BIP39;
-import com.eletac.tronwallet.bip39.ValidationException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
-import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
-
-import org.tron.common.utils.ByteArray;
-import org.tron.walletserver.DuplicateNameException;
-import org.tron.walletserver.InvalidNameException;
-import org.tron.walletserver.InvalidPasswordException;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 public class ImportWalletActivity extends AppCompatActivity {
 
@@ -209,212 +195,9 @@ public class ImportWalletActivity extends AppCompatActivity {
     }
 
     private void importPublicAddress() {
-        String address = mPublicAddress_EditText.getText().toString();
-
-        boolean addressValid = false;
-
-        try {
-            addressValid = WalletManager.isAddressValid(WalletManager.decodeFromBase58Check(address));
-        } catch (IllegalArgumentException ignored) { }
-
-        if(addressValid) {
-            String name = mName_EditText.getText().toString();
-
-            if(!WalletManager.isNameValid(name)) {
-                new LovelyInfoDialog(ImportWalletActivity.this)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
-                        .setTitle(R.string.invalid_name)
-                        .setMessage(R.string.please_enter_a_valid_name)
-                        .show();
-                return;
-            } else if(WalletManager.existWallet(name)) {
-                new LovelyInfoDialog(ImportWalletActivity.this)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
-                        .setTitle(R.string.invalid_name)
-                        .setMessage(R.string.you_already_have_an_wallet_with_this_name)
-                        .show();
-                return;
-            }
-
-            new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                    .setTopColorRes(R.color.colorPrimary)
-                    .setButtonsColor(Color.WHITE)
-                    .setIcon(R.drawable.ic_info_white_24px)
-                    .setTitle(R.string.import_address)
-                    .setMessage(R.string.import_address_message)
-                    .setPositiveButton(R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                Wallet wallet = new Wallet();
-                                wallet.setWalletName(name);
-                                wallet.setAddress(address);
-                                wallet.setWatchOnly(true);
-
-                                WalletManager.storeWatchOnly(wallet);
-                                WalletManager.selectWallet(name);
-
-                                startMainActivity();
-                            } catch (DuplicateNameException | InvalidNameException e) {
-                                // Should be already checked above
-                                e.printStackTrace();
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
-
-        } else {
-            new LovelyInfoDialog(this)
-                    .setTopColorRes(R.color.colorPrimary)
-                    .setIcon(R.drawable.ic_info_white_24px)
-                    .setTitle(R.string.invalid_address)
-                    .setMessage(R.string.enter_valid_address)
-                    .show();
-        }
     }
 
     private void importPrivateKey() {
-        if(!mRisks_CheckBox.isChecked()) {
-            mRisks_CheckBox.animate()
-                    .scaleX(1.1f)
-                    .scaleY(1.1f)
-                    .setDuration(100)
-                    .setListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            mRisks_CheckBox.animate()
-                                    .scaleX(1.0f)
-                                    .scaleY(1.0f)
-                                    .setDuration(100)
-                                    .setListener(null);
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-            return;
-        }
-
-        LovelyStandardDialog dialog = new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                .setTopColorRes(R.color.colorPrimary)
-                .setButtonsColor(Color.WHITE)
-                .setIcon(R.drawable.ic_info_white_24px);
-
-        boolean coldWallet = mColdWallet_Switch.isChecked();
-        boolean inputInvalid = false;
-
-        String name = mName_EditText.getText().toString();
-        String password = mPassword_EditText.getText().toString();
-        String privKey = "";
-
-        try {
-            if(mRecoveryPhrase_Switch.isChecked()) {
-                privKey = ByteArray.toHexString(BIP39.decode(mPrivateKey_EditText.getText().toString(), "pass"));
-            } else {
-                privKey = mPrivateKey_EditText.getText().toString();
-            }
-        } catch (ValidationException e) {
-            e.printStackTrace();
-        }
-
-        if(!WalletManager.isNameValid(name)) {
-            dialog.setTitle(R.string.invalid_name)
-                    .setMessage(R.string.please_enter_a_valid_name);
-            inputInvalid = true;
-        } else if(WalletManager.existWallet(name)) {
-            dialog.setTitle(R.string.invalid_name)
-                    .setMessage(R.string.you_already_have_an_wallet_with_this_name);
-            inputInvalid = true;
-        } else if (!WalletManager.isPasswordValid(password)) {
-            dialog.setMessage(R.string.create_wallet_inv_password_dialog_message)
-                    .setTitle(R.string.create_wallet_inv_password_dialog_title);
-            inputInvalid = true;
-        } else if (!WalletManager.isPrivateKeyValid(privKey)) {
-            dialog.setMessage(mRecoveryPhrase_Switch.isChecked() ? R.string.inv_recovery_phrase_dialog_message : R.string.inv_private_key_dialog_message)
-                    .setTitle(mRecoveryPhrase_Switch.isChecked() ? R.string.inv_recovery_phrase_dialog_title : R.string.inv_private_key_dialog_title);
-            inputInvalid = true;
-        }
-
-
-        if(inputInvalid) {
-            dialog.setPositiveButton(R.string.ok, null);
-            dialog.show();
-        }
-        else {
-            dialog.setMessage(coldWallet ? R.string.import_wallet_cold_dialog_message : R.string.import_wallet_dialog_message)
-                    .setTitle(R.string.import_wallet_dialog_title);
-
-            String finalPrivKey = privKey;
-            dialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    new LovelyTextInputDialog(ImportWalletActivity.this, R.style.EditTextTintTheme)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.confirm_your_password)
-                            .setHint(R.string.password)
-                            .setInputType(InputType.TYPE_CLASS_TEXT |
-                                    InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                            .setConfirmButtonColor(Color.WHITE)
-                            .setConfirmButton(R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
-                                @Override
-                                public void onTextInputConfirmed(String text) {
-                                    if (text.equals(password)) {
-                                        try {
-                                            Wallet wallet = new Wallet(finalPrivKey);
-                                            wallet.setWalletName(name);
-                                            wallet.setColdWallet(coldWallet);
-
-                                            WalletManager.store(wallet, password);
-                                            WalletManager.selectWallet(name);
-
-                                            startMainActivity();
-                                        } catch (DuplicateNameException | InvalidPasswordException | InvalidNameException e) {
-                                            // Should be already checked above
-                                            e.printStackTrace();
-                                        } catch (NullPointerException ignored) {
-                                            new LovelyInfoDialog(ImportWalletActivity.this)
-                                                    .setTopColorRes(R.color.colorPrimary)
-                                                    .setIcon(R.drawable.ic_info_white_24px)
-                                                    .setTitle(R.string.invalid_address)
-                                                    .setMessage(R.string.enter_valid_address)
-                                                    .show();
-                                        }
-                                    } else {
-                                        new LovelyInfoDialog(ImportWalletActivity.this)
-                                                .setTopColorRes(R.color.colorPrimary)
-                                                .setIcon(R.drawable.ic_error_white_24px)
-                                                .setTitle("Password does not match")
-                                                .setMessage("Try again")
-                                                .show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, null)
-                            .show();
-                }
-            });
-
-            dialog.setNegativeButton(R.string.cancel, null);
-            dialog.show();
-        }
     }
 
     private void startMainActivity() {

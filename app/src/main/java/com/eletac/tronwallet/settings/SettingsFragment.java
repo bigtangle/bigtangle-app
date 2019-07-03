@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.settings;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,12 +16,9 @@ import android.widget.Button;
 
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.wallet.AboutActivity;
-import com.eletac.tronwallet.wallet.AccountActivity;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
-
-import org.tron.walletserver.WalletManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,8 +45,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mIsWachtOnly = WalletManager.getSelectedWallet().isWatchOnly();
     }
 
     @Override
@@ -80,7 +74,7 @@ public class SettingsFragment extends Fragment {
         mRemove_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mIsWachtOnly) {
+                if (mIsWachtOnly) {
                     new LovelyStandardDialog(getActivity())
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_info_white_24px)
@@ -107,16 +101,6 @@ public class SettingsFragment extends Fragment {
                             .setConfirmButton(R.string.remove, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                                 @Override
                                 public void onTextInputConfirmed(String text) {
-                                    if (WalletManager.checkPassword(WalletManager.getSelectedWallet().getWalletName(), text)) {
-                                        reset();
-                                    } else {
-                                        new LovelyInfoDialog(getContext())
-                                                .setTopColorRes(R.color.colorPrimary)
-                                                .setIcon(R.drawable.ic_error_white_24px)
-                                                .setTitle(R.string.removing_failed)
-                                                .setMessage(R.string.wrong_password)
-                                                .show();
-                                    }
                                 }
                             })
                             .setNegativeButton(R.string.cancel, null)
@@ -127,7 +111,7 @@ public class SettingsFragment extends Fragment {
         mAccount_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mIsWachtOnly) {
+                if (mIsWachtOnly) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
@@ -146,19 +130,6 @@ public class SettingsFragment extends Fragment {
                             .setConfirmButton(R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                                 @Override
                                 public void onTextInputConfirmed(String text) {
-                                    if (WalletManager.checkPassword(WalletManager.getSelectedWallet().getWalletName(), text)) {
-                                        Intent intent = new Intent(getContext(), AccountActivity.class);
-                                        intent.putExtra("name", WalletManager.getSelectedWallet().getWalletName());
-                                        intent.putExtra("password", text);
-                                        startActivity(intent);
-                                    } else {
-                                        new LovelyInfoDialog(getContext())
-                                                .setTopColorRes(R.color.colorPrimary)
-                                                .setIcon(R.drawable.ic_error_white_24px)
-                                                .setTitle(R.string.access_denied)
-                                                .setMessage(R.string.wrong_password)
-                                                .show();
-                                    }
                                 }
                             })
                             .setNegativeButton(R.string.cancel, null)
@@ -183,20 +154,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void reset() {
-        String selectedWallet = WalletManager.getSelectedWallet().getWalletName();
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(selectedWallet, Context.MODE_PRIVATE).edit();
-        editor.clear();
-        editor.commit();
 
-        SharedPreferences preferences = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        editor = preferences.edit();
-        Set<String> wallets = new HashSet<>(preferences.getStringSet(getString(R.string.wallets_key), new HashSet<>()));
-        wallets.remove(selectedWallet);
-        editor.putStringSet(getString(R.string.wallets_key), wallets);
-
-        if(!wallets.isEmpty())
-            editor.putString(getString(R.string.selected_wallet_key), wallets.iterator().next());
-        editor.commit();
 
         Intent intent = getActivity().getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK

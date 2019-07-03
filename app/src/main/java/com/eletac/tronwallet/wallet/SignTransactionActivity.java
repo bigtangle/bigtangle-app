@@ -13,7 +13,6 @@ import android.widget.Switch;
 
 import com.eletac.tronwallet.CaptureActivityPortrait;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.Utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -83,8 +82,6 @@ public class SignTransactionActivity extends AppCompatActivity {
                 mTransactionUnsigned = Protocol.Transaction.parseFrom(transactionData);
 
                 if(transactionData != null) {
-                    Bitmap bitmap = Utils.strToQR(Hex.toHexString(transactionData), 800, 800);
-                    mUnsignedTransactionQR_ImageView.setImageBitmap(bitmap);
                 }
             } catch (DecoderException | IOException e) {
                 e.printStackTrace();

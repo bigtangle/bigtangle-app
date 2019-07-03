@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 
 import org.tron.protos.Contract;
-import org.tron.walletserver.WalletManager;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -63,7 +62,6 @@ public class VoteItemListAdapter extends RecyclerView.Adapter<VoteItemListAdapte
         public void bind(Contract.VoteWitnessContract.Vote vote) {
             NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
 
-            mAddress_TextView.setText(WalletManager.encode58Check(vote.getVoteAddress().toByteArray()));
             mAmount_TextView.setText(numberFormat.format(vote.getVoteCount()));
         }
     }

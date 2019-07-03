@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.Utils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 

@@ -8,12 +8,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.arasthel.asyncjob.AsyncJob;
-import com.eletac.tronwallet.Utils;
-
-import org.tron.api.GrpcAPI;
-import org.tron.protos.Protocol;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -88,20 +82,6 @@ public class AccountUpdater {
                 @Override
                 public void doOnBackground() {
                     if(mContext != null) {
-                        try {
-                            Wallet selectedWallet = WalletManager.getSelectedWallet();
-                            byte[] address = WalletManager.decodeFromBase58Check(selectedWallet.getAddress());
-
-                            Protocol.Account account = WalletManager.queryAccount(address, false);
-                            GrpcAPI.AccountNetMessage accountNetMessage = WalletManager.getAccountNet(address);
-                            GrpcAPI.AccountResourceMessage accountResMessage = WalletManager.getAccountRes(address);
-
-                            Utils.saveAccount(mContext, selectedWallet.getWalletName(), account);
-                            Utils.saveAccountNet(mContext, selectedWallet.getWalletName(), accountNetMessage);
-                            Utils.saveAccountRes(mContext, selectedWallet.getWalletName(), accountResMessage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {

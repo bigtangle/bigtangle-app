@@ -1,35 +1,31 @@
 package com.eletac.tronwallet.wallet;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.Utils;
 import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.tron.protos.Protocol;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -48,7 +44,6 @@ public class VoteActivity extends AppCompatActivity {
     private HashMap<String, String> mVoteWitnesses;
     private VotesUpdatedBroadcastReceiver mVotesUpdatedBroadcastReceiver;
 
-    private Wallet mWallet;
     private Protocol.Account mAccount;
     private AccountUpdatedBroadcastReceiver mAccountUpdatedBroadcastReceiver;
 
@@ -69,11 +64,6 @@ public class VoteActivity extends AppCompatActivity {
         mVoteWitnesses = new HashMap<>();
         mVotesUpdatedBroadcastReceiver = new VotesUpdatedBroadcastReceiver();
         mAccountUpdatedBroadcastReceiver = new AccountUpdatedBroadcastReceiver();
-
-        mWallet = WalletManager.getSelectedWallet();
-        if(mWallet != null) {
-            mAccount = Utils.getAccount(this, mWallet.getWalletName());
-        }
 
         mViewPager = findViewById(R.id.Vote_container);
         mRemaining_TextView = findViewById(R.id.Vote_remaining_textView);
@@ -112,15 +102,7 @@ public class VoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(mWallet == null) {
-                    new LovelyInfoDialog(VoteActivity.this)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.no_wallet_selected)
-                            .show();
-                    return;
-                }
+
 
                 String textBackup = mSubmit_Button.getText().toString();
 
@@ -129,11 +111,7 @@ public class VoteActivity extends AppCompatActivity {
 
                 AsyncJob.doInBackground(() -> {
                     Protocol.Transaction transaction = null;
-                    try {
-                        transaction = WalletManager.createVoteWitnessTransaction(
-                                WalletManager.decodeFromBase58Check(mWallet.getAddress()),
-                                mVoteWitnesses);
-                    } catch (Exception ignored) { }
+
 
                     Protocol.Transaction finalTransaction = transaction;
                     AsyncJob.doOnMainThread(() -> {
@@ -195,20 +173,11 @@ public class VoteActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mWallet = WalletManager.getSelectedWallet();
-        if(mWallet != null) {
-            mAccount = Utils.getAccount(this, mWallet.getWalletName());
-        }
     }
 
     private void loadVotes() {
         if(mAccount != null) {
             mLoadVotesOnNextAccountUpdate = false;
-            for (Protocol.Vote vote : mAccount.getVotesList()) {
-                mVoteWitnesses.put(WalletManager.encode58Check(vote.getVoteAddress().toByteArray()), String.valueOf(vote.getVoteCount()));
-            }
-            Intent updatedIntent = new Intent(VOTES_UPDATED);
-            LocalBroadcastManager.getInstance(VoteActivity.this).sendBroadcast(updatedIntent);
         }
     }
 
@@ -283,11 +252,7 @@ public class VoteActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mWallet != null) {
-                mAccount = Utils.getAccount(context, mWallet.getWalletName());
-                if(mLoadVotesOnNextAccountUpdate)
-                    loadVotes();
-            }
+
         }
     }
 }

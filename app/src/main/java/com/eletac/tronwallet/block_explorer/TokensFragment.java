@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer;
 
-
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,7 +32,6 @@ import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.wallet.IssueTokenActivity;
 
 import org.tron.protos.Contract;
-import org.tron.walletserver.WalletManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,9 +203,7 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private boolean checkFilterConditions(Contract.AssetIssueContract asset) {
         String filter = mSearch_EditText.getText().toString().toLowerCase();
-        return WalletManager.encode58Check(asset.getOwnerAddress().toByteArray()).toLowerCase().contains(filter)
-                || asset.getName().toStringUtf8().toLowerCase().contains(filter)
-                || asset.getDescription().toStringUtf8().toLowerCase().contains(filter);
+        return true;
     }
 
     private class TokensUpdatedBroadcastReceiver extends BroadcastReceiver {

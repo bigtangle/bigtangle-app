@@ -4,33 +4,23 @@ import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.arch.persistence.room.Room;
+import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.arch.lifecycle.ProcessLifecycleOwner;
 
 import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
-import com.eletac.tronwallet.database.Transaction;
-import com.eletac.tronwallet.database.TronWalletDatabase;
 import com.eletac.tronwallet.wallet.AccountUpdater;
 import com.eletac.tronwallet.wallet.PriceUpdater;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.spongycastle.util.encoders.Hex;
-import org.tron.common.crypto.Hash;
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class TronWalletApplication extends Application implements  LifecycleObserver{
+public class TronWalletApplication extends Application implements LifecycleObserver {
 
     public static final String DATABASE_FILE_NAME = "tron_wallet.db";
 
@@ -47,7 +37,6 @@ public class TronWalletApplication extends Application implements  LifecycleObse
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private static Context mContext;
-    private static TronWalletDatabase mDatabase;
     private static boolean mIsInForeground;
 
     public void onCreate() {
@@ -59,9 +48,7 @@ public class TronWalletApplication extends Application implements  LifecycleObse
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
 
         mContext = getApplicationContext();
-        mDatabase = Room.databaseBuilder(mContext, TronWalletDatabase.class, DATABASE_FILE_NAME)
-                .addMigrations(TronWalletDatabase.MIGRATION_1_2)
-                .build();
+
         mIsInForeground = false;
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
@@ -73,27 +60,12 @@ public class TronWalletApplication extends Application implements  LifecycleObse
         updaterIntervals.put(BlockExplorerUpdater.UpdateTask.Accounts, ACCOUNTS_UPDATE_INTERVAL);
         BlockExplorerUpdater.init(this, updaterIntervals);
 
-
         AccountUpdater.init(this, ACCOUNT_UPDATE_FOREGROUND_INTERVAL);
         PriceUpdater.init(this, PRICE_UPDATE_INTERVAL);
 
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        if(sharedPreferences.getBoolean("logged_previous_transactions", false))
-        {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            List<Transaction> dbTransactions = TronWalletApplication.getDatabase().transactionDao().getAllTransactions();
-
-            for(Transaction dbTransaction : dbTransactions) {
-                Bundle bundle = new Bundle();
-                bundle.putString("sender_address", dbTransaction.senderAddress);
-                bundle.putString("hash", Hex.toHexString(Hash.sha256(dbTransaction.transaction.getRawData().toByteArray())));
-                bundle.putString("contract", Utils.getContractName(dbTransaction.transaction.getRawData().getContract(0)));
-
-                mFirebaseAnalytics.logEvent("sent_transaction", bundle);
-            }
-            editor.putBoolean("logged_previous_transactions", true);
+        if (sharedPreferences.getBoolean("logged_previous_transactions", false)) {
         }
     }
 
@@ -115,9 +87,5 @@ public class TronWalletApplication extends Application implements  LifecycleObse
 
     public static boolean isIsInForeground() {
         return mIsInForeground;
-    }
-
-    public static TronWalletDatabase getDatabase() {
-        return mDatabase;
     }
 }

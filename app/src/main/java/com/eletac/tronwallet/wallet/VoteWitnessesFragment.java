@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.wallet;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
 
 import org.tron.protos.Protocol;
-import org.tron.walletserver.WalletManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,8 +149,7 @@ public class VoteWitnessesFragment extends Fragment implements SwipeRefreshLayou
     }
 
     private boolean checkFilterConditions(Protocol.Witness witness) {
-        String filter = mSearch_EditText.getText().toString();
-        return WalletManager.encode58Check(witness.getAddress().toByteArray()).toLowerCase().contains(filter.toLowerCase()) || witness.getUrl().toLowerCase().contains(filter.toLowerCase());
+        return true;
     }
 
     private class WitnessesUpdatedBroadcastReceiver extends BroadcastReceiver {

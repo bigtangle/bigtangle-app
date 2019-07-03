@@ -15,15 +15,10 @@ import android.widget.TextView;
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.InputFilterMinMax;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.Utils;
 import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
-import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -46,8 +41,6 @@ public class ParticipateAssetActivity extends AppCompatActivity {
     private SeekBar mAmount_SeekBar;
     private TextView mCost_TextView;
     private Button mSpend_Button;
-
-    private Wallet mWallet;
 
     private Contract.AssetIssueContract mAsset;
     private Protocol.Account mAccount;
@@ -77,9 +70,9 @@ public class ParticipateAssetActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String assetName = extras.getString(ASSET_NAME_EXTRA);
-            if(assetName != null && !assetName.isEmpty()) {
-                for(Contract.AssetIssueContract asset : BlockExplorerUpdater.getTokens()) {
-                    if(asset.getName().toStringUtf8().equals(assetName)) {
+            if (assetName != null && !assetName.isEmpty()) {
+                for (Contract.AssetIssueContract asset : BlockExplorerUpdater.getTokens()) {
+                    if (asset.getName().toStringUtf8().equals(assetName)) {
                         mAsset = asset;
                         break;
                     }
@@ -90,16 +83,11 @@ public class ParticipateAssetActivity extends AppCompatActivity {
             }
         }
 
-        mWallet = WalletManager.getSelectedWallet();
-
-        if(mAsset != null && mWallet != null) {
-
-            mAccount = Utils.getAccount(this, mWallet.getWalletName());
+        if (mAsset != null) {
 
             mName_TextView.setText(mAsset.getName().toStringUtf8());
             mDescription_TextView.setText(mAsset.getDescription().toStringUtf8());
             mSupply_TextView.setText(NumberFormat.getInstance(Locale.US).format(mAsset.getTotalSupply()));
-            mIssuer_TextView.setText(WalletManager.encode58Check(mAsset.getOwnerAddress().toByteArray()));
             mStart_TextView.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(new Date(mAsset.getStartTime())));
             mEnd_TextView.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(new Date(mAsset.getEndTime())));
 
@@ -107,13 +95,13 @@ public class ParticipateAssetActivity extends AppCompatActivity {
             NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
             numberFormat.setMaximumFractionDigits(6);
 
-            mTokenPrice = mAsset.getTrxNum()/(double)(mAsset.getNum());
-            mPrice_TextView.setText(numberFormat.format(mTokenPrice/1000000D));
+            mTokenPrice = mAsset.getTrxNum() / (double) (mAsset.getNum());
+            mPrice_TextView.setText(numberFormat.format(mTokenPrice / 1000000D));
 
-            long max = (long)(mAccount.getBalance()/mTokenPrice);
+            long max = (long) (mAccount.getBalance() / mTokenPrice);
             max = max > mAsset.getTotalSupply() ? mAsset.getTotalSupply() : max;
-            mAmount_EditText.setFilters(new InputFilter[]{ new InputFilterMinMax(0, max)});
-            mAmount_SeekBar.setMax((int)max);
+            mAmount_EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, max)});
+            mAmount_SeekBar.setMax((int) max);
 
             mAmount_EditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -123,9 +111,9 @@ public class ParticipateAssetActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(!mUpdatingAmount) {
+                    if (!mUpdatingAmount) {
                         mUpdatingAmount = true;
-                        if(mAmount_EditText.getText().length() > 0) {
+                        if (mAmount_EditText.getText().length() > 0) {
                             mAmount = Long.valueOf(mAmount_EditText.getText().toString());
                             updateCost();
                             mSpend_Button.setEnabled(true);
@@ -134,7 +122,7 @@ public class ParticipateAssetActivity extends AppCompatActivity {
                             mCost_TextView.setText("0");
                             mSpend_Button.setEnabled(false);
                         }
-                        if(Build.VERSION.SDK_INT >= 24) {
+                        if (Build.VERSION.SDK_INT >= 24) {
                             mAmount_SeekBar.setProgress((int) mAmount, true);
                         } else {
                             mAmount_SeekBar.setProgress((int) mAmount);
@@ -152,7 +140,7 @@ public class ParticipateAssetActivity extends AppCompatActivity {
             mAmount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if(!mUpdatingAmount) {
+                    if (!mUpdatingAmount) {
                         mUpdatingAmount = true;
                         mAmount = progress;
                         mAmount_EditText.setText(String.valueOf(mAmount));
@@ -177,44 +165,16 @@ public class ParticipateAssetActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     long amount = mAmount;
-                    long finalAmount = (long) (amount*mTokenPrice);
+                    long finalAmount = (long) (amount * mTokenPrice);
 
                     String textBackup = mSpend_Button.getText().toString();
                     mSpend_Button.setEnabled(false);
                     mSpend_Button.setText(R.string.loading);
 
                     AsyncJob.doInBackground(() -> {
-                        Protocol.Transaction transaction = null;
-                        try {
-                            transaction = WalletManager.createParticipateAssetIssueTransaction(
-                                mAsset.getOwnerAddress().toByteArray(), mAsset.getName().toByteArray(), WalletManager.decodeFromBase58Check(mWallet.getAddress()), finalAmount);
-
-                        } catch (Exception ignored) { }
-
-                        Protocol.Transaction finalTransaction = transaction;
-                        AsyncJob.doOnMainThread(() -> {
-                            mSpend_Button.setEnabled(true);
-                            mSpend_Button.setText(textBackup);
-                            if(finalTransaction != null) {
-                                ConfirmTransactionActivity.start(ParticipateAssetActivity.this, finalTransaction, mAsset.toByteArray());
-                            }
-                            else {
-                                try {
-                                    new LovelyInfoDialog(ParticipateAssetActivity.this)
-                                            .setTopColorRes(R.color.colorPrimary)
-                                            .setIcon(R.drawable.ic_error_white_24px)
-                                            .setTitle(R.string.failed)
-                                            .setMessage(R.string.could_not_create_transaction)
-                                            .show();
-                                } catch (Exception ignored) {
-                                    // Cant show dialog, activity may gone while doing background work
-                                }
-                            }
-                        });
                     });
                 }
             });
-
         } else {
             finish();
         }
@@ -223,7 +183,7 @@ public class ParticipateAssetActivity extends AppCompatActivity {
     private void updateCost() {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
         numberFormat.setMaximumFractionDigits(6);
-        double cost = (mAmount * mTokenPrice/1000000D);
+        double cost = (mAmount * mTokenPrice / 1000000D);
         mCost_TextView.setText(numberFormat.format(cost));
     }
 }

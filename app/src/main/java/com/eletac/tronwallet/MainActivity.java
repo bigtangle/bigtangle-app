@@ -9,15 +9,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.eletac.tronwallet.block_explorer.BlockExplorerFragment;
-import com.eletac.tronwallet.settings.SettingsFragment;
 import com.eletac.tronwallet.wallet.CreateWalletActivity;
-import com.eletac.tronwallet.wallet.cold.WalletColdFragment;
 import com.eletac.tronwallet.wallet.WalletFragment;
+import com.eletac.tronwallet.wallet.cold.WalletColdFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
+import net.bigtangle.wallet.WalletConstant;
+import net.bigtangle.wallet.WalletContext;
+import net.bigtangle.wallet.WalletRoutePathUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private BlockExplorerFragment mBlockExplorerFragment;
     private SimpleTextDisplayFragment mSimpleTextDisplayFragment;
 
-    private Wallet mWallet;
+    private WalletContext walletContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +42,19 @@ public class MainActivity extends AppCompatActivity {
         BottomBar bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_wallet);
 
+        // 初始化钱包工具上下文
+        walletContext = WalletContext.getInstance();
+        walletContext.initWalletData(WalletRoutePathUtil.getBasePath(this), WalletConstant.WALLET_FILE_PREFIX);
 
-        if(!WalletManager.existAnyWallet())
-        {
+        // 判断当前钱包文件是否存在
+        if (!WalletRoutePathUtil.existAnyWallet(this)) {
             Intent intent = new Intent(this, CreateWalletActivity.class);
             startActivity(intent);
             finish();
             return;
         }
-        mWallet = WalletManager.getSelectedWallet();
-        if(mWallet == null) {
-            WalletManager.selectWallet(WalletManager.getWalletNames().iterator().next());
-            mWallet = WalletManager.getSelectedWallet();
-        }
-
-        if(!mWallet.isColdWallet()) {
-            WalletManager.initGRPC();
-        }
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         mViewPager = findViewById(R.id.Main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -69,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -79,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
@@ -88,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(int tabId) {
                 int position = 0;
 
-                switch (tabId)
-                {
+                switch (tabId) {
                     case R.id.tab_block_explorer:
                         position = 0;
                         break;
@@ -100,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                         position = 3;
                         break;
                 }
-
                 mViewPager.setCurrentItem(position);
             }
         });
@@ -131,29 +120,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            switch (position) {
-                case 0:
-                    if(mWallet.isColdWallet()) {
-                        mSimpleTextDisplayFragment = SimpleTextDisplayFragment.newInstance(getString(R.string.not_available_in_cold_wallet));
-                        fragment = mSimpleTextDisplayFragment;
-                    } else {
-                        mBlockExplorerFragment = BlockExplorerFragment.newInstance();
-                        fragment = mBlockExplorerFragment;
-                    }
-                    break;
-                case 1:
-                    if(mWallet.isColdWallet()) {
-                        mWalletColdFragment = WalletColdFragment.newInstance();
-                        fragment = mWalletColdFragment;
-                    } else {
-                        mWalletFragment = WalletFragment.newInstance();
-                        fragment = mWalletFragment;
-                    }
-                    break;
-                case 2:
-                    fragment = SettingsFragment.newInstance();
-                    break;
-            }
+            mSimpleTextDisplayFragment = SimpleTextDisplayFragment.newInstance(getString(R.string.not_available_in_cold_wallet));
+            fragment = mSimpleTextDisplayFragment;
             return fragment;
         }
 
@@ -162,6 +130,4 @@ public class MainActivity extends AppCompatActivity {
             return 3;
         }
     }
-
-
 }

@@ -1,11 +1,9 @@
 package com.eletac.tronwallet.wallet;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,24 +22,9 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.arasthel.asyncjob.AsyncJob;
-import com.eletac.tronwallet.InputFilterMinMax;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.Utils;
-import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
-import org.tron.api.GrpcAPI;
-import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
-
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class FreezeFragment extends Fragment {
 
@@ -64,7 +46,6 @@ public class FreezeFragment extends Fragment {
     private RadioButton mUnfreezeBandwidth_RadioButton;
     private RadioButton mUnfreezeEnergy_RadioButton;
 
-    private Wallet mWallet;
     private Protocol.Account mAccount;
 
     private AccountUpdatedBroadcastReceiver mAccountUpdatedBroadcastReceiver;
@@ -84,13 +65,7 @@ public class FreezeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mAccountUpdatedBroadcastReceiver = new AccountUpdatedBroadcastReceiver();
-
-        mWallet = WalletManager.getSelectedWallet();
-        if(mWallet != null) {
-            mAccount = Utils.getAccount(getContext(), mWallet.getWalletName());
-        }
     }
 
     @Override
@@ -183,102 +158,12 @@ public class FreezeFragment extends Fragment {
         mFreeze_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(mWallet == null) {
-                    new LovelyInfoDialog(getContext())
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.no_wallet_selected)
-                            .show();
-                    return;
-                }
-
-                String textBackup = mFreeze_Button.getText().toString();
-
-                mFreeze_Button.setEnabled(false);
-                mFreeze_Button.setText(R.string.loading);
-
-                AsyncJob.doInBackground(() -> {
-                    long amount = mFreezeAmount*1000000;
-                    boolean gainBandwidth = mGainBandwidth_RadioButton.isChecked();
-
-                    Protocol.Transaction transaction = null;
-                    try {
-                        transaction = WalletManager.createFreezeBalanceTransaction(WalletManager.decodeFromBase58Check(mWallet.getAddress()), amount, 3, gainBandwidth ? Contract.ResourceCode.BANDWIDTH : Contract.ResourceCode.ENERGY);
-                    } catch (Exception ignored) { }
-
-                    Protocol.Transaction finalTransaction = transaction;
-                    AsyncJob.doOnMainThread(() -> {
-                        mFreeze_Button.setEnabled(true);
-                        mFreeze_Button.setText(textBackup);
-                        if(finalTransaction != null) {
-                            if(getContext() != null)
-                                ConfirmTransactionActivity.start(getContext(), finalTransaction);
-                        }
-                        else {
-                            try {
-                                new LovelyInfoDialog(getContext())
-                                        .setTopColorRes(R.color.colorPrimary)
-                                        .setIcon(R.drawable.ic_error_white_24px)
-                                        .setTitle(R.string.failed)
-                                        .setMessage(R.string.could_not_create_transaction)
-                                        .show();
-                            } catch (Exception ignored) {
-                                // Cant show dialog, activity may gone while doing background work
-                            }
-                        }
-                    });
-                });
             }
         });
 
         mUnfreeze_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(mWallet == null) {
-                    new LovelyInfoDialog(getContext())
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.no_wallet_selected)
-                            .show();
-                    return;
-                }
-
-                String textBackup = mUnfreeze_Button.getText().toString();
-                boolean unfreezeForBandwidth = mUnfreezeBandwidth_RadioButton.isChecked();
-
-                mUnfreeze_Button.setEnabled(false);
-                mUnfreeze_Button.setText(R.string.loading);
-
-                AsyncJob.doInBackground(() -> {
-                    Protocol.Transaction transaction = null;
-                    try {
-                        transaction = WalletManager.createUnfreezeBalanceTransaction(WalletManager.decodeFromBase58Check(mWallet.getAddress()), unfreezeForBandwidth ? Contract.ResourceCode.BANDWIDTH : Contract.ResourceCode.ENERGY);
-                    } catch (Exception ignored) { }
-
-                    Protocol.Transaction finalTransaction = transaction;
-                    AsyncJob.doOnMainThread(() -> {
-                        mUnfreeze_Button.setEnabled(true);
-                        mUnfreeze_Button.setText(textBackup);
-                        if(finalTransaction != null)
-                            ConfirmTransactionActivity.start(getContext(), finalTransaction);
-                        else {
-                            try {
-                            new LovelyInfoDialog(getContext())
-                                    .setTopColorRes(R.color.colorPrimary)
-                                    .setIcon(R.drawable.ic_error_white_24px)
-                                    .setTitle(R.string.failed)
-                                    .setMessage(R.string.could_not_create_transaction)
-                                    .show();
-                            } catch (Exception ignored) {
-                                // Cant show dialog, activity may gone while doing background work
-                            }
-                        }
-                    });
-                });
             }
         });
 
@@ -294,72 +179,10 @@ public class FreezeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mWallet = WalletManager.getSelectedWallet();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mAccountUpdatedBroadcastReceiver, new IntentFilter(AccountUpdater.ACCOUNT_UPDATED));
     }
 
     private void updateUI() {
-        mUpdatingUI = true;
-        if(mWallet != null && mAccount != null) {
-            mFreezeAmount_EditText.setFilters(new InputFilter[]{ new InputFilterMinMax(0, mAccount.getBalance()/1000000)});
-            mFreezeAmount_SeekBar.setMax((int)(mAccount.getBalance()/1000000L));
-
-            GrpcAPI.AccountNetMessage accountNetMessage = Utils.getAccountNet(getContext(), mWallet.getWalletName());
-            GrpcAPI.AccountResourceMessage accountResMessage = Utils.getAccountRes(getContext(), mWallet.getWalletName());
-
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-
-            long freezed = 0;
-            long unfreezable = 0;
-            long expire = 0;
-            for (Protocol.Account.Frozen frozen : mAccount.getFrozenList()) {
-                freezed += frozen.getFrozenBalance();
-                if (frozen.getExpireTime() > expire)
-                    expire = frozen.getExpireTime();
-                if (frozen.getExpireTime() <= System.currentTimeMillis()) {
-                    unfreezable += frozen.getFrozenBalance();
-                }
-            }
-
-            long bandwidth = accountNetMessage.getNetLimit() + accountNetMessage.getFreeNetLimit();
-            long bandwidthUsed = accountNetMessage.getNetUsed() + accountNetMessage.getFreeNetUsed();
-
-            long energy = accountResMessage.getEnergyLimit();
-            long energyUsed= accountResMessage.getEnergyUsed();
-
-            mFrozenNow_TextView.setText(numberFormat.format(freezed / 1000000));
-            mVotesNow_TextView.setText(numberFormat.format(freezed / 1000000));
-            mBandwidthNow_TextView.setText(
-                    numberFormat.format(bandwidthUsed)
-                            + " / " +
-                            numberFormat.format(bandwidth)
-                            + " ➡ " +
-                            numberFormat.format(bandwidth - bandwidthUsed)
-            );
-            mEnergyNow_TextView.setText(
-                    numberFormat.format(energyUsed)
-                            + " / " +
-                            numberFormat.format(energy)
-                            + " ➡ " +
-                            numberFormat.format(energy - energyUsed)
-            );
-            mExpires_TextView.setText(expire == 0 ? "-" : DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(new Date(expire)));
-            if(mUnfreezeBandwidth_RadioButton.isChecked()) {
-                mUnfreeze_Button.setText(String.format(Locale.US, "%s (%d)", getString(R.string.unfreeze), unfreezable / 1000000));
-                mUnfreeze_Button.setEnabled(unfreezable > 0);
-            }
-            else {
-                mUnfreeze_Button.setText((R.string.unfreeze));
-                mUnfreeze_Button.setEnabled(true);
-            }
-
-            long newFreeze = (freezed / 1000000L) + mFreezeAmount;
-            boolean gainBandwidth = mGainBandwidth_RadioButton.isChecked();
-            mEnergyWarning_TextView.setVisibility(gainBandwidth ? View.GONE : View.VISIBLE);
-            mFrozenNew_TextView.setText(numberFormat.format(gainBandwidth ? newFreeze : freezed / 1000000L));
-            mVotesNew_TextView.setText(numberFormat.format(gainBandwidth ? newFreeze : freezed / 1000000L));
-            mBandwidthNew_TextView.setText(numberFormat.format(mAccount.getNetUsage() + mFreezeAmount)); // not visible anymore
-        }
         mUpdatingUI = false;
     }
 
@@ -367,10 +190,6 @@ public class FreezeFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mWallet != null) {
-                mAccount = Utils.getAccount(context, mWallet.getWalletName());
-                updateUI();
-            }
         }
     }
 }

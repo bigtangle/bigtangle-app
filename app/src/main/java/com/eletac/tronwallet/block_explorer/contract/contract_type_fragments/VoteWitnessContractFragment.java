@@ -1,10 +1,8 @@
 package com.eletac.tronwallet.block_explorer.contract.contract_type_fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,10 +12,7 @@ import android.view.ViewGroup;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
-import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
-import com.google.protobuf.InvalidProtocolBufferException;
 
-import org.tron.common.utils.TransactionUtils;
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 
@@ -73,16 +68,11 @@ public class VoteWitnessContractFragment extends ContractFragment {
 
     @Override
     public void setContract(Protocol.Transaction.Contract contract) {
-        try {
-            mContract = TransactionUtils.unpackContract(contract, Contract.VoteWitnessContract.class);
-            updateUI();
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+        updateUI();
     }
 
     public void updateUI() {
-        if(mContract != null && getView() != null) {
+        if (mContract != null && getView() != null) {
             mVotes.clear();
             mVotes.addAll(mContract.getVotesList());
             mVoteItemListAdapter.notifyDataSetChanged();

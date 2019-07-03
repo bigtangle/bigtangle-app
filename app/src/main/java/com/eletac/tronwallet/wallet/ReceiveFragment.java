@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.wallet;
 
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -18,10 +17,6 @@ import android.widget.Toast;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
-
-import static com.eletac.tronwallet.Utils.strToQR;
 
 
 public class ReceiveFragment extends Fragment {
@@ -44,9 +39,6 @@ public class ReceiveFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Wallet wallet = WalletManager.getSelectedWallet();
-        mAddress = wallet != null ? wallet.getAddress() : "";
-        mAddressQRBitmap = strToQR(mAddress, 800,800);
     }
 
     @Override
@@ -81,7 +73,7 @@ public class ReceiveFragment extends Fragment {
             ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Address", mAddress);
             clipboard.setPrimaryClip(clip);
-            
+
             Toast.makeText(getActivity(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
         }
     }

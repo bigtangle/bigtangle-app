@@ -1,14 +1,14 @@
 package com.eletac.tronwallet;
 
-import org.tron.protos.Contract;
-
 public class Token {
+    /**
+     * token name
+     */
     private String name;
     private long amount;
     private Price price;
 
     public Token() {
-
     }
 
     public Token(String name, long amount) {

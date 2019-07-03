@@ -3,37 +3,27 @@ package com.eletac.tronwallet.wallet.confirm_transaction;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.TronWalletApplication;
-import com.eletac.tronwallet.Utils;
-import com.eletac.tronwallet.block_explorer.TransactionViewerActivity;
 import com.eletac.tronwallet.block_explorer.contract.ContractLoaderFragment;
-import com.eletac.tronwallet.database.Transaction;
-import com.eletac.tronwallet.wallet.AccountUpdater;
 import com.eletac.tronwallet.wallet.SendReceiveActivity;
 import com.eletac.tronwallet.wallet.SignTransactionActivity;
-import com.eletac.tronwallet.wallet.cold.SignedTransactionActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
@@ -41,17 +31,9 @@ import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.spongycastle.util.encoders.DecoderException;
-import org.spongycastle.util.encoders.Hex;
-import org.tron.api.GrpcAPI;
-import org.tron.common.crypto.Hash;
-import org.tron.common.utils.TransactionUtils;
 import org.tron.protos.Protocol;
-import org.tron.walletserver.Wallet;
-import org.tron.walletserver.WalletManager;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class ConfirmTransactionActivity extends AppCompatActivity {
@@ -84,11 +66,9 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     private byte[] mExtraBytes;
     private double mTRX_Cost;
 
-    private Wallet mWallet;
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == SignTransactionActivity.TRANSACTION_SIGN_REQUEST_CODE) {
+        if (resultCode == SignTransactionActivity.TRANSACTION_SIGN_REQUEST_CODE) {
             byte[] transactionData = data.getByteArrayExtra(SignTransactionActivity.TRANSACTION_SIGNED_EXTRA);
 
             try {
@@ -136,16 +116,9 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
             return;
         }
 
-        if(mTransactionUnsigned.getRawData().getContractCount() == 0) {
+        if (mTransactionUnsigned.getRawData().getContractCount() == 0) {
             Toast.makeText(this, R.string.no_valid_contract_check_input, Toast.LENGTH_LONG).show();
             //Toast.makeText(this, mTransactionUnsigned, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
-        mWallet = WalletManager.getSelectedWallet();
-        if(mWallet == null) {
-            Toast.makeText(this, R.string.no_wallet_selected, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -160,8 +133,8 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String password = mPassword_EditText.getText().toString();
 
-                if(isTransactionSigned()) {
-                    if(mTRX_Cost > 0) {
+                if (isTransactionSigned()) {
+                    if (mTRX_Cost > 0) {
 
                         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
                         numberFormat.setMaximumFractionDigits(6);
@@ -180,48 +153,10 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
                                 })
                                 .setNegativeButton(R.string.cancel, null)
                                 .show();
-                    }
-                    else {
+                    } else {
                         broadcastTransaction();
                     }
-                }
-                else if(mWallet.isWatchOnly()) {
-                    Intent intent = new Intent(ConfirmTransactionActivity.this, SignTransactionActivity.class);
-                    intent.putExtra(SignTransactionActivity.TRANSACTION_DATA_EXTRA, mTransactionBytes);
-                    startActivityForResult(intent, SignTransactionActivity.TRANSACTION_SIGN_REQUEST_CODE);
-                }
-                else if(WalletManager.checkPassword(mWallet, password)) {
-                    if(mWallet.open(password)) {
-                        mTransactionSigned = TransactionUtils.setTimestamp(mTransactionUnsigned);
-                        mTransactionSigned = TransactionUtils.sign(mTransactionSigned, mWallet.getECKey());
-
-                        // Hide Keyboard
-                        View view = ConfirmTransactionActivity.this.getCurrentFocus();
-                        if (view != null) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                        }
-
-                        if (mWallet.isColdWallet()) {
-                            Intent intent = new Intent(ConfirmTransactionActivity.this, SignedTransactionActivity.class);
-                            intent.putExtra(SignedTransactionActivity.TRANSACTION_DATA_EXTRA, mTransactionSigned.toByteArray());
-                            startActivity(intent);
-
-                            resetSign();
-                        } else {
-                            updateConfirmButton();
-                            setupBandwidth();
-                        }
-                    } else {
-                        new LovelyInfoDialog(ConfirmTransactionActivity.this)
-                                .setTopColorRes(R.color.colorPrimary)
-                                .setIcon(R.drawable.ic_error_white_24px)
-                                .setTitle(R.string.failed)
-                                .setMessage(R.string.could_not_open_wallet)
-                                .show();
-                    }
-                }
-                else {
+                } else {
                     new LovelyInfoDialog(ConfirmTransactionActivity.this)
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
@@ -245,7 +180,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mWallet = WalletManager.getSelectedWallet();
         //resetSign();
     }
 
@@ -253,7 +187,7 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if ( id == android.R.id.home ) {
+        if (id == android.R.id.home) {
             finish();
             return true;
         }
@@ -270,59 +204,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
 
         mConfirm_Button.setEnabled(false);
         AsyncJob.doInBackground(() -> {
-            final boolean sent = WalletManager.broadcastTransaction(mTransactionSigned);
-
-            if(sent) {
-                Transaction dbTransaction = new Transaction();
-                dbTransaction.senderAddress = mWallet.getAddress();
-                dbTransaction.transaction = mTransactionSigned;
-
-                logTransactionSent(mTransactionSigned);
-
-                TronWalletApplication.getDatabase().transactionDao().insert(dbTransaction);
-            }
-            AsyncJob.doOnMainThread(() -> {
-                progressDialog.dismiss();
-
-                AccountUpdater.singleShot(0);
-                Protocol.Transaction transactionBackup = mTransactionSigned;
-                LovelyStandardDialog dialog = new LovelyStandardDialog(ConfirmTransactionActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setButtonsColor(Color.WHITE)
-                        .setIcon(R.drawable.ic_info_white_24px)
-                        .setTitle(sent ? R.string.sent_successfully : R.string.sending_failed)
-                        .setPositiveButton(R.string.ok, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(sent) {
-                                    Intent intent = new Intent(ConfirmTransactionActivity.this, TransactionViewerActivity.class);
-                                    intent.putExtra(TransactionViewerActivity.TRANSACTION_DATA, transactionBackup.toByteArray());
-                                    startActivity(intent);
-                                }
-                                finish();
-                            }
-                        });
-                if(!sent) {
-                    dialog.setMessage(getString(R.string.try_later));
-                } else {
-                    dialog.setMessage(R.string.view_transaction_question);
-                    dialog.setNegativeButton(R.string.no, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    });
-
-                    Intent transactionSentIntent = new Intent(TRANSACTION_SENT);
-                    LocalBroadcastManager.getInstance(ConfirmTransactionActivity.this).sendBroadcast(transactionSentIntent);
-                }
-                dialog.show();
-
-                mConfirm_Button.setEnabled(true);
-                mTransactionSigned = null;
-                updateConfirmButton();
-                setupBandwidth();
-            });
         });
     }
 
@@ -334,59 +215,13 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     }
 
     private void setupBandwidth() {
-        if(isTransactionSigned()) {
-            mBandwidth_CardView.setVisibility(mWallet.isColdWallet() ? View.GONE : View.VISIBLE);
-
-            GrpcAPI.AccountNetMessage accountNetMessage = Utils.getAccountNet(this, mWallet.getWalletName());
-            long bandwidthNormal = accountNetMessage.getNetLimit() - accountNetMessage.getNetUsed();
-            long bandwidthFree = accountNetMessage.getFreeNetLimit() - accountNetMessage.getFreeNetUsed();
-
-            long bandwidth = accountNetMessage.getNetLimit() + accountNetMessage.getFreeNetLimit();
-            long bandwidthUsed = accountNetMessage.getNetUsed() + accountNetMessage.getFreeNetUsed();
-
-            long currentBandwidth = bandwidth - bandwidthUsed;
-            long bandwidthCost = mTransactionSigned.getSerializedSize();
-            long newBandwidth = currentBandwidth - bandwidthCost;
-
-            boolean enoughBandwidth = bandwidthNormal >= bandwidthCost || bandwidthFree >= bandwidthCost;
-
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-            numberFormat.setMaximumFractionDigits(6);
-
-            mCurrentBandwidth_TextView.setText(numberFormat.format(currentBandwidth));
-            mEstBandwidthCost_TextView.setText(numberFormat.format(bandwidthCost));
-            mNewBandwidth_TextView.setText(enoughBandwidth ? numberFormat.format(newBandwidth) : "-");
-
-            if (!enoughBandwidth) {
-                mTRX_Cost = (double) bandwidthCost / 100000D;
-                mNotEnoughBandwidth_ConstraintLayout.setVisibility(View.VISIBLE);
-                mTRX_Cost_TextView.setText(String.format("%s %s", numberFormat.format(mTRX_Cost), getString(R.string.trx_symbol)));
-            } else {
-                mTRX_Cost = 0D;
-                mNotEnoughBandwidth_ConstraintLayout.setVisibility(View.GONE);
-            }
-        } else {
-            mBandwidth_CardView.setVisibility(View.GONE);
-            mCurrentBandwidth_TextView.setText("-");
-            mEstBandwidthCost_TextView.setText("-");
-            mNewBandwidth_TextView.setText("-");
-            mNotEnoughBandwidth_ConstraintLayout.setVisibility(View.GONE);
-        }
     }
 
     private void updateConfirmButton() {
-        boolean needSign = !isTransactionSigned();
-
-        mPassword_Layout.setVisibility(needSign && !mWallet.isWatchOnly() ? View.VISIBLE : View.GONE);
-
-        mConfirm_Button.setBackgroundTintList(ColorStateList.valueOf(
-                (needSign ? getResources().getColor(R.color.colorAccent) : getResources().getColor(R.color.positive))
-        ));
-        mConfirm_Button.setText(needSign ? R.string.sign : R.string.send);
     }
 
     private boolean isTransactionSigned() {
-        return mTransactionSigned != null && TransactionUtils.validTransaction(mTransactionSigned);
+        return true;
     }
 
     public Protocol.Transaction getUnsignedTransaction() {
@@ -425,31 +260,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
         return mExtraBytes;
     }
 
-    private void logTransactionSent(Protocol.Transaction transaction)
-    {
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        if(sharedPreferences.getBoolean("logged_previous_transactions", false))
-        {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            List<Transaction> dbTransactions = TronWalletApplication.getDatabase().transactionDao().getAllTransactions();
-
-            for(Transaction dbTransaction : dbTransactions) {
-                Bundle bundle = new Bundle();
-                bundle.putString("sender_address", dbTransaction.senderAddress);
-                bundle.putString("hash", Hex.toHexString(Hash.sha256(dbTransaction.transaction.getRawData().toByteArray())));
-                bundle.putString("contract", Utils.getContractName(dbTransaction.transaction.getRawData().getContract(0)));
-
-                mFirebaseAnalytics.logEvent("sent_transaction", bundle);
-            }
-            editor.putBoolean("logged_previous_transactions", true);
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putString("hash", Hex.toHexString(Hash.sha256(transaction.getRawData().toByteArray())));
-        bundle.putString("contract", Utils.getContractName(transaction.getRawData().getContract(0)));
-
-        mFirebaseAnalytics.logEvent("sent_transaction", bundle);
+    private void logTransactionSent(Protocol.Transaction transaction) {
     }
 }
