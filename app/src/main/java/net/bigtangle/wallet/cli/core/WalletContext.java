@@ -1,6 +1,4 @@
-package net.bigtangle.wallet;
-
-import android.content.Context;
+package net.bigtangle.wallet.cli.core;
 
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.kits.WalletAppKit;
@@ -15,7 +13,9 @@ public class WalletContext {
     public static NetworkParameters networkParameters = MainNetParams.get();
 
     public void initWalletData(String directory, String filename) {
-        walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
+        if (walletAppKit == null) {
+            walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
+        }
     }
 
     public void createWallet() {

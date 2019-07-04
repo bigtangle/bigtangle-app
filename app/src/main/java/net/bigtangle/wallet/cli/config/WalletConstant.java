@@ -1,4 +1,4 @@
-package net.bigtangle.wallet;
+package net.bigtangle.wallet.cli.config;
 
 public class WalletConstant {
 

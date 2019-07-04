@@ -1,10 +1,12 @@
-package net.bigtangle.wallet;
+package net.bigtangle.wallet.cli.utils;
 
 import android.content.Context;
 
+import net.bigtangle.wallet.cli.config.WalletConstant;
+
 import java.io.File;
 
-public class WalletRoutePathUtil {
+public class RoutePathUtil {
 
     public static boolean existAnyWallet(Context context) {
         File file = new File(formatFilePath(context, WalletConstant.WALLET_FILE_PREFIX));

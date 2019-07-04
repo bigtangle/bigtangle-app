@@ -1,4 +1,4 @@
-package com.eletac.tronwallet;
+package net.bigtangle.wallet.cli.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.eletac.tronwallet.ExtendedViewPager;
+import com.eletac.tronwallet.R;
+import com.eletac.tronwallet.SimpleTextDisplayFragment;
+import com.eletac.tronwallet.SwipeDirection;
 import com.eletac.tronwallet.block_explorer.BlockExplorerFragment;
 import com.eletac.tronwallet.wallet.CreateWalletActivity;
 import com.eletac.tronwallet.wallet.WalletFragment;
@@ -15,9 +19,9 @@ import com.eletac.tronwallet.wallet.cold.WalletColdFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import net.bigtangle.wallet.WalletConstant;
-import net.bigtangle.wallet.WalletContext;
-import net.bigtangle.wallet.WalletRoutePathUtil;
+import net.bigtangle.wallet.cli.config.WalletConstant;
+import net.bigtangle.wallet.cli.core.WalletContext;
+import net.bigtangle.wallet.cli.utils.RoutePathUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         // 初始化钱包工具上下文
         walletContext = WalletContext.getInstance();
-        walletContext.initWalletData(WalletRoutePathUtil.getBasePath(this), WalletConstant.WALLET_FILE_PREFIX);
+        walletContext.initWalletData(RoutePathUtil.getBasePath(this), WalletConstant.WALLET_FILE_PREFIX);
 
         // 判断当前钱包文件是否存在
-        if (!WalletRoutePathUtil.existAnyWallet(this)) {
+        if (!RoutePathUtil.existAnyWallet(this)) {
             Intent intent = new Intent(this, CreateWalletActivity.class);
             startActivity(intent);
             finish();

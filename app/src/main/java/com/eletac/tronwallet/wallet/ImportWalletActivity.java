@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.eletac.tronwallet.CaptureActivityPortrait;
-import com.eletac.tronwallet.MainActivity;
+import net.bigtangle.wallet.cli.MainActivity;
 import com.eletac.tronwallet.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
