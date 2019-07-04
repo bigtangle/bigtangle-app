@@ -24,11 +24,6 @@ import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.TransactionItemListAdapter;
 import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
 
-import org.tron.api.GrpcAPI;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class TransactionHistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mTransactions_RecyclerView;
@@ -38,7 +33,6 @@ public class TransactionHistoryFragment extends Fragment implements SwipeRefresh
     private LinearLayoutManager mLayoutManager;
     private TransactionItemListAdapter mTransactionsItemListAdapter;
 
-    private List<GrpcAPI.TransactionExtention> mTransactions;
     private TransactionSentBroadcastReceiver mTransactionSentBroadcastReceiver;
 
     public TransactionHistoryFragment() {
@@ -53,8 +47,7 @@ public class TransactionHistoryFragment extends Fragment implements SwipeRefresh
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTransactions = new ArrayList<>();
-        mTransactionsItemListAdapter = new TransactionItemListAdapter(getContext(), mTransactions);
+        mTransactionsItemListAdapter = new TransactionItemListAdapter(getContext());
         mTransactionSentBroadcastReceiver = new TransactionSentBroadcastReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTransactionSentBroadcastReceiver, new IntentFilter(ConfirmTransactionActivity.TRANSACTION_SENT));
     }

@@ -11,12 +11,7 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
 public class AccountUpdateContractFragment extends ContractFragment {
-
-    private Contract.AccountUpdateContract mContract;
 
     private TextView mFrom_TextView;
     private TextView mName_TextView;
@@ -52,13 +47,10 @@ public class AccountUpdateContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 
     public void updateUI() {
-        if(mContract != null && getView() != null) {
-            mName_TextView.setText(mContract.getAccountName().toStringUtf8());
-        }
     }
 }

@@ -24,8 +24,6 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.protos.Protocol;
-
 public class FreezeFragment extends Fragment {
 
     private TextView mFrozenNow_TextView;
@@ -45,8 +43,6 @@ public class FreezeFragment extends Fragment {
     private RadioButton mGainEnergy_RadioButton;
     private RadioButton mUnfreezeBandwidth_RadioButton;
     private RadioButton mUnfreezeEnergy_RadioButton;
-
-    private Protocol.Account mAccount;
 
     private AccountUpdatedBroadcastReceiver mAccountUpdatedBroadcastReceiver;
 

@@ -11,20 +11,11 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-
 public class ParticipateAssetIssueContractFragment extends ContractFragment {
-
-    private Contract.ParticipateAssetIssueContract mContract;
 
     private TextView mTokenTextView;
     private TextView mAmountTextView;
     private TextView mCostTextView;
-    private Contract.AssetIssueContract mAssetIssueContract;
 
     public ParticipateAssetIssueContractFragment() {
         // Required empty public constructor
@@ -58,16 +49,10 @@ public class ParticipateAssetIssueContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 
     public void updateUI() {
-        if (mContract != null && getView() != null) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-            numberFormat.setMaximumFractionDigits(6);
-            mTokenTextView.setText(mContract.getAssetName().toStringUtf8());
-            mCostTextView.setText(numberFormat.format(mContract.getAmount() / 1000000D));
-        }
     }
 }

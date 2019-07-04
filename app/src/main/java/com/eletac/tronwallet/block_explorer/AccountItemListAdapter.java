@@ -3,7 +3,6 @@ package com.eletac.tronwallet.block_explorer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +10,14 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
-import java.util.List;
-
 public class AccountItemListAdapter extends RecyclerView.Adapter<AccountItemListAdapter.AccountItemViewHolder> {
 
     private Context mContext;
-    private List<Protocol.Account> mAccounts;
-    private List<Protocol.Account> mAccountsFiltered;
 
     private boolean showFiltered;
 
-    public AccountItemListAdapter(Context context, List<Protocol.Account> accounts, List<Protocol.Account> accountsFiltered) {
+    public AccountItemListAdapter(Context context) {
         mContext = context;
-        mAccounts = accounts;
-        mAccountsFiltered = accountsFiltered;
-
         showFiltered = false;
     }
 
@@ -42,21 +31,11 @@ public class AccountItemListAdapter extends RecyclerView.Adapter<AccountItemList
 
     @Override
     public void onBindViewHolder(@NonNull AccountItemViewHolder holder, int position) {
-        if(showFiltered) {
-            holder.bind(mAccountsFiltered.get(position));
-        } else {
-            holder.bind(mAccounts.get(position));
-        }
     }
 
     @Override
     public int getItemCount() {
-        if(showFiltered) {
-            return mAccountsFiltered != null ? mAccountsFiltered.size() : 0;
-        }
-        else {
-            return mAccounts != null ? mAccounts.size() : 0;
-        }
+        return 0;
     }
 
     public class AccountItemViewHolder extends RecyclerView.ViewHolder {
@@ -79,19 +58,7 @@ public class AccountItemListAdapter extends RecyclerView.Adapter<AccountItemList
             mLastOperation_TextView = itemView.findViewById(R.id.AccountItem_last_operation_textView);
         }
 
-        public void bind(Protocol.Account account) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance();
-
-            mBalance_TextView.setText(numberFormat.format((double)account.getBalance()/1000000d));
-            mAssets_TextView.setText(numberFormat.format(account.getAssetCount()));
-
-            long totalVotes = 0;
-            for(Protocol.Vote vote : account.getVotesList()) {
-                totalVotes += vote.getVoteCount();
-            }
-            mVotes_TextView.setText(totalVotes > 0 ? String.format(mContext.getString(R.string.account_item_votes_text), numberFormat.format(totalVotes), numberFormat.format(account.getVotesCount())) : mContext.getString(R.string.none));
-
-            mLastOperation_TextView.setText(account.getLatestOprationTime() != 0 ? DateUtils.getRelativeTimeSpanString(account.getLatestOprationTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS) : mContext.getString(R.string.never));
+        public void bind() {
         }
     }
 

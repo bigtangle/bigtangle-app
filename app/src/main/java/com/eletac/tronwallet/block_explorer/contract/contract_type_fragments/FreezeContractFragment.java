@@ -11,15 +11,7 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-
 public class FreezeContractFragment extends ContractFragment {
-
-    private Contract.FreezeBalanceContract mContract;
 
     private TextView mAmountTextView;
     private TextView mDaysTextView;
@@ -55,15 +47,10 @@ public class FreezeContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 
     public void updateUI() {
-        if(mContract != null && getView() != null) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-            mAmountTextView.setText(numberFormat.format(mContract.getFrozenBalance()/1000000D));
-            mDaysTextView.setText(numberFormat.format(mContract.getFrozenDuration()));
-        }
     }
 }

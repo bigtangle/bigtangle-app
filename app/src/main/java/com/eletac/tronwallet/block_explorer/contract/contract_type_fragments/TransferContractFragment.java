@@ -11,14 +11,8 @@ import android.widget.TextView;
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
 
 public class TransferContractFragment extends ContractFragment {
-
-    private Contract.TransferContract mContract;
 
     private TextView mAmount_TextView;
     private TextView mFrom_TextView;
@@ -60,7 +54,7 @@ public class TransferContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 

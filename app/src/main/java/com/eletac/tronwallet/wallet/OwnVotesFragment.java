@@ -22,13 +22,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
 
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-
 public class OwnVotesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mWitnesses_RecyclerView;
@@ -40,11 +33,6 @@ public class OwnVotesFragment extends Fragment implements SwipeRefreshLayout.OnR
     private AccountUpdatedBroadcastReceiver mAccountUpdatedBroadcastReceiver;
     private WitnessesUpdatedBroadcastReceiver mWitnessesUpdatedBroadcastReceiver;
     private VotesUpdatedBroadcastReceiver mVotesUpdatedBroadcastReceiver;
-
-    private List<Protocol.Witness> mWitnesses;
-    private List<Protocol.Witness> mVotedWitnesses;
-
-    private Protocol.Account mAccount;
 
     private VoteActivity mVoteActivity;
 
@@ -66,10 +54,8 @@ public class OwnVotesFragment extends Fragment implements SwipeRefreshLayout.OnR
         mAccountUpdatedBroadcastReceiver = new AccountUpdatedBroadcastReceiver();
         mWitnessesUpdatedBroadcastReceiver = new WitnessesUpdatedBroadcastReceiver();
         mVotesUpdatedBroadcastReceiver = new VotesUpdatedBroadcastReceiver();
-        mWitnesses = BlockExplorerUpdater.getWitnesses();
-        mVotedWitnesses = new ArrayList<>();
 
-        mWitnessItemListAdapter = new WitnessItemListAdapter(getContext(), mWitnesses, mVotedWitnesses, true, mVoteActivity.getVoteWitnesses());
+        mWitnessItemListAdapter = new WitnessItemListAdapter(getContext(), true, mVoteActivity.getVoteWitnesses());
         mWitnessItemListAdapter.setShowFiltered(true);
 
         loadVotedWitnesses();
@@ -136,24 +122,6 @@ public class OwnVotesFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void loadVotedWitnesses() {
-        mVotedWitnesses.clear();
-        for(Protocol.Vote vote : mAccount.getVotesList()) {
-            try {
-                for (Protocol.Witness witness : mWitnesses) {
-                    try {
-                        if (Arrays.equals(vote.getVoteAddress().toByteArray(), witness.getAddress().toByteArray())) {
-                            mVotedWitnesses.add(witness);
-                            break;
-                        }
-                    } catch (NullPointerException ignore) {
-                    }
-                }
-            }
-            catch (ConcurrentModificationException e) {
-                e.printStackTrace();
-            }
-        }
-
         mWitnessItemListAdapter.notifyDataSetChanged();
     }
 

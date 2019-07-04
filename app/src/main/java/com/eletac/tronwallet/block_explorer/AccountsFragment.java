@@ -29,12 +29,6 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mAccounts_RecyclerView;
@@ -164,8 +158,6 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void updateFilteredAccounts() {
-        mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_accounts), mAccountItemListAdapter.isShowFiltered() ? mAccountsFiltered.size() : mAccounts.size()));
-        mAccountItemListAdapter.notifyDataSetChanged();
     }
 
     private class AccountsUpdatedBroadcastReceiver extends BroadcastReceiver {

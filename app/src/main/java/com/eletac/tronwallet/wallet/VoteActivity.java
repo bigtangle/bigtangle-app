@@ -21,15 +21,9 @@ import android.widget.TextView;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.wallet.confirm_transaction.ConfirmTransactionActivity;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Map;
 
 public class VoteActivity extends AppCompatActivity {
 
@@ -44,7 +38,6 @@ public class VoteActivity extends AppCompatActivity {
     private HashMap<String, String> mVoteWitnesses;
     private VotesUpdatedBroadcastReceiver mVotesUpdatedBroadcastReceiver;
 
-    private Protocol.Account mAccount;
     private AccountUpdatedBroadcastReceiver mAccountUpdatedBroadcastReceiver;
 
     private boolean mLoadVotesOnNextAccountUpdate;
@@ -109,31 +102,7 @@ public class VoteActivity extends AppCompatActivity {
                 mSubmit_Button.setEnabled(false);
                 mSubmit_Button.setText(R.string.loading);
 
-                AsyncJob.doInBackground(() -> {
-                    Protocol.Transaction transaction = null;
-
-
-                    Protocol.Transaction finalTransaction = transaction;
-                    AsyncJob.doOnMainThread(() -> {
-                        mSubmit_Button.setEnabled(true);
-                        mSubmit_Button.setText(textBackup);
-                        if(finalTransaction != null) {
-                            ConfirmTransactionActivity.start(VoteActivity.this, finalTransaction);
-                        }
-                        else {
-                            try {
-                                new LovelyInfoDialog(VoteActivity.this)
-                                        .setTopColorRes(R.color.colorPrimary)
-                                        .setIcon(R.drawable.ic_error_white_24px)
-                                        .setTitle(R.string.failed)
-                                        .setMessage(R.string.could_not_create_transaction)
-                                        .show();
-                            } catch (Exception ignored) {
-                                // Cant show dialog, activity may gone while doing background work
-                            }
-                        }
-                    });
-                });
+                AsyncJob.doInBackground(() -> {});
             }
         });
 
@@ -176,27 +145,9 @@ public class VoteActivity extends AppCompatActivity {
     }
 
     private void loadVotes() {
-        if(mAccount != null) {
-            mLoadVotesOnNextAccountUpdate = false;
-        }
     }
 
     private void updateRemain() {
-        if(mAccount != null) {
-            int totalVotes = 0;
-            for (Map.Entry<String, String> entry : mVoteWitnesses.entrySet()) {
-                totalVotes += Integer.parseInt(entry.getValue());
-            }
-            NumberFormat numberFormat = NumberFormat.getIntegerInstance();
-
-            mFrozen = 0;
-            for (Protocol.Account.Frozen frozen : mAccount.getFrozenList()) {
-                mFrozen += frozen.getFrozenBalance();
-            }
-
-            long balance = mFrozen / 1000000;
-            mRemaining_TextView.setText(String.format("%s / %s", numberFormat.format(balance - totalVotes), numberFormat.format(balance)));
-        }
     }
 
     public HashMap<String, String> getVoteWitnesses() {

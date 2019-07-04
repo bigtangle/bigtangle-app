@@ -23,11 +23,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
 
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class VoteWitnessesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private RecyclerView mWitnesses_RecyclerView;
@@ -39,9 +34,6 @@ public class VoteWitnessesFragment extends Fragment implements SwipeRefreshLayou
 
     private WitnessesUpdatedBroadcastReceiver mWitnessesUpdatedBroadcastReceiver;
     private VotesUpdatedBroadcastReceiver mVotesUpdatedBroadcastReceiver;
-
-    private List<Protocol.Witness> mWitnesses;
-    private List<Protocol.Witness> mWitnessesFiltered;
 
     private VoteActivity mVoteActivity;
 
@@ -62,10 +54,8 @@ public class VoteWitnessesFragment extends Fragment implements SwipeRefreshLayou
 
         mWitnessesUpdatedBroadcastReceiver = new WitnessesUpdatedBroadcastReceiver();
         mVotesUpdatedBroadcastReceiver = new VotesUpdatedBroadcastReceiver();
-        mWitnesses = BlockExplorerUpdater.getWitnesses();
-        mWitnessesFiltered = new ArrayList<>();
 
-        mWitnessItemListAdapter = new WitnessItemListAdapter(getContext(), mWitnesses, mWitnessesFiltered,true, mVoteActivity.getVoteWitnesses());
+        mWitnessItemListAdapter = new WitnessItemListAdapter(getContext(),true, mVoteActivity.getVoteWitnesses());
         mWitnessItemListAdapter.setShowFiltered(true);
     }
 
@@ -137,18 +127,10 @@ public class VoteWitnessesFragment extends Fragment implements SwipeRefreshLayou
     }
 
     private void updateFilteredWitnesses() {
-        mWitnessesFiltered.clear();
-        for(Protocol.Witness witness : new ArrayList<>(mWitnesses)) {
-            try {
-                if (checkFilterConditions(witness)) {
-                    mWitnessesFiltered.add(witness);
-                }
-            }  catch (NullPointerException ignore) {}
-        }
         mWitnessItemListAdapter.notifyDataSetChanged();
     }
 
-    private boolean checkFilterConditions(Protocol.Witness witness) {
+    private boolean checkFilterConditions() {
         return true;
     }
 

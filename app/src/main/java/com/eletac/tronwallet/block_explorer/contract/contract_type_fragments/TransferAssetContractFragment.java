@@ -12,15 +12,7 @@ import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-
 public class TransferAssetContractFragment extends ContractFragment {
-
-    private Contract.TransferAssetContract mContract;
 
     private TextView mAmount_TextView;
     private TextView mSymbol_TextView;
@@ -64,21 +56,11 @@ public class TransferAssetContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 
     public void updateUI() {
-        if(mContract != null && getView() != null) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-            numberFormat.setMaximumFractionDigits(6);
-            mAmount_TextView.setText(numberFormat.format(mContract.getAmount()));
-            mSymbol_TextView.setText(mContract.getAssetName().toStringUtf8());
-
-            mFromName_TextView.setVisibility(View.GONE);
-            mToName_TextView.setVisibility(View.GONE);
-
-        }
     }
 
     private void loadAccountNames() {

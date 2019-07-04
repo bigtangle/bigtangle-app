@@ -12,17 +12,7 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class AssetIssueContractFragment extends ContractFragment {
-
-    private Contract.AssetIssueContract mContract;
 
     private EditText mName_EditText;
     private EditText mAbbr_EditText;
@@ -86,39 +76,10 @@ public class AssetIssueContractFragment extends ContractFragment {
         updateUI();
     }
 
-    public void updateUI() {
-        if (mContract != null && getView() != null) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-            numberFormat.setMaximumFractionDigits(6);
-
-            mName_EditText.setText(mContract.getName().toStringUtf8());
-            mAbbr_EditText.setText(mContract.getAbbr().toStringUtf8());
-            mSupply_EditText.setText(numberFormat.format(mContract.getTotalSupply()));
-            mURL_EditText.setText(mContract.getUrl().toStringUtf8());
-            mDesc_EditText.setText(mContract.getDescription().toStringUtf8());
-            mExchangeTrxAmount_EditText.setText(numberFormat.format(mContract.getTrxNum() / (double) 1000000));
-            mExchangeTokenAmount_EditText.setText(numberFormat.format(mContract.getNum()));
-            mTokenPrice_TextView.setText(numberFormat.format((mContract.getTrxNum() / (double) mContract.getNum()) / (double) 1000000));
-
-            if (mContract.getFrozenSupplyCount() > 0) {
-                Contract.AssetIssueContract.FrozenSupply frozenSupply = mContract.getFrozenSupply(0);
-                mFrozenAmount_EditText.setText(numberFormat.format(frozenSupply.getFrozenAmount()));
-                mFrozenDays_EditText.setText(numberFormat.format(frozenSupply.getFrozenDays()));
-            }
-            mTotalBandwidth_EditText.setText(numberFormat.format(mContract.getFreeAssetNetLimit()));
-            mBandwidthPerAccount_EditText.setText(numberFormat.format(mContract.getPublicFreeAssetNetLimit()));
-
-            DateFormat dateTimeInstance = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US);
-            Date start = new Date(mContract.getStartTime());
-            Date end = new Date(mContract.getEndTime());
-
-            mStart_TextView.setText(dateTimeInstance.format(start));
-            mEnd_TextView.setText(dateTimeInstance.format(end));
-        }
-    }
+    public void updateUI() {}
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 }

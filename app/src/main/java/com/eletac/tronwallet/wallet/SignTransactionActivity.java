@@ -1,10 +1,9 @@
 package com.eletac.tronwallet.wallet;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -16,11 +15,7 @@ import com.eletac.tronwallet.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.spongycastle.util.encoders.DecoderException;
 import org.spongycastle.util.encoders.Hex;
-import org.tron.protos.Protocol;
-
-import java.io.IOException;
 
 public class SignTransactionActivity extends AppCompatActivity {
 
@@ -34,8 +29,6 @@ public class SignTransactionActivity extends AppCompatActivity {
 
     private ConstraintLayout mColdWalletQR_ConstraintLayout;
     private ConstraintLayout mScanColdWalletQR_ConstraintLayout;
-
-    private Protocol.Transaction mTransactionUnsigned;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -77,15 +70,6 @@ public class SignTransactionActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            try {
-                byte[] transactionData = extras.getByteArray(TRANSACTION_DATA_EXTRA);
-                mTransactionUnsigned = Protocol.Transaction.parseFrom(transactionData);
-
-                if(transactionData != null) {
-                }
-            } catch (DecoderException | IOException e) {
-                e.printStackTrace();
-            }
         }
 
         mSignedTransaction_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

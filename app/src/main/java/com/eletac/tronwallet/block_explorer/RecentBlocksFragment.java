@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +19,6 @@ import android.view.ViewGroup;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 
-import org.tron.api.GrpcAPI;
-
-import java.util.List;
-
 public class RecentBlocksFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mBlocks_RecyclerView;
@@ -33,8 +28,6 @@ public class RecentBlocksFragment extends Fragment implements SwipeRefreshLayout
     private BlockItemListAdapter mBlockItemListAdapter;
 
     private BlocksUpdatedBroadcastReceiver mBlocksUpdatedBroadcastReceiver;
-
-    private List<GrpcAPI.BlockExtention> mBlocks;
 
     public RecentBlocksFragment() {
         // Required empty public constructor
@@ -50,8 +43,7 @@ public class RecentBlocksFragment extends Fragment implements SwipeRefreshLayout
         super.onCreate(savedInstanceState);
 
         mBlocksUpdatedBroadcastReceiver = new BlocksUpdatedBroadcastReceiver();
-        mBlocks = BlockExplorerUpdater.getBlocks();
-        mBlockItemListAdapter = new BlockItemListAdapter(getContext(), mBlocks);
+        mBlockItemListAdapter = new BlockItemListAdapter(getContext());
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mBlocksUpdatedBroadcastReceiver, new IntentFilter(BlockExplorerUpdater.BLOCKCHAIN_UPDATED));
     }
@@ -101,7 +93,7 @@ public class RecentBlocksFragment extends Fragment implements SwipeRefreshLayout
 
             mBlockItemListAdapter.notifyDataSetChanged();
 
-            mBlocks_RecyclerView.scrollToPosition(mBlocks.size()-1);
+            mBlocks_RecyclerView.scrollToPosition(1);
 
             mSwipeRefreshLayout.setRefreshing(false);
         }

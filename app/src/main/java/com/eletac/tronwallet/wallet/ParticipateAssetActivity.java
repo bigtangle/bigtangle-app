@@ -1,28 +1,15 @@
 package com.eletac.tronwallet.wallet;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.arasthel.asyncjob.AsyncJob;
-import com.eletac.tronwallet.InputFilterMinMax;
 import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.block_explorer.BlockExplorerUpdater;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class ParticipateAssetActivity extends AppCompatActivity {
@@ -42,8 +29,6 @@ public class ParticipateAssetActivity extends AppCompatActivity {
     private TextView mCost_TextView;
     private Button mSpend_Button;
 
-    private Contract.AssetIssueContract mAsset;
-    private Protocol.Account mAccount;
     private double mTokenPrice;
 
     private boolean mUpdatingAmount = false;
@@ -71,112 +56,10 @@ public class ParticipateAssetActivity extends AppCompatActivity {
         if (extras != null) {
             String assetName = extras.getString(ASSET_NAME_EXTRA);
             if (assetName != null && !assetName.isEmpty()) {
-                for (Contract.AssetIssueContract asset : BlockExplorerUpdater.getTokens()) {
-                    if (asset.getName().toStringUtf8().equals(assetName)) {
-                        mAsset = asset;
-                        break;
-                    }
-                }
             } else {
                 finish();
                 return;
             }
-        }
-
-        if (mAsset != null) {
-
-            mName_TextView.setText(mAsset.getName().toStringUtf8());
-            mDescription_TextView.setText(mAsset.getDescription().toStringUtf8());
-            mSupply_TextView.setText(NumberFormat.getInstance(Locale.US).format(mAsset.getTotalSupply()));
-            mStart_TextView.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(new Date(mAsset.getStartTime())));
-            mEnd_TextView.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(new Date(mAsset.getEndTime())));
-
-            mSpend_Button.setEnabled(false);
-            NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
-            numberFormat.setMaximumFractionDigits(6);
-
-            mTokenPrice = mAsset.getTrxNum() / (double) (mAsset.getNum());
-            mPrice_TextView.setText(numberFormat.format(mTokenPrice / 1000000D));
-
-            long max = (long) (mAccount.getBalance() / mTokenPrice);
-            max = max > mAsset.getTotalSupply() ? mAsset.getTotalSupply() : max;
-            mAmount_EditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, max)});
-            mAmount_SeekBar.setMax((int) max);
-
-            mAmount_EditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (!mUpdatingAmount) {
-                        mUpdatingAmount = true;
-                        if (mAmount_EditText.getText().length() > 0) {
-                            mAmount = Long.valueOf(mAmount_EditText.getText().toString());
-                            updateCost();
-                            mSpend_Button.setEnabled(true);
-                        } else {
-                            mAmount = 0;
-                            mCost_TextView.setText("0");
-                            mSpend_Button.setEnabled(false);
-                        }
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            mAmount_SeekBar.setProgress((int) mAmount, true);
-                        } else {
-                            mAmount_SeekBar.setProgress((int) mAmount);
-                        }
-                        mUpdatingAmount = false;
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            mAmount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (!mUpdatingAmount) {
-                        mUpdatingAmount = true;
-                        mAmount = progress;
-                        mAmount_EditText.setText(String.valueOf(mAmount));
-                        mSpend_Button.setEnabled(mAmount > 0);
-                        updateCost();
-                        mUpdatingAmount = false;
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
-
-            mSpend_Button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    long amount = mAmount;
-                    long finalAmount = (long) (amount * mTokenPrice);
-
-                    String textBackup = mSpend_Button.getText().toString();
-                    mSpend_Button.setEnabled(false);
-                    mSpend_Button.setText(R.string.loading);
-
-                    AsyncJob.doInBackground(() -> {
-                    });
-                }
-            });
-        } else {
-            finish();
         }
     }
 

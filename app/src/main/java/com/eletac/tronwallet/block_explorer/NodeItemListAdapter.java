@@ -10,22 +10,14 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.api.GrpcAPI;
-
-import java.util.List;
-
 public class NodeItemListAdapter extends RecyclerView.Adapter<NodeItemListAdapter.NodeItemViewHolder> {
 
     private Context mContext;
-    private List<GrpcAPI.Node> mNodes;
-    private List<GrpcAPI.Node> mNodesFiltered;
 
     private boolean showFiltered;
 
-    public NodeItemListAdapter(Context context, List<GrpcAPI.Node> nodes, List<GrpcAPI.Node> nodesFiltered) {
+    public NodeItemListAdapter(Context context) {
         mContext = context;
-        mNodes = nodes;
-        mNodesFiltered = nodesFiltered;
     }
 
     @NonNull
@@ -38,21 +30,11 @@ public class NodeItemListAdapter extends RecyclerView.Adapter<NodeItemListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NodeItemViewHolder holder, int position) {
-        if(showFiltered) {
-            holder.bind(mNodesFiltered.get(position));
-        } else {
-            holder.bind(mNodes.get(position));
-        }
     }
 
     @Override
     public int getItemCount() {
-        if(showFiltered) {
-            return mNodesFiltered != null ? mNodesFiltered.size() : 0;
-        }
-        else {
-            return mNodes != null ? mNodes.size() : 0;
-        }
+        return 0;
     }
 
     public class NodeItemViewHolder extends RecyclerView.ViewHolder {
@@ -69,7 +51,7 @@ public class NodeItemListAdapter extends RecyclerView.Adapter<NodeItemListAdapte
             mPort_TextView = itemView.findViewById(R.id.Node_port_textView);
         }
 
-        public void bind(GrpcAPI.Node node) {
+        public void bind() {
         }
     }
 

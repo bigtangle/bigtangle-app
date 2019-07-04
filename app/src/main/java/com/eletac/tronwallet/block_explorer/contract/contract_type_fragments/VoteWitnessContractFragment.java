@@ -13,19 +13,10 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.block_explorer.contract.ContractFragment;
 
-import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class VoteWitnessContractFragment extends ContractFragment {
-
-    private Contract.VoteWitnessContract mContract;
 
     private RecyclerView mWitnesses_RecyclerView;
     private VoteItemListAdapter mVoteItemListAdapter;
-    private List<Contract.VoteWitnessContract.Vote> mVotes;
     private LinearLayoutManager mLayoutManager;
 
     public VoteWitnessContractFragment() {
@@ -41,8 +32,7 @@ public class VoteWitnessContractFragment extends ContractFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mVotes = new ArrayList<>();
-        mVoteItemListAdapter = new VoteItemListAdapter(getContext(), mVotes);
+        mVoteItemListAdapter = new VoteItemListAdapter(getContext());
     }
 
     @Override
@@ -67,15 +57,11 @@ public class VoteWitnessContractFragment extends ContractFragment {
     }
 
     @Override
-    public void setContract(Protocol.Transaction.Contract contract) {
+    public void setContract() {
         updateUI();
     }
 
     public void updateUI() {
-        if (mContract != null && getView() != null) {
-            mVotes.clear();
-            mVotes.addAll(mContract.getVotesList());
-            mVoteItemListAdapter.notifyDataSetChanged();
-        }
+        mVoteItemListAdapter.notifyDataSetChanged();
     }
 }

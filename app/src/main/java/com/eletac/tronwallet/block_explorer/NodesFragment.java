@@ -29,10 +29,6 @@ import android.widget.TextView;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 
-import org.tron.api.GrpcAPI;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -49,9 +45,6 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private NodesUpdatedBroadcastReceiver mNodesUpdatedBroadcastReceiver;
 
-    private List<GrpcAPI.Node> mNodes;
-    private List<GrpcAPI.Node> mNodesFiltered;
-
     private int mSearchCardViewInitialHeight;
 
     public NodesFragment() {
@@ -66,12 +59,7 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mNodesUpdatedBroadcastReceiver = new NodesUpdatedBroadcastReceiver();
-        mNodes = BlockExplorerUpdater.getNodes();
-        mNodesFiltered = new ArrayList<>();
-
-        mNodesItemListAdapter = new NodeItemListAdapter(getContext(), mNodes, mNodesFiltered);
+        mNodesItemListAdapter = new NodeItemListAdapter(getContext());
     }
 
     @Override
@@ -128,7 +116,6 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 animator.start();
 
                 mNodesItemListAdapter.setShowFiltered(isChecked);
-                mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_nodes), mNodesItemListAdapter.isShowFiltered() ? mNodesFiltered.size() : mNodes.size()));
                 mNodesItemListAdapter.notifyDataSetChanged();
             }
         });
@@ -162,13 +149,6 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mNodesUpdatedBroadcastReceiver, new IntentFilter(BlockExplorerUpdater.NODES_UPDATED));
-        if(BlockExplorerUpdater.getNodes().isEmpty()) {
-            onRefresh();
-        }
-        else if(!BlockExplorerUpdater.isRunning(BlockExplorerUpdater.UpdateTask.Nodes) && !BlockExplorerUpdater.isSingleShotting(BlockExplorerUpdater.UpdateTask.Nodes) ) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
     }
 
     @Override
@@ -178,19 +158,9 @@ public class NodesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private void updateFilteredNodes() {
-        mNodesFiltered.clear();
-        for(GrpcAPI.Node node : mNodes) {
-            try {
-                if (checkFilterConditions(node)) {
-                    mNodesFiltered.add(node);
-                }
-            }  catch (NullPointerException ignore) {}
-        }
-        mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_nodes), mNodesItemListAdapter.isShowFiltered() ? mNodesFiltered.size() : mNodes.size()));
-        mNodesItemListAdapter.notifyDataSetChanged();
     }
 
-    private boolean checkFilterConditions(GrpcAPI.Node node) {
+    private boolean checkFilterConditions() {
         return true;
     }
 

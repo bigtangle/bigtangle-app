@@ -10,20 +10,12 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.protos.Contract;
-
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-
 public class VoteItemListAdapter extends RecyclerView.Adapter<VoteItemListAdapter.VoteItemViewHolder> {
 
     private Context mContext;
-    private List<Contract.VoteWitnessContract.Vote> mVotes;
 
-    public VoteItemListAdapter(Context context, List<Contract.VoteWitnessContract.Vote> votes) {
+    public VoteItemListAdapter(Context context) {
         mContext = context;
-        mVotes = votes;
     }
 
     @NonNull
@@ -36,12 +28,12 @@ public class VoteItemListAdapter extends RecyclerView.Adapter<VoteItemListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull VoteItemViewHolder holder, int position) {
-        holder.bind(mVotes.get(position));
+        holder.bind();
     }
 
     @Override
     public int getItemCount() {
-        return mVotes != null ? mVotes.size() : 0;
+        return 0;
     }
 
 
@@ -59,10 +51,7 @@ public class VoteItemListAdapter extends RecyclerView.Adapter<VoteItemListAdapte
             mAmount_TextView = itemView.findViewById(R.id.Vote_amount_textView);
         }
 
-        public void bind(Contract.VoteWitnessContract.Vote vote) {
-            NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
-
-            mAmount_TextView.setText(numberFormat.format(vote.getVoteCount()));
+        public void bind() {
         }
     }
 }

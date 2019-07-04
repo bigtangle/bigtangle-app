@@ -1,12 +1,8 @@
 package com.eletac.tronwallet.wallet.confirm_transaction;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -25,13 +21,11 @@ import com.eletac.tronwallet.block_explorer.contract.ContractLoaderFragment;
 import com.eletac.tronwallet.wallet.SendReceiveActivity;
 import com.eletac.tronwallet.wallet.SignTransactionActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.spongycastle.util.encoders.DecoderException;
-import org.tron.protos.Protocol;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -59,9 +53,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     private Button mConfirm_Button;
     private CardView mBandwidth_CardView;
 
-    private Protocol.Transaction mTransactionUnsigned;
-    private Protocol.Transaction mTransactionSigned;
-
     private byte[] mTransactionBytes;
     private byte[] mExtraBytes;
     private double mTRX_Cost;
@@ -70,12 +61,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == SignTransactionActivity.TRANSACTION_SIGN_REQUEST_CODE) {
             byte[] transactionData = data.getByteArrayExtra(SignTransactionActivity.TRANSACTION_SIGNED_EXTRA);
-
-            try {
-                mTransactionSigned = Protocol.Transaction.parseFrom(transactionData);
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
 
             updateConfirmButton();
             setupBandwidth();
@@ -109,24 +94,16 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
         try {
             mTransactionBytes = extras.getByteArray(TRANSACTION_DATA_EXTRA);
             mExtraBytes = extras.getByteArray(TRANSACTION_DATA2_EXTRA);
-            mTransactionUnsigned = Protocol.Transaction.parseFrom(mTransactionBytes);
-        } catch (InvalidProtocolBufferException | DecoderException | NullPointerException ignored) {
+        } catch ( DecoderException | NullPointerException ignored) {
             Toast.makeText(this, R.string.could_not_parse_transaction, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
 
-        if (mTransactionUnsigned.getRawData().getContractCount() == 0) {
-            Toast.makeText(this, R.string.no_valid_contract_check_input, Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, mTransactionUnsigned, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
 
         setupBandwidth();
         updateConfirmButton();
 
-        mContract_Fragment.setContract(mTransactionUnsigned.getRawData().getContract(0));
 
         mConfirm_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +186,6 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
 
     private void resetSign() {
         mPassword_EditText.setText("");
-        mTransactionSigned = null;
         updateConfirmButton();
         setupBandwidth();
     }
@@ -222,44 +198,5 @@ public class ConfirmTransactionActivity extends AppCompatActivity {
 
     private boolean isTransactionSigned() {
         return true;
-    }
-
-    public Protocol.Transaction getUnsignedTransaction() {
-        return mTransactionUnsigned;
-    }
-
-    public static boolean start(@NonNull Context context, @NonNull Protocol.Transaction transaction) {
-        return start(context, transaction, null);
-    }
-
-    public static boolean start(@NonNull Context context, @NonNull Protocol.Transaction transaction, @Nullable byte[] data) {
-        Intent intent = new Intent(context, ConfirmTransactionActivity.class);
-
-        intent.putExtra(ConfirmTransactionActivity.TRANSACTION_DATA_EXTRA, transaction.toByteArray());// Utils.transactionToByteArray(transaction));
-        intent.putExtra(TRANSACTION_DATA2_EXTRA, data);
-
-        context.startActivity(intent);
-        return true;
-    }
-
-    public static boolean startForResult(@NonNull Activity context, @NonNull Protocol.Transaction transaction) {
-        return start(context, transaction, null);
-    }
-
-    public static boolean startForResult(@NonNull Activity activity, @NonNull Protocol.Transaction transaction, @Nullable byte[] data) {
-        Intent intent = new Intent(activity, ConfirmTransactionActivity.class);
-
-        intent.putExtra(ConfirmTransactionActivity.TRANSACTION_DATA_EXTRA, transaction.toByteArray());// Utils.transactionToByteArray(transaction));
-        intent.putExtra(TRANSACTION_DATA2_EXTRA, data);
-
-        activity.startActivityForResult(intent, TRANSACTION_FINISHED);
-        return true;
-    }
-
-    public byte[] getExtraBytes() {
-        return mExtraBytes;
-    }
-
-    private void logTransactionSent(Protocol.Transaction transaction) {
     }
 }

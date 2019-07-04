@@ -1,10 +1,8 @@
 package com.eletac.tronwallet.block_explorer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,32 +11,18 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
 
-import org.tron.api.GrpcAPI;
-import org.tron.protos.Protocol;
-
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TransactionItemListAdapter extends RecyclerView.Adapter<TransactionItemListAdapter.TransactionItemViewHolder> {
 
     private Context mContext;
-    private List<GrpcAPI.TransactionExtention> mTransactions;
     private ExecutorService mExecutorService;
-    private List<Protocol.Transaction> mConfirmedTransactions;
 
-    public TransactionItemListAdapter(Context context, List<GrpcAPI.TransactionExtention> transactions) {
+    public TransactionItemListAdapter(Context context) {
         mContext = context;
-        mTransactions = transactions;
-        mConfirmedTransactions = new ArrayList<>();
         mExecutorService = Executors.newFixedThreadPool(3);
     }
 
@@ -52,17 +36,15 @@ public class TransactionItemListAdapter extends RecyclerView.Adapter<Transaction
 
     @Override
     public void onBindViewHolder(@NonNull TransactionItemViewHolder holder, int position) {
-        holder.bind(mTransactions.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mTransactions != null ? mTransactions.size() : 0;
+        return 0;
     }
 
     public class TransactionItemViewHolder extends RecyclerView.ViewHolder {
         private Context mContext;
-        private Protocol.Transaction mTransaction;
         private Handler mUpdateConfirmationHandler;
         private UpdateConfirmationRunnable mUpdateConfirmationRunnable;
         private boolean mFirstConfirmationStateLoaded;
@@ -79,7 +61,6 @@ public class TransactionItemListAdapter extends RecyclerView.Adapter<Transaction
         public TransactionItemViewHolder(View itemView) {
             super(itemView);
             mContext = itemView.getContext();
-            mTransaction = null;
             mUpdateConfirmationHandler = new Handler();
             mUpdateConfirmationRunnable = new UpdateConfirmationRunnable();
 
@@ -95,86 +76,22 @@ public class TransactionItemListAdapter extends RecyclerView.Adapter<Transaction
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mTransaction != null) {
-                        Intent intent = new Intent(mContext, TransactionViewerActivity.class);
-                        intent.putExtra(TransactionViewerActivity.TRANSACTION_DATA, mTransaction.toByteArray());
-                        mContext.startActivity(intent);
-                    }
                 }
             });
         }
 
-        public void bind(GrpcAPI.TransactionExtention transaction) {
-            mTransaction = transaction.getTransaction();
-            mFirstConfirmationStateLoaded = false;
-
-            mUpdateConfirmationHandler.removeCallbacks(mUpdateConfirmationRunnable);
-            mUpdateConfirmationHandler.post(mUpdateConfirmationRunnable);
-
-            if (mTransaction.getRawData().getContractCount() > 0) {
-                Protocol.Transaction.Contract contract = mTransaction.getRawData().getContract(0);
-
-                String from = "", to = "", contract_desc = "";
-                String amount_prefix = "";
-                double amount = 0;
-
-                // @TODO Setup other contracts
-
-                NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
-                numberFormat.setMaximumFractionDigits(6);
-
-                mTransactionFrom_TextView.setText(from);
-                mTransactionTo_TextView.setText(to);
-                mTransactionAmount_TextView.setText((amount != -1 ? numberFormat.format(amount) : "") + " " + amount_prefix);
-                mTransactionAsset_TextView.setText(contract_desc);
-
-                long timestamp = mTransaction.getRawData().getTimestamp();
-                if (timestamp == 0) {
-                    try {
-                        for (GrpcAPI.BlockExtention block : BlockExplorerUpdater.getBlocks()) {
-                            for (GrpcAPI.TransactionExtention blockTransaction : block.getTransactionsList()) {
-                                if (blockTransaction.equals(transaction)) {
-                                    timestamp = block.getBlockHeader().getRawData().getTimestamp();
-                                    break;
-                                }
-                            }
-                            if (timestamp != 0) {
-                                break;
-                            }
-                        }
-                    } catch (ConcurrentModificationException e) {
-                        e.printStackTrace();
-                    }
-                }
-                mTransactionTimestamp_TextView.setText(java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT).format(new Date(timestamp)));
-            }
+        public void bind() {
         }
+    }
 
-        private void loadConfirmation() {
-            if (mConfirmedTransactions.contains(mTransaction)) {
-                mTransactionConfirmed_TextView.setText(R.string.confirmed);
-                mTransactionConfirmed_CardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.positive));
-                mTransactionLoadingConfirmation_ProgressBar.setVisibility(View.GONE);
-            } else {
-                if (!mFirstConfirmationStateLoaded) {
-                    mTransactionConfirmed_CardView.setVisibility(View.GONE);
-                    mTransactionLoadingConfirmation_ProgressBar.setVisibility(View.VISIBLE);
-                }
+    private void loadConfirmation() {
+    }
 
-                AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
-                    @Override
-                    public void doOnBackground() {
-                    }
-                }, mExecutorService);
-            }
-        }
+    private class UpdateConfirmationRunnable implements Runnable {
 
-        private class UpdateConfirmationRunnable implements Runnable {
-
-            @Override
-            public void run() {
-                loadConfirmation();
-            }
+        @Override
+        public void run() {
+            loadConfirmation();
         }
     }
 }

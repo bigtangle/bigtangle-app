@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,12 @@ import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 
-import org.tron.api.GrpcAPI;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdapter.BlockItemViewHolder> {
 
     private Context mContext;
-    private List<GrpcAPI.BlockExtention> mBlocks;
     private Handler mUpdateElapsedTimeHandler;
     private List<BlockItemViewHolder> mViewHolders;
     private Runnable mUpdateElapsedTimeRunnable = new Runnable() {
@@ -28,7 +24,7 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
             List<BlockItemViewHolder> viewHolders = new ArrayList<>();
 
             for (BlockItemViewHolder viewHolder : mViewHolders) {
-                if(viewHolder != null)
+                if (viewHolder != null)
                     viewHolders.add(viewHolder);
             }
 
@@ -42,13 +38,12 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
         }
     };
 
-    public BlockItemListAdapter(Context context, List<GrpcAPI.BlockExtention> blocks) {
+    public BlockItemListAdapter(Context context) {
         mContext = context;
-        mBlocks = blocks;
         mViewHolders = new ArrayList<>();
 
         mUpdateElapsedTimeHandler = new Handler();
-        mUpdateElapsedTimeHandler.postDelayed(mUpdateElapsedTimeRunnable,2000);
+        mUpdateElapsedTimeHandler.postDelayed(mUpdateElapsedTimeRunnable, 2000);
     }
 
     @NonNull
@@ -62,7 +57,6 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
 
     @Override
     public void onBindViewHolder(@NonNull BlockItemViewHolder holder, int position) {
-        holder.bind(mBlocks.get(position));
     }
 
     @Override
@@ -72,9 +66,8 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
 
     @Override
     public int getItemCount() {
-        return mBlocks != null ? mBlocks.size() : 0;
+        return 0;
     }
-
 
     public class BlockItemViewHolder extends RecyclerView.ViewHolder {
         private Context mContext;
@@ -83,8 +76,6 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
         private TextView mBlockElapsedTime_TextView;
         private TextView mBlockTransactionsAmount_TextView;
         private TextView mBlockProducerAddress_TextView;
-
-        private GrpcAPI.BlockExtention mBlock;
 
         public BlockItemViewHolder(View itemView) {
             super(itemView);
@@ -96,21 +87,10 @@ public class BlockItemListAdapter extends RecyclerView.Adapter<BlockItemListAdap
             mBlockProducerAddress_TextView = itemView.findViewById(R.id.Block_producer_address_textView);
         }
 
-        public void bind(GrpcAPI.BlockExtention block) {
-            mBlock = block;
-
-            String blockNumberStr = "#"+String.valueOf(block.getBlockHeader().getRawData().getNumber());
-            mBlockNumber_TextView.setText(blockNumberStr);
-            updateElapsedTime();
-            mBlockTransactionsAmount_TextView.setText(String.valueOf(block.getTransactionsCount()));
-         }
+        public void bind() {
+        }
 
         public void updateElapsedTime() {
-           if(mBlock != null) {
-                CharSequence timeString = DateUtils.getRelativeTimeSpanString(mBlock.getBlockHeader().getRawData().getTimestamp(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                mBlockElapsedTime_TextView.setText(timeString);
-                mBlockElapsedTime_TextView.setText(timeString);
-            }
         }
     }
 }

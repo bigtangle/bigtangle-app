@@ -31,12 +31,6 @@ import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
 import com.eletac.tronwallet.wallet.IssueTokenActivity;
 
-import org.tron.protos.Contract;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mTokens_RecyclerView;
@@ -51,9 +45,6 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private TokenItemListAdapter mTokenItemListAdapter;
 
     private TokensUpdatedBroadcastReceiver mTokensUpdatedBroadcastReceiver;
-
-    private List<Contract.AssetIssueContract> mTokens;
-    private List<Contract.AssetIssueContract> mTokensFiltered;
 
     private int mSearchCardViewInitialHeight;
 
@@ -71,10 +62,8 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
         super.onCreate(savedInstanceState);
 
         mTokensUpdatedBroadcastReceiver = new TokensUpdatedBroadcastReceiver();
-        mTokens = BlockExplorerUpdater.getTokens();
-        mTokensFiltered = new ArrayList<>();
 
-        mTokenItemListAdapter = new TokenItemListAdapter(getContext(), mTokens, mTokensFiltered);
+        mTokenItemListAdapter = new TokenItemListAdapter(getContext());
     }
 
     @Override
@@ -132,7 +121,6 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 animator.start();
 
                 mTokenItemListAdapter.setShowFiltered(isChecked);
-                mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_tokens), mTokenItemListAdapter.isShowFiltered() ? mTokensFiltered.size() : mTokens.size()));
                 mTokenItemListAdapter.notifyDataSetChanged();
             }
         });
@@ -175,11 +163,6 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTokensUpdatedBroadcastReceiver, new IntentFilter(BlockExplorerUpdater.TOKENS_UPDATED));
-        if(BlockExplorerUpdater.getTokens().isEmpty())
-            onRefresh();
-        else if(!BlockExplorerUpdater.isRunning(BlockExplorerUpdater.UpdateTask.Tokens) && !BlockExplorerUpdater.isSingleShotting(BlockExplorerUpdater.UpdateTask.Tokens) ) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
     }
 
     @Override
@@ -189,21 +172,7 @@ public class TokensFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void updateFilteredTokens() {
-        mTokensFiltered.clear();
-        for(Contract.AssetIssueContract asset : mTokens) {
-            try {
-                if (checkFilterConditions(asset)) {
-                    mTokensFiltered.add(asset);
-                }
-            }  catch (NullPointerException ignore) {}
-        }
-        mTitle_TextView.setText(String.format(Locale.US, "%s (%d)", getContext().getString(R.string.tab_title_tokens), mTokenItemListAdapter.isShowFiltered() ? mTokensFiltered.size() : mTokens.size()));
         mTokenItemListAdapter.notifyDataSetChanged();
-    }
-
-    private boolean checkFilterConditions(Contract.AssetIssueContract asset) {
-        String filter = mSearch_EditText.getText().toString().toLowerCase();
-        return true;
     }
 
     private class TokensUpdatedBroadcastReceiver extends BroadcastReceiver {

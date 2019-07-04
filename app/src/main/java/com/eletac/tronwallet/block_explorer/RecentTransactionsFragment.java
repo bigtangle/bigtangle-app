@@ -1,6 +1,5 @@
 package com.eletac.tronwallet.block_explorer;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,24 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.WrapContentLinearLayoutManager;
-
-import org.tron.api.GrpcAPI;
-import org.tron.protos.Protocol;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class RecentTransactionsFragment extends Fragment {
 
@@ -37,7 +26,6 @@ public class RecentTransactionsFragment extends Fragment {
     private TransactionItemListAdapter mTransactionsItemListAdapter;
 
     private TransactionsUpdatedBroadcastReceiver mTransactionsUpdatedBroadcastReceiver;
-    private List<GrpcAPI.TransactionExtention> mTransactions;
 
     public RecentTransactionsFragment() {
         // Required empty public constructor
@@ -53,8 +41,7 @@ public class RecentTransactionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        mTransactions = BlockExplorerUpdater.getTransactions();
-        mTransactionsItemListAdapter = new TransactionItemListAdapter(getContext(), mTransactions);
+        mTransactionsItemListAdapter = new TransactionItemListAdapter(getContext());
 
         mTransactionsUpdatedBroadcastReceiver = new TransactionsUpdatedBroadcastReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTransactionsUpdatedBroadcastReceiver, new IntentFilter(BlockExplorerUpdater.BLOCKCHAIN_UPDATED));
@@ -93,8 +80,6 @@ public class RecentTransactionsFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             mTransactionsItemListAdapter.notifyDataSetChanged();
-
-            mTransactions_RecyclerView.scrollToPosition(mTransactions.size()-1);
         }
     }
 }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.text.format.DateUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,13 +20,6 @@ import android.widget.Toast;
 import com.arasthel.asyncjob.AsyncJob;
 import com.eletac.tronwallet.R;
 import com.eletac.tronwallet.block_explorer.contract.ContractLoaderFragment;
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import org.spongycastle.util.encoders.DecoderException;
-import org.tron.protos.Protocol;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 public class TransactionViewerActivity extends AppCompatActivity {
 
@@ -42,7 +34,6 @@ public class TransactionViewerActivity extends AppCompatActivity {
     private Button mOpenTronscan_Button;
     private ImageButton mCopyTronscan_Button;
 
-    private Protocol.Transaction mTransaction;
     private Handler mUpdateConfirmationHandler;
     private UpdateConfirmationRunnable mUpdateConfirmationRunnable;
     private boolean mFirstConfirmationStateLoaded;
@@ -63,27 +54,11 @@ public class TransactionViewerActivity extends AppCompatActivity {
         mCopyTronscan_Button = findViewById(R.id.TransactionViewer_copy_tronscan_button);
 
         Bundle extras = getIntent().getExtras();
-        try {
-            mTransaction = Protocol.Transaction.parseFrom(extras.getByteArray(TRANSACTION_DATA));
-        } catch (InvalidProtocolBufferException | DecoderException | NullPointerException ignored) {
-            Toast.makeText(this, getString(R.string.could_not_parse_transaction), Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
 
         mUpdateConfirmationHandler = new Handler();
         mUpdateConfirmationRunnable = new UpdateConfirmationRunnable();
-
-        if (mTransaction.getRawData().getContractCount() > 0) {
-            mContractLoaderFragment.setContract(mTransaction.getRawData().getContract(0));
-        }
         mHash_TextView.setText(getTxID());
-        mTimestamp_TextView.setText(
-                new StringBuilder()
-                        .append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(mTransaction.getRawData().getTimestamp())))
-                        .append(" (")
-                        .append(DateUtils.getRelativeTimeSpanString(mTransaction.getRawData().getTimestamp(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS))
-                        .append(")").toString());
+;
         mConfirmed_TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
