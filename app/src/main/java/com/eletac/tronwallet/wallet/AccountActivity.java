@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.bigtangle.wallet.cli.MainActivity;
 import com.eletac.tronwallet.R;
+
+import net.bigtangle.wallet.activity.MainActivity;
 
 public class AccountActivity extends AppCompatActivity {
 

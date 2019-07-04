@@ -14,11 +14,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.eletac.tronwallet.CaptureActivityPortrait;
-import net.bigtangle.wallet.cli.MainActivity;
 import com.eletac.tronwallet.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
+import net.bigtangle.wallet.activity.MainActivity;
 
 public class ImportWalletActivity extends AppCompatActivity {
 
