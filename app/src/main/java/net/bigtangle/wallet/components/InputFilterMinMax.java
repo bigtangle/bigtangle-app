@@ -1,4 +1,4 @@
-package com.eletac.tronwallet;
+package net.bigtangle.wallet.components;
 
 import android.text.InputFilter;
 import android.text.Spanned;

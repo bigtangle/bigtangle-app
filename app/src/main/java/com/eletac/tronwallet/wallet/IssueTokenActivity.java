@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.eletac.tronwallet.InputFilterMinMax;
+import net.bigtangle.wallet.components.InputFilterMinMax;
 import com.eletac.tronwallet.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;

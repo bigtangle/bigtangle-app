@@ -1,4 +1,4 @@
-package com.eletac.tronwallet;
+package net.bigtangle.wallet.components;
 
 public enum SwipeDirection {
 
