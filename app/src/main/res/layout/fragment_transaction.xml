@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.wallet.WalletFragment">
+    tools:context=".activity.transaction.TransactionFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/BlockExplorer_tabLayout"
@@ -19,12 +19,22 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wallet_tab_account" />
+            android:text="@string/transaction_tab_single" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wallet_tab_secretkey" />
+            android:text="@string/transaction_tab_multi_signature" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_tab_multi_address" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_tab_history" />
 
     </android.support.design.widget.TabLayout>
 

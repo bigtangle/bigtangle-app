@@ -7,53 +7,34 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.eletac.tronwallet.ExtendedViewPager;
-import com.eletac.tronwallet.R;
-import com.eletac.tronwallet.SimpleTextDisplayFragment;
-import net.bigtangle.wallet.components.SwipeDirection;
-import com.eletac.tronwallet.block_explorer.BlockExplorerFragment;
-import com.eletac.tronwallet.wallet.WalletFragment;
-import com.eletac.tronwallet.wallet.cold.WalletColdFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.settings.SettingsFragment;
+import net.bigtangle.wallet.activity.transaction.TransactionFragment;
+import net.bigtangle.wallet.activity.wallet.WalletFragment;
+import net.bigtangle.wallet.components.ExtendedViewPager;
+import net.bigtangle.wallet.components.SwipeDirection;
+import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.utils.RoutePathUtil;
+
 public class MainActivity extends AppCompatActivity {
-
-    public MainActivity mainActivity;
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ExtendedViewPager mViewPager;
-
-    private WalletFragment mWalletFragment;
-    private WalletColdFragment mWalletColdFragment;
-    private BlockExplorerFragment mBlockExplorerFragment;
-    private SimpleTextDisplayFragment mSimpleTextDisplayFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainActivity = this;
 
         BottomBar bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_wallet);
 
-//        // 初始化钱包工具上下文
-//        walletContext = WalletContext.getInstance();
-//        walletContext.initWalletData(RoutePathUtil.getBasePath(this), WalletConstant.WALLET_FILE_PREFIX);
-//
-//        // 判断当前钱包文件是否存在
-//        if (!RoutePathUtil.existAnyWallet(this)) {
-//            Intent intent = new Intent(this, CreateWalletActivity.class);
-//            startActivity(intent);
-//            finish();
-//            return;
-//        }
+        WalletContextHolder.get().initWalletData(RoutePathUtil.getBasePath(this), "bigtangle");
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.Main_container);
+        ExtendedViewPager mViewPager = findViewById(R.id.Main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -76,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 int position = 0;
 
                 switch (tabId) {
-                    case R.id.tab_block_explorer:
+                    case R.id.tab_transaction:
                         position = 0;
                         break;
                     case R.id.tab_wallet:
@@ -86,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
                         position = 3;
                         break;
                 }
+
                 mViewPager.setCurrentItem(position);
             }
         });
-
     }
 
     @Override
@@ -116,8 +97,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            mSimpleTextDisplayFragment = SimpleTextDisplayFragment.newInstance(getString(R.string.not_available_in_cold_wallet));
-            fragment = mSimpleTextDisplayFragment;
+            switch (position) {
+                case 0:
+                    fragment = TransactionFragment.newInstance();
+                    break;
+                case 1:
+                    fragment = WalletFragment.newInstance();
+                    break;
+                case 2:
+                    fragment = SettingsFragment.newInstance();
+                    break;
+            }
             return fragment;
         }
 

@@ -38,10 +38,18 @@
     <string name="energy_used_key" translatable="false">energy_used_key</string>
     <!--> NO TRANSLATION <-->
 
-    <string name="title_wallet">Wallet</string>
-    <string name="title_activity_import_wallet">Import Wallet</string>
-    <string name="title_block_explorer">Block Explorer</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_tab_transaction">Transaction</string>
+    <string name="title_tab_wallet">Wallet</string>
+    <string name="title_tab_settings">Settings</string>
+
+    <string name="transaction_tab_single">Transaction</string>
+    <string name="transaction_tab_multi_signature">Multi-Signature Transaction</string>
+    <string name="transaction_tab_multi_address">Multi-Address Transaction</string>
+    <string name="transaction_tab_history">History</string>
+
+    <string name="wallet_tab_account">Account</string>
+    <string name="wallet_tab_secretkey">Secret Key</string>
+
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

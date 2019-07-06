@@ -3,10 +3,16 @@
     <!--> NO TRANSLATION <-->
     <!--> NO TRANSLATION <-->
 
-    <string name="title_wallet">钱包</string>
-    <string name="title_activity_import_wallet">导入钱包</string>
-    <string name="title_block_explorer">区块链浏览器</string>
-    <string name="title_settings">设置</string>
+    <string name="title_tab_transaction">交易</string>
+    <string name="title_tab_wallet">钱包</string>
+    <string name="title_tab_settings">设置</string>
+
+    <string name="transaction_tab_single">交易</string>
+    <string name="transaction_tab_multi_signature">多签名交易</string>
+    <string name="transaction_tab_multi_address">多地址交易</string>
+    <string name="transaction_tab_history">历史</string>
+    <string name="wallet_tab_account">帐户</string>
+    <string name="wallet_tab_secretkey">密钥</string>
 
     <string name="ok">是</string>
     <string name="cancel">取消</string>
@@ -217,7 +223,7 @@
 
     <string name="tab_wallet">钱包</string>
     <string name="tab_settings">设置</string>
-    <string name="tab_block_explorer">区块链浏览器</string>
+    <string name="tab_block_explorer">支付</string>
 
     <string name="btn_about">关于</string>
     <string name="btn_select_wallet">选择钱包</string>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        id="@+id/tab_block_explorer"
+        id="@+id/tab_transaction"
         icon="@drawable/ic_view_module_black_24px"
-        title="@string/tab_block_explorer"
-        barColorWhenSelected="#a62f2c"/>
+        title="@string/title_tab_transaction"
+        barColorWhenSelected="#4F6194"/>
     <tab
         id="@+id/tab_wallet"
         icon="@drawable/ic_account_balance_wallet_black_24px"
-        title="@string/tab_wallet"
-        barColorWhenSelected="#a22b28" />
+        title="@string/title_tab_wallet"
+        barColorWhenSelected="#4F6194" />
     <tab
         id="@+id/tab_settings"
         icon="@drawable/ic_settings_black_24dp"
-        title="@string/tab_settings"
-        barColorWhenSelected="#a62f2c" />
+        title="@string/title_tab_settings"
+        barColorWhenSelected="#4F6194" />
 </tabs>

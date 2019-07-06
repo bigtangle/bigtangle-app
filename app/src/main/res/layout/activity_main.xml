@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.bigtangle.wallet.cli.MainActivity">
+    tools:context="net.bigtangle.wallet.activity.MainActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.eletac.tronwallet.ExtendedViewPager
+    <net.bigtangle.wallet.components.ExtendedViewPager
         android:id="@+id/Main_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
