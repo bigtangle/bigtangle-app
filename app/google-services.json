@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "394542467734",
-    "firebase_url": "https://tron-wallet-android-fb424.firebaseio.com",
-    "project_id": "tron-wallet-android-fb424",
-    "storage_bucket": "tron-wallet-android-fb424.appspot.com"
+    "project_number": "312573725362",
+    "firebase_url": "https://bigtangle-wallet.firebaseio.com",
+    "project_id": "bigtangle-wallet",
+    "storage_bucket": "bigtangle-wallet.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:394542467734:android:be12d96114e91645",
+        "mobilesdk_app_id": "1:312573725362:android:32b865e71fbb2d8f",
         "android_client_info": {
-          "package_name": "com.eletac.tronwallet"
+          "package_name": "net.bigtangle.wallet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "394542467734-r9hm7dk0blsfg7m732r20l4p42af9k0c.apps.googleusercontent.com",
+          "client_id": "312573725362-6agivr2n52d9r4d1s87gbo1hlb95lhoa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAZ32h4Vb_oFbg7sd_f5Qajetex_J5Ya0E"
+          "current_key": "AIzaSyB0Ios0tuuJM5NcwhaUm8b0zuWH8N3bsZY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "394542467734-r9hm7dk0blsfg7m732r20l4p42af9k0c.apps.googleusercontent.com",
+              "client_id": "312573725362-6agivr2n52d9r4d1s87gbo1hlb95lhoa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -5,7 +5,7 @@ android {
     defaultConfig {
         versionCode 47
         versionName "1.1.9.4"
-        applicationId "com.eletac.tronwallet"
+        applicationId "net.bigtangle.wallet"
         minSdkVersion 21
         targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,19 +32,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     implementation 'javax.annotation:javax.annotation-api:1.2'
-
     implementation "com.madgag.spongycastle:core:1.53.0.0"
     implementation "com.madgag.spongycastle:prov:1.53.0.0"
-
     implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.25'
-
     implementation group: 'com.typesafe', name: 'config', version: '1.3.2'
-
     implementation "org.apache.commons:commons-collections4:4.0"
     implementation "org.apache.commons:commons-lang3:3.5"
-
     implementation 'com.arasthel:asyncjob-library:1.0.3'
     implementation 'com.roughike:bottom-bar:2.3.1'
     implementation 'com.github.florent37:diagonallayout:1.0.8'
@@ -60,7 +54,6 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'net.bigtangle:bigtangle-core:0.3.5'
-
 }
 
 apply plugin: 'com.google.gms.google-services'
