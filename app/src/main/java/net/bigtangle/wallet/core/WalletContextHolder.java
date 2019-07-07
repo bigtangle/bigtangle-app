@@ -1,9 +1,12 @@
 package net.bigtangle.wallet.core;
 
 import net.bigtangle.core.NetworkParameters;
+import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.kits.WalletAppKit;
 import net.bigtangle.params.MainNetParams;
 import net.bigtangle.wallet.Wallet;
+
+import org.spongycastle.crypto.params.KeyParameter;
 
 import java.io.File;
 
@@ -20,6 +23,15 @@ public class WalletContextHolder {
         setupWalletData();
     }
 
+    public static KeyParameter getAesKey() {
+        KeyParameter aesKey = null;
+        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
+//        if (!"".equals(Main.password.trim())) {
+//            aesKey = keyCrypter.deriveKey(Main.password);
+//        }
+        return aesKey;
+    }
+
     private void setupWalletData() {
         this.wallet();
     }
@@ -31,7 +43,7 @@ public class WalletContextHolder {
     }
 
     public Wallet wallet() {
-        if (walletAppKit == null ) {
+        if (walletAppKit == null) {
             return null;
         }
         Wallet wallet = this.walletAppKit.wallet();

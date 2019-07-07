@@ -41,15 +41,16 @@
     <string name="title_tab_transaction">Transaction</string>
     <string name="title_tab_wallet">Wallet</string>
     <string name="title_tab_settings">Settings</string>
-
     <string name="transaction_tab_single">Transaction</string>
     <string name="transaction_tab_multi_signature">Multi-Signature Transaction</string>
     <string name="transaction_tab_multi_address">Multi-Address Transaction</string>
     <string name="transaction_tab_history">History</string>
-
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
-
+    <string name="wallet_account_tokenname">Address</string>
+    <string name="wallet_account_value">Amount</string>
+    <string name="wallet_secretkey_address">Address</string>
+    <string name="wallet_secretkey_pubkey">Public Key</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
