@@ -43,7 +43,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     private RecyclerView mAccountsRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private WalletAccountItemListAdapter mWalletAccountItemListAdapter;
 
     public WalletAccountFragment() {
     }
@@ -57,7 +56,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-        mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), walletAccountItems);
     }
 
     private void initData() {
@@ -65,10 +63,10 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
             this.walletAccountItems = new ArrayList<WalletAccountItem>();
         }
 
-        WalletAccountItem walletAccountItem = new WalletAccountItem();
-        walletAccountItem.setValue(String.valueOf(100));
-        walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
-        walletAccountItems.add(walletAccountItem);
+//        WalletAccountItem walletAccountItem = new WalletAccountItem();
+//        walletAccountItem.setValue(String.valueOf(100));
+//        walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
+//        walletAccountItems.add(walletAccountItem);
 
         List<String> keyStrHex = new ArrayList<String>();
         Wallet wallet = WalletContextHolder.get().wallet();
@@ -99,6 +97,14 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                                 walletAccountItem.setValue(String.valueOf(100));
                                 walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
                                 walletAccountItems.add(walletAccountItem);
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        WalletAccountItemListAdapter mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), walletAccountItems);
+                                        mAccountsRecyclerView.setAdapter(mWalletAccountItemListAdapter);
+                                    }
+                                });
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -132,7 +138,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         mLayoutManager = new WrapContentLinearLayoutManager(getContext());
         mAccountsRecyclerView.setHasFixedSize(true);
         mAccountsRecyclerView.setLayoutManager(mLayoutManager);
-        mAccountsRecyclerView.setAdapter(mWalletAccountItemListAdapter);
     }
 
     @Override
@@ -149,6 +154,5 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
         this.initData();
-        this.mWalletAccountItemListAdapter.notifyDataSetChanged();
     }
 }
