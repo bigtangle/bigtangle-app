@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.settings.SettingsFragment">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -19,7 +18,7 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_tab_settings" />
+            android:text="设置" />
 
     </android.support.design.widget.TabLayout>
 
@@ -50,7 +49,7 @@
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:backgroundTint="#323232"
-                    android:text="@string/btn_select_wallet"
+                    android:text="选择钱包"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -62,7 +61,7 @@
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:backgroundTint="#323232"
-                    android:text="@string/btn_about"
+                    android:text="关于APP"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -74,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:backgroundTint="#323232"
-                    android:text="@string/secret_account_info"
+                    android:text="帐户信息"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +84,7 @@
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:backgroundTint="#323232"
-                    android:text="@string/connection"
+                    android:text="连接信息"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +98,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#323232"
-        android:text="@string/remove_wallet"
+        android:text="移除钱包"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

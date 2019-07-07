@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.transaction.components.WalletAccountFragment;
+import net.bigtangle.wallet.activity.wallet.components.WalletAccountFragment;
 import net.bigtangle.wallet.activity.wallet.components.WalletSecretkeyFragment;
 
 public class WalletSectionsPagerAdapter extends FragmentPagerAdapter {

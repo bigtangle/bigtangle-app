@@ -43,7 +43,6 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initData();
         mWalletSecretkeyItemListAdapter = new WalletSecretkeyItemListAdapter(getContext(), walletSecretkeyItems);
     }
