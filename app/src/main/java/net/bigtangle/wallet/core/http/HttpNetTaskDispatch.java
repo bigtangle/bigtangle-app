@@ -1,14 +1,5 @@
 package net.bigtangle.wallet.core.http;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jiangtao.clouds.app.data.ApplicationDataContext;
-import org.jiangtao.clouds.app.utils.JSONUtils;
-import org.jiangtao.clouds.app.utils.LoggerUtils;
-import org.jiangtao.transfer.bean.entity.JSONResult;
-import org.jiangtao.transfer.bean.utils.ErrorCode;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -19,6 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import net.bigtangle.params.ReqCmd;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressLint("HandlerLeak")
 public class HttpNetTaskDispatch {
