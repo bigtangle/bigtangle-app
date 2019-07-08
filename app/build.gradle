@@ -53,6 +53,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:1.1.1"
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
     implementation 'net.bigtangle:bigtangle-core:0.3.5'
 }
 
