@@ -25,16 +25,14 @@ import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
-import net.bigtangle.wallet.core.http.OKHttpUitls;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class WalletAccountFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private List<WalletAccountItem> walletAccountItems;
+    private List<WalletAccountItem> itemList;
 
     private WalletAccountItemListAdapter mWalletAccountItemListAdapter;
 
@@ -53,8 +51,8 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (this.walletAccountItems == null) {
-            this.walletAccountItems = new ArrayList<WalletAccountItem>();
+        if (this.itemList == null) {
+            this.itemList = new ArrayList<WalletAccountItem>();
         }
     }
 
@@ -68,24 +66,23 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
             @Override
             public void completeCallback(String jsonStr) {
                 try {
-                    Map<String, String> tokenNameResult = OKHttpUitls.getTokenHexNameMap();
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
 
-                    walletAccountItems.clear();
+                    itemList.clear();
                     for (Coin coin : getBalancesResponse.getBalance()) {
                         if (!coin.isZero()) {
                             WalletAccountItem walletAccountItem = new WalletAccountItem();
                             walletAccountItem.setTokenid(coin.getTokenHex());
-                            walletAccountItem.setTokenname(tokenNameResult.get(coin.getTokenHex()));
+                            walletAccountItem.setTokenname(coin.getTokenHex());
                             walletAccountItem.setValue(coin.toPlainString());
-                            walletAccountItems.add(walletAccountItem);
+                            itemList.add(walletAccountItem);
                         }
                     }
 
                     WalletAccountItem walletAccountItem = new WalletAccountItem();
                     walletAccountItem.setValue(String.valueOf(100));
                     walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
-                    walletAccountItems.add(walletAccountItem);
+                    itemList.add(walletAccountItem);
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -114,7 +111,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), walletAccountItems);
+        mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
 
         mSwipeRefreshLayout = view.findViewById(R.id.Accounts_swipeContainer);
         mSwipeRefreshLayout.setOnRefreshListener(this);
