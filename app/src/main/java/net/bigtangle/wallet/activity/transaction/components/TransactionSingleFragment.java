@@ -28,11 +28,11 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.http.HttpNetComplete;
+import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TransactionSingleFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -66,43 +66,36 @@ public class TransactionSingleFragment extends Fragment implements SwipeRefreshL
         if (this.tokenNames == null) {
             this.tokenNames = new ArrayList<String>();
         }
-
         List<String> keyStrHex = new ArrayList<String>();
         Wallet wallet = WalletContextHolder.get().wallet();
         for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
-        try {
-            OKHttpUitls.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
-                    Json.jsonmapper().writeValueAsString(keyStrHex).getBytes(), new OKHttpListener() {
-                        @Override
-                        public void handleMessage(String response) {
-                            Map<String, String> tokenNameResult = OKHttpUitls.getTokenHexNameMap();
-                            try {
-                                GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
-
-                                for (UTXO utxo : getBalancesResponse.getOutputs()) {
-                                    Coin coin = utxo.getValue();
-                                    if (coin.isZero()) {
-                                        continue;
-                                    }
-                                    byte[] tokenid = coin.getTokenid();
-                                    //String tokenname = tokenNameResult.get(Utils.HEX.encode(tokenid));
-                                    tokenNames.add(Utils.HEX.encode(tokenid));
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+        new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
+            @Override
+            public void completeCallback(String jsonStr) {
+                try {
+                    GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
+                    tokenNames.clear();
+                    for (UTXO utxo : getBalancesResponse.getOutputs()) {
+                        Coin coin = utxo.getValue();
+                        if (coin.isZero()) {
+                            continue;
                         }
-
+                        byte[] tokenid = coin.getTokenid();
+                        tokenNames.add(Utils.HEX.encode(tokenid));
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void onError() {
-                            Toast.makeText(getActivity(), "请求服务器数据错误", Toast.LENGTH_SHORT).show();
+                        public void run() {
+                            mArrayAdapter.notifyDataSetChanged();
                         }
                     });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

@@ -67,7 +67,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
             public void completeCallback(String jsonStr) {
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
-
                     itemList.clear();
                     for (Coin coin : getBalancesResponse.getBalance()) {
                         if (!coin.isZero()) {
@@ -78,12 +77,10 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                             itemList.add(walletAccountItem);
                         }
                     }
-
                     WalletAccountItem walletAccountItem = new WalletAccountItem();
                     walletAccountItem.setValue(String.valueOf(100));
                     walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
                     itemList.add(walletAccountItem);
-
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

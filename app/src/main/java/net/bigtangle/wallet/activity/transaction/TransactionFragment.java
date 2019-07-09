@@ -5,19 +5,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.transaction.adapters.TransactionSectionsPagerAdapter;
+import net.bigtangle.wallet.activity.transaction.components.TransactionHistoryFragment;
+import net.bigtangle.wallet.activity.transaction.components.TransactionMultiAddressFragment;
+import net.bigtangle.wallet.activity.transaction.components.TransactionMultiSignatureFragment;
+import net.bigtangle.wallet.activity.transaction.components.TransactionSingleFragment;
 
 public class TransactionFragment extends Fragment {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private TransactionSectionsPagerAdapter mAdapter;
+    private SectionsPagerAdapter mAdapter;
 
     public TransactionFragment() {
     }
@@ -30,7 +35,7 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new TransactionSectionsPagerAdapter(getChildFragmentManager(), this);
+        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -47,5 +52,53 @@ public class TransactionFragment extends Fragment {
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(5);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private Fragment fragment;
+
+        public SectionsPagerAdapter(FragmentManager fragmentManager, Fragment fragment) {
+            super(fragmentManager);
+            this.fragment = fragment;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return TransactionSingleFragment.newInstance();
+            }
+            if (position == 1) {
+                return TransactionMultiSignatureFragment.newInstance();
+            }
+            if (position == 2) {
+                return TransactionMultiAddressFragment.newInstance();
+            }
+            if (position == 3) {
+                return TransactionHistoryFragment.newInstance();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return fragment.getString(R.string.transaction_tab_single);
+                case 1:
+                    return fragment.getString(R.string.transaction_tab_multi_signature);
+                case 2:
+                    return fragment.getString(R.string.transaction_tab_multi_address);
+                case 3:
+                    return fragment.getString(R.string.transaction_tab_history);
+            }
+            return null;
+        }
     }
 }
