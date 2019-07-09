@@ -7,11 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
@@ -19,16 +17,14 @@ import net.bigtangle.core.Json;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
-import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
-import net.bigtangle.wallet.activity.MainActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.http.OKHttpListener;
+import net.bigtangle.wallet.core.http.HttpNetComplete;
+import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.OKHttpUitls;
 
 import java.io.IOException;
@@ -68,50 +64,40 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
-        try {
-            OKHttpUitls.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
-                    Json.jsonmapper().writeValueAsString(keyStrHex).getBytes(), new OKHttpListener() {
-                        @Override
-                        public void handleMessage(String response) {
-                            try {
-                                Map<String, String> tokenNameResult = OKHttpUitls.getTokenHexNameMap();
-                                GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
+        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
+            @Override
+            public void completeCallback(String jsonStr) {
+                try {
+                    Map<String, String> tokenNameResult = OKHttpUitls.getTokenHexNameMap();
+                    GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
 
-                                walletAccountItems.clear();
-                                for (Coin coin : getBalancesResponse.getBalance()) {
-                                    if (!coin.isZero()) {
-                                        WalletAccountItem walletAccountItem = new WalletAccountItem();
-                                        walletAccountItem.setTokenid(coin.getTokenHex());
-                                        walletAccountItem.setTokenname(tokenNameResult.get(coin.getTokenHex()));
-                                        walletAccountItem.setValue(coin.toPlainString());
-                                        walletAccountItems.add(walletAccountItem);
-                                    }
-                                }
-
-                                WalletAccountItem walletAccountItem = new WalletAccountItem();
-                                walletAccountItem.setValue(String.valueOf(100));
-                                walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
-                                walletAccountItems.add(walletAccountItem);
-
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mWalletAccountItemListAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    walletAccountItems.clear();
+                    for (Coin coin : getBalancesResponse.getBalance()) {
+                        if (!coin.isZero()) {
+                            WalletAccountItem walletAccountItem = new WalletAccountItem();
+                            walletAccountItem.setTokenid(coin.getTokenHex());
+                            walletAccountItem.setTokenname(tokenNameResult.get(coin.getTokenHex()));
+                            walletAccountItem.setValue(coin.toPlainString());
+                            walletAccountItems.add(walletAccountItem);
                         }
+                    }
 
+                    WalletAccountItem walletAccountItem = new WalletAccountItem();
+                    walletAccountItem.setValue(String.valueOf(100));
+                    walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
+                    walletAccountItems.add(walletAccountItem);
+
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void onError() {
-                            Toast.makeText(getActivity(), "请求服务器数据错误", Toast.LENGTH_SHORT).show();
+                        public void run() {
+                            mWalletAccountItemListAdapter.notifyDataSetChanged();
                         }
                     });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -123,7 +109,11 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
+        try {
+            initData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), walletAccountItems);
 
         mSwipeRefreshLayout = view.findViewById(R.id.Accounts_swipeContainer);
