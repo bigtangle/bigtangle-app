@@ -121,13 +121,15 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onResume() {
+        super.onResume();
+        this.initData();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        this.initData();
     }
 
     @Override
