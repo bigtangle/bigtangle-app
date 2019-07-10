@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction.components;
+package net.bigtangle.wallet.activity.transaction.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

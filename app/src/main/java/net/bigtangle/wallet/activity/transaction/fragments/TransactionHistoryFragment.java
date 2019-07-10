@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction.components;
+package net.bigtangle.wallet.activity.transaction.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 
 /**
- * 多重地址交易控件
+ * 交易历史记录控件
  *
  * @author lijian
- * @date 2019-07-06 00:06:01
+ * @date 2019-07-06 00:04:44
  */
-public class TransactionMultiAddressFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TransactionHistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public TransactionMultiAddressFragment() {
+    public TransactionHistoryFragment() {
     }
 
-    public static TransactionMultiAddressFragment newInstance() {
-        TransactionMultiAddressFragment fragment = new TransactionMultiAddressFragment();
-        return fragment;
+    public static TransactionHistoryFragment newInstance() {
+        TransactionHistoryFragment component = new TransactionHistoryFragment();
+        return component;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TransactionMultiAddressFragment extends Fragment implements SwipeRe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction_single, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_history, container, false);
     }
 
     @Override

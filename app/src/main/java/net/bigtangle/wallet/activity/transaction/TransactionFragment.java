@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.transaction.components.TransactionHistoryFragment;
-import net.bigtangle.wallet.activity.transaction.components.TransactionMultiAddressFragment;
-import net.bigtangle.wallet.activity.transaction.components.TransactionMultiSignatureFragment;
-import net.bigtangle.wallet.activity.transaction.components.TransactionSingleFragment;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionHistoryFragment;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionMultiAddressFragment;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionMultiSignatureFragment;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionSingleFragment;
 
 public class TransactionFragment extends Fragment {
 

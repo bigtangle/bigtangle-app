@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.wallet.components;
+package net.bigtangle.wallet.activity.wallet.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
-import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
