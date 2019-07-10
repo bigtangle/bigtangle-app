@@ -23,7 +23,7 @@ import java.util.List;
 
 public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private List<WalletSecretkeyItem> walletSecretkeyItems;
+    private List<WalletSecretkeyItem> itemList;
 
     private RecyclerView mSecretkeyRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -41,22 +41,20 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
-        mWalletSecretkeyItemListAdapter = new WalletSecretkeyItemListAdapter(getContext(), walletSecretkeyItems);
+        if (this.itemList == null) {
+            this.itemList = new ArrayList<WalletSecretkeyItem>();
+        }
     }
 
     private void initData() {
-        if (walletSecretkeyItems == null) {
-            walletSecretkeyItems = new ArrayList<WalletSecretkeyItem>();
-        }
-        walletSecretkeyItems.clear();
+        itemList.clear();
         List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
                 walletSecretkeyItem.setAddress(ecKey.toAddress(WalletContextHolder.networkParameters).toBase58());
                 walletSecretkeyItem.setPubKeyHex(ecKey.getPublicKeyAsHex());
-                walletSecretkeyItems.add(walletSecretkeyItem);
+                itemList.add(walletSecretkeyItem);
             }
         }
     }
@@ -70,6 +68,9 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initData();
+        mWalletSecretkeyItemListAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
 
         mSecretkeyRecyclerView = view.findViewById(R.id.Secretkey_RecyclerView);
         mSwipeRefreshLayout = view.findViewById(R.id.Secretkey_swipeContainer);
