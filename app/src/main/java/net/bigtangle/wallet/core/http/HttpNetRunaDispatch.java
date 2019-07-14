@@ -1,15 +1,15 @@
 package net.bigtangle.wallet.core.http;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
@@ -81,14 +81,16 @@ public class HttpNetRunaDispatch {
         @Override
         public void handleMessage(Message message) {
             if (message.what == MessageStateCode.NETWORK_ERROR) {
-                Builder builder = new Builder(context);
-                builder.setMessage("网络请求失败，是否重新？").setTitle("提示").setPositiveButton("确认",
-                        new OnClickListener() {
+                new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setButtonsColor(Color.WHITE)
+                        .setIcon(R.drawable.ic_info_white_24px)
+                        .setTitle("提示")
+                        .setMessage("网络请求失败，是否重新？")
+                        .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //实例化网络等待对话框
+                            public void onClick(View v) {
                                 final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
-                                //点击确认重新获取数据
                                 HttpNetProgress httpNetProgress = new HttpNetProgress() {
                                     @Override
                                     public void endProgress() {
@@ -96,17 +98,15 @@ public class HttpNetRunaDispatch {
                                     }
                                 };
                                 new HttpNetRunaDispatch(context, httpNetComplete, httpNetProgress, httpRunaExecute).execute();
-                                dialog.dismiss();
                             }
-                        }
-                ).setNegativeButton("取消",
-                        new OnClickListener() {
+                        })
+                        .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void onClick(View v) {
                             }
-                        }
-                ).show();
+                        })
+                        .show();
+
                 return;
             } else if (message.what == MessageStateCode.WALLET_ERROR) {
                 new LovelyInfoDialog(context)

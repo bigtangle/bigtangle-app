@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionSingleFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TransactionSingleFragment extends Fragment {
 
     private TextInputEditText transaction_toAddress_TextInput;
     private Spinner transaction_tokenname_Spinner;
@@ -162,19 +161,5 @@ public class TransactionSingleFragment extends Fragment implements SwipeRefreshL
                 }).execute();
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onRefresh() {
     }
 }
