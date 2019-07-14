@@ -88,14 +88,4 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         mSwipeRefreshLayout.setRefreshing(false);
         mWalletSecretkeyItemListAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 }

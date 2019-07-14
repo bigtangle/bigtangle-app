@@ -88,7 +88,7 @@ public class HttpNetTaskDispatch {
                 new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
-                        .setIcon(R.drawable.ic_info_white_24px)
+                        .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle("提示")
                         .setMessage("网络请求失败，是否重新？")
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class HttpNetTaskDispatch {
             } catch (IOException e) {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
+                        .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle("数据解析")
                         .setMessage("当前响应数据解析失败")
                         .show();
@@ -136,7 +136,7 @@ public class HttpNetTaskDispatch {
                     new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                             .setTopColorRes(R.color.colorPrimary)
                             .setButtonsColor(Color.WHITE)
-                            .setIcon(R.drawable.ic_info_white_24px)
+                            .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle("提示")
                             .setMessage("服务器操作失败, msg " + msg + "，是否重新？")
                             .setPositiveButton(android.R.string.ok, new View.OnClickListener() {

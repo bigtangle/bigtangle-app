@@ -77,10 +77,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                             itemList.add(walletAccountItem);
                         }
                     }
-                    WalletAccountItem walletAccountItem = new WalletAccountItem();
-                    walletAccountItem.setValue(String.valueOf(100));
-                    walletAccountItem.setTokenid("TWUQcCaf7D9nz3pN9Jw4wT4PUFx7NoKdEy");
-                    itemList.add(walletAccountItem);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

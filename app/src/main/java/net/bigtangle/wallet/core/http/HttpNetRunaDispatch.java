@@ -84,7 +84,7 @@ public class HttpNetRunaDispatch {
                 new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
-                        .setIcon(R.drawable.ic_info_white_24px)
+                        .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle("提示")
                         .setMessage("网络请求失败，是否重新？")
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
@@ -111,7 +111,7 @@ public class HttpNetRunaDispatch {
             } else if (message.what == MessageStateCode.WALLET_ERROR) {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_info_white_24px)
+                        .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle("操作失败")
                         .setMessage("钱包操作失败，请稍候重试")
                         .show();
