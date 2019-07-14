@@ -14,7 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Address;
 import net.bigtangle.core.Coin;
@@ -29,7 +30,9 @@ import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
+import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.http.HttpRunaExecute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,10 +133,20 @@ public class TransactionSingleFragment extends Fragment implements SwipeRefreshL
         transaction_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new Thread(new Runnable() {
+                new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
-                    public void run() {
+                    public void completeCallback(String jsonStr) {
+                        new LovelyInfoDialog(getContext())
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_info_white_24px)
+                                .setTitle("操作成功")
+                                .setMessage("钱包进行支付成功")
+                                .show();
+                        return;
+                    }
+                }, new HttpRunaExecute() {
+                    @Override
+                    public void execute() throws Exception {
                         String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
                         Address destination =
                                 Address.fromBase58(WalletContextHolder.networkParameters, transaction_toAddress_TextInput.getText().toString());
@@ -144,16 +157,9 @@ public class TransactionSingleFragment extends Fragment implements SwipeRefreshL
                         Coin amount = Coin.parseCoin(transaction_amount_TextInput.getText().toString(), Utils.HEX.decode(transaction_tokenname_Spinner.getSelectedItem().toString()));
                         long factor = 1;
                         amount = amount.multiply(factor);
-
-                        try {
-                            wallet.pay(WalletContextHolder.getAesKey(), destination, amount, "");
-                            Toast.makeText(getActivity(), getString(R.string.wallet_transaction_success), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(getActivity(), getString(R.string.wallet_transaction_fail), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                        wallet.pay(WalletContextHolder.getAesKey(), destination, amount, "");
                     }
-                }).start();
+                }).execute();
             }
         });
     }

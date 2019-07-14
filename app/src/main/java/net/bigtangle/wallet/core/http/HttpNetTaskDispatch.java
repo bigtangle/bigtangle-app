@@ -56,12 +56,14 @@ public class HttpNetTaskDispatch {
             httpNetCompleteHandler.sendMessage(message);
             return;
         }
-        //网络请求要通过线程进行回调
         new Thread(new Runnable() {
             @Override
             public void run() {
-                newThreadHttpPostRequestProcess();
-                httpNetProgressHandler.sendEmptyMessage(0);
+                try {
+                    newThreadHttpPostRequestProcess();
+                } finally {
+                    httpNetProgressHandler.sendEmptyMessage(0);
+                }
             }
         }).start();
     }
