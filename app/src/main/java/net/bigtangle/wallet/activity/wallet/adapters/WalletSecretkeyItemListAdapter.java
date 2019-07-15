@@ -44,17 +44,17 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
     public class WalletSecretkeyItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView addressTextView;
-        private TextView pubkeyTextView;
+        private TextView pubKeyTextView;
 
         public WalletSecretkeyItemViewHolder(View itemView) {
             super(itemView);
             addressTextView = itemView.findViewById(R.id.WalletSecretkeyItem_address_TextView);
-            pubkeyTextView = itemView.findViewById(R.id.WalletSecretkeyItem_pubkey_TextView);
+            pubKeyTextView = itemView.findViewById(R.id.WalletSecretkeyItem_pubkey_TextView);
         }
 
         public void bind(WalletSecretkeyItem walletSecretkeyItem) {
             addressTextView.setText(walletSecretkeyItem.getAddress());
-            pubkeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
+            pubKeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
         }
     }
 }

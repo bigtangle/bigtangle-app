@@ -99,11 +99,8 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        try {
-            initData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.initData();
+
         mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
 
         mSwipeRefreshLayout = view.findViewById(R.id.Accounts_swipeContainer);

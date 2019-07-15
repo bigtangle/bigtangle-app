@@ -38,11 +38,12 @@ import java.util.List;
 
 public class TransactionSingleFragment extends Fragment {
 
-    private TextInputEditText transaction_toAddress_TextInput;
-    private Spinner transaction_tokenname_Spinner;
-    private TextInputEditText transaction_amount_TextInput;
-    private Button transaction_send_Button;
-    ArrayAdapter<String> mArrayAdapter;
+    private TextInputEditText toAddressTextInput;
+    private Spinner tokenNameSpinner;
+    private TextInputEditText amountTextInput;
+    private Button sendButton;
+
+    private ArrayAdapter<String> mArrayAdapter;
 
     private List<String> tokenNames;
 
@@ -110,26 +111,26 @@ public class TransactionSingleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.transaction_toAddress_TextInput = view.findViewById(R.id.Transaction_toAddress_TextInput);
-        this.transaction_tokenname_Spinner = view.findViewById(R.id.Transaction_tokenname_Spinner);
-        this.transaction_amount_TextInput = view.findViewById(R.id.Transaction_amount_TextInput);
-        this.transaction_send_Button = view.findViewById(R.id.Transaction_send_Button);
+        this.toAddressTextInput = view.findViewById(R.id.Transaction_toAddress_TextInput);
+        this.tokenNameSpinner = view.findViewById(R.id.Transaction_tokenname_Spinner);
+        this.amountTextInput = view.findViewById(R.id.Transaction_amount_TextInput);
+        this.sendButton = view.findViewById(R.id.Transaction_send_Button);
 
-        transaction_tokenname_Spinner.setAdapter(mArrayAdapter);
-        transaction_tokenname_Spinner.setSelection(0);
-        transaction_tokenname_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tokenNameSpinner.setAdapter(mArrayAdapter);
+        tokenNameSpinner.setSelection(0);
+        tokenNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                transaction_amount_TextInput.setEnabled(true);
+                amountTextInput.setEnabled(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                transaction_amount_TextInput.setEnabled(false);
+                amountTextInput.setEnabled(false);
             }
         });
 
-        transaction_send_Button.setOnClickListener(new View.OnClickListener() {
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
@@ -148,12 +149,12 @@ public class TransactionSingleFragment extends Fragment {
                     public void execute() throws Exception {
                         String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
                         Address destination =
-                                Address.fromBase58(WalletContextHolder.networkParameters, transaction_toAddress_TextInput.getText().toString());
+                                Address.fromBase58(WalletContextHolder.networkParameters, toAddressTextInput.getText().toString());
 
                         Wallet wallet = WalletContextHolder.get().wallet();
                         wallet.setServerURL(CONTEXT_ROOT);
 
-                        Coin amount = Coin.parseCoin(transaction_amount_TextInput.getText().toString(), Utils.HEX.decode(transaction_tokenname_Spinner.getSelectedItem().toString()));
+                        Coin amount = Coin.parseCoin(amountTextInput.getText().toString(), Utils.HEX.decode(tokenNameSpinner.getSelectedItem().toString()));
                         long factor = 1;
                         amount = amount.multiply(factor);
                         wallet.pay(WalletContextHolder.getAesKey(), destination, amount, "");
