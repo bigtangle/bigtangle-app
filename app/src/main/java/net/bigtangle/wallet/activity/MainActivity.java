@@ -11,7 +11,6 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.settings.SettingsFragment;
 import net.bigtangle.wallet.activity.transaction.TransactionFragment;
 import net.bigtangle.wallet.activity.wallet.WalletFragment;

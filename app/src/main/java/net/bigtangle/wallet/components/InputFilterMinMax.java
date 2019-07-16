@@ -26,7 +26,8 @@ public class InputFilterMinMax implements InputFilter {
             double input = Double.parseDouble(newVal);
             if (isInRange(min, max, input))
                 return null;
-        } catch (NumberFormatException ignored) { }
+        } catch (NumberFormatException ignored) {
+        }
         return "";
     }
 

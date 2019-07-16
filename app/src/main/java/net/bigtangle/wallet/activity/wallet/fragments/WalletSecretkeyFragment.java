@@ -21,17 +21,17 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private List<WalletSecretkeyItem> itemList;
 
-    private RecyclerView mSecretkeyRecyclerView;
+    @Bind(R.id.swipeContainer)
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private LinearLayoutManager mLayoutManager;
-    private WalletSecretkeyItemListAdapter mWalletSecretkeyItemListAdapter;
 
-    public WalletSecretkeyFragment() {
-    }
+    private WalletSecretkeyItemListAdapter mAdapter;
 
     public static WalletSecretkeyFragment newInstance() {
         WalletSecretkeyFragment fragment = new WalletSecretkeyFragment();
@@ -57,35 +57,44 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                 itemList.add(walletSecretkeyItem);
             }
         }
+        this.mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_wallet_secretkey, container, false);
+        View view = inflater.inflate(R.layout.fragment_wallet_secretkey, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initData();
-        mWalletSecretkeyItemListAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
+        this.mAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
 
-        mSecretkeyRecyclerView = view.findViewById(R.id.Secretkey_RecyclerView);
-        mSwipeRefreshLayout = view.findViewById(R.id.Secretkey_swipeContainer);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mLayoutManager = new WrapContentLinearLayoutManager(getContext());
-        mSecretkeyRecyclerView.setHasFixedSize(true);
-        mSecretkeyRecyclerView.setLayoutManager(mLayoutManager);
-        mSecretkeyRecyclerView.setAdapter(mWalletSecretkeyItemListAdapter);
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewContainer);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
+
+        initData();
     }
 
     @Override
     public void onRefresh() {
         this.initData();
         mSwipeRefreshLayout.setRefreshing(false);
-        mWalletSecretkeyItemListAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

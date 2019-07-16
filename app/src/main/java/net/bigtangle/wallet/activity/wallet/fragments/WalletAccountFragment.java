@@ -30,15 +30,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class WalletAccountFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private List<WalletAccountItem> itemList;
 
-    private WalletAccountItemListAdapter mWalletAccountItemListAdapter;
+    private WalletAccountItemListAdapter mAdapter;
 
-    private RecyclerView mAccountsRecyclerView;
+    @Bind(R.id.swipeContainer)
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private LinearLayoutManager mLayoutManager;
 
     public WalletAccountFragment() {
     }
@@ -80,7 +82,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mWalletAccountItemListAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();
                         }
                     });
                 } catch (IOException e) {
@@ -93,24 +95,26 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_wallet_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_wallet_account, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
+
+        this.mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewContainer);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
+
         this.initData();
-
-        mWalletAccountItemListAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
-
-        mSwipeRefreshLayout = view.findViewById(R.id.Accounts_swipeContainer);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
-        mAccountsRecyclerView = view.findViewById(R.id.Accounts_recyclerView);
-        mLayoutManager = new WrapContentLinearLayoutManager(getContext());
-        mAccountsRecyclerView.setHasFixedSize(true);
-        mAccountsRecyclerView.setLayoutManager(mLayoutManager);
-        mAccountsRecyclerView.setAdapter(mWalletAccountItemListAdapter);
     }
 
     @Override

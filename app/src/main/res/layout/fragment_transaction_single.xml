@@ -32,7 +32,7 @@
                 android:layout_marginRight="20dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/Transaction_toAddress_TextInput"
+                    android:id="@+id/toAddressTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -62,7 +62,7 @@
                 android:layout_marginRight="20dp">
 
                 <Spinner
-                    android:id="@+id/Transaction_tokenname_Spinner"
+                    android:id="@+id/tokenNameSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
                     android:layout_marginStart="0dp"
@@ -95,7 +95,7 @@
                 android:layout_marginRight="20dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/Transaction_amount_TextInput"
+                    android:id="@+id/amountTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/Transaction_send_Button"
+                android:id="@+id/sendButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"

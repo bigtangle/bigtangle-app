@@ -13,7 +13,10 @@ import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 
 import java.util.List;
 
-public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletSecretkeyItemListAdapter.WalletSecretkeyItemViewHolder> {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletSecretkeyItemListAdapter.ItemViewHolder> {
 
     private Context mContext;
     private List<WalletSecretkeyItem> itemList;
@@ -25,14 +28,14 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
 
     @NonNull
     @Override
-    public WalletSecretkeyItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_wallet_secretkey, parent, false);
-        WalletSecretkeyItemViewHolder viewHolder = new WalletSecretkeyItemViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletSecretkeyItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         holder.bind(itemList.get(position));
     }
 
@@ -41,20 +44,22 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         return itemList != null ? itemList.size() : 0;
     }
 
-    public class WalletSecretkeyItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.addressTextView)
         private TextView addressTextView;
-        private TextView pubKeyTextView;
 
-        public WalletSecretkeyItemViewHolder(View itemView) {
+        @Bind(R.id.pubkeyTextView)
+        private TextView pubkeyTextView;
+
+        public ItemViewHolder(View itemView) {
             super(itemView);
-            addressTextView = itemView.findViewById(R.id.WalletSecretkeyItem_address_TextView);
-            pubKeyTextView = itemView.findViewById(R.id.WalletSecretkeyItem_pubkey_TextView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(WalletSecretkeyItem walletSecretkeyItem) {
             addressTextView.setText(walletSecretkeyItem.getAddress());
-            pubKeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
+            pubkeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
         }
     }
 }

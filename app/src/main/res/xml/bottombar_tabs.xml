@@ -4,7 +4,7 @@
         id="@+id/tab_transaction"
         icon="@drawable/ic_view_module_black_24px"
         title="@string/title_tab_transaction"
-        barColorWhenSelected="#4F6194"/>
+        barColorWhenSelected="#4F6194" />
     <tab
         id="@+id/tab_wallet"
         icon="@drawable/ic_account_balance_wallet_black_24px"

@@ -1,6 +1,5 @@
 package net.bigtangle.wallet.activity.transaction.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,16 +35,16 @@ import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class TransactionSingleFragment extends Fragment {
 
-    private TextInputEditText toAddressTextInput;
-    private Spinner tokenNameSpinner;
-    private TextInputEditText amountTextInput;
-    private Button sendButton;
-
-    private ArrayAdapter<String> mArrayAdapter;
+    private ArrayAdapter<String> mAdapter;
 
     private List<String> tokenNames;
+
+    private ViewHolder mViewHolder;
 
     public TransactionSingleFragment() {
     }
@@ -59,9 +58,8 @@ public class TransactionSingleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.tokenNames = new ArrayList<>();
-        Context context = getContext();
-        mArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, tokenNames);
-        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, tokenNames);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.initData();
     }
 
@@ -91,7 +89,7 @@ public class TransactionSingleFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mArrayAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();
                         }
                     });
                 } catch (Exception e) {
@@ -104,33 +102,31 @@ public class TransactionSingleFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction_single, container, false);
+        View view = inflater.inflate(R.layout.fragment_transaction_single, container, false);
+        ButterKnife.bind(this, view);
+        this.mViewHolder = new ViewHolder(view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.toAddressTextInput = view.findViewById(R.id.Transaction_toAddress_TextInput);
-        this.tokenNameSpinner = view.findViewById(R.id.Transaction_tokenname_Spinner);
-        this.amountTextInput = view.findViewById(R.id.Transaction_amount_TextInput);
-        this.sendButton = view.findViewById(R.id.Transaction_send_Button);
-
-        tokenNameSpinner.setAdapter(mArrayAdapter);
-        tokenNameSpinner.setSelection(0);
-        tokenNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        this.mViewHolder.tokenNameSpinner.setAdapter(mAdapter);
+        this.mViewHolder.tokenNameSpinner.setSelection(0);
+        this.mViewHolder.tokenNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                amountTextInput.setEnabled(true);
+                mViewHolder.amountTextInput.setEnabled(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                amountTextInput.setEnabled(false);
+                mViewHolder.amountTextInput.setEnabled(false);
             }
         });
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        this.mViewHolder.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
@@ -148,13 +144,17 @@ public class TransactionSingleFragment extends Fragment {
                     @Override
                     public void execute() throws Exception {
                         String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
-                        Address destination =
-                                Address.fromBase58(WalletContextHolder.networkParameters, toAddressTextInput.getText().toString());
+                        final String toAddress = mViewHolder.toAddressTextInput.getText().toString();
+                        final String amountValue = mViewHolder.amountTextInput.getText().toString();
+
+                        Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
 
                         Wallet wallet = WalletContextHolder.get().wallet();
                         wallet.setServerURL(CONTEXT_ROOT);
 
-                        Coin amount = Coin.parseCoin(amountTextInput.getText().toString(), Utils.HEX.decode(tokenNameSpinner.getSelectedItem().toString()));
+                        byte[] tokenidBuf = Utils.HEX.decode(mViewHolder.tokenNameSpinner.getSelectedItem().toString());
+                        Coin amount = Coin.parseCoin(amountValue, tokenidBuf);
+
                         long factor = 1;
                         amount = amount.multiply(factor);
                         wallet.pay(WalletContextHolder.getAesKey(), destination, amount, "");
@@ -162,5 +162,32 @@ public class TransactionSingleFragment extends Fragment {
                 }).execute();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (this.mViewHolder != null) {
+            ButterKnife.unbind(this.mViewHolder);
+        }
+    }
+
+    static
+    class ViewHolder {
+        @Bind(R.id.toAddressTextInput)
+        TextInputEditText toAddressTextInput;
+
+        @Bind(R.id.tokenNameSpinner)
+        Spinner tokenNameSpinner;
+
+        @Bind(R.id.amountTextInput)
+        TextInputEditText amountTextInput;
+
+        @Bind(R.id.sendButton)
+        Button sendButton;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

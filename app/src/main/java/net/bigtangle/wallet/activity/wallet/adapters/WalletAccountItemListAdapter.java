@@ -13,7 +13,10 @@ import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 
 import java.util.List;
 
-public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAccountItemListAdapter.WalletAccountItemViewHolder> {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAccountItemListAdapter.ItemViewHolder> {
 
     private Context mContext;
     private List<WalletAccountItem> itemList;
@@ -25,14 +28,14 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
 
     @NonNull
     @Override
-    public WalletAccountItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_wallet_account, parent, false);
-        WalletAccountItemViewHolder viewHolder = new WalletAccountItemViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletAccountItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         holder.bind(itemList.get(position));
     }
 
@@ -41,20 +44,22 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
         return itemList != null ? itemList.size() : 0;
     }
 
-    public class WalletAccountItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView WalletItem_name_textView;
-        private TextView WalletItem_name1_textView;
+        @Bind(R.id.tokenidTextView)
+        private TextView tokenidTextView;
 
-        public WalletAccountItemViewHolder(View itemView) {
+        @Bind(R.id.amountTextView)
+        private TextView amountTextView;
+
+        public ItemViewHolder(View itemView) {
             super(itemView);
-            this.WalletItem_name_textView = itemView.findViewById(R.id.WalletItem_name_textView);
-            this.WalletItem_name1_textView = itemView.findViewById(R.id.WalletItem_name1_textView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(WalletAccountItem walletAccountItem) {
-            this.WalletItem_name_textView.setText(walletAccountItem.getTokenid());
-            this.WalletItem_name1_textView.setText(walletAccountItem.getValue());
+            this.tokenidTextView.setText(walletAccountItem.getTokenid());
+            this.amountTextView.setText(walletAccountItem.getValue());
         }
     }
 }
