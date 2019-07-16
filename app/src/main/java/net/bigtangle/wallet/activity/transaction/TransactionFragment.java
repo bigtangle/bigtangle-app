@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionBankFragment;
 import net.bigtangle.wallet.activity.transaction.fragments.TransactionHistoryFragment;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionMultiAddressFragment;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionMultiSignatureFragment;
+import net.bigtangle.wallet.activity.transaction.fragments.TransactionSignatureFragment;
 import net.bigtangle.wallet.activity.transaction.fragments.TransactionSingleFragment;
 
 public class TransactionFragment extends Fragment {
@@ -50,7 +50,7 @@ public class TransactionFragment extends Fragment {
         mViewPager = view.findViewById(R.id.BlockExplorer_viewPager);
         mTabLayout = view.findViewById(R.id.BlockExplorer_tabLayout);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(4);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -69,10 +69,10 @@ public class TransactionFragment extends Fragment {
                 return TransactionSingleFragment.newInstance();
             }
             if (position == 1) {
-                return TransactionMultiSignatureFragment.newInstance();
+                return TransactionSignatureFragment.newInstance();
             }
             if (position == 2) {
-                return TransactionMultiAddressFragment.newInstance();
+                return TransactionBankFragment.newInstance();
             }
             if (position == 3) {
                 return TransactionHistoryFragment.newInstance();
@@ -92,9 +92,9 @@ public class TransactionFragment extends Fragment {
                 case 0:
                     return fragment.getString(R.string.transaction_tab_single);
                 case 1:
-                    return fragment.getString(R.string.transaction_tab_multi_signature);
+                    return fragment.getString(R.string.transaction_tab_signature);
                 case 2:
-                    return fragment.getString(R.string.transaction_tab_multi_address);
+                    return fragment.getString(R.string.transaction_tab_bank);
                 case 3:
                     return fragment.getString(R.string.transaction_tab_history);
             }
