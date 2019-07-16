@@ -44,13 +44,13 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         return itemList != null ? itemList.size() : 0;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.addressTextView)
-        private TextView addressTextView;
+        TextView addressTextView;
 
         @Bind(R.id.pubkeyTextView)
-        private TextView pubkeyTextView;
+        TextView pubkeyTextView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);

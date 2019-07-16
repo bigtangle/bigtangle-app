@@ -44,13 +44,13 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
         return itemList != null ? itemList.size() : 0;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.tokenidTextView)
-        private TextView tokenidTextView;
+        TextView tokenidTextView;
 
         @Bind(R.id.amountTextView)
-        private TextView amountTextView;
+        TextView amountTextView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);

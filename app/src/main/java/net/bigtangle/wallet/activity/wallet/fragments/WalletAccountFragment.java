@@ -40,7 +40,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     private WalletAccountItemListAdapter mAdapter;
 
     @Bind(R.id.swipeContainer)
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public WalletAccountFragment() {
     }

@@ -29,7 +29,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     private List<WalletSecretkeyItem> itemList;
 
     @Bind(R.id.swipeContainer)
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
