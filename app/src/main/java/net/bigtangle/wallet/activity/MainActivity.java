@@ -11,6 +11,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.market.MarketFragment;
 import net.bigtangle.wallet.activity.settings.SettingsFragment;
 import net.bigtangle.wallet.activity.transaction.TransactionFragment;
 import net.bigtangle.wallet.activity.wallet.WalletFragment;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = WalletFragment.newInstance();
                     break;
                 case 2:
-                    fragment = TransactionFragment.newInstance();
+                    fragment = MarketFragment.newInstance();
                     break;
                 case 3:
                     fragment = SettingsFragment.newInstance();
