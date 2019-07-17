@@ -30,17 +30,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WalletAccountFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    @BindView(R.id.recyclerViewContainer)
+    RecyclerView accountsRecyclerView;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     private List<WalletAccountItem> itemList;
 
     private WalletAccountItemListAdapter mAdapter;
-
-    @Bind(R.id.swipeContainer)
-    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public WalletAccountFragment() {
     }
@@ -108,11 +110,10 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
 
         this.mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewContainer);
-        recyclerView.setHasFixedSize(true);
+        accountsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+        accountsRecyclerView.setLayoutManager(layoutManager);
+        accountsRecyclerView.setAdapter(mAdapter);
 
         this.initData();
     }

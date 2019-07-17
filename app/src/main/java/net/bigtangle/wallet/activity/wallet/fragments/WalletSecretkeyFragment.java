@@ -21,15 +21,16 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private List<WalletSecretkeyItem> itemList;
-
-    @Bind(R.id.swipeContainer)
+    @BindView(R.id.recyclerViewContainer)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.swipeContainer)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    private List<WalletSecretkeyItem> itemList;
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
@@ -77,10 +78,9 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewContainer);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         initData();
     }
@@ -90,11 +90,5 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         this.initData();
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

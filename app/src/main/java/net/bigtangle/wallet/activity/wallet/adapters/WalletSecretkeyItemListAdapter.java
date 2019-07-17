@@ -13,7 +13,7 @@ import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletSecretkeyItemListAdapter.ItemViewHolder> {
@@ -44,12 +44,12 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         return itemList != null ? itemList.size() : 0;
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.addressTextView)
+        @BindView(R.id.addressTextView)
         TextView addressTextView;
 
-        @Bind(R.id.pubkeyTextView)
+        @BindView(R.id.pubkeyTextView)
         TextView pubkeyTextView;
 
         public ItemViewHolder(View itemView) {

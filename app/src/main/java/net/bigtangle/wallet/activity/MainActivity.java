@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_wallet:
                         position = 1;
                         break;
+                    case R.id.tab_market:
+                        position = 2;
+                        break;
                     case R.id.tab_settings:
                         position = 3;
                         break;
@@ -104,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                     fragment = WalletFragment.newInstance();
                     break;
                 case 2:
+                    fragment = TransactionFragment.newInstance();
+                    break;
+                case 3:
                     fragment = SettingsFragment.newInstance();
                     break;
             }
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 }

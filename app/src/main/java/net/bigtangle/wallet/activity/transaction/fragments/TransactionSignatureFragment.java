@@ -12,18 +12,18 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 
 /**
- * 多重签名交易控件
+ * 签名
  *
  * @author lijian
  * @date 2019-07-06 00:05:36
  */
-public class TransactionMultiSignatureFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TransactionSignatureFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public TransactionMultiSignatureFragment() {
+    public TransactionSignatureFragment() {
     }
 
-    public static TransactionMultiSignatureFragment newInstance() {
-        TransactionMultiSignatureFragment fragment = new TransactionMultiSignatureFragment();
+    public static TransactionSignatureFragment newInstance() {
+        TransactionSignatureFragment fragment = new TransactionSignatureFragment();
         return fragment;
     }
 
@@ -35,7 +35,7 @@ public class TransactionMultiSignatureFragment extends Fragment implements Swipe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction_single, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_not_open, container, false);
     }
 
     @Override
