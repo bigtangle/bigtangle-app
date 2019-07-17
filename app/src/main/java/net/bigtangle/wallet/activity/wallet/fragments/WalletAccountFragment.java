@@ -119,18 +119,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        this.initData();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        this.initData();
-    }
-
-    @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
         this.initData();

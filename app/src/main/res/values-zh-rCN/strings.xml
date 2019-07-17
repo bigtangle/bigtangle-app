@@ -24,4 +24,14 @@
     <string name="pay">支付</string>
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
+
+    <string name="dialog_title_info">信息</string>
+    <string name="dialog_title_error">错误</string>
+    <string name="dialog_please_wait">请销候</string>
+
+    <string name="network_request_failed">网络请求失败，是否重新？</string>
+    <string name="wallet_operation_failed">钱包操作失败，请稍候重试？</string>
+    <string name="network_response_data_failed">网络响应数据解析失败</string>
+    <string name="network_request_loading">请求加载中...</string>
+    <string name="server_processing_failed">服务器处理失败，消息 : {0}，是否重试?</string>
 </resources>

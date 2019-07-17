@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
@@ -64,6 +65,7 @@ public class HttpNetRunaDispatch {
                     message.what = MessageStateCode.SUCCESS;
                     httpNetCompleteHandler.sendMessage(message);
                 } catch (Exception e) {
+                    Log.e("bigtangle-wallet", "wallet http request", e);
                     Message message = new Message();
                     message.what = MessageStateCode.WALLET_ERROR;
                     httpNetCompleteHandler.sendMessage(message);
@@ -83,8 +85,8 @@ public class HttpNetRunaDispatch {
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle("提示")
-                        .setMessage("网络请求失败，是否重新？")
+                        .setTitle(context.getString(R.string.dialog_title_info))
+                        .setMessage(context.getString(R.string.network_request_failed))
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -103,8 +105,8 @@ public class HttpNetRunaDispatch {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle("操作失败")
-                        .setMessage("钱包操作失败，请稍候重试")
+                        .setTitle(context.getString(R.string.dialog_title_error))
+                        .setMessage(context.getString(R.string.wallet_operation_failed))
                         .show();
                 return;
             }
