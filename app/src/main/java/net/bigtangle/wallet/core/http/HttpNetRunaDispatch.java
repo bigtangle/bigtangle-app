@@ -16,7 +16,7 @@ import net.bigtangle.wallet.core.constant.MessageStateCode;
 
 public class HttpNetRunaDispatch {
 
-    private final Context context;
+    private Context context;
 
     private HttpNetComplete httpNetComplete;
 
@@ -24,23 +24,21 @@ public class HttpNetRunaDispatch {
 
     private HttpRunaExecute httpRunaExecute;
 
-    public HttpNetRunaDispatch(Context context, HttpNetComplete httpNetComplete, final HttpNetProgress httpNetProgress, HttpRunaExecute httpRunaExecute) {
-        this.context = context;
-        this.httpNetComplete = httpNetComplete;
-        this.httpNetProgress = httpNetProgress;
-        this.httpRunaExecute = httpRunaExecute;
-    }
-
     public HttpNetRunaDispatch(Context context, HttpNetComplete httpNetComplete, HttpRunaExecute httpRunaExecute) {
-        this.context = context;
-        this.httpNetComplete = httpNetComplete;
+        this(context, httpNetComplete, null, httpRunaExecute);
         final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
-        httpNetProgress = new HttpNetProgress() {
+        this.httpNetProgress = new HttpNetProgress() {
             @Override
             public void endProgress() {
                 progressDialog.dismiss();
             }
         };
+    }
+
+    public HttpNetRunaDispatch(Context context, HttpNetComplete httpNetComplete, final HttpNetProgress httpNetProgress, HttpRunaExecute httpRunaExecute) {
+        this.context = context;
+        this.httpNetComplete = httpNetComplete;
+        this.httpNetProgress = httpNetProgress;
         this.httpRunaExecute = httpRunaExecute;
     }
 
@@ -90,14 +88,7 @@ public class HttpNetRunaDispatch {
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
-                                HttpNetProgress httpNetProgress = new HttpNetProgress() {
-                                    @Override
-                                    public void endProgress() {
-                                        progressDialog.dismiss();
-                                    }
-                                };
-                                new HttpNetRunaDispatch(context, httpNetComplete, httpNetProgress, httpRunaExecute).execute();
+                                new HttpNetRunaDispatch(context, httpNetComplete, httpRunaExecute).execute();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
