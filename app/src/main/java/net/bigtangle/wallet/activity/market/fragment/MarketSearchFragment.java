@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
+import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
+import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,9 +46,13 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @BindView(R.id.search_btn)
     Button searchBtn;
     @BindView(R.id.recyclerViewContainer)
-    RecyclerView recyclerViewContainer;
+    RecyclerView mRecyclerView;
     @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private List<MarketOrderItem> itemList;
+
+    private MarketOrderItemListAdapter mAdapter;
 
     public MarketSearchFragment() {
     }
@@ -54,6 +65,9 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (this.itemList == null) {
+            this.itemList = new ArrayList<MarketOrderItem>();
+        }
     }
 
     @Override
@@ -67,6 +81,21 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        initData();
+    }
+
+    private void initData() {
+        // TODO: 2019-07-18 获取数据逻辑
     }
 
     @Override
@@ -81,5 +110,8 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
+        this.initData();
+        mSwipeRefreshLayout.setRefreshing(false);
+        mAdapter.notifyDataSetChanged();
     }
 }
