@@ -30,4 +30,14 @@
     <string name="pay">Pay</string>
     <string name="cancel">Cancel</string>
 
+    <string name="dialog_title_info">Info</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_please_wait">Please wait</string>
+
+    <string name="network_request_failed">Network request failed, whether to restart?</string>
+    <string name="wallet_operation_failed">The wallet operation failed. Please try again later？</string>
+    <string name="network_response_data_failed">Network response data parsing failure</string>
+    <string name="network_request_loading">Request loading...</string>
+    <string name="server_processing_failed">Server processing failure，Message : {0}，Whether to retry?</string>
+
 </resources>

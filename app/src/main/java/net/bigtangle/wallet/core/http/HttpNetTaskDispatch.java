@@ -21,6 +21,7 @@ import net.bigtangle.wallet.core.constant.MessageStateCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 
 @SuppressLint("HandlerLeak")
@@ -89,12 +90,12 @@ public class HttpNetTaskDispatch {
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle("提示")
-                        .setMessage("网络请求失败，是否重新？")
+                        .setTitle(context.getString(R.string.dialog_title_error))
+                        .setMessage(context.getString(R.string.network_request_failed))
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
+                                final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
                                 HttpNetProgress httpNetProgress = new HttpNetProgress() {
                                     @Override
                                     public void endProgress() {
@@ -121,8 +122,8 @@ public class HttpNetTaskDispatch {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle("数据解析")
-                        .setMessage("当前响应数据解析失败")
+                        .setTitle(context.getString(R.string.dialog_title_error))
+                        .setMessage(context.getString(R.string.network_response_data_failed))
                         .show();
                 return;
             }
@@ -133,16 +134,17 @@ public class HttpNetTaskDispatch {
                     if (StringUtils.isBlank(msg)) {
                         msg = "";
                     }
+                    String str = MessageFormat.format(context.getString(R.string.server_processing_failed), msg);
                     new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                             .setTopColorRes(R.color.colorPrimary)
                             .setButtonsColor(Color.WHITE)
                             .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle("提示")
-                            .setMessage("服务器操作失败, msg " + msg + "，是否重新？")
+                            .setTitle(context.getString(R.string.dialog_title_error))
+                            .setMessage(str)
                             .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
+                                    final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
                                     HttpNetProgress httpNetProgress = new HttpNetProgress() {
                                         @Override
                                         public void endProgress() {
@@ -163,7 +165,6 @@ public class HttpNetTaskDispatch {
             }
 
             if (httpNetComplete != null) {
-                //处理回调接口
                 httpNetComplete.completeCallback((String) message.obj);
             }
         }
