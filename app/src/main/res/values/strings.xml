@@ -13,11 +13,8 @@
     <string name="transaction_tab_bank">bank</string>
     <string name="transaction_tab_history">History</string>
 
-
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
-    <string name="wallet_account_token_id">Token ID</string>
-    <string name="wallet_account_token_name">Token Name</string>
     <string name="wallet_account_value">Amount</string>
     <string name="wallet_secretkey_address">Address</string>
     <string name="wallet_secretkey_pubkey">Public Key</string>
@@ -28,6 +25,9 @@
     <string name="search">Search</string>
     <string name="pay">Pay</string>
     <string name="cancel">Cancel</string>
+
+    <string name="token_id">Token ID</string>
+    <string name="token_name">Token Name</string>
 
     <string name="address_not_empty">Address not empty</string>
     <string name="amount_not_empty">Amount not empty</string>

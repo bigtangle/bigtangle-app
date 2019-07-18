@@ -11,8 +11,6 @@
 
     <string name="wallet_tab_account">帐户</string>
     <string name="wallet_tab_secretkey">密钥</string>
-    <string name="wallet_account_token_id">通证ID</string>
-    <string name="wallet_account_token_name">通证名称</string>
     <string name="wallet_account_value">数量</string>
     <string name="wallet_secretkey_address">地址</string>
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
@@ -23,6 +21,9 @@
     <string name="pay">支付</string>
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
+
+    <string name="token_id">通证ID</string>
+    <string name="token_name">通证名称</string>
 
     <string name="address_not_empty">地址不可以为空</string>
     <string name="amount_not_empty">地址不可以为空</string>

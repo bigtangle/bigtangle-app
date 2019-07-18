@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
@@ -18,12 +19,15 @@ import net.bigtangle.core.Address;
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
+import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.components.TokenItem;
+import net.bigtangle.wallet.components.TokenItemListAdapter;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
@@ -60,10 +64,10 @@ public class TransactionPaymentFragment extends Fragment {
     @BindView(R.id.pay_button)
     Button payButton;
 
-    ArrayAdapter<String> tokenAdapter;
+    TokenItemListAdapter tokenAdapter;
     ArrayAdapter<String> payMethodAdapter;
 
-    private List<String> tokenNames;
+    private List<TokenItem> tokenNames;
     private String[] payMethodArray = {"支付", "多重签名支付", "多重地址支付", "多重签名地址支付"};
 
     public static TransactionPaymentFragment newInstance() {
@@ -75,13 +79,12 @@ public class TransactionPaymentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (this.tokenNames == null) {
-            this.tokenNames = new ArrayList<String>();
+            this.tokenNames = new ArrayList<TokenItem>();
         }
         payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        tokenAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, tokenNames);
-        tokenAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
     }
 
     private void initData() {
@@ -102,7 +105,16 @@ public class TransactionPaymentFragment extends Fragment {
                             continue;
                         }
                         byte[] tokenid = coin.getTokenid();
-                        tokenNames.add(Utils.HEX.encode(tokenid));
+                        TokenItem tokenItem = new TokenItem();
+                        tokenItem.setTokenId(Utils.HEX.encode(tokenid));
+
+                        Token token = getBalancesResponse.getTokennames().get(tokenItem.getTokenId());
+                        if (token != null) {
+                            tokenItem.setTokenName(token.getTokenname());
+                        } else {
+                            tokenItem.setTokenName(tokenItem.getTokenId());
+                        }
+                        tokenNames.add(tokenItem);
                     }
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -159,7 +171,8 @@ public class TransactionPaymentFragment extends Fragment {
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
                         }
-                        final String tokenValue = tokenSpinner.getSelectedItem().toString();
+                        TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.tokenIdTextView);
+                        final String tokenValue = tokenIdTextView.getText().toString();
                         if (StringUtils.isBlank(tokenValue)) {
                             throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
                         }
