@@ -46,6 +46,9 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.tokenNameTextView)
+        TextView tokenNameTextView;
+
         @BindView(R.id.tokenidTextView)
         TextView tokenidTextView;
 
@@ -58,6 +61,7 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
         }
 
         public void bind(WalletAccountItem walletAccountItem) {
+            this.tokenNameTextView.setText(walletAccountItem.getTokenname());
             this.tokenidTextView.setText(walletAccountItem.getTokenid());
             this.amountTextView.setText(walletAccountItem.getValue());
         }

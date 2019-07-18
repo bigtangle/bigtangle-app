@@ -26,10 +26,13 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-
-public class TransactionSingleFragment extends Fragment {
+public class TransactionPaymentFragment extends Fragment {
 
     @BindView(R.id.pay_method_spinner)
     Spinner payMethodSpinner;
@@ -65,8 +66,8 @@ public class TransactionSingleFragment extends Fragment {
     private List<String> tokenNames;
     private String[] payMethodArray = {"支付", "多重签名支付", "多重地址支付", "多重签名地址支付"};
 
-    public static TransactionSingleFragment newInstance() {
-        TransactionSingleFragment fragment = new TransactionSingleFragment();
+    public static TransactionPaymentFragment newInstance() {
+        TransactionPaymentFragment fragment = new TransactionPaymentFragment();
         return fragment;
     }
 
@@ -119,9 +120,9 @@ public class TransactionSingleFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mContextView = inflater.inflate(R.layout.fragment_transaction_single, container, false);
-        ButterKnife.bind(this, mContextView);
-        return mContextView;
+        View view = inflater.inflate(R.layout.fragment_transaction_payment, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -132,15 +133,14 @@ public class TransactionSingleFragment extends Fragment {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo doPay
-               new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
+                new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
                     public void completeCallback(String jsonStr) {
                         new LovelyInfoDialog(getContext())
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_info_white_24px)
-                                .setTitle("操作成功")
-                                .setMessage("钱包进行支付成功")
+                                .setTitle(getContext().getString(R.string.dialog_title_info))
+                                .setMessage(getContext().getString(R.string.wallet_payment_success))
                                 .show();
                         return;
                     }
@@ -149,14 +149,27 @@ public class TransactionSingleFragment extends Fragment {
                     public void execute() throws Exception {
                         String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
                         final String toAddress = toAddressTextInput.getText().toString();
+                        if (StringUtils.isBlank(toAddress)) {
+                            throw new HttpNetExecuteException(getContext().getString(R.string.address_not_empty));
+                        }
                         final String amountValue = amountTextInput.getText().toString();
+                        if (StringUtils.isBlank(amountValue)) {
+                            throw new HttpNetExecuteException(getContext().getString(R.string.amount_not_empty));
+                        }
+                        if (tokenSpinner.getSelectedItem() == null) {
+                            throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
+                        }
+                        final String tokenValue = tokenSpinner.getSelectedItem().toString();
+                        if (StringUtils.isBlank(tokenValue)) {
+                            throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
+                        }
 
                         Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
 
                         Wallet wallet = WalletContextHolder.get().wallet();
                         wallet.setServerURL(CONTEXT_ROOT);
 
-                        byte[] tokenidBuf = Utils.HEX.decode(tokenSpinner.getSelectedItem().toString());
+                        byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
                         Coin amount = Coin.parseCoin(amountValue, tokenidBuf);
 
                         long factor = 1;

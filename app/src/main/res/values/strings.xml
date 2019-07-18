@@ -16,19 +16,23 @@
 
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
-    <string name="wallet_account_tokenname">Address</string>
+    <string name="wallet_account_token_id">Token ID</string>
+    <string name="wallet_account_token_name">Token Name</string>
     <string name="wallet_account_value">Amount</string>
     <string name="wallet_secretkey_address">Address</string>
     <string name="wallet_secretkey_pubkey">Public Key</string>
-    <string name="wallet_transaction_success">Transaction Success</string>
-    <string name="wallet_transaction_fail">Transaction Fail</string>
 
     <string name="settings_tab_connection">Connection</string>
     <string name="settings_tab_about">About</string>
 
-    <string name="search">search</string>
+    <string name="search">Search</string>
     <string name="pay">Pay</string>
     <string name="cancel">Cancel</string>
+
+    <string name="address_not_empty">Address not empty</string>
+    <string name="amount_not_empty">Amount not empty</string>
+    <string name="token_not_empty">Token not empty</string>
+    <string name="wallet_payment_success">Wallet payment success</string>
 
     <string name="dialog_title_info">Info</string>
     <string name="dialog_title_error">Error</string>
