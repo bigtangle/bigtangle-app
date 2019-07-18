@@ -7,13 +7,16 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
+import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
 
 public class HttpNetRunaDispatch {
 
@@ -64,10 +67,15 @@ public class HttpNetRunaDispatch {
                     Message message = new Message();
                     message.what = MessageStateCode.SUCCESS;
                     httpNetCompleteHandler.sendMessage(message);
+                } catch (HttpNetExecuteException e) {
+                    Message message = new Message();
+                    message.what = MessageStateCode.WALLET_TOAST_ERROR;
+                    message.obj = e.getToastMessage();
+                    httpNetCompleteHandler.sendMessage(message);
                 } catch (Exception e) {
                     Log.e("bigtangle-wallet", "wallet http request", e);
                     Message message = new Message();
-                    message.what = MessageStateCode.WALLET_ERROR;
+                    message.what = MessageStateCode.WALLET_EXCEPTION_ERROR;
                     httpNetCompleteHandler.sendMessage(message);
                 } finally {
                     httpNetProgressHandler.sendEmptyMessage(0);
@@ -101,7 +109,7 @@ public class HttpNetRunaDispatch {
                         .show();
 
                 return;
-            } else if (message.what == MessageStateCode.WALLET_ERROR) {
+            } else if (message.what == MessageStateCode.WALLET_EXCEPTION_ERROR) {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
@@ -109,9 +117,14 @@ public class HttpNetRunaDispatch {
                         .setMessage(context.getString(R.string.wallet_operation_failed))
                         .show();
                 return;
-            }
-            if (httpNetComplete != null) {
-                httpNetComplete.completeCallback("");
+            } else if (message.what == MessageStateCode.WALLET_TOAST_ERROR) {
+                Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.show();
+            } else {
+                if (httpNetComplete != null) {
+                    httpNetComplete.completeCallback("");
+                }
             }
         }
     };

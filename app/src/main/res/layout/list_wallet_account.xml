@@ -29,7 +29,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/LinearLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -39,7 +38,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/wallet_account_tokenname"
+                        android:text="@string/wallet_account_token_name"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tokenNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/wallet_account_token_id"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -48,7 +72,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Marius Gill"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -72,7 +97,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Marius Gill"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
+import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
@@ -37,6 +38,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
 
     @BindView(R.id.recyclerViewContainer)
     RecyclerView accountsRecyclerView;
+
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -76,8 +78,13 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                         if (!coin.isZero()) {
                             WalletAccountItem walletAccountItem = new WalletAccountItem();
                             walletAccountItem.setTokenid(coin.getTokenHex());
-                            walletAccountItem.setTokenname(coin.getTokenHex());
                             walletAccountItem.setValue(coin.toPlainString());
+                            Token token = getBalancesResponse.getTokennames().get(coin.getTokenHex());
+                            if (token != null) {
+                                walletAccountItem.setTokenname(token.getTokenname());
+                            } else {
+                                walletAccountItem.setTokenname(coin.getTokenHex());
+                            }
                             itemList.add(walletAccountItem);
                         }
                     }
