@@ -8,4 +8,12 @@
     <color name="negativeChange">#D50000</color>
     <color name="backgroundColor">#212121</color>
     <color name="positive">#2E7D32</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="color_e5e5e5">#e5e5e5</color>
+    <color name="base_00000000">#00000000</color>
+    <color name="color_666666">#666666</color>
+    <color name="color_f6b340">#f6b340</color>
+    <color name="color_333333">#333333</color>
+
 </resources>
