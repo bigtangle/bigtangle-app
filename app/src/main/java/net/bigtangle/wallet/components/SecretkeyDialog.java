@@ -54,7 +54,6 @@ public class SecretkeyDialog extends Dialog {
     }
 
     private void initView() {
-
         if (negativeButton != null) {
             negativeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
