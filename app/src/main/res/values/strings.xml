@@ -28,6 +28,8 @@
 
     <string name="token_id">Token ID</string>
     <string name="token_name">Token Name</string>
+    <string name="publish">Publish</string>
+    <string name="match">Match</string>
 
     <string name="address_not_empty">Address not empty</string>
     <string name="amount_not_empty">Amount not empty</string>
@@ -43,5 +45,7 @@
     <string name="network_response_data_failed">Network response data parsing failure</string>
     <string name="network_request_loading">Request loading...</string>
     <string name="server_processing_failed">Server processing failure，Message : {0}，Whether to retry?</string>
+
+    <string name="dialog_secretkey_add_key_message">Are you sure you want to add a new key?</string>
 
 </resources>

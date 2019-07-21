@@ -19,7 +19,7 @@
             android:text="状态" />
 
         <RadioGroup
-            android:id="@+id/status_radio_group"
+            android:id="@+id/state_radio_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"

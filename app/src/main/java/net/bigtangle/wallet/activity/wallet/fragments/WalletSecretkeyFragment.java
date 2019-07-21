@@ -1,19 +1,21 @@
 package net.bigtangle.wallet.activity.wallet.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.leon.lfilepickerlibrary.LFilePicker;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.core.ECKey;
@@ -31,20 +33,27 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    private static final int REQUESTCODE_FROM_ACTIVITY = 1000;
 
     @BindView(R.id.recyclerViewContainer)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.wallet_input)
-    TextInputEditText walletInput;
-    @BindView(R.id.file_btn)
-    Button fileBtn;
+
     @BindView(R.id.add_key_btn)
     Button addKeyBtn;
+
     @BindView(R.id.new_key_btn)
     Button newKeyBtn;
+
+    @BindView(R.id.import_key_btn)
+    Button importKeyBtn;
+
     private List<WalletSecretkeyItem> itemList;
 
     private WalletSecretkeyItemListAdapter mAdapter;
@@ -93,18 +102,20 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        this.mRecyclerView.setHasFixedSize(true);
+        this.mRecyclerView.setLayoutManager(layoutManager);
+        this.mRecyclerView.setAdapter(mAdapter);
 
-        addKeyBtn.setOnClickListener(new View.OnClickListener() {
+        this.addKeyBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 showDialog();
             }
         });
 
-        newKeyBtn.setOnClickListener(new View.OnClickListener() {
+        this.newKeyBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 new LovelyStandardDialog(getContext(), LovelyStandardDialog.ButtonLayout.HORIZONTAL)
@@ -112,7 +123,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                         .setButtonsColor(Color.WHITE)
                         .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle(getContext().getString(R.string.dialog_title_info))
-                        .setMessage(getContext().getString(R.string.network_request_failed))
+                        .setMessage(getContext().getString(R.string.dialog_secretkey_add_key_message))
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -128,6 +139,20 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                             }
                         })
                         .show();
+            }
+        });
+
+        this.importKeyBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new LFilePicker()
+                        .withSupportFragment(WalletSecretkeyFragment.this)
+                        .withRequestCode(REQUESTCODE_FROM_ACTIVITY)
+                        .withStartPath("/storage/emulated/0/Download")
+                        .withIsGreater(false)
+                        .withFileSize(500 * 1024)
+                        .start();
             }
         });
 
@@ -159,5 +184,18 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                 initData();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUESTCODE_FROM_ACTIVITY) {
+                List<String> list = data.getStringArrayListExtra("paths");
+                for (String filepath : list) {
+                    Log.d("bigtangle-wallet", filepath);
+                }
+            }
+        }
     }
 }

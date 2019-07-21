@@ -30,7 +30,7 @@ public class MarketOrderFragment extends Fragment implements SwipeRefreshLayout.
     RadioButton buyBtn;
     @BindView(R.id.sell_btn)
     RadioButton sellBtn;
-    @BindView(R.id.status_radio_group)
+    @BindView(R.id.state_radio_group)
     RadioGroup statusRadioGroup;
     @BindView(R.id.address_spinner)
     Spinner addressSpinner;

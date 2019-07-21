@@ -1,53 +1,47 @@
 package net.bigtangle.wallet.activity.market.model;
 
-import java.io.Serializable;
+public class MarketOrderItem implements java.io.Serializable {
 
-public class MarketOrderItem implements Serializable {
-
-    /**
-     * 通证
-     */
-    private String pass;
-
-    /**
-     * 价格
-     */
-    private String price;
-    /**
-     * 数量
-     */
-    private String num;
-    /**
-     * 地址
-     */
-    private String address;
-    /**
-     * 类型
-     */
     private String type;
-    /**
-     * 状态
-     */
-    private String status;
-    /**
-     * 有效期开始
-     */
-    private String dateBegin;
-    /**
-     * 有效期截止
-     */
-    private String dateEnd;
-    /**
-     * 订单
-     */
-    private String order;
 
-    public String getPass() {
-        return pass;
+    private Long amount;
+
+    private String tokenId;
+
+    private String price;
+
+    private String orderId;
+
+    private String validateTo;
+
+    private String validateFrom;
+
+    private String address;
+
+    private String initialBlockHashHex;
+
+    public String getType() {
+        return type;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 
     public String getPrice() {
@@ -58,12 +52,28 @@ public class MarketOrderItem implements Serializable {
         this.price = price;
     }
 
-    public String getNum() {
-        return num;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getValidateTo() {
+        return validateTo;
+    }
+
+    public void setValidateTo(String validateTo) {
+        this.validateTo = validateTo;
+    }
+
+    public String getValidateFrom() {
+        return validateFrom;
+    }
+
+    public void setValidateFrom(String validateFrom) {
+        this.validateFrom = validateFrom;
     }
 
     public String getAddress() {
@@ -74,43 +84,11 @@ public class MarketOrderItem implements Serializable {
         this.address = address;
     }
 
-    public String getType() {
-        return type;
+    public String getInitialBlockHashHex() {
+        return initialBlockHashHex;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDateBegin() {
-        return dateBegin;
-    }
-
-    public void setDateBegin(String dateBegin) {
-        this.dateBegin = dateBegin;
-    }
-
-    public String getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
+    public void setInitialBlockHashHex(String initialBlockHashHex) {
+        this.initialBlockHashHex = initialBlockHashHex;
     }
 }

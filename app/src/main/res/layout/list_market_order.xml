@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#323232"
     android:clipToPadding="true"
     android:orientation="vertical"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="订单"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/order_id_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +47,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/pass_tv"
+            android:id="@+id/token_id_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -49,7 +73,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/price_tv"
+            android:id="@+id/price_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -75,7 +99,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/num_tv"
+            android:id="@+id/amount_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -101,7 +125,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/address_tv"
+            android:id="@+id/address_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -127,7 +151,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/type_tv"
+            android:id="@+id/type_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -153,7 +177,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/status_tv"
+            android:id="@+id/status_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -179,7 +203,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/date_begin_tv"
+            android:id="@+id/validate_to_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -205,7 +229,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/date_end_tv"
+            android:id="@+id/validate_from_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -215,31 +239,4 @@
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="订单"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/order_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginRight="20dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
-
 </LinearLayout>

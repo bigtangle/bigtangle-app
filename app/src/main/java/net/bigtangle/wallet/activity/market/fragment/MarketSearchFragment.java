@@ -16,12 +16,27 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+import net.bigtangle.core.Coin;
+import net.bigtangle.core.ECKey;
+import net.bigtangle.core.Json;
+import net.bigtangle.core.NetworkParameters;
+import net.bigtangle.core.OrderRecord;
+import net.bigtangle.core.http.server.resp.OrderdataResponse;
+import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.http.HttpNetComplete;
+import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,20 +48,21 @@ import butterknife.ButterKnife;
  */
 public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @BindView(R.id.text_input)
-    TextInputEditText textInput;
-    @BindView(R.id.release_btn)
-    RadioButton releaseBtn;
-    @BindView(R.id.match_btn)
-    RadioButton matchBtn;
-    @BindView(R.id.status_radio_group)
-    RadioGroup statusRadioGroup;
-    @BindView(R.id.switch_btn)
-    Switch switchBtn;
-    @BindView(R.id.search_btn)
-    Button searchBtn;
+    @BindView(R.id.address_text_input)
+    TextInputEditText addressTextInput;
+
+    @BindView(R.id.state_radio_group)
+    RadioGroup stateRadioGroup;
+
+    @BindView(R.id.only_me_switch)
+    Switch onlyMeSwitch;
+
+    @BindView(R.id.search_button)
+    Button searchButton;
+
     @BindView(R.id.recyclerViewContainer)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -91,11 +107,78 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData();
+            }
+        });
+
         initData();
     }
 
     private void initData() {
-        // TODO: 2019-07-18 获取数据逻辑
+        String state = "";
+        for (int i = 0; i < stateRadioGroup.getChildCount(); i++) {
+            RadioButton radioButton = (RadioButton) stateRadioGroup.getChildAt(i);
+            if (radioButton.isChecked()) {
+                state = radioButton.getText().equals(getContext().getString(R.string.publish)) ? "publish" : "match";
+                break;
+            }
+        }
+
+        HashMap<String, Object> requestParam = new HashMap<String, Object>();
+        requestParam.put("address", addressTextInput.getText().toString());
+        requestParam.put("state", state);
+        requestParam.put("spent", "publish".equals(state) ? "false" : "true");
+        if (onlyMeSwitch.isChecked()) {
+            List<ECKey> walletKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
+            List<String> address = new ArrayList<String>();
+            for (ECKey ecKey : walletKeys) {
+                address.add(ecKey.toAddress(WalletContextHolder.networkParameters).toString());
+            }
+            requestParam.put("addresses", address);
+        }
+
+        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getOrders, requestParam, new HttpNetComplete() {
+            @Override
+            public void completeCallback(String jsonStr) {
+                try {
+                    OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
+                    itemList.clear();
+                    for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
+                        MarketOrderItem marketOrderItem = new MarketOrderItem();
+                        if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
+                            marketOrderItem.setType("BUY");
+                            marketOrderItem.setAmount(orderRecord.getTargetValue());
+                            marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
+                            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getOfferValue() / orderRecord.getTargetValue()));
+                        } else {
+                            marketOrderItem.setType("SELL");
+                            marketOrderItem.setAmount(orderRecord.getOfferValue());
+                            marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
+                            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getTargetValue() / orderRecord.getOfferValue()));
+                        }
+                        marketOrderItem.setOrderId(orderRecord.getInitialBlockHashHex());
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        marketOrderItem.setValidateTo(dateFormat.format(new Date(orderRecord.getValidToTime() * 1000)));
+                        marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));
+                        marketOrderItem.setAddress(ECKey.fromPublicOnly(orderRecord.getBeneficiaryPubKey()).toAddress(WalletContextHolder.networkParameters).toString());
+                        marketOrderItem.setInitialBlockHashHex(orderRecord.getInitialBlockHashHex());
+                        itemList.add(marketOrderItem);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

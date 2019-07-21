@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 
 public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrderItemListAdapter.ItemViewHolder> {
 
-
     private Context mContext;
     private List<MarketOrderItem> itemList;
 
@@ -47,24 +46,32 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.pass_tv)
-        TextView passTv;
-        @BindView(R.id.price_tv)
-        TextView priceTv;
-        @BindView(R.id.num_tv)
-        TextView numTv;
-        @BindView(R.id.address_tv)
-        TextView addressTv;
-        @BindView(R.id.type_tv)
-        TextView typeTv;
-        @BindView(R.id.status_tv)
-        TextView statusTv;
-        @BindView(R.id.date_begin_tv)
-        TextView dateBeginTv;
-        @BindView(R.id.date_end_tv)
-        TextView dateEndTv;
-        @BindView(R.id.order_tv)
-        TextView orderTv;
+        @BindView(R.id.order_id_text_view)
+        TextView orderIdTextView;
+
+        @BindView(R.id.token_id_text_view)
+        TextView tokenIdTextView;
+
+        @BindView(R.id.price_text_view)
+        TextView priceTextView;
+
+        @BindView(R.id.amount_text_view)
+        TextView amountTextView;
+
+        @BindView(R.id.address_text_view)
+        TextView addressTextView;
+
+        @BindView(R.id.type_text_view)
+        TextView typeTextView;
+
+        @BindView(R.id.status_text_view)
+        TextView statusTextView;
+
+        @BindView(R.id.validate_to_text_view)
+        TextView validateToTextView;
+
+        @BindView(R.id.validate_from_text_view)
+        TextView validateFromTextView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -72,15 +79,15 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         }
 
         public void bind(MarketOrderItem marketOrderItem) {
-            passTv.setText(marketOrderItem.getPass());
-            priceTv.setText(marketOrderItem.getPrice());
-            numTv.setText(marketOrderItem.getNum());
-            addressTv.setText(marketOrderItem.getAddress());
-            typeTv.setText(marketOrderItem.getType());
-            statusTv.setText(marketOrderItem.getStatus());
-            dateBeginTv.setText(marketOrderItem.getDateBegin());
-            dateEndTv.setText(marketOrderItem.getDateEnd());
-            orderTv.setText(marketOrderItem.getOrder());
+            this.orderIdTextView.setText(marketOrderItem.getOrderId());
+            this.tokenIdTextView.setText(marketOrderItem.getTokenId());
+            this.priceTextView.setText(marketOrderItem.getPrice());
+            this.amountTextView.setText(String.valueOf(marketOrderItem.getAmount()));
+            this.addressTextView.setText(marketOrderItem.getAddress());
+            this.typeTextView.setText(marketOrderItem.getType());
+            this.statusTextView.setText("");
+            this.validateToTextView.setText(marketOrderItem.getValidateTo());
+            this.validateFromTextView.setText(marketOrderItem.getValidateFrom());
         }
     }
 }
