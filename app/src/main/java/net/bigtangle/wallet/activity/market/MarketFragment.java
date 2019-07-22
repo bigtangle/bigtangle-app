@@ -26,8 +26,10 @@ public class MarketFragment extends Fragment {
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
+
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
+
     private SectionsPagerAdapter mAdapter;
 
     public MarketFragment() {
@@ -41,7 +43,6 @@ public class MarketFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -56,8 +57,16 @@ public class MarketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(5);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+            mViewPager.setAdapter(mAdapter);
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

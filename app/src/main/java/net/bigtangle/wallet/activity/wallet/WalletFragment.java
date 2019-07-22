@@ -21,9 +21,7 @@ public class WalletFragment extends Fragment {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private SectionsPagerAdapter mAdapter;
-
-    public WalletFragment() {
-    }
+    private boolean isInit = false;
 
     public static WalletFragment newInstance() {
         WalletFragment fragment = new WalletFragment();
@@ -33,7 +31,6 @@ public class WalletFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -47,9 +44,21 @@ public class WalletFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewPager = view.findViewById(R.id.BlockExplorer_viewPager);
         mTabLayout = view.findViewById(R.id.BlockExplorer_tabLayout);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(5);
         mTabLayout.setupWithViewPager(mViewPager);
+        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+        mViewPager.setAdapter(mAdapter);
+        this.isInit = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (isInit) {
+                mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+                mViewPager.setAdapter(mAdapter);
+            }
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

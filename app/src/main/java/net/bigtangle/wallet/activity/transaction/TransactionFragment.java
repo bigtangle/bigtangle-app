@@ -24,9 +24,6 @@ public class TransactionFragment extends Fragment {
     private TabLayout mTabLayout;
     private SectionsPagerAdapter mAdapter;
 
-    public TransactionFragment() {
-    }
-
     public static TransactionFragment newInstance() {
         TransactionFragment fragment = new TransactionFragment();
         return fragment;
@@ -35,7 +32,6 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -49,9 +45,16 @@ public class TransactionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewPager = view.findViewById(R.id.BlockExplorer_viewPager);
         mTabLayout = view.findViewById(R.id.BlockExplorer_tabLayout);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(4);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+            mViewPager.setAdapter(mAdapter);
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

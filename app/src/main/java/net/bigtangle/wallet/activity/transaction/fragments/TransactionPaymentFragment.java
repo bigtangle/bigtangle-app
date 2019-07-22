@@ -70,6 +70,8 @@ public class TransactionPaymentFragment extends Fragment {
     private List<TokenItem> tokenNames;
     private String[] payMethodArray = {"支付", "多重签名支付", "多重地址支付", "多重签名地址支付"};
 
+    private boolean isInit = false;
+
     public static TransactionPaymentFragment newInstance() {
         TransactionPaymentFragment fragment = new TransactionPaymentFragment();
         return fragment;
@@ -83,7 +85,6 @@ public class TransactionPaymentFragment extends Fragment {
         }
         payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
     }
 
@@ -194,8 +195,20 @@ public class TransactionPaymentFragment extends Fragment {
                 }).execute();
             }
         });
+        if (this.isInit == false) {
+            this.initData();
+        }
+        this.isInit = true;
+    }
 
-        initData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (this.isInit) {
+                this.initData();
+            }
+        }
     }
 
     private void initView() {

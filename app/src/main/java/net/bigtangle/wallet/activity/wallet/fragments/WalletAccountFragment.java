@@ -46,9 +46,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     private List<WalletAccountItem> itemList;
 
     private WalletAccountItemListAdapter mAdapter;
-
-    public WalletAccountFragment() {
-    }
+    private boolean isInit = false;
 
     public static WalletAccountFragment newInstance() {
         WalletAccountFragment fragment = new WalletAccountFragment();
@@ -61,6 +59,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletAccountItem>();
         }
+        this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
     }
 
     private void initData() {
@@ -106,17 +105,25 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
-
         this.mSwipeRefreshLayout.setOnRefreshListener(this);
-
         accountsRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         accountsRecyclerView.setLayoutManager(layoutManager);
         accountsRecyclerView.setAdapter(mAdapter);
+        if (this.isInit == false) {
+            this.initData();
+        }
+        isInit = true;
+    }
 
-        this.initData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (this.isInit) {
+                this.initData();
+            }
+        }
     }
 
     @Override

@@ -80,7 +80,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
         if (this.itemList == null) {
             this.itemList = new ArrayList<MarketOrderItem>();
         }
-        this.isInit = true;
+        this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
     }
 
     @Override
@@ -94,11 +94,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -110,6 +106,21 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
                 initData();
             }
         });
+
+        if (this.isInit == false) {
+            this.initData();
+        }
+        this.isInit = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (this.isInit) {
+                this.initData();
+            }
+        }
     }
 
     private void initData() {
@@ -156,16 +167,6 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
                 }
             }
         });
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (this.isInit) {
-                this.initData();
-            }
-        }
     }
 
     @Override

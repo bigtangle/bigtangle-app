@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         ExtendedViewPager mViewPager = findViewById(R.id.Main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
-        mViewPager.setOffscreenPageLimit(5);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
