@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
-import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
-import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.OrderRecord;
 import net.bigtangle.core.http.server.resp.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
@@ -28,14 +27,12 @@ import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,8 +67,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
 
     private MarketOrderItemListAdapter mAdapter;
 
-    public MarketSearchFragment() {
-    }
+    private boolean isInit = false;
 
     public static MarketSearchFragment newInstance() {
         MarketSearchFragment fragment = new MarketSearchFragment();
@@ -84,6 +80,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
         if (this.itemList == null) {
             this.itemList = new ArrayList<MarketOrderItem>();
         }
+        this.isInit = true;
     }
 
     @Override
@@ -113,8 +110,6 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
                 initData();
             }
         });
-
-        initData();
     }
 
     private void initData() {
@@ -147,48 +142,30 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
                     for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                        MarketOrderItem marketOrderItem = new MarketOrderItem();
-                        if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
-                            marketOrderItem.setType("BUY");
-                            marketOrderItem.setAmount(orderRecord.getTargetValue());
-                            marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
-                            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getOfferValue() / orderRecord.getTargetValue()));
-                        } else {
-                            marketOrderItem.setType("SELL");
-                            marketOrderItem.setAmount(orderRecord.getOfferValue());
-                            marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
-                            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getTargetValue() / orderRecord.getOfferValue()));
-                        }
-                        marketOrderItem.setOrderId(orderRecord.getInitialBlockHashHex());
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        marketOrderItem.setValidateTo(dateFormat.format(new Date(orderRecord.getValidToTime() * 1000)));
-                        marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));
-                        marketOrderItem.setAddress(ECKey.fromPublicOnly(orderRecord.getBeneficiaryPubKey()).toAddress(WalletContextHolder.networkParameters).toString());
-                        marketOrderItem.setInitialBlockHashHex(orderRecord.getInitialBlockHashHex());
+                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord);
                         itemList.add(marketOrderItem);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        });
                     }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(LogConstant.TAG, "reqCmd getOrders failure to parse data", e);
                 }
             }
         });
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (this.isInit) {
+                this.initData();
+            }
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.SecretkeyDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,7 +194,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
             if (requestCode == REQUESTCODE_FROM_ACTIVITY) {
                 List<String> list = data.getStringArrayListExtra("paths");
                 for (String filepath : list) {
-                    Log.d("bigtangle-wallet", filepath);
+                    Log.d(LogConstant.TAG, filepath);
                 }
             }
         }

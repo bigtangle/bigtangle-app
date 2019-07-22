@@ -15,6 +15,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
 import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
 
@@ -73,7 +74,7 @@ public class HttpNetRunaDispatch {
                     message.obj = e.getToastMessage();
                     httpNetCompleteHandler.sendMessage(message);
                 } catch (Exception e) {
-                    Log.e("bigtangle-wallet", "wallet http request", e);
+                    Log.e(LogConstant.TAG, "wallet http request", e);
                     Message message = new Message();
                     message.what = MessageStateCode.WALLET_EXCEPTION_ERROR;
                     httpNetCompleteHandler.sendMessage(message);

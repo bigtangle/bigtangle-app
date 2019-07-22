@@ -1,6 +1,38 @@
 package net.bigtangle.wallet.activity.market.model;
 
+import net.bigtangle.core.Coin;
+import net.bigtangle.core.ECKey;
+import net.bigtangle.core.NetworkParameters;
+import net.bigtangle.core.OrderRecord;
+import net.bigtangle.wallet.core.WalletContextHolder;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MarketOrderItem implements java.io.Serializable {
+
+    public static MarketOrderItem build(OrderRecord orderRecord) {
+        MarketOrderItem marketOrderItem = new MarketOrderItem();
+        if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
+            marketOrderItem.setType("BUY");
+            marketOrderItem.setAmount(orderRecord.getTargetValue());
+            marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
+            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getOfferValue() / orderRecord.getTargetValue()));
+        } else {
+            marketOrderItem.setType("SELL");
+            marketOrderItem.setAmount(orderRecord.getOfferValue());
+            marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
+            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getTargetValue() / orderRecord.getOfferValue()));
+        }
+        marketOrderItem.setOrderId(orderRecord.getInitialBlockHashHex());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        marketOrderItem.setValidateTo(dateFormat.format(new Date(orderRecord.getValidToTime() * 1000)));
+        marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));
+        marketOrderItem.setAddress(ECKey.fromPublicOnly(orderRecord.getBeneficiaryPubKey()).toAddress(WalletContextHolder.networkParameters).toString());
+        marketOrderItem.setInitialBlockHashHex(orderRecord.getInitialBlockHashHex());
+        return marketOrderItem;
+    }
 
     private String type;
 

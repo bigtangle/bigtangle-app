@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
-import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
@@ -24,6 +24,7 @@ import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapte
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
@@ -76,15 +77,8 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                     itemList.clear();
                     for (Coin coin : getBalancesResponse.getBalance()) {
                         if (!coin.isZero()) {
-                            WalletAccountItem walletAccountItem = new WalletAccountItem();
-                            walletAccountItem.setTokenid(coin.getTokenHex());
-                            walletAccountItem.setValue(coin.toPlainString());
-                            Token token = getBalancesResponse.getTokennames().get(coin.getTokenHex());
-                            if (token != null) {
-                                walletAccountItem.setTokenname(token.getTokenname());
-                            } else {
-                                walletAccountItem.setTokenname(coin.getTokenHex());
-                            }
+                            WalletAccountItem walletAccountItem = WalletAccountItem.build(coin,
+                                    getBalancesResponse.getTokennames());
                             itemList.add(walletAccountItem);
                         }
                     }
@@ -95,7 +89,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
                         }
                     });
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(LogConstant.TAG, "reqCmd getBalances failure to parse data", e);
                 }
             }
         });
