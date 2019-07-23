@@ -37,20 +37,19 @@ import butterknife.ButterKnife;
 
 public class WalletAccountFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @BindView(R.id.recyclerViewContainer)
-    RecyclerView accountsRecyclerView;
+    @BindView(R.id.recycler_view_container)
+    RecyclerView recyclerViewContainer;
 
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private List<WalletAccountItem> itemList;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
 
     private WalletAccountItemListAdapter mAdapter;
+
+    private List<WalletAccountItem> itemList;
     private boolean isInit = false;
 
     public static WalletAccountFragment newInstance() {
-        WalletAccountFragment fragment = new WalletAccountFragment();
-        return fragment;
+        return new WalletAccountFragment();
     }
 
     @Override
@@ -105,15 +104,15 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.mSwipeRefreshLayout.setOnRefreshListener(this);
-        accountsRecyclerView.setHasFixedSize(true);
+        this.swipeContainer.setOnRefreshListener(this);
+        this.recyclerViewContainer.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        accountsRecyclerView.setLayoutManager(layoutManager);
-        accountsRecyclerView.setAdapter(mAdapter);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(this.mAdapter);
         if (this.isInit == false) {
             this.initData();
         }
-        isInit = true;
+        this.isInit = true;
     }
 
     @Override
@@ -128,7 +127,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        this.swipeContainer.setRefreshing(false);
         this.initData();
     }
 }

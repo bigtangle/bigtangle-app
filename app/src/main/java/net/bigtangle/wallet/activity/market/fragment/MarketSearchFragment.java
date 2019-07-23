@@ -57,11 +57,11 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @BindView(R.id.search_button)
     Button searchButton;
 
-    @BindView(R.id.recyclerViewContainer)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_view_container)
+    RecyclerView recyclerViewContainer;
 
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
 
     private List<MarketOrderItem> itemList;
 
@@ -70,8 +70,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     private boolean isInit = false;
 
     public static MarketSearchFragment newInstance() {
-        MarketSearchFragment fragment = new MarketSearchFragment();
-        return fragment;
+        return new MarketSearchFragment();
     }
 
     @Override
@@ -94,13 +93,13 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        this.swipeContainer.setOnRefreshListener(this);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        this.recyclerViewContainer.setHasFixedSize(true);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(mAdapter);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initData();
@@ -172,7 +171,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onRefresh() {
         this.initData();
-        mSwipeRefreshLayout.setRefreshing(false);
-        mAdapter.notifyDataSetChanged();
+        this.swipeContainer.setRefreshing(false);
+        this.mAdapter.notifyDataSetChanged();
     }
 }

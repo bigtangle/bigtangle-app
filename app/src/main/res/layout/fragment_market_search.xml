@@ -108,13 +108,13 @@
         android:background="#4F6194" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewContainer"
+            android:id="@+id/recycler_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>

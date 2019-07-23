@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 
 /**
- *
  * @author lijian
  * @date 2019-07-06 00:06:01
  */

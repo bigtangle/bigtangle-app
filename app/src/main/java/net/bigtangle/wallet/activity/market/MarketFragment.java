@@ -36,8 +36,7 @@ public class MarketFragment extends Fragment {
     }
 
     public static MarketFragment newInstance() {
-        MarketFragment fragment = new MarketFragment();
-        return fragment;
+        return new MarketFragment();
     }
 
     @Override
@@ -56,7 +55,6 @@ public class MarketFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

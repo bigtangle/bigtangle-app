@@ -24,8 +24,7 @@ public class WalletFragment extends Fragment {
     private boolean isInit = false;
 
     public static WalletFragment newInstance() {
-        WalletFragment fragment = new WalletFragment();
-        return fragment;
+        return new WalletFragment();
     }
 
     @Override
@@ -42,8 +41,8 @@ public class WalletFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager = view.findViewById(R.id.BlockExplorer_viewPager);
-        mTabLayout = view.findViewById(R.id.BlockExplorer_tabLayout);
+        mViewPager = view.findViewById(R.id.viewPager);
+        mTabLayout = view.findViewById(R.id.tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
         mViewPager.setAdapter(mAdapter);

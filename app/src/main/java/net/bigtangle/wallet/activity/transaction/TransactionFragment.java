@@ -18,15 +18,20 @@ import net.bigtangle.wallet.activity.transaction.fragments.TransactionHistoryFra
 import net.bigtangle.wallet.activity.transaction.fragments.TransactionPaymentFragment;
 import net.bigtangle.wallet.activity.transaction.fragments.TransactionSignatureFragment;
 
+import butterknife.BindView;
+
 public class TransactionFragment extends Fragment {
 
+    @BindView(R.id.viewPager)
     private ViewPager mViewPager;
+
+    @BindView(R.id.tabLayout)
     private TabLayout mTabLayout;
+
     private SectionsPagerAdapter mAdapter;
 
     public static TransactionFragment newInstance() {
-        TransactionFragment fragment = new TransactionFragment();
-        return fragment;
+        return new TransactionFragment();
     }
 
     @Override
@@ -43,17 +48,15 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager = view.findViewById(R.id.BlockExplorer_viewPager);
-        mTabLayout = view.findViewById(R.id.BlockExplorer_tabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
+        this.mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
-            mViewPager.setAdapter(mAdapter);
+            this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+            this.mViewPager.setAdapter(mAdapter);
         }
     }
 

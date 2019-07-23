@@ -81,6 +81,4 @@ public class SecretkeyDialog extends Dialog {
     public interface OnGetWalletSecretKeyListenter {
         void getWalletSecretKey(String publicKey, String privateKey);
     }
-
-
 }

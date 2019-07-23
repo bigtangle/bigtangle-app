@@ -40,28 +40,27 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
 
     private static final int REQUESTCODE_FROM_ACTIVITY = 1000;
 
-    @BindView(R.id.recyclerViewContainer)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_view_container)
+    RecyclerView recyclerViewContainer;
 
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
 
-    @BindView(R.id.add_key_btn)
-    Button addKeyBtn;
+    @BindView(R.id.add_key_button)
+    Button addKeyButton;
 
-    @BindView(R.id.new_key_btn)
-    Button newKeyBtn;
+    @BindView(R.id.new_key_button)
+    Button newKeyButton;
 
-    @BindView(R.id.import_key_btn)
-    Button importKeyBtn;
-
-    private List<WalletSecretkeyItem> itemList;
+    @BindView(R.id.import_key_button)
+    Button importKeyButton;
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
+    private List<WalletSecretkeyItem> itemList;
+
     public static WalletSecretkeyFragment newInstance() {
-        WalletSecretkeyFragment fragment = new WalletSecretkeyFragment();
-        return fragment;
+        return new WalletSecretkeyFragment();
     }
 
     @Override
@@ -73,14 +72,14 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     }
 
     private void initData() {
-        itemList.clear();
+        this.itemList.clear();
         List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
                 walletSecretkeyItem.setAddress(ecKey.toAddress(WalletContextHolder.networkParameters).toBase58());
                 walletSecretkeyItem.setPubKeyHex(ecKey.getPublicKeyAsHex());
-                itemList.add(walletSecretkeyItem);
+                this.itemList.add(walletSecretkeyItem);
             }
         }
         this.mAdapter.notifyDataSetChanged();
@@ -97,17 +96,14 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         this.mAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
-
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
+        swipeContainer.setOnRefreshListener(this);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        this.mRecyclerView.setHasFixedSize(true);
-        this.mRecyclerView.setLayoutManager(layoutManager);
-        this.mRecyclerView.setAdapter(mAdapter);
+        this.recyclerViewContainer.setHasFixedSize(true);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(mAdapter);
 
-        this.addKeyBtn.setOnClickListener(new View.OnClickListener() {
+        this.addKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -115,7 +111,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
             }
         });
 
-        this.newKeyBtn.setOnClickListener(new View.OnClickListener() {
+        this.newKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -143,7 +139,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
             }
         });
 
-        this.importKeyBtn.setOnClickListener(new View.OnClickListener() {
+        this.importKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -163,8 +159,8 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         this.initData();
-        mSwipeRefreshLayout.setRefreshing(false);
-        mAdapter.notifyDataSetChanged();
+        this.swipeContainer.setRefreshing(false);
+        this.mAdapter.notifyDataSetChanged();
     }
 
     private void showDialog() {

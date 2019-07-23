@@ -58,8 +58,8 @@ public class TransactionPaymentFragment extends Fragment {
     @BindView(R.id.to_address_text_input)
     TextInputEditText toAddressTextInput;
 
-    @BindView(R.id.use_text_input)
-    TextInputEditText useTextInput;
+    @BindView(R.id.memo_text_input)
+    TextInputEditText memoTextInput;
 
     @BindView(R.id.pay_button)
     Button payButton;
@@ -69,12 +69,10 @@ public class TransactionPaymentFragment extends Fragment {
 
     private List<TokenItem> tokenNames;
     private String[] payMethodArray = {"支付", "多重签名支付", "多重地址支付", "多重签名地址支付"};
-
     private boolean isInit = false;
 
     public static TransactionPaymentFragment newInstance() {
-        TransactionPaymentFragment fragment = new TransactionPaymentFragment();
-        return fragment;
+        return new TransactionPaymentFragment();
     }
 
     @Override
@@ -83,9 +81,9 @@ public class TransactionPaymentFragment extends Fragment {
         if (this.tokenNames == null) {
             this.tokenNames = new ArrayList<TokenItem>();
         }
-        payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
-        payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
+        this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
+        this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
     }
 
     private void initData() {
@@ -189,7 +187,7 @@ public class TransactionPaymentFragment extends Fragment {
                         long factor = 1;
                         amount = amount.multiply(factor);
 
-                        final String memo = useTextInput.getText().toString();
+                        final String memo = memoTextInput.getText().toString();
                         wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
                     }
                 }).execute();
