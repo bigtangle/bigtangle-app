@@ -3,6 +3,7 @@
     <string name="title_tab_wallet">钱包</string>
     <string name="title_tab_market">市场</string>
     <string name="title_tab_settings">设置</string>
+    <string name="title_tab_token">通证</string>
 
     <string name="transaction_tab_single">支付</string>
     <string name="transaction_tab_signature">签名</string>

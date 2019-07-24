@@ -17,6 +17,12 @@
         barColorWhenSelected="#4F6194"/>
 
     <tab
+        id="@+id/tab_token"
+        icon="@drawable/ic_settings_black_24dp"
+        title="@string/title_tab_token"
+        barColorWhenSelected="#4F6194" />
+
+    <tab
         id="@+id/tab_settings"
         icon="@drawable/ic_settings_black_24dp"
         title="@string/title_tab_settings"

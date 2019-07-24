@@ -13,6 +13,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.MarketFragment;
 import net.bigtangle.wallet.activity.settings.SettingsFragment;
+import net.bigtangle.wallet.activity.token.TokenFragment;
 import net.bigtangle.wallet.activity.transaction.TransactionFragment;
 import net.bigtangle.wallet.activity.wallet.WalletFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
@@ -65,8 +66,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_market:
                         position = 2;
                         break;
-                    case R.id.tab_settings:
+                    case R.id.tab_token:
                         position = 3;
+                        break;
+                    case R.id.tab_settings:
+                        position = 4;
                         break;
                 }
 
@@ -110,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
                     fragment = MarketFragment.newInstance();
                     break;
                 case 3:
-                    fragment = SettingsFragment.newInstance();
+                    fragment = TokenFragment.newInstance();
                     break;
+                case 4:
+                    fragment = SettingsFragment.newInstance();
             }
             return fragment;
         }
