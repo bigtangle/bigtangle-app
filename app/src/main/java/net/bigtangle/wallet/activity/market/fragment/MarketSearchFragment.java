@@ -138,11 +138,11 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
         requestParam.put("spent", "publish".equals(state) ? "false" : "true");
         if (onlyMeSwitch.isChecked()) {
             List<ECKey> walletKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
-            List<String> address = new ArrayList<String>();
+            List<String> addressList = new ArrayList<String>();
             for (ECKey ecKey : walletKeys) {
-                address.add(ecKey.toAddress(WalletContextHolder.networkParameters).toString());
+                addressList.add(ecKey.toAddress(WalletContextHolder.networkParameters).toString());
             }
-            requestParam.put("addresses", address);
+            requestParam.put("addresses", addressList);
         }
 
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getOrders, requestParam, new HttpNetComplete() {

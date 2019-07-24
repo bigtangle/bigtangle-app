@@ -19,14 +19,15 @@ import net.bigtangle.wallet.activity.transaction.fragments.TransactionPaymentFra
 import net.bigtangle.wallet.activity.transaction.fragments.TransactionSignatureFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class TransactionFragment extends Fragment {
 
     @BindView(R.id.viewPager)
-    private ViewPager mViewPager;
+    ViewPager mViewPager;
 
     @BindView(R.id.tabLayout)
-    private TabLayout mTabLayout;
+    TabLayout mTabLayout;
 
     private SectionsPagerAdapter mAdapter;
 
@@ -42,7 +43,9 @@ public class TransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction, container, false);
+        View view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
