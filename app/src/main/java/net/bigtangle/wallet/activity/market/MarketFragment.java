@@ -56,14 +56,15 @@ public class MarketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTabLayout.setupWithViewPager(mViewPager);
+        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+        mViewPager.setAdapter(mAdapter);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
-            mViewPager.setAdapter(mAdapter);
+            this.mAdapter.notifyDataSetChanged();
         }
     }
 

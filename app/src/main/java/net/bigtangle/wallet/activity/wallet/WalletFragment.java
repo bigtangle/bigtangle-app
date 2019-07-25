@@ -54,8 +54,7 @@ public class WalletFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (isInit) {
-                mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
-                mViewPager.setAdapter(mAdapter);
+                this.mAdapter.notifyDataSetChanged();
             }
         }
     }

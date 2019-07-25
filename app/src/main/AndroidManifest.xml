@@ -25,6 +25,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name="net.bigtangle.wallet.activity.settings.SettingConnectionActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName="net.bigtangle.wallet.activity.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.bigtangle.wallet.activity.MainActivity" />
+        </activity>
+    </application>
 </manifest>

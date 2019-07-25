@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,43 +18,11 @@
             android:textSize="13sp" />
 
         <Button
-            android:id="@+id/Settings_select_wallet_button"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:backgroundTint="#323232"
-            android:text="选择钱包"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/Settings_about_button"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:backgroundTint="#323232"
-            android:text="关于APP"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/Settings_account_button"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:backgroundTint="#323232"
-            android:text="帐户信息"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/Settings_connection_button"
+            android:id="@+id/connection_button"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:backgroundTint="#323232"
             android:text="连接信息"
             android:textSize="16sp" />
-
-
-        <Button
-            android:id="@+id/Settings_remove_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#323232"
-            android:text="移除钱包" />
     </LinearLayout>
 </ScrollView>

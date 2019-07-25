@@ -52,14 +52,15 @@ public class TransactionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.mTabLayout.setupWithViewPager(mViewPager);
+        this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+        this.mViewPager.setAdapter(mAdapter);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
-            this.mViewPager.setAdapter(mAdapter);
+            this.mAdapter.notifyDataSetChanged();
         }
     }
 
