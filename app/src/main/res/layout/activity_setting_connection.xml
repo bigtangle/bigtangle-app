@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:title="连接信息">
+                app:title="Connection">
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
