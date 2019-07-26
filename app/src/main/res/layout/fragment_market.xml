@@ -19,27 +19,27 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search" />
+            android:text="@string/search" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order" />
+            android:text="@string/market_tab_order" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Outside Trade" />
+            android:text="@string/market_tab_outside_trade" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exchange" />
+            android:text="@string/market_tab_exchange" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signature" />
+            android:text="@string/transaction_tab_signature" />
 
     </android.support.design.widget.TabLayout>
 

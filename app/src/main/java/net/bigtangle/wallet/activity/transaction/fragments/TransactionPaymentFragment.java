@@ -68,7 +68,11 @@ public class TransactionPaymentFragment extends Fragment {
     ArrayAdapter<String> payMethodAdapter;
 
     private List<TokenItem> tokenNames;
-    private String[] payMethodArray = {"Pay", "Multi-signature Pay", "Multi-addresses Pay", "Multiple Signature Addresses Pay"};
+    private String[] payMethodArray = {getParentFragment().getString(R.string.pay),
+            getParentFragment().getString(R.string.multiple_signature_pay),
+            getParentFragment().getString(R.string.multiple_addresses_pay),
+            getParentFragment().getString(R.string.multiple_signature_addresses_pay)};
+
     private boolean isInit = false;
 
     public static TransactionPaymentFragment newInstance() {

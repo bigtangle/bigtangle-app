@@ -103,15 +103,15 @@ public class MarketFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Search";
+                    return fragment.getString(R.string.search);
                 case 1:
-                    return "Order";
+                    return fragment.getString(R.string.market_tab_order);
                 case 2:
-                    return "Outside Trade";
+                    return fragment.getString(R.string.market_tab_outside_trade);
                 case 3:
-                    return "Exchange";
+                    return fragment.getString(R.string.market_tab_exchange);
                 case 4:
-                    return "Signature";
+                    return fragment.getString(R.string.transaction_tab_signature);
             }
             return null;
         }

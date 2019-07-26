@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="State" />
+            android:text="@string/state" />
 
         <RadioGroup
             android:id="@+id/state_radio_group"
@@ -31,7 +31,7 @@
                 android:id="@+id/buy_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buy"
+                android:text="@string/buy"
                 android:textSize="25sp" />
 
             <RadioButton
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="Sell"
+                android:text="@string/sell"
                 android:textSize="25sp" />
         </RadioGroup>
 
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="Address" />
+            android:text="@string/wallet_secretkey_address" />
 
 
         <LinearLayout
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="Token" />
+            android:text="@string/title_tab_token" />
 
 
         <LinearLayout
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="Unit-price" />
+            android:text="@string/unit_price" />
 
 
         <LinearLayout
@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="Amount" />
+            android:text="@string/wallet_account_value" />
 
 
         <LinearLayout
@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="The validity period begins" />
+            android:text="@string/the_validity_period_begins" />
 
 
         <LinearLayout
@@ -228,7 +228,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="End of validity period" />
+            android:text="@string/end_of_validity_period" />
 
 
         <LinearLayout
@@ -263,7 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="24dp"
-            android:text="Save" />
+            android:text="@string/save" />
 
 
     </LinearLayout>

@@ -13,7 +13,7 @@
             android:layout_height="50dp"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:text="Settings"
+            android:text="@string/title_tab_settings"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
 
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:backgroundTint="#323232"
-            android:text="连接信息"
+            android:text="@string/settings_tab_connection"
             android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

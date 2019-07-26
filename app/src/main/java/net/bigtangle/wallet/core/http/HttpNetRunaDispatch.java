@@ -31,7 +31,7 @@ public class HttpNetRunaDispatch {
 
     public HttpNetRunaDispatch(Context context, HttpNetComplete httpNetComplete, HttpRunaExecute httpRunaExecute) {
         this(context, httpNetComplete, null, httpRunaExecute);
-        final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait", "Request loading...");
+        final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
         this.httpNetProgress = new HttpNetProgress() {
             @Override
             public void endProgress() {

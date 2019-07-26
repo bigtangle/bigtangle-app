@@ -27,7 +27,7 @@ public class HttpNetTaskRequest {
     public void httpRequest(ReqCmd reqCmd, byte[] b, HttpNetComplete httpNetComplete) {
         HttpNetProgress httpNetProgress = null;
         if (showDialog) {
-            final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait", "Request loading...");
+            final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
             httpNetProgress = new HttpNetProgress() {
                 @Override
                 public void endProgress() {
@@ -41,7 +41,7 @@ public class HttpNetTaskRequest {
     public void httpRequest(ReqCmd reqCmd, String s, HttpNetComplete httpNetComplete) {
         HttpNetProgress httpNetProgress = null;
         if (showDialog) {
-            final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait", "Request loading...");
+            final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
             httpNetProgress = new HttpNetProgress() {
                 @Override
                 public void endProgress() {
@@ -55,7 +55,7 @@ public class HttpNetTaskRequest {
     public void httpRequest(ReqCmd reqCmd, Object o, HttpNetComplete httpNetComplete) {
         HttpNetProgress httpNetProgress = null;
         if (showDialog) {
-            final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait", "Request loading...");
+            final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
             httpNetProgress = new HttpNetProgress() {
                 @Override
                 public void endProgress() {
@@ -70,8 +70,8 @@ public class HttpNetTaskRequest {
             new LovelyInfoDialog(this.context)
                     .setTopColorRes(R.color.colorPrimary)
                     .setIcon(R.drawable.ic_info_white_24px)
-                    .setTitle("Data Parsing")
-                    .setMessage("Network response data parsing failure")
+                    .setTitle("数据解析")
+                    .setMessage("当前请求数据解析失败")
                     .show();
             return;
         }

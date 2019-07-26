@@ -37,7 +37,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Order"
+                        android:text="@string/market_tab_order"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Token"
+                        android:text="@string/title_tab_token"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Price"
+                        android:text="@string/price"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Amount"
+                        android:text="@string/wallet_account_value"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Address"
+                        android:text="@string/wallet_secretkey_address"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -153,7 +153,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Type"
+                        android:text="@string/type"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -172,7 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="State"
+                        android:text="@string/state"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -196,7 +196,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="The validity period begins"
+                        android:text="@string/the_validity_period_begins"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -220,7 +220,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End of validity period"
+                        android:text="@string/end_of_validity_period"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
