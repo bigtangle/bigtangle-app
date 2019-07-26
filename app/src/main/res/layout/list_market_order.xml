@@ -37,7 +37,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="订单"
+                        android:text="Order"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="通证"
+                        android:text="Token"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="价格"
+                        android:text="Price"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="数量"
+                        android:text="Amount"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="地址"
+                        android:text="Address"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -153,7 +153,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="类型"
+                        android:text="Type"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -172,7 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="状态"
+                        android:text="State"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -196,7 +196,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="有效日期开始"
+                        android:text="The validity period begins"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
@@ -220,7 +220,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="有效日期截止"
+                        android:text="End of validity period"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 

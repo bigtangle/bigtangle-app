@@ -103,15 +103,15 @@ public class MarketFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "搜索";
+                    return "Search";
                 case 1:
-                    return "订单";
+                    return "Order";
                 case 2:
-                    return "场外交易";
+                    return "Outside Trade";
                 case 3:
-                    return "交换";
+                    return "Exchange";
                 case 4:
-                    return "签名";
+                    return "Signature";
             }
             return null;
         }

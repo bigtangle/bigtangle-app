@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_tab_transaction">支付</string>
+    <string name="title_tab_transaction">交易</string>
     <string name="title_tab_wallet">钱包</string>
     <string name="title_tab_market">市场</string>
     <string name="title_tab_settings">设置</string>
@@ -16,12 +16,39 @@
     <string name="wallet_secretkey_address">地址</string>
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
 
+    <string name="market_tab_order">订单</string>
+    <string name="market_tab_outside_trade">场外交易</string>
+    <string name="market_tab_exchange">交换</string>
+
     <string name="settings_tab_connection">连接信息</string>
     <string name="settings_tab_about">关于</string>
 
     <string name="pay">支付</string>
+    <string name="multiple_signature_pay">多重签名支付</string>
+    <string name="multiple_addresses_pay">多重地址支付</string>
+    <string name="multiple_signature_addresses_pay">多重签名地址支付</string>
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
+    <string name="certain">确定</string>
+    <string name="state">状态</string>
+    <string name="buy">买</string>
+    <string name="sell">卖</string>
+    <string name="price">价格</string>
+    <string name="unit_price">单价</string>
+    <string name="the_validity_period_begins">有效期开始</string>
+    <string name="end_of_validity_period">有效期结束</string>
+    <string name="save">保存</string>
+    <string name="test">测试</string>
+    <string name="Unopened">暂未开启</string>
+    <string name="purpose">用途</string>
+    <string name="type">类型</string>
+
+    <string name="only_oneself">仅自已</string>
+    <string name="choose_wallet">选择钱包</string>
+    <string name="remove_wallet">移除钱包</string>
+    <string name="about_app">关于APP</string>
+    <string name="account_info">帐户信息</string>
+
 
     <string name="token_id">通证ID</string>
     <string name="token_name">通证名称</string>
@@ -29,7 +56,7 @@
     <string name="match">匹配</string>
 
     <string name="address_not_empty">地址不可以为空</string>
-    <string name="amount_not_empty">地址不可以为空</string>
+    <string name="amount_not_empty">金额不可以为空</string>
     <string name="token_not_empty">通证不可以为空</string>
     <string name="wallet_payment_success">钱包支付成功</string>
 
@@ -42,6 +69,13 @@
     <string name="network_response_data_failed">网络响应数据解析失败</string>
     <string name="network_request_loading">请求加载中...</string>
     <string name="server_processing_failed">服务器处理失败，消息 : {0}，是否重试?</string>
+    <string name="data_parsing">数据解析</string>
+    <string name="server_address">服务器地址</string>
 
     <string name="dialog_secretkey_add_key_message">确认要添加钥匙吗?</string>
+    <string name="dialog_wallet_secretkey_add_key">添加钥匙</string>
+    <string name="dialog_wallet_secretkey_import_key">导入钥匙</string>
+    <string name="dialog_wallet_secretkey_new_key">新建钥匙</string>
+    <string name="dialog_wallet_secretkey_public_key">公钥</string>
+    <string name="dialog_wallet_secretkey_private_key">私钥</string>
 </resources>

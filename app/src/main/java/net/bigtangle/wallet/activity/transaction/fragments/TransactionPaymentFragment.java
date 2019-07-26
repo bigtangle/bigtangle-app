@@ -68,7 +68,7 @@ public class TransactionPaymentFragment extends Fragment {
     ArrayAdapter<String> payMethodAdapter;
 
     private List<TokenItem> tokenNames;
-    private String[] payMethodArray = {"支付", "多重签名支付", "多重地址支付", "多重签名地址支付"};
+    private String[] payMethodArray = {"Pay", "Multi-signature Pay", "Multi-addresses Pay", "Multiple Signature Addresses Pay"};
     private boolean isInit = false;
 
     public static TransactionPaymentFragment newInstance() {

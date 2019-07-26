@@ -20,12 +20,38 @@
     <string name="wallet_secretkey_address">Address</string>
     <string name="wallet_secretkey_pubkey">Public Key</string>
 
+    <string name="market_tab_order">Order</string>
+    <string name="market_tab_outside_trade">Outside Trade</string>
+    <string name="market_tab_exchange">Exchange</string>
+
     <string name="settings_tab_connection">Connection</string>
     <string name="settings_tab_about">About</string>
 
     <string name="search">Search</string>
     <string name="pay">Pay</string>
+    <string name="multiple_signature_pay">Multi-signature Pay</string>
+    <string name="multiple_addresses_pay">Multi-addresses Pay</string>
+    <string name="multiple_signature_addresses_pay">Multiple Signature Addresses Pay</string>
     <string name="cancel">Cancel</string>
+    <string name="certain">Certain</string>
+    <string name="state">State</string>
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="price">Price</string>
+    <string name="unit_price">Unit-price</string>
+    <string name="the_validity_period_begins">The validity period begins</string>
+    <string name="end_of_validity_period">End of validity period</string>
+    <string name="save">Save</string>
+    <string name="test">Test</string>
+    <string name="Unopened">Unopened</string>
+    <string name="purpose">Purpose</string>
+    <string name="type">Type</string>
+
+    <string name="only_oneself">Only oneself</string>
+    <string name="choose_wallet">Choose Wallet</string>
+    <string name="remove_wallet">Remove Wallet</string>
+    <string name="about_app">About app</string>
+    <string name="account_info">Account Info</string>
 
     <string name="token_id">Token ID</string>
     <string name="token_name">Token Name</string>
@@ -46,7 +72,13 @@
     <string name="network_response_data_failed">Network response data parsing failure</string>
     <string name="network_request_loading">Request loading...</string>
     <string name="server_processing_failed">Server processing failure，Message : {0}，Whether to retry?</string>
+    <string name="data_parsing">Data Parsing</string>
+    <string name="server_address">Server Address</string>
 
     <string name="dialog_secretkey_add_key_message">Are you sure you want to add a new key?</string>
-
+    <string name="dialog_wallet_secretkey_add_key">Add Key</string>
+    <string name="dialog_wallet_secretkey_import_key">Import Key</string>
+    <string name="dialog_wallet_secretkey_new_key">New Key</string>
+    <string name="dialog_wallet_secretkey_public_key">Public Key</string>
+    <string name="dialog_wallet_secretkey_private_key">Private Key</string>
 </resources>

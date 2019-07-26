@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="状态" />
+            android:text="State" />
 
         <RadioGroup
             android:id="@+id/state_radio_group"
@@ -31,7 +31,7 @@
                 android:id="@+id/buy_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="买"
+                android:text="Buy"
                 android:textSize="25sp" />
 
             <RadioButton
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="卖"
+                android:text="Sell"
                 android:textSize="25sp" />
         </RadioGroup>
 
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="地址" />
+            android:text="Address" />
 
 
         <LinearLayout
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="通证" />
+            android:text="Token" />
 
 
         <LinearLayout
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="单价" />
+            android:text="Unit-price" />
 
 
         <LinearLayout
@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="数量" />
+            android:text="Amount" />
 
 
         <LinearLayout
@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="有效期开始" />
+            android:text="The validity period begins" />
 
 
         <LinearLayout
@@ -228,7 +228,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="有效期截止" />
+            android:text="End of validity period" />
 
 
         <LinearLayout
@@ -263,7 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="24dp"
-            android:text="保存" />
+            android:text="Save" />
 
 
     </LinearLayout>
