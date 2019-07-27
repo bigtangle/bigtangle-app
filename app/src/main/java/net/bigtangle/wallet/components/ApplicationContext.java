@@ -1,4 +1,4 @@
-package net.bigtangle.wallet;
+package net.bigtangle.wallet.components;
 
 import android.app.Application;
 import android.arch.lifecycle.Lifecycle;

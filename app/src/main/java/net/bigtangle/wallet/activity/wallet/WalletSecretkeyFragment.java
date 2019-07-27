@@ -204,6 +204,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                     WalletContextHolder.get().initWalletData(directory, prefix);
+                    initData();
                 } catch (Exception e) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)

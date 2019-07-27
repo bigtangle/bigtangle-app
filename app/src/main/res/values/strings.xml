@@ -91,4 +91,7 @@
     <string name="address">Address</string>
     <string name="memo">Memo</string>
     <string name="ok">OK</string>
+
+    <string name="dialog_title_password">Input Password</string>
+    <string name="password">Password</string>
 </resources>

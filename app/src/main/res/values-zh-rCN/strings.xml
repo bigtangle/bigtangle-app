@@ -29,6 +29,7 @@
     <string name="multiple_addresses_pay">多重地址支付</string>
     <string name="multiple_signature_addresses_pay">多重签名地址支付</string>
     <string name="cancel">取消</string>
+    <string name="ok">确定</string>
     <string name="search">搜索</string>
     <string name="certain">确定</string>
     <string name="state">状态</string>
@@ -49,7 +50,6 @@
     <string name="remove_wallet">移除钱包</string>
     <string name="about_app">关于APP</string>
     <string name="account_info">帐户信息</string>
-
 
     <string name="token_id">通证ID</string>
     <string name="token_name">通证名称</string>
@@ -87,5 +87,7 @@
     <string name="token_type">通证类型</string>
     <string name="address">地址</string>
     <string name="memo">用途</string>
-    <string name="ok">OK</string>
+
+    <string name="dialog_title_password">输入密码</string>
+    <string name="password">密码</string>
 </resources>
