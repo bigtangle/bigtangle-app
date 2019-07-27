@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import net.bigtangle.wallet.components.WalletInputPasswordDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -223,13 +225,13 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                         initData();
                     }
                 } catch (Exception e) {
+                    Log.e(LogConstant.TAG, "wallet file", e);
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(getContext().getString(R.string.dialog_title_error))
                             .setMessage("当前选择文件错误")
                             .show();
-                    return;
                 }
             }
         }

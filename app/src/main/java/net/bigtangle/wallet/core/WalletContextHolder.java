@@ -32,6 +32,9 @@ public class WalletContextHolder {
             return aesKey;
         }
         final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
+        if (keyCrypter == null) {
+            return aesKey;
+        }
         if (!"".equals(password.trim())) {
             aesKey = keyCrypter.deriveKey(password);
         }
