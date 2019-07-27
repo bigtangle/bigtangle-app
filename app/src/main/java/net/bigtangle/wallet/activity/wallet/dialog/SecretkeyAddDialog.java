@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.components;
+package net.bigtangle.wallet.activity.wallet.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,38 +8,35 @@ import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SecretkeyDialog extends Dialog {
+public class SecretkeyAddDialog extends Dialog {
 
     private Context context;
     protected View mContextView = null;
 
-    @BindView(R.id.dialog_title)
-    TextView dialogTitle;
     @BindView(R.id.public_key_input)
     TextInputEditText publicKeyInput;
+
     @BindView(R.id.private_key_input)
     TextInputEditText privateKeyInput;
-    @BindView(R.id.content_layout)
-    LinearLayout contentLayout;
+
     @BindView(R.id.negative_button)
     Button negativeButton;
+
     @BindView(R.id.positive_button)
     Button positiveButton;
 
-    public SecretkeyDialog(@NonNull Context context) {
+    public SecretkeyAddDialog(@NonNull Context context) {
         super(context);
         this.context = context;
     }
 
-    public SecretkeyDialog(Context context, int theme) {
+    public SecretkeyAddDialog(Context context, int theme) {
         super(context, theme);
         this.context = context;
     }

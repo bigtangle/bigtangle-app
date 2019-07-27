@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.market.fragment;
+package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,13 +15,13 @@ import net.bigtangle.wallet.R;
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class MarketExchangeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MarketSignatureFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public MarketExchangeFragment() {
+    public MarketSignatureFragment() {
     }
 
-    public static MarketExchangeFragment newInstance() {
-        MarketExchangeFragment fragment = new MarketExchangeFragment();
+    public static MarketSignatureFragment newInstance() {
+        MarketSignatureFragment fragment = new MarketSignatureFragment();
         return fragment;
     }
 

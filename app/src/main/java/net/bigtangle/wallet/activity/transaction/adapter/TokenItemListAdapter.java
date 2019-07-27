@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.components;
+package net.bigtangle.wallet.activity.transaction.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 
 import java.util.List;
 

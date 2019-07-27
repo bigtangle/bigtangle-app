@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.wallet.fragments;
+package net.bigtangle.wallet.activity.wallet;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,8 +22,8 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
+import net.bigtangle.wallet.activity.wallet.dialog.SecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
-import net.bigtangle.wallet.components.SecretkeyDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -164,12 +164,12 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     }
 
     private void showDialog() {
-        SecretkeyDialog dialog = new SecretkeyDialog(
+        SecretkeyAddDialog dialog = new SecretkeyAddDialog(
                 getContext(), R.style.CustomDialogStyle);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-        dialog.setPositiveButton(new SecretkeyDialog.OnGetWalletSecretKeyListenter() {
+        dialog.setPositiveButton(new SecretkeyAddDialog.OnGetWalletSecretKeyListenter() {
             @Override
             public void getWalletSecretKey(String publicKey, String privateKey) {
                 byte[] pubKeyBuf = Utils.HEX.decode(publicKey);

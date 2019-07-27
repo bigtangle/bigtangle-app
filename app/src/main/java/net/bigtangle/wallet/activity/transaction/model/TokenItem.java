@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.components;
+package net.bigtangle.wallet.activity.transaction.model;
 
 public class TokenItem {
 

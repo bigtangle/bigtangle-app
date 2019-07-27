@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.wallet.fragments.WalletAccountFragment;
-import net.bigtangle.wallet.activity.wallet.fragments.WalletSecretkeyFragment;
+import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
+import net.bigtangle.wallet.activity.wallet.WalletSecretkeyFragment;
 
 public class TokenFragment extends Fragment {
 

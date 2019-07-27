@@ -13,11 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.fragment.MarketExchangeFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketOrderFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketOverCounterTradingFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketSearchFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketSignatureFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
