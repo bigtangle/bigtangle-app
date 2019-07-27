@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.components;
+package net.bigtangle.wallet.activity.settings.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,15 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.settings.model.ServerInfoItem;
 
 import java.util.List;
 
-public class TokenItemListAdapter extends BaseAdapter {
+public class ServerItemListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<TokenItem> itemList;
+    private List<ServerInfoItem> itemList;
 
-    public TokenItemListAdapter(Context context, List<TokenItem> itemList) {
+    public ServerItemListAdapter(Context context, List<ServerInfoItem> itemList) {
         this.mContext = context;
         this.itemList = itemList;
     }
@@ -24,14 +25,13 @@ public class TokenItemListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater _LayoutInflater = LayoutInflater.from(mContext);
-        convertView = _LayoutInflater.inflate(R.layout.list_token_item, null);
+        convertView = _LayoutInflater.inflate(R.layout.list_server_item, null);
         if (convertView != null) {
-            TextView tokenNameTextView = convertView.findViewById(R.id.token_name_text_view);
-            TextView tokenIdTextView = convertView.findViewById(R.id.token_id_text_view);
-
-            TokenItem tokenItem = this.itemList.get(position);
-            tokenNameTextView.setText(tokenItem.getTokenName());
-            tokenIdTextView.setText(tokenItem.getTokenId());
+            TextView serverNameTextView = convertView.findViewById(R.id.server_name_text_view);
+            TextView connectionUrlTextView = convertView.findViewById(R.id.connection_url_text_view);
+            ServerInfoItem serverInfoItem = this.itemList.get(position);
+            serverNameTextView.setText(serverInfoItem.getServerName());
+            connectionUrlTextView.setText(serverInfoItem.getConnectionURL());
         }
         return convertView;
     }

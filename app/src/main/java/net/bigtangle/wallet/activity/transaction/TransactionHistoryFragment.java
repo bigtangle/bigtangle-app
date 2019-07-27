@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction.fragments;
+package net.bigtangle.wallet.activity.transaction;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 
 /**
- * 签名
+ * 交易历史记录控件
  *
  * @author lijian
- * @date 2019-07-06 00:05:36
+ * @date 2019-07-06 00:04:44
  */
-public class TransactionSignatureFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TransactionHistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public TransactionSignatureFragment() {
+    public TransactionHistoryFragment() {
     }
 
-    public static TransactionSignatureFragment newInstance() {
-        TransactionSignatureFragment fragment = new TransactionSignatureFragment();
-        return fragment;
+    public static TransactionHistoryFragment newInstance() {
+        TransactionHistoryFragment component = new TransactionHistoryFragment();
+        return component;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TransactionSignatureFragment extends Fragment implements SwipeRefre
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transaction_not_open, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_history, container, false);
     }
 
     @Override

@@ -21,4 +21,11 @@ public class ServerInfoItem {
     public void setConnectionURL(String connectionURL) {
         this.connectionURL = connectionURL;
     }
+
+    public static ServerInfoItem build(String serverName, String connectionURL) {
+        ServerInfoItem serverInfoItem = new ServerInfoItem();
+        serverInfoItem.setServerName(serverName);
+        serverInfoItem.setConnectionURL(connectionURL);
+        return serverInfoItem;
+    }
 }

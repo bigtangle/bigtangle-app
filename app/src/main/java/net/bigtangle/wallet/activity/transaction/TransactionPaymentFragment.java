@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction.fragments;
+package net.bigtangle.wallet.activity.transaction;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -68,10 +68,7 @@ public class TransactionPaymentFragment extends Fragment {
     ArrayAdapter<String> payMethodAdapter;
 
     private List<TokenItem> tokenNames;
-    private String[] payMethodArray = {getParentFragment().getString(R.string.pay),
-            getParentFragment().getString(R.string.multiple_signature_pay),
-            getParentFragment().getString(R.string.multiple_addresses_pay),
-            getParentFragment().getString(R.string.multiple_signature_addresses_pay)};
+    private String[] payMethodArray;
 
     private boolean isInit = false;
 
@@ -84,6 +81,12 @@ public class TransactionPaymentFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (this.tokenNames == null) {
             this.tokenNames = new ArrayList<TokenItem>();
+        }
+        if (this.payMethodArray == null) {
+            payMethodArray = new String[]{getContext().getString(R.string.pay),
+                    getContext().getString(R.string.multiple_signature_pay),
+                    getContext().getString(R.string.multiple_addresses_pay),
+                    getContext().getString(R.string.multiple_signature_addresses_pay)};
         }
         this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -174,7 +177,7 @@ public class TransactionPaymentFragment extends Fragment {
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
                         }
-                        TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.tokenIdTextView);
+                        TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
                         final String tokenValue = tokenIdTextView.getText().toString();
                         if (StringUtils.isBlank(tokenValue)) {
                             throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));

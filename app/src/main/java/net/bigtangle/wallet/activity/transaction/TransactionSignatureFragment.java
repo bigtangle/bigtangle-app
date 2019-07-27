@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction.fragments;
+package net.bigtangle.wallet.activity.transaction;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,18 +12,18 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 
 /**
- * 多重地址交易控件
+ * 签名
  *
  * @author lijian
- * @date 2019-07-06 00:06:01
+ * @date 2019-07-06 00:05:36
  */
-public class TransactionBankFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TransactionSignatureFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public TransactionBankFragment() {
+    public TransactionSignatureFragment() {
     }
 
-    public static TransactionBankFragment newInstance() {
-        TransactionBankFragment fragment = new TransactionBankFragment();
+    public static TransactionSignatureFragment newInstance() {
+        TransactionSignatureFragment fragment = new TransactionSignatureFragment();
         return fragment;
     }
 

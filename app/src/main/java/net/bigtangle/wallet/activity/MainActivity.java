@@ -18,8 +18,6 @@ import net.bigtangle.wallet.activity.transaction.TransactionFragment;
 import net.bigtangle.wallet.activity.wallet.WalletFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SwipeDirection;
-import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.utils.RoutePathUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomBar bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.tab_wallet);
-
-        WalletContextHolder.get().initWalletData(RoutePathUtil.getBasePath(this), "bigtangle");
 
         ExtendedViewPager mViewPager = findViewById(R.id.Main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping

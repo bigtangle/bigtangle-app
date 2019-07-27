@@ -13,10 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionBankFragment;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionHistoryFragment;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionPaymentFragment;
-import net.bigtangle.wallet.activity.transaction.fragments.TransactionSignatureFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

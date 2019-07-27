@@ -6,6 +6,10 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 
+import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LocalStorageContext;
+import net.bigtangle.wallet.core.utils.RoutePathUtil;
+
 public class ApplicationContext extends Application implements LifecycleObserver {
 
     private static Context mContext;
@@ -13,6 +17,13 @@ public class ApplicationContext extends Application implements LifecycleObserver
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        WalletContextHolder.get().initWalletData(RoutePathUtil.getBasePath(this), "bigtangle");
+        this.initLocalStorage();
+    }
+
+    private void initLocalStorage() {
+        LocalStorageContext localStorageContext = LocalStorageContext.ini(this.mContext);
+        localStorageContext.initData();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
