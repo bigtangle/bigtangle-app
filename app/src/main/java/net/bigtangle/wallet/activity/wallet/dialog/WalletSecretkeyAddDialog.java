@@ -14,7 +14,7 @@ import net.bigtangle.wallet.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SecretkeyAddDialog extends Dialog {
+public class WalletSecretkeyAddDialog extends Dialog {
 
     private Context context;
     protected View mContextView = null;
@@ -31,12 +31,12 @@ public class SecretkeyAddDialog extends Dialog {
     @BindView(R.id.positive_button)
     Button positiveButton;
 
-    public SecretkeyAddDialog(@NonNull Context context) {
+    public WalletSecretkeyAddDialog(@NonNull Context context) {
         super(context);
         this.context = context;
     }
 
-    public SecretkeyAddDialog(Context context, int theme) {
+    public WalletSecretkeyAddDialog(Context context, int theme) {
         super(context, theme);
         this.context = context;
     }

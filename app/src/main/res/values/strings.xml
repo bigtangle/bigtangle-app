@@ -13,6 +13,7 @@
     <string name="transaction_tab_signature">Signature</string>
     <string name="transaction_tab_bank">Bank</string>
     <string name="transaction_tab_history">History</string>
+    <string name="transaction_tab_output">Output History</string>
 
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
@@ -87,4 +88,7 @@
     <string name="domainname">Domain Name</string>
     <string name="sign_number">Sign Number</string>
     <string name="token_type">Token Type</string>
+    <string name="address">Address</string>
+    <string name="memo">Memo</string>
+    <string name="ok">OK</string>
 </resources>

@@ -17,9 +17,7 @@ public class WalletContextHolder {
     public static NetworkParameters networkParameters = MainNetParams.get();
 
     public void initWalletData(String directory, String filename) {
-        if (walletAppKit == null) {
-            walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
-        }
+        walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
         setupWalletData();
     }
 

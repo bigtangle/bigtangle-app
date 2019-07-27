@@ -46,7 +46,6 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     private WalletAccountItemListAdapter mAdapter;
 
     private List<WalletAccountItem> itemList;
-    private boolean isInit = false;
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();

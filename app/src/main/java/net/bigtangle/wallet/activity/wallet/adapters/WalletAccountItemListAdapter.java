@@ -1,14 +1,17 @@
 package net.bigtangle.wallet.activity.wallet.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.wallet.WalletAccountHisActivity;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 
 import java.util.List;
@@ -46,24 +49,36 @@ public class WalletAccountItemListAdapter extends RecyclerView.Adapter<WalletAcc
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tokenNameTextView)
+        @BindView(R.id.token_name_text_view)
         TextView tokenNameTextView;
 
-        @BindView(R.id.tokenidTextView)
+        @BindView(R.id.token_id_text_view)
         TextView tokenidTextView;
 
-        @BindView(R.id.amountTextView)
+        @BindView(R.id.amount_text_view)
         TextView amountTextView;
+
+        @BindView(R.id.item_line)
+        LinearLayout itemLine;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(WalletAccountItem walletAccountItem) {
-            this.tokenNameTextView.setText(walletAccountItem.getTokenname());
-            this.tokenidTextView.setText(walletAccountItem.getTokenid());
-            this.amountTextView.setText(walletAccountItem.getValue());
+        public void bind(WalletAccountItem item) {
+            this.tokenNameTextView.setText(item.getTokenName());
+            this.tokenidTextView.setText(item.getTokenId());
+            this.amountTextView.setText(item.getValue());
+
+            this.itemLine.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, WalletAccountHisActivity.class);
+                    intent.putExtra("tokenId", item.getTokenId());
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

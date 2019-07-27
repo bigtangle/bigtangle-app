@@ -9,25 +9,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.leon.lfilepickerlibrary.LFilePicker;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
-import net.bigtangle.wallet.activity.wallet.dialog.SecretkeyAddDialog;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.LogConstant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,12 +164,12 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     }
 
     private void showDialog() {
-        SecretkeyAddDialog dialog = new SecretkeyAddDialog(
+        WalletSecretkeyAddDialog dialog = new WalletSecretkeyAddDialog(
                 getContext(), R.style.CustomDialogStyle);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-        dialog.setPositiveButton(new SecretkeyAddDialog.OnGetWalletSecretKeyListenter() {
+        dialog.setPositiveButton(new WalletSecretkeyAddDialog.OnGetWalletSecretKeyListenter() {
             @Override
             public void getWalletSecretKey(String publicKey, String privateKey) {
                 byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
@@ -189,8 +189,29 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUESTCODE_FROM_ACTIVITY) {
                 List<String> list = data.getStringArrayListExtra("paths");
-                for (String filepath : list) {
-                    Log.d(LogConstant.TAG, filepath);
+                if (list.isEmpty()) {
+                    new LovelyInfoDialog(getContext())
+                            .setTopColorRes(R.color.colorPrimary)
+                            .setIcon(R.drawable.ic_error_white_24px)
+                            .setTitle(getContext().getString(R.string.dialog_title_error))
+                            .setMessage("当前选择文件错误")
+                            .show();
+                    return;
+                }
+                try {
+                    File file = new File(list.get(0));
+                    String directory = file.getParent() + "/";
+                    String filename = file.getName();
+                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
+                    WalletContextHolder.get().initWalletData(directory, prefix);
+                } catch (Exception e) {
+                    new LovelyInfoDialog(getContext())
+                            .setTopColorRes(R.color.colorPrimary)
+                            .setIcon(R.drawable.ic_error_white_24px)
+                            .setTitle(getContext().getString(R.string.dialog_title_error))
+                            .setMessage("当前选择文件错误")
+                            .show();
+                    return;
                 }
             }
         }
