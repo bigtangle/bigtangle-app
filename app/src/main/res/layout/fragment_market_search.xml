@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,8 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="地址" />
-
+            android:text="@string/wallet_secretkey_address" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +27,7 @@
                 android:layout_marginRight="20dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_input"
+                    android:id="@+id/address_text_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -39,7 +37,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
@@ -48,11 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="状态" />
+            android:text="@string/state" />
 
         <RadioGroup
-            android:id="@+id/status_radio_group"
-            android:layout_width="match_parent"
+            android:id="@+id/state_radio_group"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -60,69 +58,67 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/release_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发布"
-                android:textSize="25sp" />
+                android:checked="true"
+                android:text="@string/publish" />
 
             <RadioButton
-                android:id="@+id/match_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="匹配"
-                android:textSize="25sp" />
+                android:layout_marginLeft="10dp"
+                android:text="@string/match" />
         </RadioGroup>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="我自己的订单" />
+            android:text="@string/only_oneself" />
 
         <Switch
-            android:id="@+id/switch_btn"
+            android:id="@+id/only_me_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
-            android:checked="false" />
-
-        <Button
-            android:id="@+id/search_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="100dp"
-            android:elevation="24dp"
-            android:text="搜索" />
-
-
+            android:layout_marginRight="20dp"
+            android:checked="false" />
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_marginTop="10dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/search" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="#4F6194" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:id="@+id/recycler_view_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
 </LinearLayout>

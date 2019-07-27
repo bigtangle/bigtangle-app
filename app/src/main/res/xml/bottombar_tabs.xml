@@ -2,23 +2,31 @@
 <tabs>
     <tab
         id="@+id/tab_transaction"
-        icon="@drawable/ic_view_module_black_24px"
+        icon="@drawable/ic_transaction_black"
         title="@string/title_tab_transaction"
         barColorWhenSelected="#4F6194" />
+
     <tab
         id="@+id/tab_wallet"
-        icon="@drawable/ic_account_balance_wallet_black_24px"
+        icon="@drawable/ic_wallet_black"
         title="@string/title_tab_wallet"
         barColorWhenSelected="#4F6194" />
+
     <tab
         id="@+id/tab_market"
-        icon="@drawable/ic_view_module_black_24px"
+        icon="@drawable/ic_market_black"
         title="@string/title_tab_market"
         barColorWhenSelected="#4F6194"/>
 
     <tab
+        id="@+id/tab_token"
+        icon="@drawable/ic_token_black"
+        title="@string/title_tab_token"
+        barColorWhenSelected="#4F6194" />
+
+    <tab
         id="@+id/tab_settings"
-        icon="@drawable/ic_settings_black_24dp"
+        icon="@drawable/ic_settings_black"
         title="@string/title_tab_settings"
         barColorWhenSelected="#4F6194" />
 </tabs>

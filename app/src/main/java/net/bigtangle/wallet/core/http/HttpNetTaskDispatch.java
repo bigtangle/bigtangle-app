@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
@@ -16,6 +17,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +48,7 @@ public class HttpNetTaskDispatch {
     }
 
     public void execute() {
+        Log.d(LogConstant.TAG, reqCmd.name());
         //判断当前网络连接状态
         if (!HttpNetUtil.checkNetworkState(context)) {
             if (httpNetProgress != null) {
@@ -70,14 +73,15 @@ public class HttpNetTaskDispatch {
     }
 
     public void newThreadHttpPostRequestProcess() {
+        Message message = new Message();
         try {
             String jsonStr = doInBackground();
-            Message message = new Message();
             message.obj = jsonStr;
             message.what = MessageStateCode.SUCCESS;
             httpNetCompleteHandler.sendMessage(message);
         } catch (Exception e) {
-            e.printStackTrace();
+            message.what = MessageStateCode.NETWORK_ERROR;
+            httpNetCompleteHandler.sendMessage(message);
         }
     }
 

@@ -1,8 +1,6 @@
 package net.bigtangle.wallet.core;
 
-import net.bigtangle.core.ECKey;
 import net.bigtangle.core.NetworkParameters;
-import net.bigtangle.core.Utils;
 import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.kits.WalletAppKit;
 import net.bigtangle.params.MainNetParams;
@@ -19,14 +17,8 @@ public class WalletContextHolder {
     public static NetworkParameters networkParameters = MainNetParams.get();
 
     public void initWalletData(String directory, String filename) {
-        if (walletAppKit == null) {
-            walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
-        }
+        walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
         setupWalletData();
-        // test
-        ECKey newKey = ECKey.fromPrivateAndPrecalculatedPublic(Utils.HEX.decode(NetworkParameters.testPriv),
-                Utils.HEX.decode(NetworkParameters.testPub));
-        walletAppKit.wallet().importKey(newKey);
     }
 
     public static KeyParameter getAesKey() {

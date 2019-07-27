@@ -5,19 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.fragment.MarketExchangeFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketOrderFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketOverCounterTradingFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketSearchFragment;
-import net.bigtangle.wallet.activity.market.fragment.MarketSignatureFragment;
+import net.bigtangle.wallet.components.SectionsPagerAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,22 +22,22 @@ public class MarketFragment extends Fragment {
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
+
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
+
     private SectionsPagerAdapter mAdapter;
 
     public MarketFragment() {
     }
 
     public static MarketFragment newInstance() {
-        MarketFragment fragment = new MarketFragment();
-        return fragment;
+        return new MarketFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -55,57 +51,24 @@ public class MarketFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(5);
         mTabLayout.setupWithViewPager(mViewPager);
-    }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(MarketSearchFragment.newInstance());
+        fragments.add(MarketOrderFragment.newInstance());
+        fragments.add(MarketOverCounterTradingFragment.newInstance());
+        fragments.add(MarketExchangeFragment.newInstance());
+        fragments.add(MarketSignatureFragment.newInstance());
 
-        private Fragment fragment;
+        String[] title = new String[]{
+                this.getString(R.string.search),
+                this.getString(R.string.market_tab_order),
+                this.getString(R.string.market_tab_outside_trade),
+                this.getString(R.string.market_tab_exchange),
+                this.getString(R.string.transaction_tab_signature)
+        };
 
-        public SectionsPagerAdapter(FragmentManager fragmentManager, Fragment fragment) {
-            super(fragmentManager);
-            this.fragment = fragment;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                return MarketSearchFragment.newInstance();
-            } else if (position == 1) {
-                return MarketOrderFragment.newInstance();
-            } else if (position == 2) {
-                return MarketOverCounterTradingFragment.newInstance();
-            } else if (position == 3) {
-                return MarketExchangeFragment.newInstance();
-            } else if (position == 4) {
-                return MarketSignatureFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "搜索";
-                case 1:
-                    return "订单";
-                case 2:
-                    return "场外交易";
-                case 3:
-                    return "交换";
-                case 4:
-                    return "签名";
-            }
-            return null;
-        }
+        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
+        mViewPager.setAdapter(mAdapter);
     }
 }
