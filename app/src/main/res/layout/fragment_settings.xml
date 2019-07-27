@@ -20,16 +20,15 @@
         <Button
             android:id="@+id/connection_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:backgroundTint="#323232"
             android:text="@string/settings_tab_connection"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/about_button"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:backgroundTint="#323232"
             android:text="关于APP"
             android:textSize="16sp" />

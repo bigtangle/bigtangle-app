@@ -105,6 +105,7 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.swipeContainer.setOnRefreshListener(this);
+
         this.recyclerViewContainer.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         this.recyclerViewContainer.setLayoutManager(layoutManager);

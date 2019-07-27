@@ -81,4 +81,10 @@
     <string name="dialog_wallet_secretkey_new_key">New Key</string>
     <string name="dialog_wallet_secretkey_public_key">Public Key</string>
     <string name="dialog_wallet_secretkey_private_key">Private Key</string>
+
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="domainname">Domain Name</string>
+    <string name="sign_number">Sign Number</string>
+    <string name="token_type">Token Type</string>
 </resources>

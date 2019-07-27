@@ -15,12 +15,18 @@ import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TokenFragment extends Fragment {
 
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
+
     private SectionsPagerAdapter mAdapter;
-    private boolean isInit = false;
 
     public static TokenFragment newInstance() {
         return new TokenFragment();
@@ -34,19 +40,23 @@ public class TokenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_token, container, false);
+        View view = inflater.inflate(R.layout.fragment_token, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager = view.findViewById(R.id.viewPager);
-        mTabLayout = view.findViewById(R.id.tabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
+        this.mTabLayout.setupWithViewPager(mViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, new String[0]);
-        mViewPager.setAdapter(mAdapter);
-        this.isInit = true;
+        fragments.add(TokenSearchFragment.newInstance());
+
+        String[] title = new String[]{
+                getContext().getString(R.string.title_tab_token)
+        };
+        this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
+        this.mViewPager.setAdapter(mAdapter);
     }
 }
