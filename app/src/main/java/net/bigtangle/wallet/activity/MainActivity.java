@@ -2,8 +2,6 @@ package net.bigtangle.wallet.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,7 +15,10 @@ import net.bigtangle.wallet.activity.token.TokenFragment;
 import net.bigtangle.wallet.activity.transaction.TransactionFragment;
 import net.bigtangle.wallet.activity.wallet.WalletFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
+import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +32,20 @@ public class MainActivity extends AppCompatActivity {
 
         ExtendedViewPager mViewPager = findViewById(R.id.Main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
-        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(TransactionFragment.newInstance());
+        fragments.add(WalletFragment.newInstance());
+        fragments.add(MarketFragment.newInstance());
+        fragments.add(TokenFragment.newInstance());
+        fragments.add(SettingsFragment.newInstance());
+
+        String[] title = new String[]{getString(R.string.title_tab_transaction),
+                getString(R.string.title_tab_wallet),
+                getString(R.string.title_tab_market),
+                getString(R.string.title_tab_token),
+                getString(R.string.title_tab_settings)};
+        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -46,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+        mViewPager.setOffscreenPageLimit(2);
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -73,54 +88,5 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(position);
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position) {
-                case 0:
-                    fragment = TransactionFragment.newInstance();
-                    break;
-                case 1:
-                    fragment = WalletFragment.newInstance();
-                    break;
-                case 2:
-                    fragment = MarketFragment.newInstance();
-                    break;
-                case 3:
-                    fragment = TokenFragment.newInstance();
-                    break;
-                case 4:
-                    fragment = SettingsFragment.newInstance();
-            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
     }
 }

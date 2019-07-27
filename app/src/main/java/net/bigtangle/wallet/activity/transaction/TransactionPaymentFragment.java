@@ -70,8 +70,6 @@ public class TransactionPaymentFragment extends Fragment {
     private List<TokenItem> tokenNames;
     private String[] payMethodArray;
 
-    private boolean isInit = false;
-
     public static TransactionPaymentFragment newInstance() {
         return new TransactionPaymentFragment();
     }
@@ -200,20 +198,8 @@ public class TransactionPaymentFragment extends Fragment {
                 }).execute();
             }
         });
-        if (this.isInit == false) {
-            this.initData();
-        }
-        this.isInit = true;
-    }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (this.isInit) {
-                this.initData();
-            }
-        }
+        this.initData();
     }
 
     private void initView() {

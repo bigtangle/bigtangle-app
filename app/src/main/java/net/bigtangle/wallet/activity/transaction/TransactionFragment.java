@@ -5,14 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.components.SectionsPagerAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,63 +49,21 @@ public class TransactionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.mTabLayout.setupWithViewPager(mViewPager);
-        this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), this);
+
+        ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(TransactionPaymentFragment.newInstance());
+        fragments.add(TransactionSignatureFragment.newInstance());
+        fragments.add(TransactionBankFragment.newInstance());
+        fragments.add(TransactionHistoryFragment.newInstance());
+
+        String[] title = new String[]{
+                this.getString(R.string.transaction_tab_single),
+                this.getString(R.string.transaction_tab_signature),
+                this.getString(R.string.transaction_tab_bank),
+                this.getString(R.string.transaction_tab_history)
+        };
+
+        this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         this.mViewPager.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            this.mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private Fragment fragment;
-
-        public SectionsPagerAdapter(FragmentManager fragmentManager, Fragment fragment) {
-            super(fragmentManager);
-            this.fragment = fragment;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                return TransactionPaymentFragment.newInstance();
-            }
-            if (position == 1) {
-                return TransactionSignatureFragment.newInstance();
-            }
-            if (position == 2) {
-                return TransactionBankFragment.newInstance();
-            }
-            if (position == 3) {
-                return TransactionHistoryFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return fragment.getString(R.string.transaction_tab_single);
-                case 1:
-                    return fragment.getString(R.string.transaction_tab_signature);
-                case 2:
-                    return fragment.getString(R.string.transaction_tab_bank);
-                case 3:
-                    return fragment.getString(R.string.transaction_tab_history);
-            }
-            return null;
-        }
     }
 }

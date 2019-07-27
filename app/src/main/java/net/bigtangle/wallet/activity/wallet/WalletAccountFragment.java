@@ -109,21 +109,10 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         this.recyclerViewContainer.setLayoutManager(layoutManager);
         this.recyclerViewContainer.setAdapter(this.mAdapter);
-        if (this.isInit == false) {
-            this.initData();
-        }
-        this.isInit = true;
+
+        this.initData();
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (this.isInit) {
-                this.initData();
-            }
-        }
-    }
 
     @Override
     public void onRefresh() {

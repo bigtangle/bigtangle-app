@@ -67,8 +67,6 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
 
     private MarketOrderItemListAdapter mAdapter;
 
-    private boolean isInit = false;
-
     public static MarketSearchFragment newInstance() {
         return new MarketSearchFragment();
     }
@@ -106,20 +104,7 @@ public class MarketSearchFragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-        if (this.isInit == false) {
-            this.initData();
-        }
-        this.isInit = true;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (this.isInit) {
-                this.initData();
-            }
-        }
+        this.initData();
     }
 
     private void initData() {
