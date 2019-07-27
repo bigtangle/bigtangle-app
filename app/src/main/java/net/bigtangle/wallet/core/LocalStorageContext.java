@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.utils.RoutePathUtil;
 
 public class LocalStorageContext {
 
@@ -49,5 +50,23 @@ public class LocalStorageContext {
     public String readServerURL() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
         return sharedPreferences.getString("serverURL", "https://bigtangle.info/");
+    }
+
+    public void writeWalletPath(String directory, String prefix) {
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("wallet.directory", directory);
+        editor.putString("wallet.prefix", prefix);
+        editor.commit();
+    }
+
+    public String readWalletDirectory() {
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("wallet.directory", RoutePathUtil.getBasePath(this.context));
+    }
+
+    public String readWalletFilePrefix() {
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("wallet.prefix", "bigtangle");
     }
 }

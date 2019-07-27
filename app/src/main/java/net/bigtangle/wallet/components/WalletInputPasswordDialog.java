@@ -56,7 +56,6 @@ public class WalletInputPasswordDialog extends Dialog {
                             .show();
                     return;
                 }
-
                 if (listenter != null) {
                     listenter.getWalletPassword(password);
                 }

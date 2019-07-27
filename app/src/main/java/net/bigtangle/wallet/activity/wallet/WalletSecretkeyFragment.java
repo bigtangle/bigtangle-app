@@ -26,6 +26,7 @@ import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.WalletInputPasswordDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.io.File;
@@ -205,6 +206,8 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                     WalletContextHolder.get().initWalletData(directory, prefix);
+
+                    LocalStorageContext.get().writeWalletPath(directory, prefix);
 
                     if (WalletContextHolder.get().checkWalletHavePassword()) {
                         WalletInputPasswordDialog dialog = new WalletInputPasswordDialog(getContext(), R.style.CustomDialogStyle, new WalletInputPasswordDialog.OnGetWalletPasswordListenter() {
