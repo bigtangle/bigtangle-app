@@ -6,7 +6,7 @@ public class TokenInfoItem {
 
     private String tokenId;
 
-    private Integer amount;
+    private String amount;
 
     private Boolean confirmed;
 
@@ -38,11 +38,11 @@ public class TokenInfoItem {
         this.tokenId = tokenId;
     }
 
-    public Integer getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

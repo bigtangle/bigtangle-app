@@ -120,7 +120,7 @@ public class TokenSearchFragment extends Fragment implements SwipeRefreshLayout.
                             tokenInfoItem.setSignNumber((Integer) map.get("signnumber"));
                             tokenInfoItem.setTokenType((Integer) map.get("tokentype"));
                             tokenInfoItem.setTokenStop((Boolean) map.get("tokenstop"));
-                            tokenInfoItem.setAmount((Integer) map.get("amount"));
+                            tokenInfoItem.setAmount(String.valueOf(map.get("amount")));
                             itemList.add(tokenInfoItem);
                         }
                     }

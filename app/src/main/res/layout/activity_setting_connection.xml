@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:title="Connection">
+                app:title="@string/settings_tab_connection">
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
