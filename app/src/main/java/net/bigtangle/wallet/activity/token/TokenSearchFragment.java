@@ -131,7 +131,7 @@ public class TokenSearchFragment extends Fragment implements SwipeRefreshLayout.
                         }
                     });
                 } catch (IOException e) {
-                    Log.e(LogConstant.TAG, "reqCmd getTokens failure to parse data", e);
+                    Log.e(LogConstant.TAG, "ReqCmd.getTokens", e);
                 }
             }
         });

@@ -1,7 +1,9 @@
-package net.bigtangle.wallet.core.constant;
+package net.bigtangle.wallet.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 
 public class LocalStorageContext {
 

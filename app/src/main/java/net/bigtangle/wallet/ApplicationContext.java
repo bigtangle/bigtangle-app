@@ -6,8 +6,8 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 
+import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.LocalStorageContext;
 import net.bigtangle.wallet.core.utils.RoutePathUtil;
 
 public class ApplicationContext extends Application implements LifecycleObserver {

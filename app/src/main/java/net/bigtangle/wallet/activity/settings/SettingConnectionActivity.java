@@ -12,7 +12,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.settings.adapter.ServerItemListAdapter;
 import net.bigtangle.wallet.activity.settings.model.ServerInfoItem;
-import net.bigtangle.wallet.core.constant.LocalStorageContext;
+import net.bigtangle.wallet.core.LocalStorageContext;
 
 import java.util.ArrayList;
 import java.util.List;
