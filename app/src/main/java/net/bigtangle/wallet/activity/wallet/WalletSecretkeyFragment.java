@@ -24,6 +24,7 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
+import net.bigtangle.wallet.components.WalletInputPasswordDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
@@ -73,7 +74,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
 
     private void initData() {
         this.itemList.clear();
-        List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
+        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
@@ -204,7 +205,20 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                     WalletContextHolder.get().initWalletData(directory, prefix);
-                    initData();
+
+                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                        WalletInputPasswordDialog dialog = new WalletInputPasswordDialog(getContext(), R.style.CustomDialogStyle, new WalletInputPasswordDialog.OnGetWalletPasswordListenter() {
+                            @Override
+                            public void getWalletPassword(String password) {
+                                initData();
+                            }
+                        });
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(false);
+                        dialog.show();
+                    } else {
+                        initData();
+                    }
                 } catch (Exception e) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)

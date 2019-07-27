@@ -15,13 +15,35 @@ android {
                 includeCompileClasspath true
             }
         }
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86'
+        }
+
+        externalNativeBuild {
+            cmake {
+                cFlags '-DHAVE_CONFIG_H'
+            }
+        }
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path 'cpp/CMakeLists.txt'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

@@ -1,14 +1,17 @@
 package net.bigtangle.wallet.core;
 
+import net.bigtangle.core.ECKey;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.kits.WalletAppKit;
 import net.bigtangle.params.MainNetParams;
 import net.bigtangle.wallet.Wallet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.spongycastle.crypto.params.KeyParameter;
 
 import java.io.File;
+import java.util.List;
 
 public class WalletContextHolder {
 
@@ -16,18 +19,49 @@ public class WalletContextHolder {
 
     public static NetworkParameters networkParameters = MainNetParams.get();
 
+    private String password;
+
     public void initWalletData(String directory, String filename) {
         walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
         setupWalletData();
     }
 
-    public static KeyParameter getAesKey() {
+    public KeyParameter getAesKey() {
+        KeyParameter aesKey = null;
+        if (StringUtils.isBlank(this.password)) {
+            return aesKey;
+        }
+        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
+        if (!"".equals(password.trim())) {
+            aesKey = keyCrypter.deriveKey(password);
+        }
+        return aesKey;
+    }
+
+    public boolean checkWalletPassword(String password) {
         KeyParameter aesKey = null;
         final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
-//        if (!"".equals(Main.password.trim())) {
-//            aesKey = keyCrypter.deriveKey(Main.password);
-//        }
-        return aesKey;
+        if (!"".equals(password.trim())) {
+            aesKey = keyCrypter.deriveKey(password);
+        }
+        return wallet().checkAESKey(aesKey);
+    }
+
+    public boolean checkWalletHavePassword() {
+        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
+        return keyCrypter != null;
+    }
+
+    public boolean saveAndCheckPassword(String password) {
+        if (checkWalletPassword(password)) {
+            this.password = password;
+            return true;
+        }
+        return false;
+    }
+
+    public List<ECKey> walletKeys() {
+        return wallet().walletKeys(getAesKey());
     }
 
     private void setupWalletData() {

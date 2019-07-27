@@ -93,8 +93,7 @@ public class TransactionPaymentFragment extends Fragment {
 
     private void initData() {
         List<String> keyStrHex = new ArrayList<String>();
-        Wallet wallet = WalletContextHolder.get().wallet();
-        for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
+        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
@@ -193,7 +192,7 @@ public class TransactionPaymentFragment extends Fragment {
                         amount = amount.multiply(factor);
 
                         final String memo = memoTextInput.getText().toString();
-                        wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
+                        wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
                     }
                 }).execute();
             }
