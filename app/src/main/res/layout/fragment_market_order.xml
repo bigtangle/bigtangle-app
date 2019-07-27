@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:columnCount="2"
+        android:rowCount="8">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/state" />
 
         <RadioGroup
             android:id="@+id/state_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center_vertical"
+            android:paddingTop="5dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -32,240 +34,150 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/buy"
-                android:textSize="25sp" />
+                android:checked="true" />
 
             <RadioButton
                 android:id="@+id/sell_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="@string/sell"
-                android:textSize="25sp" />
+                android:layout_marginLeft="10dp"
+                android:text="@string/sell" />
         </RadioGroup>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/wallet_secretkey_address" />
 
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.v7.widget.CardView
+            <Spinner
+                android:id="@+id/address_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <Spinner
-                    android:id="@+id/address_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:overlapAnchor="false"
-                    android:spinnerMode="dialog"
-                    app:layout_constraintHorizontal_bias="0.0" />
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+                android:layout_height="58dp"
+                android:overlapAnchor="false"
+                android:spinnerMode="dialog"/>
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/title_tab_token" />
 
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.v7.widget.CardView
+            <Spinner
+                android:id="@+id/pass_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <Spinner
-                    android:id="@+id/pass_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:overlapAnchor="false"
-                    android:spinnerMode="dialog"
-                    app:layout_constraintHorizontal_bias="0.0" />
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+                android:layout_height="58dp"
+                android:overlapAnchor="false"
+                android:spinnerMode="dialog" />
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/unit_price" />
 
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/unit_price_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/unit_price_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="@string/wallet_account_value" />
 
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/num_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/num_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:text="@string/the_validity_period_begins" />
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Start Date" />
 
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/date_begin_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/date_begin_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:text="@string/end_of_validity_period" />
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="ENd Date" />
 
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp">
 
-            <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/date_end_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/date_end_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/search_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorPrimary"
             android:elevation="24dp"
             android:text="@string/save" />
 
+    </GridLayout>
 
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

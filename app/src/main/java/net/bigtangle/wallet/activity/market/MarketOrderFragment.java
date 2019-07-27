@@ -15,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
 import net.bigtangle.wallet.R;
 
 import butterknife.BindView;
@@ -24,7 +26,7 @@ import butterknife.ButterKnife;
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class MarketOrderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MarketOrderFragment extends Fragment {
 
     @BindView(R.id.buy_btn)
     RadioButton buyBtn;
@@ -88,24 +90,18 @@ public class MarketOrderFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onRefresh() {
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+        this.searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo
+                new LovelyInfoDialog(getContext())
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setIcon(R.drawable.ic_error_white_24px)
+                        .setTitle(getContext().getString(R.string.dialog_title_error))
+                        .setMessage(getContext().getString(R.string.network_response_data_failed))
+                        .show();
+            }
+        });
     }
 }
