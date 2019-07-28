@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.token.adapter.TokenInfoItemListAdapter;
 import net.bigtangle.wallet.activity.token.model.TokenInfoItem;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -31,13 +31,12 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class TokenSearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static TokenSearchFragment newInstance() {
         return new TokenSearchFragment();
@@ -69,34 +68,7 @@ public class TokenSearchFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_token_search, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        this.swipeContainer.setOnRefreshListener(this);
-
-        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        this.recyclerViewContainer.setHasFixedSize(true);
-        this.recyclerViewContainer.setLayoutManager(layoutManager);
-        this.recyclerViewContainer.setAdapter(mAdapter);
-
-        this.searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initData();
-            }
-        });
-
-        this.initData();
-    }
-
-    private void initData() {
+    public void onLazyLoad() {
         String address = addressTextInput.getText().toString();
         HashMap<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", address);
@@ -138,8 +110,36 @@ public class TokenSearchFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_token_search, container, false);
+    }
+
+    @Override
+    public void initEvent() {
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.swipeContainer.setOnRefreshListener(this);
+
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        this.recyclerViewContainer.setHasFixedSize(true);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(mAdapter);
+
+        this.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLazyLoad();
+            }
+        });
+    }
+
+    @Override
     public void onRefresh() {
-        this.initData();
+        this.onLazyLoad();
         this.swipeContainer.setRefreshing(false);
         this.mAdapter.notifyDataSetChanged();
     }

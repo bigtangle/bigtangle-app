@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(5);
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
