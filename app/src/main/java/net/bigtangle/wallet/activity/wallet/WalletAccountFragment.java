@@ -18,7 +18,6 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
@@ -62,8 +61,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     @Override
     public void onLazyLoad() {
         List<String> keyStrHex = new ArrayList<String>();
-        Wallet wallet = WalletContextHolder.get().wallet();
-        for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
+        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {

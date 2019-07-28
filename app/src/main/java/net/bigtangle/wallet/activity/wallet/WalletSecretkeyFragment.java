@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,11 @@ import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdap
 import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
+import net.bigtangle.wallet.components.WalletInputPasswordDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,7 +77,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onLazyLoad() {
         this.itemList.clear();
-        List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
+        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
@@ -202,15 +206,30 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                     WalletContextHolder.get().initWalletData(directory, prefix);
-                    onLazyLoad();
+
+                    LocalStorageContext.get().writeWalletPath(directory, prefix);
+
+                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                        WalletInputPasswordDialog dialog = new WalletInputPasswordDialog(getContext(), R.style.CustomDialogStyle, new WalletInputPasswordDialog.OnGetWalletPasswordListenter() {
+                            @Override
+                            public void getWalletPassword(String password) {
+                                onLazyLoad();
+                            }
+                        });
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(false);
+                        dialog.show();
+                    } else {
+                        onLazyLoad();
+                    }
                 } catch (Exception e) {
+                    Log.e(LogConstant.TAG, "wallet file", e);
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(getContext().getString(R.string.dialog_title_error))
                             .setMessage("当前选择文件错误")
                             .show();
-                    return;
                 }
             }
         }
