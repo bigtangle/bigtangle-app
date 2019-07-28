@@ -101,6 +101,4 @@ public class TokenInfoItem {
     public void setTokenStop(Boolean tokenStop) {
         this.tokenStop = tokenStop;
     }
-
-// {confirmed=true, tokenid=021bacf660bee64c1de489d8003fbc7b6d2925ed6c47a6a209cc7c7240405d7b3d, tokenindex=0, tokenname=人民币, description=人民币, domainname=de, signnumber=1, tokentype=0, tokenstop=false, blockhash=4236aa50ff646c72f6a2ee195a312b28949cc3065de7a26c0899a23ed86d6fac, amount=678900000, decimals=0, revoked=false}
 }
