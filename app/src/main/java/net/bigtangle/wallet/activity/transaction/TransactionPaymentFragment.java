@@ -1,10 +1,8 @@
 package net.bigtangle.wallet.activity.transaction;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +26,7 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
@@ -42,9 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class TransactionPaymentFragment extends Fragment {
+public class TransactionPaymentFragment extends BaseLazyFragment {
 
     @BindView(R.id.pay_method_spinner)
     Spinner payMethodSpinner;
@@ -91,7 +89,8 @@ public class TransactionPaymentFragment extends Fragment {
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
     }
 
-    private void initData() {
+    @Override
+    public void onLazyLoad() {
         List<String> keyStrHex = new ArrayList<String>();
         Wallet wallet = WalletContextHolder.get().wallet();
         for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
@@ -134,18 +133,14 @@ public class TransactionPaymentFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_transaction_payment, container, false);
-        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void initEvent() {
         initView();
-
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,8 +193,6 @@ public class TransactionPaymentFragment extends Fragment {
                 }).execute();
             }
         });
-
-        this.initData();
     }
 
     private void initView() {
@@ -208,5 +201,11 @@ public class TransactionPaymentFragment extends Fragment {
 
         payMethodSpinner.setAdapter(payMethodAdapter);
         payMethodSpinner.setSelection(0);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

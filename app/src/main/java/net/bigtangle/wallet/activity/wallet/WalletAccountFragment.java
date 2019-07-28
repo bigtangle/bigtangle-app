@@ -3,7 +3,6 @@ package net.bigtangle.wallet.activity.wallet;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +21,7 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -33,9 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class WalletAccountFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view_container)
     RecyclerView recyclerViewContainer;
@@ -60,7 +59,8 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
     }
 
-    private void initData() {
+    @Override
+    public void onLazyLoad() {
         List<String> keyStrHex = new ArrayList<String>();
         Wallet wallet = WalletContextHolder.get().wallet();
         for (ECKey ecKey : wallet.walletKeys(WalletContextHolder.getAesKey())) {
@@ -93,11 +93,13 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallet_account, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_wallet_account, container, false);
+    }
+
+    @Override
+    public void initEvent() {
+
     }
 
     @Override
@@ -109,14 +111,12 @@ public class WalletAccountFragment extends Fragment implements SwipeRefreshLayou
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         this.recyclerViewContainer.setLayoutManager(layoutManager);
         this.recyclerViewContainer.setAdapter(this.mAdapter);
-
-        this.initData();
     }
 
 
     @Override
     public void onRefresh() {
         this.swipeContainer.setRefreshing(false);
-        this.initData();
+        this.onLazyLoad();
     }
 }

@@ -1,7 +1,6 @@
 package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MarketFragment extends Fragment {
+public class MarketFragment extends BaseLazyFragment {
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
@@ -41,16 +40,7 @@ public class MarketFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_market, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onLazyLoad() {
         mTabLayout.setupWithViewPager(mViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -70,5 +60,16 @@ public class MarketFragment extends Fragment {
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(5);
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_market, container, false);
+    }
+
+    @Override
+    public void initEvent() {
+
     }
 }

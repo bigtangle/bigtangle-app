@@ -1,11 +1,8 @@
 package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +15,15 @@ import android.widget.Spinner;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class MarketOrderFragment extends Fragment {
+public class MarketOrderFragment extends BaseLazyFragment {
 
     @BindView(R.id.buy_btn)
     RadioButton buyBtn;
@@ -74,22 +71,22 @@ public class MarketOrderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_market_order, container, false);
-        ButterKnife.bind(this, view);
+    public void onLazyLoad() {
 
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_market_order, container, false);
+    }
+
+    @Override
+    public void initEvent() {
         passSpinner.setAdapter(tokenAdapter);
         passSpinner.setSelection(0);
 
         addressSpinner.setAdapter(addressAdapter);
         addressSpinner.setSelection(0);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         this.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

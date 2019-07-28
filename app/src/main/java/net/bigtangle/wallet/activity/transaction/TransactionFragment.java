@@ -1,7 +1,6 @@
 package net.bigtangle.wallet.activity.transaction;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class TransactionFragment extends Fragment {
+public class TransactionFragment extends BaseLazyFragment {
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
@@ -38,18 +37,8 @@ public class TransactionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onLazyLoad() {
         this.mTabLayout.setupWithViewPager(mViewPager);
-
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(TransactionPaymentFragment.newInstance());
         fragments.add(TransactionSignatureFragment.newInstance());
@@ -65,5 +54,16 @@ public class TransactionFragment extends Fragment {
 
         this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         this.mViewPager.setAdapter(mAdapter);
+        this.mViewPager.setOffscreenPageLimit(4);
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_transaction, container, false);
+    }
+
+    @Override
+    public void initEvent() {
+
     }
 }

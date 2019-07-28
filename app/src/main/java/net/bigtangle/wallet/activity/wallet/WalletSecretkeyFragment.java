@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +23,7 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
@@ -32,11 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int REQUESTCODE_FROM_ACTIVITY = 1000;
 
@@ -71,7 +70,8 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
         }
     }
 
-    private void initData() {
+    @Override
+    public void onLazyLoad() {
         this.itemList.clear();
         List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.getAesKey());
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
@@ -86,23 +86,12 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallet_secretkey, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_wallet_secretkey, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        this.mAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
-        swipeContainer.setOnRefreshListener(this);
-        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
-        this.recyclerViewContainer.setHasFixedSize(true);
-        this.recyclerViewContainer.setLayoutManager(layoutManager);
-        this.recyclerViewContainer.setAdapter(mAdapter);
-
+    public void initEvent() {
         this.addKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -127,7 +116,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                                 ECKey ecKey = new ECKey();
                                 WalletContextHolder.get().wallet().importKey(ecKey);
 
-                                initData();
+                                onLazyLoad();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
@@ -152,13 +141,22 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                         .start();
             }
         });
+    }
 
-        initData();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.mAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
+        swipeContainer.setOnRefreshListener(this);
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        this.recyclerViewContainer.setHasFixedSize(true);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(mAdapter);
     }
 
     @Override
     public void onRefresh() {
-        this.initData();
+        this.onLazyLoad();
         this.swipeContainer.setRefreshing(false);
         this.mAdapter.notifyDataSetChanged();
     }
@@ -178,7 +176,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                 ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
                 WalletContextHolder.get().wallet().importKey(ecKey);
 
-                initData();
+                onLazyLoad();
             }
         });
     }
@@ -204,7 +202,7 @@ public class WalletSecretkeyFragment extends Fragment implements SwipeRefreshLay
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                     WalletContextHolder.get().initWalletData(directory, prefix);
-                    initData();
+                    onLazyLoad();
                 } catch (Exception e) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)
