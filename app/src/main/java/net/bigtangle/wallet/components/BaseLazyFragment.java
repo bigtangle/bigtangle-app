@@ -44,7 +44,6 @@ public abstract class BaseLazyFragment extends Fragment {
             onLazyLoad();
             isFirstLoad = false;
         }
-
     }
 
     //数据加载接口，留给子类实现
@@ -55,5 +54,4 @@ public abstract class BaseLazyFragment extends Fragment {
 
     //初始化事件接口，留给子类实现
     public abstract void initEvent();
-
 }

@@ -15,6 +15,7 @@ import java.util.List;
 public class TokenItemListAdapter extends BaseAdapter {
 
     private Context mContext;
+
     private List<TokenItem> itemList;
 
     public TokenItemListAdapter(Context context, List<TokenItem> itemList) {

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import net.bigtangle.wallet.activity.MainActivity;
-import net.bigtangle.wallet.components.WalletInputPasswordDialog;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
 public class LauncherUI extends AppCompatActivity {
@@ -16,17 +16,16 @@ public class LauncherUI extends AppCompatActivity {
         setContentView(R.layout.activity_launcher);
 
         if (WalletContextHolder.get().checkWalletHavePassword()) {
-            WalletInputPasswordDialog dialog = new WalletInputPasswordDialog(this, R.style.CustomDialogStyle, new WalletInputPasswordDialog.OnGetWalletPasswordListenter() {
-                @Override
-                public void getWalletPassword(String password) {
-                    Intent intent = new Intent(LauncherUI.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            });
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            dialog.show();
+            new WalletPasswordDialog(this, R.style.CustomDialogStyle)
+                    .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
+
+                        @Override
+                        public void verifyPassword(String password) {
+                            Intent intent = new Intent(LauncherUI.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }).show();
         } else {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

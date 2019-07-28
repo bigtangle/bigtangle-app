@@ -38,10 +38,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * @author lijian
- * @date 2019-07-06 00:06:01
- */
 public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.address_text_input)
@@ -134,6 +130,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
     @Override
     public void initEvent() {
         this.searchButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 onLazyLoad();

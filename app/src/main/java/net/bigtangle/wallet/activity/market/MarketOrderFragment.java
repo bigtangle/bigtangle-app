@@ -19,30 +19,35 @@ import net.bigtangle.wallet.components.BaseLazyFragment;
 
 import butterknife.BindView;
 
-/**
- * @author lijian
- * @date 2019-07-06 00:06:01
- */
 public class MarketOrderFragment extends BaseLazyFragment {
 
     @BindView(R.id.buy_btn)
     RadioButton buyBtn;
+
     @BindView(R.id.sell_btn)
     RadioButton sellBtn;
+
     @BindView(R.id.state_radio_group)
     RadioGroup statusRadioGroup;
+
     @BindView(R.id.address_spinner)
     Spinner addressSpinner;
+
     @BindView(R.id.pass_spinner)
     Spinner passSpinner;
+
     @BindView(R.id.unit_price_input)
     TextInputEditText unitPriceInput;
+
     @BindView(R.id.num_input)
     TextInputEditText numInput;
+
     @BindView(R.id.date_begin_input)
     TextInputEditText dateBeginInput;
+
     @BindView(R.id.date_end_input)
     TextInputEditText dateEndInput;
+
     @BindView(R.id.search_btn)
     Button searchBtn;
 
@@ -72,7 +77,6 @@ public class MarketOrderFragment extends BaseLazyFragment {
 
     @Override
     public void onLazyLoad() {
-
     }
 
     @Override

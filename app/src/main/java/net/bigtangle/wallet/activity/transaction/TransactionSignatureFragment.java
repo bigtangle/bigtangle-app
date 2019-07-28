@@ -11,12 +11,6 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 
-/**
- * 签名
- *
- * @author lijian
- * @date 2019-07-06 00:05:36
- */
 public class TransactionSignatureFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public TransactionSignatureFragment() {
@@ -34,7 +28,6 @@ public class TransactionSignatureFragment extends BaseLazyFragment implements Sw
 
     @Override
     public void onLazyLoad() {
-
     }
 
     @Override
@@ -44,22 +37,11 @@ public class TransactionSignatureFragment extends BaseLazyFragment implements Sw
 
     @Override
     public void initEvent() {
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

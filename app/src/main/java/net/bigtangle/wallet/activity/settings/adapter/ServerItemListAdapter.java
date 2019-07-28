@@ -15,6 +15,7 @@ import java.util.List;
 public class ServerItemListAdapter extends BaseAdapter {
 
     private Context mContext;
+
     private List<ServerInfoItem> itemList;
 
     public ServerItemListAdapter(Context context, List<ServerInfoItem> itemList) {

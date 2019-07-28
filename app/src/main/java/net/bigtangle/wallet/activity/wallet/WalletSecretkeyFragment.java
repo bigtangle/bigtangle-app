@@ -22,10 +22,10 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
-import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyAddDialog;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletSecretkeyDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
-import net.bigtangle.wallet.components.WalletInputPasswordDialog;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -166,23 +166,20 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     }
 
     private void showDialog() {
-        WalletSecretkeyAddDialog dialog = new WalletSecretkeyAddDialog(
-                getContext(), R.style.CustomDialogStyle);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.show();
-        dialog.setPositiveButton(new WalletSecretkeyAddDialog.OnGetWalletSecretKeyListenter() {
-            @Override
-            public void getWalletSecretKey(String publicKey, String privateKey) {
-                byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
-                byte[] privKeyBuf = Utils.HEX.decode(privateKey);
+        new WalletSecretkeyDialog(getContext(), R.style.CustomDialogStyle).
+                setListenter(new WalletSecretkeyDialog.OnGetWalletSecretKeyListenter() {
 
-                ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
-                WalletContextHolder.get().wallet().importKey(ecKey);
+                    @Override
+                    public void getWalletSecretKey(String publicKey, String privateKey) {
+                        byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
+                        byte[] privKeyBuf = Utils.HEX.decode(privateKey);
 
-                onLazyLoad();
-            }
-        });
+                        ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
+                        WalletContextHolder.get().wallet().importKey(ecKey);
+
+                        onLazyLoad();
+                    }
+                }).show();
     }
 
     @Override
@@ -210,15 +207,14 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     LocalStorageContext.get().writeWalletPath(directory, prefix);
 
                     if (WalletContextHolder.get().checkWalletHavePassword()) {
-                        WalletInputPasswordDialog dialog = new WalletInputPasswordDialog(getContext(), R.style.CustomDialogStyle, new WalletInputPasswordDialog.OnGetWalletPasswordListenter() {
-                            @Override
-                            public void getWalletPassword(String password) {
-                                onLazyLoad();
-                            }
-                        });
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
+                        new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
+                                .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
+
+                                    @Override
+                                    public void verifyPassword(String password) {
+                                        onLazyLoad();
+                                    }
+                                }).show();
                     } else {
                         onLazyLoad();
                     }

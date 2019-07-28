@@ -3,7 +3,6 @@ package net.bigtangle.wallet.activity.wallet.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +13,15 @@ import net.bigtangle.wallet.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalletSecretkeyAddDialog extends Dialog {
+public class WalletSecretkeyDialog extends Dialog {
 
     private Context context;
     protected View mContextView = null;
 
-    @BindView(R.id.public_key_input)
+    @BindView(R.id.public_key_text_input)
     TextInputEditText publicKeyInput;
 
-    @BindView(R.id.private_key_input)
+    @BindView(R.id.private_key_text_input)
     TextInputEditText privateKeyInput;
 
     @BindView(R.id.negative_button)
@@ -31,14 +30,16 @@ public class WalletSecretkeyAddDialog extends Dialog {
     @BindView(R.id.positive_button)
     Button positiveButton;
 
-    public WalletSecretkeyAddDialog(@NonNull Context context) {
-        super(context);
+    public WalletSecretkeyDialog(Context context, int theme) {
+        super(context, theme);
         this.context = context;
     }
 
-    public WalletSecretkeyAddDialog(Context context, int theme) {
-        super(context, theme);
-        this.context = context;
+    @Override
+    public void show() {
+        this.setCanceledOnTouchOutside(false);
+        this.setCancelable(false);
+        super.show();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class WalletSecretkeyAddDialog extends Dialog {
         }
     }
 
-    public void setPositiveButton(final OnGetWalletSecretKeyListenter listener) {
+    public WalletSecretkeyDialog setListenter(final OnGetWalletSecretKeyListenter listener) {
         if (positiveButton != null) {
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,6 +74,7 @@ public class WalletSecretkeyAddDialog extends Dialog {
                 }
             });
         }
+        return this;
     }
 
     public interface OnGetWalletSecretKeyListenter {

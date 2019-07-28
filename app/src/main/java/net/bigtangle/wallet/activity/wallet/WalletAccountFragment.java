@@ -111,7 +111,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.recyclerViewContainer.setAdapter(this.mAdapter);
     }
 
-
     @Override
     public void onRefresh() {
         this.swipeContainer.setRefreshing(false);

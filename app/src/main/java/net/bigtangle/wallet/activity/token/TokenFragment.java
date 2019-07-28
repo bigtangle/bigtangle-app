@@ -57,7 +57,5 @@ public class TokenFragment extends BaseLazyFragment {
 
     @Override
     public void initEvent() {
-
     }
-
 }

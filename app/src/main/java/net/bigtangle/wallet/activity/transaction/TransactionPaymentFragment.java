@@ -29,7 +29,7 @@ import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
+import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
@@ -160,19 +160,19 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
                         final String toAddress = toAddressTextInput.getText().toString();
                         if (StringUtils.isBlank(toAddress)) {
-                            throw new HttpNetExecuteException(getContext().getString(R.string.address_not_empty));
+                            throw new ToastException(getContext().getString(R.string.address_not_empty));
                         }
                         final String amountValue = amountTextInput.getText().toString();
                         if (StringUtils.isBlank(amountValue)) {
-                            throw new HttpNetExecuteException(getContext().getString(R.string.amount_not_empty));
+                            throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
                         if (tokenSpinner.getSelectedItem() == null) {
-                            throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
+                            throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
                         TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
                         final String tokenValue = tokenIdTextView.getText().toString();
                         if (StringUtils.isBlank(tokenValue)) {
-                            throw new HttpNetExecuteException(getContext().getString(R.string.token_not_empty));
+                            throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
 
                         Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
