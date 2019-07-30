@@ -64,6 +64,5 @@ public class TransactionFragment extends BaseLazyFragment {
 
     @Override
     public void initEvent() {
-
     }
 }

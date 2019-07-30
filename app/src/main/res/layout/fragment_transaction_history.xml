@@ -35,7 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/TransactionHistory_transactions_recyclerView"
                     android:layout_width="match_parent"
@@ -46,7 +45,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

@@ -84,7 +84,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                         }
                     });
                 } catch (IOException e) {
-                    Log.e(LogConstant.TAG, "reqCmd getBalances failure to parse data", e);
+                    Log.e(LogConstant.TAG, "ReqCmd.getBalances", e);
                 }
             }
         });
@@ -110,7 +110,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.recyclerViewContainer.setLayoutManager(layoutManager);
         this.recyclerViewContainer.setAdapter(this.mAdapter);
     }
-
 
     @Override
     public void onRefresh() {

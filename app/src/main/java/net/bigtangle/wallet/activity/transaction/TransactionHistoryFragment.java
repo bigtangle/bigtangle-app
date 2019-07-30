@@ -27,7 +27,6 @@ public class TransactionHistoryFragment extends BaseLazyFragment implements Swip
 
     @Override
     public void onLazyLoad() {
-
     }
 
     @Override
@@ -37,7 +36,6 @@ public class TransactionHistoryFragment extends BaseLazyFragment implements Swip
 
     @Override
     public void initEvent() {
-
     }
 
     @Override
@@ -52,6 +50,5 @@ public class TransactionHistoryFragment extends BaseLazyFragment implements Swip
 
     @Override
     public void onRefresh() {
-
     }
 }

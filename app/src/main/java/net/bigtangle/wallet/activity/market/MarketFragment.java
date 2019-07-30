@@ -70,6 +70,5 @@ public class MarketFragment extends BaseLazyFragment {
 
     @Override
     public void initEvent() {
-
     }
 }

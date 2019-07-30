@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomBar bottomBar = findViewById(R.id.bottomBar);
+        BottomBar bottomBar = findViewById(R.id.bottom_bar);
         bottomBar.setDefaultTab(R.id.tab_market);
 
-        ExtendedViewPager mViewPager = findViewById(R.id.Main_container);
+        ExtendedViewPager mViewPager = findViewById(R.id.main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
 
         ArrayList<Fragment> fragments = new ArrayList<>();

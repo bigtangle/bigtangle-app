@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrderItemListAdapter.ItemViewHolder> {
 
     private Context mContext;
+
     private List<MarketOrderItem> itemList;
 
     public MarketOrderItemListAdapter(Context context, List<MarketOrderItem> itemList) {

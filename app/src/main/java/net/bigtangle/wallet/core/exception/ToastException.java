@@ -1,8 +1,8 @@
 package net.bigtangle.wallet.core.exception;
 
-public class HttpNetExecuteException extends RuntimeException {
+public class ToastException extends RuntimeException {
 
-    public HttpNetExecuteException(String toastMessage) {
+    public ToastException(String toastMessage) {
         this.toastMessage = toastMessage;
     }
 

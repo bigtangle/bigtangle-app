@@ -27,10 +27,8 @@ public class SettingsFragment extends BaseLazyFragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public void onLazyLoad() {
-
     }
 
     @Override

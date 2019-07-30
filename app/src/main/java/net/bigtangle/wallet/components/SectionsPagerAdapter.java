@@ -1,6 +1,5 @@
 package net.bigtangle.wallet.components;
 
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,9 +28,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return this.fragments.size();
     }
 
-    @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return title[position];
+        return this.title[position];
     }
 }

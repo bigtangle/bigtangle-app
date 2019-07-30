@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 
-/**
- * @author lijian
- * @date 2019-07-06 00:06:01
- */
 public class MarketOverCounterTradingFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public MarketOverCounterTradingFragment() {
@@ -38,7 +34,6 @@ public class MarketOverCounterTradingFragment extends BaseLazyFragment implement
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         return inflater.inflate(R.layout.fragment_transaction_not_open, container, false);
-
     }
 
     @Override

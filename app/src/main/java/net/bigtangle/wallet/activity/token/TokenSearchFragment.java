@@ -116,7 +116,6 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
 
     @Override
     public void initEvent() {
-
     }
 
     @Override

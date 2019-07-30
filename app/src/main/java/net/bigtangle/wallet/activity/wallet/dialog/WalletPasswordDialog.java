@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.components;
+package net.bigtangle.wallet.activity.wallet.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,7 +16,7 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalletInputPasswordDialog extends Dialog {
+public class WalletPasswordDialog extends Dialog {
 
     private Context context;
 
@@ -26,12 +26,23 @@ public class WalletInputPasswordDialog extends Dialog {
     @BindView(R.id.positive_button)
     Button positiveButton;
 
-    private OnGetWalletPasswordListenter listenter;
+    private OnWalletVerifyPasswordListenter listenter;
 
-    public WalletInputPasswordDialog(Context context, int theme, OnGetWalletPasswordListenter listenter) {
+    public WalletPasswordDialog(Context context, int theme) {
         super(context, theme);
         this.context = context;
+    }
+
+    public WalletPasswordDialog setListenter(OnWalletVerifyPasswordListenter listenter) {
         this.listenter = listenter;
+        return this;
+    }
+
+    @Override
+    public void show() {
+        this.setCanceledOnTouchOutside(false);
+        this.setCancelable(false);
+        super.show();
     }
 
     @Override
@@ -57,14 +68,15 @@ public class WalletInputPasswordDialog extends Dialog {
                     return;
                 }
                 if (listenter != null) {
-                    listenter.getWalletPassword(password);
+                    listenter.verifyPassword(password);
                 }
                 dismiss();
             }
         });
     }
 
-    public interface OnGetWalletPasswordListenter {
-        void getWalletPassword(String password);
+    public interface OnWalletVerifyPasswordListenter {
+
+        void verifyPassword(String password);
     }
 }

@@ -61,6 +61,5 @@ public class WalletFragment extends BaseLazyFragment {
 
     @Override
     public void initEvent() {
-
     }
 }

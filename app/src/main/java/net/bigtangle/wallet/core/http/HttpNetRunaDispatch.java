@@ -17,7 +17,7 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
-import net.bigtangle.wallet.core.exception.HttpNetExecuteException;
+import net.bigtangle.wallet.core.exception.ToastException;
 
 public class HttpNetRunaDispatch {
 
@@ -68,15 +68,15 @@ public class HttpNetRunaDispatch {
                     Message message = new Message();
                     message.what = MessageStateCode.SUCCESS;
                     httpNetCompleteHandler.sendMessage(message);
-                } catch (HttpNetExecuteException e) {
+                } catch (ToastException e) {
                     Message message = new Message();
-                    message.what = MessageStateCode.WALLET_TOAST_ERROR;
+                    message.what = MessageStateCode.TOAST_ERROR;
                     message.obj = e.getToastMessage();
                     httpNetCompleteHandler.sendMessage(message);
                 } catch (Exception e) {
                     Log.e(LogConstant.TAG, "wallet http request", e);
                     Message message = new Message();
-                    message.what = MessageStateCode.WALLET_EXCEPTION_ERROR;
+                    message.what = MessageStateCode.WALLET_ERROR;
                     httpNetCompleteHandler.sendMessage(message);
                 } finally {
                     httpNetProgressHandler.sendEmptyMessage(0);
@@ -110,7 +110,7 @@ public class HttpNetRunaDispatch {
                         .show();
 
                 return;
-            } else if (message.what == MessageStateCode.WALLET_EXCEPTION_ERROR) {
+            } else if (message.what == MessageStateCode.WALLET_ERROR) {
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
@@ -118,7 +118,7 @@ public class HttpNetRunaDispatch {
                         .setMessage(context.getString(R.string.wallet_operation_failed))
                         .show();
                 return;
-            } else if (message.what == MessageStateCode.WALLET_TOAST_ERROR) {
+            } else if (message.what == MessageStateCode.TOAST_ERROR) {
                 Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();

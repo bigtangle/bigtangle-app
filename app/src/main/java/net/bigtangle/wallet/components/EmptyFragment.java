@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction;
+package net.bigtangle.wallet.components;
 
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.components.BaseLazyFragment;
 
 /**
  * 多重地址交易控件
@@ -15,13 +14,13 @@ import net.bigtangle.wallet.components.BaseLazyFragment;
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class TransactionBankFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class EmptyFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public TransactionBankFragment() {
+    public EmptyFragment() {
     }
 
-    public static TransactionBankFragment newInstance() {
-        TransactionBankFragment fragment = new TransactionBankFragment();
+    public static EmptyFragment newInstance() {
+        EmptyFragment fragment = new EmptyFragment();
         return fragment;
     }
 

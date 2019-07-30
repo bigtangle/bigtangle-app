@@ -10,10 +10,6 @@ import android.view.ViewGroup;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 
-/**
- * @author lijian
- * @date 2019-07-06 00:06:01
- */
 public class MarketExchangeFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public MarketExchangeFragment() {
@@ -28,7 +24,6 @@ public class MarketExchangeFragment extends BaseLazyFragment implements SwipeRef
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public void onLazyLoad() {
