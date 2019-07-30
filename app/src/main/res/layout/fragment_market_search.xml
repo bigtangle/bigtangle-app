@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="@string/wallet_secretkey_address" />
+            android:text="@string/wallet_secretkey_address"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +30,8 @@
                     android:id="@+id/address_text_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textIsSelectable="true" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </LinearLayout>

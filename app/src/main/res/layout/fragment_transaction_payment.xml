@@ -53,7 +53,8 @@
                 android:id="@+id/amount_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textIsSelectable="true" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -94,7 +95,8 @@
                 android:id="@+id/to_address_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textIsSelectable="true" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -114,7 +116,8 @@
                 android:id="@+id/memo_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textIsSelectable="true" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

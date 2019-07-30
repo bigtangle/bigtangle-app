@@ -132,7 +132,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Start Date" />
+            android:text="@string/the_validity_period_begins" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -141,7 +141,7 @@
             android:layout_marginTop="10dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/date_begin_input"
+                android:id="@+id/startShowDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -152,7 +152,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="ENd Date" />
+            android:text="@string/end_of_validity_period" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -161,7 +161,7 @@
             android:layout_marginTop="10dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/date_end_input"
+                android:id="@+id/endShowDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />

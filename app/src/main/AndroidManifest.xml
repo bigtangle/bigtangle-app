@@ -47,6 +47,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.bigtangle.wallet.activity.MainActivity" />
         </activity>
+
+        <activity android:name="com.pgyersdk.feedback.FeedbackActivity"/>
+        <provider
+            android:name="com.pgyersdk.PgyerProvider"
+            android:authorities="${applicationId}.com.pgyer.provider"
+            android:exported="false"/>
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="5e234c8a6d69cdc40392b93a101c680a" >
+        </meta-data>
+
     </application>
 
 </manifest>

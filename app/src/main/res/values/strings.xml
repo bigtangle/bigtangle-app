@@ -40,8 +40,8 @@
     <string name="sell">Sell</string>
     <string name="price">Price</string>
     <string name="unit_price">Unit-price</string>
-    <string name="the_validity_period_begins">The validity period begins</string>
-    <string name="end_of_validity_period">End of validity period</string>
+    <string name="the_validity_period_begins">Start Date</string>
+    <string name="end_of_validity_period">End Date</string>
     <string name="save">Save</string>
     <string name="test">Test</string>
     <string name="Unopened">Unopened</string>
