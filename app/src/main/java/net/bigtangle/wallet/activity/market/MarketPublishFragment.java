@@ -57,12 +57,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
     @BindView(R.id.amount_text_input)
     TextInputEditText amountTextInput;
 
-    @BindView(R.id.date_begin_input)
-    TextInputEditText dateBeginInput;
-
-    @BindView(R.id.date_end_input)
-    TextInputEditText dateEndInput;
-
     @BindView(R.id.search_button)
     Button searchButton;
 
@@ -135,7 +129,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(tokenValue)) {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
-
                         String tokenid = tokenValue;
 
                         boolean isBuy_ = true;
@@ -146,7 +139,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 break;
                             }
                         }
-
                         String typeStr = isBuy_ ? "buy" : "sell";
 
                         if (addressSpinner.getSelectedItem() == null) {
@@ -156,10 +148,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(address)) {
                             throw new ToastException("地址不可以为空");
                         }
-
                         byte[] pubKeyHash = Address.fromBase58(WalletContextHolder.networkParameters, address).getHash160();
 
-                        Coin coin = CoinbaseUtil.calculateTotalUTXOList(pubKeyHash, typeStr.equals("sell") ? tokenid : NetworkParameters.BIGTANGLE_TOKENID_STRING);
+                        Coin coin = CoinbaseUtil.calculateTotalUTXOList(pubKeyHash,
+                                typeStr.equals("sell") ? tokenid : NetworkParameters.BIGTANGLE_TOKENID_STRING);
 
                         if (amountTextInput.getText() == null) {
                             throw new ToastException("地址不可以为空");
