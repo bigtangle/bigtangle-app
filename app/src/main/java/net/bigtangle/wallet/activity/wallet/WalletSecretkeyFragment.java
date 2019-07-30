@@ -166,20 +166,22 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     }
 
     private void showDialog() {
-        new WalletSecretkeyDialog(getContext(), R.style.CustomDialogStyle).
-                setListenter(new WalletSecretkeyDialog.OnGetWalletSecretKeyListenter() {
+        WalletSecretkeyDialog dialog = new WalletSecretkeyDialog(getContext(), R.style.CustomDialogStyle);
+        dialog.show();
+        dialog.setListenter(new WalletSecretkeyDialog.OnGetWalletSecretKeyListenter() {
 
                     @Override
                     public void getWalletSecretKey(String publicKey, String privateKey) {
                         byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
                         byte[] privKeyBuf = Utils.HEX.decode(privateKey);
 
+                        // TODO
                         ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
                         WalletContextHolder.get().wallet().importKey(ecKey);
 
                         onLazyLoad();
                     }
-                }).show();
+        });
     }
 
     @Override

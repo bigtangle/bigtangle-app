@@ -45,7 +45,7 @@ public class MarketFragment extends BaseLazyFragment {
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(MarketSearchFragment.newInstance());
-        fragments.add(MarketOrderFragment.newInstance());
+        fragments.add(MarketPublishFragment.newInstance());
         fragments.add(MarketOverCounterTradingFragment.newInstance());
         fragments.add(MarketExchangeFragment.newInstance());
         fragments.add(MarketSignatureFragment.newInstance());
