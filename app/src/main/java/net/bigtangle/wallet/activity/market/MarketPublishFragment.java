@@ -22,6 +22,8 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
+import net.bigtangle.wallet.components.datepicker.CustomDatePicker;
+import net.bigtangle.wallet.components.datepicker.DateFormatUtils;
 import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
@@ -33,7 +35,10 @@ import net.bigtangle.wallet.core.utils.CoinbaseUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -60,8 +65,19 @@ public class MarketPublishFragment extends BaseLazyFragment {
     @BindView(R.id.search_button)
     Button searchButton;
 
+    @BindView(R.id.date_begin_input)
+    TextView dateBeginInput;
+
+    @BindView(R.id.date_end_input)
+    TextView dateEndInput;
+
     TokenItemListAdapter tokenAdapter;
     ArrayAdapter<String> addressAdapter;
+
+    private CustomDatePicker mTimerPicker;
+
+    private boolean dateEndInputFlag;
+    private boolean dateInputInputFlag;
 
     private List<String> addressList;
     private List<TokenItem> tokenItemList;
@@ -97,6 +113,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     @Override
     public void initEvent() {
+
+        initTimerPicker();
         this.tokenSpinner.setAdapter(tokenAdapter);
         this.tokenSpinner.setSelection(0);
 
@@ -202,6 +220,22 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 initData();
             }
         });
+
+        dateBeginInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateInputInputFlag = true;
+                mTimerPicker.show(dateBeginInput.getText().toString());
+            }
+        });
+
+        dateEndInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateEndInputFlag = true;
+                mTimerPicker.show(dateEndInput.getText().toString());
+            }
+        });
     }
 
     public void initData() {
@@ -284,5 +318,45 @@ public class MarketPublishFragment extends BaseLazyFragment {
     public boolean isSystemCoin(String tokenId) {
         return ("BIG:" + NetworkParameters.BIGTANGLE_TOKENID_STRING).equals(tokenId)
                 || (NetworkParameters.BIGTANGLE_TOKENID_STRING).equals(tokenId);
+    }
+
+    private void initTimerPicker() {
+
+        String beginTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
+        String endTime = getAddYear(30);
+
+        dateBeginInput.setText(beginTime);
+        dateEndInput.setText(beginTime);
+
+        // 通过日期字符串初始化日期，格式请用：yyyy-MM-dd HH:mm
+        mTimerPicker = new CustomDatePicker(getContext(), new CustomDatePicker.Callback() {
+            @Override
+            public void onTimeSelected(long timestamp) {
+                if (dateEndInputFlag) {
+                    dateEndInput.setText(DateFormatUtils.long2Str(timestamp, true));
+                } else if (dateInputInputFlag) {
+                    dateBeginInput.setText(DateFormatUtils.long2Str(timestamp, true));
+                }
+                dateEndInputFlag = false;
+                dateInputInputFlag = false;
+            }
+        }, beginTime, endTime);
+        // 允许点击屏幕或物理返回键关闭
+        mTimerPicker.setCancelable(true);
+        // 显示时和分
+        mTimerPicker.setCanShowPreciseTime(true);
+        // 允许循环滚动
+        mTimerPicker.setScrollLoop(true);
+        // 允许滚动动画
+        mTimerPicker.setCanShowAnim(true);
+    }
+
+    public static String getAddYear(int addyear) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, addyear);
+        Date date = cal.getTime();
+        String year = dateFormat.format(date);
+        return year;
     }
 }

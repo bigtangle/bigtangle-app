@@ -94,4 +94,17 @@
 
     <string name="dialog_title_password">Input Password</string>
     <string name="password">Password</string>
+
+    <string name="title">please select time</string>
+    <string name="confirm">sure</string>
+    <string name="year">year</string>
+    <string name="month">month</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+
+    <string name="select_date">select date</string>
+    <string name="current_date">current date</string>
+    <string name="select_time">select time</string>
+    <string name="current_time">current time</string>
 </resources>
