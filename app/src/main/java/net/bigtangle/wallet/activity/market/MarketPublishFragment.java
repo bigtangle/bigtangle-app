@@ -132,9 +132,12 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_info_white_24px)
                                 .setTitle(getContext().getString(R.string.dialog_title_info))
-                                .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                .setMessage("订单发布成功")
                                 .show();
-                        return;
+                        tokenSpinner.setSelection(0, true);
+                        addressSpinner.setSelection(0, true);
+                        amountTextInput.setText("");
+                        unitPriceInput.setText("");
                     }
                 }, new HttpRunaExecute() {
                     @Override

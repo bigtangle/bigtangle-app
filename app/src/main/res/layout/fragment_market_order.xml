@@ -24,26 +24,24 @@
             android:layout_height="58dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:checkedButton="@+id/b5"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:checkedButton="@+id/a"
+            android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/b5"
+                android:id="@+id/a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:text="@string/buy" />
 
             <RadioButton
-                android:id="@+id/b6"
+                android:id="@+id/b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="@string/sell" />
         </RadioGroup>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
