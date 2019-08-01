@@ -16,10 +16,12 @@
             android:id="@+id/AppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:navigationIcon="@drawable/ic_navigation"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_navigation">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/SettingConnection_toolbar"
