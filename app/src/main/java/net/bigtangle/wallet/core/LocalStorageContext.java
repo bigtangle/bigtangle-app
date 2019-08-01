@@ -33,10 +33,10 @@ public class LocalStorageContext {
         boolean b = sharedPreferences.getBoolean("init", false);
         if (!b) {
             editor.putBoolean("init", true);
-            editor.putString("serverURL", "https://bigtangle.info/");
+            editor.putString("serverURL", "https://bigtangle.org/");
             editor.commit();
         }
-        HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://bigtangle.info/");
+        HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://bigtangle.org/");
     }
 
     public void writeServerURL(String serverURL) {
@@ -44,12 +44,12 @@ public class LocalStorageContext {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("serverURL", serverURL);
         editor.commit();
-        HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://bigtangle.info/");
+        HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://bigtangle.org/");
     }
 
     public String readServerURL() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("serverURL", "https://bigtangle.info/");
+        return sharedPreferences.getString("serverURL", "https://bigtangle.org/");
     }
 
     public void writeWalletPath(String directory, String prefix) {
