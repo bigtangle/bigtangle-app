@@ -19,6 +19,8 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:navigationIcon="@drawable/ic_navigation"
+            android:navigationIcon="@drawable/ic_navigation"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.v7.widget.Toolbar
