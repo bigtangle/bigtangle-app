@@ -8,7 +8,7 @@ import net.bigtangle.wallet.core.utils.RoutePathUtil;
 
 public class LocalStorageContext {
 
-    final String walletName = "bigtangle-wallet";
+    private static final String walletName = "bigtangle-wallet";
 
     private Context context;
 
