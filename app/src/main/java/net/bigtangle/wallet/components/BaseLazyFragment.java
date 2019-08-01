@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 public abstract class BaseLazyFragment extends Fragment {
 
     private boolean isFirstLoad = false;
+    private boolean froceLoadData = false;
 
     @Nullable
     @Override
@@ -43,6 +44,8 @@ public abstract class BaseLazyFragment extends Fragment {
         if (isFirstLoad && isVisibleToUser) {//视图变为可见并且是第一次加载
             onLazyLoad();
             isFirstLoad = false;
+        }else if (froceLoadData && isVisibleToUser){
+            onLazyLoad();
         }
     }
 
@@ -54,4 +57,8 @@ public abstract class BaseLazyFragment extends Fragment {
 
     //初始化事件接口，留给子类实现
     public abstract void initEvent();
+
+    public void setFroceLoadData(boolean froceLoadData) {
+        this.froceLoadData = froceLoadData;
+    }
 }
