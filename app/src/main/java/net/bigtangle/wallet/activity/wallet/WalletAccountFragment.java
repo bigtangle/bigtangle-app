@@ -55,6 +55,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletAccountItem>();
         }
+        setFroceLoadData(true);
         this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
     }
 
