@@ -66,11 +66,11 @@ public class MarketPublishFragment extends BaseLazyFragment {
     @BindView(R.id.search_button)
     Button searchButton;
 
-    @BindView(R.id.date_begin_input)
-    TextView dateBeginInput;
+    @BindView(R.id.start_date_text_view)
+    TextView startDateTextView;
 
-    @BindView(R.id.date_end_input)
-    TextView dateEndInput;
+    @BindView(R.id.end_date_text_view)
+    TextView endDateTextView;
 
     TokenItemListAdapter tokenAdapter;
     ArrayAdapter<String> addressAdapter;
@@ -109,7 +109,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_market_order, container, false);
+        return inflater.inflate(R.layout.fragment_market_publish, container, false);
     }
 
     @Override
@@ -251,19 +251,19 @@ public class MarketPublishFragment extends BaseLazyFragment {
             }
         });
 
-        dateBeginInput.setOnClickListener(new View.OnClickListener() {
+        startDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dateInputInputFlag = true;
-                mTimerPicker.show(dateBeginInput.getText().toString());
+                mTimerPicker.show(startDateTextView.getText().toString());
             }
         });
 
-        dateEndInput.setOnClickListener(new View.OnClickListener() {
+        endDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dateEndInputFlag = true;
-                mTimerPicker.show(dateEndInput.getText().toString());
+                mTimerPicker.show(endDateTextView.getText().toString());
             }
         });
     }
@@ -355,17 +355,17 @@ public class MarketPublishFragment extends BaseLazyFragment {
         String beginTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
         String endTime = getAddYear(30);
 
-        dateBeginInput.setText(beginTime);
-        dateEndInput.setText(beginTime);
+        startDateTextView.setText(beginTime);
+        endDateTextView.setText(beginTime);
 
         // 通过日期字符串初始化日期，格式请用：yyyy-MM-dd HH:mm
         mTimerPicker = new CustomDatePicker(getContext(), new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
                 if (dateEndInputFlag) {
-                    dateEndInput.setText(DateFormatUtils.long2Str(timestamp, true));
+                    endDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
                 } else if (dateInputInputFlag) {
-                    dateBeginInput.setText(DateFormatUtils.long2Str(timestamp, true));
+                    startDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
                 }
                 dateEndInputFlag = false;
                 dateInputInputFlag = false;

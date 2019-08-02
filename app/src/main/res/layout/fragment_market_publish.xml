@@ -24,10 +24,10 @@
             android:layout_height="58dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:gravity="center_vertical"
-            android:paddingTop="5dp"
             android:checkedButton="@+id/a"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <RadioButton
                 android:id="@+id/a"
@@ -42,6 +42,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/sell" />
         </RadioGroup>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -143,11 +144,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/date_begin_input"
+                android:id="@+id/start_date_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="25sp" />
+                android:gravity="center_vertical" />
 
             <View
                 android:layout_width="match_parent"
@@ -170,11 +170,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/date_end_input"
+                android:id="@+id/end_date_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="25sp" />
+                android:gravity="center_vertical" />
 
             <View
                 android:layout_width="match_parent"
