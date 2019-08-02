@@ -31,7 +31,6 @@
                 android:background="?attr/colorPrimary"
                 android:textSize="13sp"
                 app:title="@string/settings_tab_connection">
-
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -80,8 +79,6 @@
                     android:elevation="24dp"
                     android:text="@string/save" />
             </GridLayout>
-
         </ScrollView>
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

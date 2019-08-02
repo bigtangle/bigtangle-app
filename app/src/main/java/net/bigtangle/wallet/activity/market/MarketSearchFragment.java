@@ -89,7 +89,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         HashMap<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("address", addressTextInput.getText().toString());
         requestParam.put("state", state);
-        requestParam.put("spent", "publish".equals(state) ? "false" : "true");
+        requestParam.put("spent", getContext().getString(R.string.publish).equals(state) ? "false" : "true");
         if (onlyMeSwitch.isChecked()) {
             List<ECKey> walletKeys = WalletContextHolder.get().walletKeys();
             List<String> addressList = new ArrayList<String>();
