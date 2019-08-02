@@ -32,6 +32,7 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.utils.CoinbaseUtil;
+import net.bigtangle.wallet.core.utils.TimeUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -204,13 +205,39 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(" 余额不足");
                         }
 
+                        if (dateBeginInput.getText() == null) {
+                            throw new ToastException("开始日期不可以为空");
+                        }
+
+                        String dateBeginStr = dateBeginInput.getText().toString();
+                        if (StringUtils.isBlank(dateBeginStr)) {
+                            throw new ToastException("开始日期不可以为空");
+                        }
+
+                        long dateBeginLong = TimeUtil.getTime(dateBeginStr);
+
+                        if (dateEndInput.getText() == null) {
+                            throw new ToastException("结束日期不可以为空");
+                        }
+
+                        String dateEndStr = dateEndInput.getText().toString();
+                        if (StringUtils.isBlank(dateEndStr)) {
+                            throw new ToastException("结束日期不可以为空");
+                        }
+
+                        long dateEndLong = TimeUtil.getTime(dateEndStr);
+
+                        if (dateEndLong < dateBeginLong) {
+                            dateEndLong = dateBeginLong;
+                        }
+
                         WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (typeStr.equals("sell")) {
                             WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), amount,
-                                    System.currentTimeMillis(), System.currentTimeMillis());
+                                    dateBeginLong, dateEndLong);
                         } else {
                             WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), amount,
-                                    System.currentTimeMillis(), System.currentTimeMillis());
+                                    dateBeginLong, dateEndLong);
                         }
                     }
                 }).execute();
