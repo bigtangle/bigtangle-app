@@ -205,22 +205,22 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(" 余额不足");
                         }
 
-                        if (dateBeginInput.getText() == null) {
+                        if (startDateTextView.getText() == null) {
                             throw new ToastException("开始日期不可以为空");
                         }
 
-                        String dateBeginStr = dateBeginInput.getText().toString();
+                        String dateBeginStr = startDateTextView.getText().toString();
                         if (StringUtils.isBlank(dateBeginStr)) {
                             throw new ToastException("开始日期不可以为空");
                         }
 
                         long dateBeginLong = TimeUtil.getTime(dateBeginStr);
 
-                        if (dateEndInput.getText() == null) {
+                        if (endDateTextView.getText() == null) {
                             throw new ToastException("结束日期不可以为空");
                         }
 
-                        String dateEndStr = dateEndInput.getText().toString();
+                        String dateEndStr = endDateTextView.getText().toString();
                         if (StringUtils.isBlank(dateEndStr)) {
                             throw new ToastException("结束日期不可以为空");
                         }
