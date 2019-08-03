@@ -15,15 +15,9 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.MarketFragment;
-import net.bigtangle.wallet.activity.settings.SettingsFragment;
-import net.bigtangle.wallet.activity.token.TokenFragment;
-import net.bigtangle.wallet.activity.transaction.TransactionFragment;
-import net.bigtangle.wallet.activity.wallet.WalletFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
-
 
 import java.util.ArrayList;
 

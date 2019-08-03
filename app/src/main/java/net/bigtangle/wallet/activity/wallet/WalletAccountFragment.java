@@ -98,7 +98,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void initEvent() {
-
     }
 
     @Override

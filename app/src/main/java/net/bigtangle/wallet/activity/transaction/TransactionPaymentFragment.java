@@ -87,6 +87,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
+        setFroceLoadData(true);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.market;
+package net.bigtangle.wallet.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.market.MarketExchangeFragment;
+import net.bigtangle.wallet.activity.market.MarketOverCounterTradingFragment;
+import net.bigtangle.wallet.activity.market.MarketPublishFragment;
+import net.bigtangle.wallet.activity.market.MarketSearchFragment;
+import net.bigtangle.wallet.activity.market.MarketSignatureFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 

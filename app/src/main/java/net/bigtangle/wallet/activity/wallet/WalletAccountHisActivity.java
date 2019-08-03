@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import net.bigtangle.core.Coin;
@@ -39,6 +40,9 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
 
+    @BindView(R.id.toolbar_localMain)
+    Toolbar toolbarLocalMain;
+
     private WalletAccountHisListAdapter mAdapter;
 
     private List<WalletAccountHisItem> itemList;
@@ -60,6 +64,11 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
 
         this.mAdapter = new WalletAccountHisListAdapter(this, this.itemList);
         this.recyclerViewContainer.setAdapter(this.mAdapter);
+
+        setSupportActionBar(toolbarLocalMain);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         this.initData();
     }
@@ -118,5 +127,11 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
         this.initData();
         this.swipeContainer.setRefreshing(false);
         this.mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }

@@ -72,6 +72,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         if (this.itemList == null) {
             this.itemList = new ArrayList<MarketOrderItem>();
         }
+        setFroceLoadData(true);
         this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
     }
 

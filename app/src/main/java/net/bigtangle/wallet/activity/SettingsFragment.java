@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.settings;
+package net.bigtangle.wallet.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.settings.SettingConnectionActivity;
+import net.bigtangle.wallet.activity.settings.SettingWalletActivity;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 
 import butterknife.BindView;
@@ -17,6 +19,9 @@ public class SettingsFragment extends BaseLazyFragment {
 
     @BindView(R.id.connection_button)
     Button connectionButton;
+
+    @BindView(R.id.wallet_button)
+    Button walletButton;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -39,9 +44,19 @@ public class SettingsFragment extends BaseLazyFragment {
     @Override
     public void initEvent() {
         this.connectionButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SettingConnectionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        this.walletButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SettingWalletActivity.class);
                 startActivity(intent);
             }
         });

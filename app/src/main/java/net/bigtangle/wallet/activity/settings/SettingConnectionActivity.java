@@ -2,6 +2,7 @@ package net.bigtangle.wallet.activity.settings;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -27,6 +28,9 @@ public class SettingConnectionActivity extends AppCompatActivity {
 
     @BindView(R.id.save_button)
     Button saveButton;
+
+    @BindView(R.id.toolbar_localMain)
+    Toolbar toolbarLocalMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +70,16 @@ public class SettingConnectionActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        setSupportActionBar(toolbarLocalMain);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }

@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.transaction;
+package net.bigtangle.wallet.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.transaction.TransactionBankFragment;
+import net.bigtangle.wallet.activity.transaction.TransactionHistoryFragment;
+import net.bigtangle.wallet.activity.transaction.TransactionPaymentFragment;
+import net.bigtangle.wallet.activity.transaction.TransactionSignatureFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 

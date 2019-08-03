@@ -19,18 +19,17 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_navigation">
+            app:layout_constraintTop_toTopOf="parent">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_localMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:title="@string/transaction_tab_output">
-
-            </android.support.v7.widget.Toolbar>
+                app:navigationIcon="@drawable/ic_navigation"
+                app:title="@string/transaction_tab_output" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -44,7 +43,6 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp" />
-
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

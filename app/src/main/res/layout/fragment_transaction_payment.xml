@@ -104,7 +104,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="@string/purpose" />
+            android:text="@string/memo" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

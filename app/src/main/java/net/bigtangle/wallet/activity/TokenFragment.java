@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.wallet;
+package net.bigtangle.wallet.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.token.TokenSearchFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class WalletFragment extends BaseLazyFragment {
+public class TokenFragment extends BaseLazyFragment {
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
@@ -27,8 +28,8 @@ public class WalletFragment extends BaseLazyFragment {
 
     private SectionsPagerAdapter mAdapter;
 
-    public static WalletFragment newInstance() {
-        return new WalletFragment();
+    public static TokenFragment newInstance() {
+        return new TokenFragment();
     }
 
     @Override
@@ -38,25 +39,21 @@ public class WalletFragment extends BaseLazyFragment {
 
     @Override
     public void onLazyLoad() {
-        mTabLayout.setupWithViewPager(mViewPager);
+        this.mTabLayout.setupWithViewPager(mViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(WalletAccountFragment.newInstance());
-        fragments.add(WalletSecretkeyFragment.newInstance());
+        fragments.add(TokenSearchFragment.newInstance());
 
         String[] title = new String[]{
-                this.getString(R.string.wallet_tab_account),
-                this.getString(R.string.wallet_tab_secretkey)
+                getContext().getString(R.string.title_tab_token)
         };
-
-        mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(2);
+        this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
+        this.mViewPager.setAdapter(mAdapter);
     }
 
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_wallet, container, false);
+        return inflater.inflate(R.layout.fragment_token, container, false);
     }
 
     @Override

@@ -97,6 +97,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         if (this.addressList == null) {
             this.addressList = new ArrayList<String>();
         }
+        setFroceLoadData(true);
         this.addressAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, addressList);
         this.addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenItemList);

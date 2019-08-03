@@ -27,6 +27,7 @@
 
     <string name="settings_tab_connection">Connection</string>
     <string name="settings_tab_about">About</string>
+    <string name="settings_tab_wallet">Wallet Setting</string>
 
     <string name="search">Search</string>
     <string name="pay">Pay</string>
@@ -91,6 +92,9 @@
     <string name="address">Address</string>
     <string name="memo">Memo</string>
     <string name="ok">OK</string>
+
+    <string name="wallet_path">Wallet Directory</string>
+    <string name="wallet_name">Wallet Name</string>
 
     <string name="dialog_title_password">Input Password</string>
     <string name="password">Password</string>

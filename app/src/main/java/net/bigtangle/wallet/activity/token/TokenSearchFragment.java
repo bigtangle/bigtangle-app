@@ -64,6 +64,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
         if (this.itemList == null) {
             this.itemList = new ArrayList<TokenInfoItem>();
         }
+        setFroceLoadData(true);
         this.mAdapter = new TokenInfoItemListAdapter(getContext(), itemList);
     }
 

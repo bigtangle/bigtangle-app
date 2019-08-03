@@ -72,6 +72,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletSecretkeyItem>();
         }
+        setFroceLoadData(true);
     }
 
     @Override
