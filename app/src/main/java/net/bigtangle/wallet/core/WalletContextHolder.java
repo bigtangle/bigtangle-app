@@ -21,7 +21,7 @@ public class WalletContextHolder {
 
     private String password;
 
-    public void initWalletData(String directory, String filename) {
+    public void reloadWalletFile(String directory, String filename) {
         walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
         setupWalletData();
     }
@@ -83,5 +83,19 @@ public class WalletContextHolder {
         }
         Wallet wallet = this.walletAppKit.wallet();
         return wallet;
+    }
+
+    public boolean checkWalletExists() {
+        String walletDirectory = LocalStorageContext.get().readWalletDirectory();
+        String walletFilename = LocalStorageContext.get().readWalletFilePrefix();
+
+        File file = new File(walletDirectory + walletFilename + ".wallet");
+        return file.exists();
+    }
+
+    public void initData() {
+        String walletDirectory = LocalStorageContext.get().readWalletDirectory();
+        String walletFilename = LocalStorageContext.get().readWalletFilePrefix();
+        WalletContextHolder.get().reloadWalletFile(walletDirectory, walletFilename);
     }
 }

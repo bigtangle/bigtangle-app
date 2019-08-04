@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="@string/wallet_secretkey_address"/>
+            android:text="@string/wallet_secretkey_address" />
 
         <LinearLayout
             android:layout_width="match_parent"

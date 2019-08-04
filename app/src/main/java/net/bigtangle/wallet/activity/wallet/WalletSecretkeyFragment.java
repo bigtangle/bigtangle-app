@@ -140,7 +140,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 new LFilePicker()
                         .withSupportFragment(WalletSecretkeyFragment.this)
                         .withRequestCode(REQUESTCODE_FROM_ACTIVITY)
-                        .withStartPath("/storage/emulated/0/Download")
+                        .withStartPath(LocalStorageContext.get().readWalletDirectory())
                         .withIsGreater(false)
                         .withFileSize(500 * 1024)
                         .start();
@@ -153,6 +153,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
         super.onViewCreated(view, savedInstanceState);
         this.mAdapter = new WalletSecretkeyItemListAdapter(getContext(), itemList);
         swipeContainer.setOnRefreshListener(this);
+
         LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
         this.recyclerViewContainer.setHasFixedSize(true);
         this.recyclerViewContainer.setLayoutManager(layoutManager);
@@ -167,22 +168,33 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     }
 
     private void showDialog() {
-        WalletSecretkeyDialog dialog = new WalletSecretkeyDialog(getContext(), R.style.CustomDialogStyle);
-        dialog.show();
-        dialog.setListenter(new WalletSecretkeyDialog.OnGetWalletSecretKeyListenter() {
-
+        new WalletSecretkeyDialog(getContext(), R.style.CustomDialogStyle)
+                .setListenter(new WalletSecretkeyDialog.OnGetWalletSecretKeyListenter() {
                     @Override
                     public void getWalletSecretKey(String publicKey, String privateKey) {
-                        byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
-                        byte[] privKeyBuf = Utils.HEX.decode(privateKey);
-
-                        // TODO
-                        ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
-                        WalletContextHolder.get().wallet().importKey(ecKey);
-
-                        onLazyLoad();
+                        try {
+                            byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
+                            byte[] privKeyBuf = Utils.HEX.decode(privateKey);
+                            ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
+                            if (WalletContextHolder.get().getAesKey() == null) {
+                                WalletContextHolder.get().wallet().importKey(ecKey);
+                            } else {
+                                List<ECKey> walletKeys = new ArrayList<ECKey>();
+                                walletKeys.add(ecKey);
+                                WalletContextHolder.get().wallet().importKeysAndEncrypt(walletKeys,
+                                        WalletContextHolder.get().getAesKey());
+                            }
+                            onLazyLoad();
+                        } catch (Exception e) {
+                            new LovelyInfoDialog(getContext())
+                                    .setTopColorRes(R.color.colorPrimary)
+                                    .setIcon(R.drawable.ic_error_white_24px)
+                                    .setTitle(getContext().getString(R.string.dialog_title_error))
+                                    .setMessage("添加用户密钥失败")
+                                    .show();
+                        }
                     }
-        });
+                }).show();
     }
 
     @Override
@@ -205,10 +217,8 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     String directory = file.getParent() + "/";
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                    WalletContextHolder.get().initWalletData(directory, prefix);
-
+                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
                     LocalStorageContext.get().writeWalletPath(directory, prefix);
-
                     if (WalletContextHolder.get().checkWalletHavePassword()) {
                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {

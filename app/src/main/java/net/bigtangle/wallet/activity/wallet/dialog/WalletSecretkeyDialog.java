@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
 import net.bigtangle.wallet.R;
+
+import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,8 @@ public class WalletSecretkeyDialog extends Dialog {
 
     @BindView(R.id.positive_button)
     Button positiveButton;
+
+    private OnGetWalletSecretKeyListenter listener;
 
     public WalletSecretkeyDialog(Context context, int theme) {
         super(context, theme);
@@ -60,20 +66,41 @@ public class WalletSecretkeyDialog extends Dialog {
                 }
             });
         }
-    }
-
-    public WalletSecretkeyDialog setListenter(final OnGetWalletSecretKeyListenter listener) {
         if (positiveButton != null) {
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String pubKeyStr = publicKeyInput.getText().toString();
+                    if (StringUtils.isBlank(pubKeyStr)) {
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(context.getString(R.string.dialog_title_error))
+                                .setMessage("公钥地址不可以为空")
+                                .show();
+                        return;
+                    }
+                    String privKeyStr = privateKeyInput.getText().toString();
+                    if (StringUtils.isBlank(privKeyStr)) {
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(context.getString(R.string.dialog_title_error))
+                                .setMessage("私钥地址不可以为空")
+                                .show();
+                        return;
+                    }
                     if (listener != null) {
-                        listener.getWalletSecretKey(publicKeyInput.getText().toString(), privateKeyInput.getText().toString());
+                        listener.getWalletSecretKey(pubKeyStr, privKeyStr);
                     }
                     dismiss();
                 }
             });
         }
+    }
+
+    public WalletSecretkeyDialog setListenter(final OnGetWalletSecretKeyListenter listener) {
+        this.listener = listener;
         return this;
     }
 

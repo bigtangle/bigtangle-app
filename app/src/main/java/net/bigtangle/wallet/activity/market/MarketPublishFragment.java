@@ -32,7 +32,7 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.utils.CoinbaseUtil;
-import net.bigtangle.wallet.core.utils.TimeUtil;
+import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -209,25 +209,20 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (startDateTextView.getText() == null) {
                             throw new ToastException("开始日期不可以为空");
                         }
-
-                        String dateBeginStr = startDateTextView.getText().toString();
-                        if (StringUtils.isBlank(dateBeginStr)) {
+                        String startDateStr = startDateTextView.getText().toString();
+                        if (StringUtils.isBlank(startDateStr)) {
                             throw new ToastException("开始日期不可以为空");
                         }
-
-                        long dateBeginLong = TimeUtil.getTime(dateBeginStr);
+                        long dateBeginLong = DateTimeUtils.toDateMillis(startDateStr);
 
                         if (endDateTextView.getText() == null) {
                             throw new ToastException("结束日期不可以为空");
                         }
-
                         String dateEndStr = endDateTextView.getText().toString();
                         if (StringUtils.isBlank(dateEndStr)) {
                             throw new ToastException("结束日期不可以为空");
                         }
-
-                        long dateEndLong = TimeUtil.getTime(dateEndStr);
-
+                        long dateEndLong = DateTimeUtils.toDateMillis(dateEndStr);
                         if (dateEndLong < dateBeginLong) {
                             dateEndLong = dateBeginLong;
                         }

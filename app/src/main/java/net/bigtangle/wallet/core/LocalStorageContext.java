@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.utils.RoutePathUtil;
 
 public class LocalStorageContext {
 
@@ -62,11 +61,17 @@ public class LocalStorageContext {
 
     public String readWalletDirectory() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("wallet.directory", RoutePathUtil.getBasePath(this.context));
+        return sharedPreferences.getString("wallet.directory", "/storage/emulated/0/Download/");
     }
 
     public String readWalletFilePrefix() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
         return sharedPreferences.getString("wallet.prefix", "bigtangle");
+    }
+
+    public boolean readInitFlag() {
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
+        boolean initFlag = sharedPreferences.getBoolean("init", false);
+        return initFlag;
     }
 }
