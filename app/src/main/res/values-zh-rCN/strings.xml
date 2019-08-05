@@ -16,6 +16,7 @@
     <string name="wallet_account_value">数量</string>
     <string name="wallet_secretkey_address">地址</string>
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
+    <string name="wallet_creation_failed">钱包创建失败</string>
 
     <string name="market_tab_order">订单</string>
     <string name="market_tab_outside_trade">场外交易</string>
@@ -24,6 +25,7 @@
     <string name="settings_tab_connection">连接设置</string>
     <string name="settings_tab_about">关于</string>
     <string name="settings_tab_wallet">钱包设置</string>
+
 
     <string name="pay">支付</string>
     <string name="multiple_signature_pay">多重签名支付</string>
@@ -63,6 +65,7 @@
     <string name="unit_price_not_empty">单价不可以为空</string>
     <string name="start_date_not_empty">开始日期不可以为空</string>
     <string name="end_date_not_empty">结束日期不可以为空</string>
+    <string name="password_not_empty">密码不可以为空</string>
 
     <string name="insufficient_amount">金额不足</string>
     <string name="insufficient_price">价格不足</string>
@@ -82,6 +85,8 @@
     <string name="server_address">服务器地址</string>
     <string name="wallet_http_request">钱包网络请求</string>
     <string name="input_password_incorrect">输入密码不正确</string>
+    <string name="please_select_your_wallet_file">请选择钱包文件</string>
+    <string name="current_selection_file_error">当前选择文件错误</string>
 
     <string name="dialog_secretkey_add_key_message">确认要添加钥匙吗?</string>
     <string name="dialog_wallet_secretkey_add_key">添加钥匙</string>

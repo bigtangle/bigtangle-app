@@ -51,7 +51,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage("密码不可以为空")
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.password_not_empty))
                                 .show();
                         return;
                     }
@@ -62,7 +62,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage("输入密码不正确")
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.input_password_incorrect))
                                 .show();
                         return;
                     }
