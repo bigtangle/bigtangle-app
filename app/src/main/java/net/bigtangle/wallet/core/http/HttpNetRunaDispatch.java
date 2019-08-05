@@ -31,7 +31,7 @@ public class HttpNetRunaDispatch {
 
     public HttpNetRunaDispatch(Context context, HttpNetComplete httpNetComplete, HttpRunaExecute httpRunaExecute) {
         this(context, httpNetComplete, null, httpRunaExecute);
-        final ProgressDialog progressDialog = ProgressDialog.show(context, "请稍候", "数据努力加载中...");
+        final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
         this.httpNetProgress = new HttpNetProgress() {
             @Override
             public void endProgress() {
@@ -74,7 +74,7 @@ public class HttpNetRunaDispatch {
                     message.obj = e.getToastMessage();
                     httpNetCompleteHandler.sendMessage(message);
                 } catch (Exception e) {
-                    Log.e(LogConstant.TAG, "wallet http request", e);
+                    Log.e(LogConstant.TAG, context.getString(R.string.wallet_http_request), e);
                     Message message = new Message();
                     message.what = MessageStateCode.WALLET_ERROR;
                     httpNetCompleteHandler.sendMessage(message);

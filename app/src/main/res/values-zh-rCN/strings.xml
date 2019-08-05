@@ -60,7 +60,14 @@
     <string name="address_not_empty">地址不可以为空</string>
     <string name="amount_not_empty">金额不可以为空</string>
     <string name="token_not_empty">通证不可以为空</string>
+    <string name="unit_price_not_empty">单价不可以为空</string>
+    <string name="start_date_not_empty">开始日期不可以为空</string>
+    <string name="end_date_not_empty">结束日期不可以为空</string>
+
+    <string name="insufficient_amount">金额不足</string>
+    <string name="insufficient_price">价格不足</string>
     <string name="wallet_payment_success">钱包支付成功</string>
+    <string name="successful_order_release">订单发布成功</string>
 
     <string name="dialog_title_info">信息</string>
     <string name="dialog_title_error">错误</string>
@@ -73,6 +80,8 @@
     <string name="server_processing_failed">服务器处理失败，消息 : {0}，是否重试?</string>
     <string name="data_parsing">数据解析</string>
     <string name="server_address">服务器地址</string>
+    <string name="wallet_http_request">钱包网络请求</string>
+    <string name="input_password_incorrect">输入密码不正确</string>
 
     <string name="dialog_secretkey_add_key_message">确认要添加钥匙吗?</string>
     <string name="dialog_wallet_secretkey_add_key">添加钥匙</string>

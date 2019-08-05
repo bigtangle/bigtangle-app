@@ -134,7 +134,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_info_white_24px)
                                 .setTitle(getContext().getString(R.string.dialog_title_info))
-                                .setMessage("订单发布成功")
+                                .setMessage(getContext().getString(R.string.successful_order_release))
                                 .show();
                         tokenSpinner.setSelection(0, true);
                         addressSpinner.setSelection(0, true);
@@ -165,11 +165,11 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         String typeStr = isBuy_ ? "buy" : "sell";
 
                         if (addressSpinner.getSelectedItem() == null) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.address_not_empty));
                         }
                         String address = addressSpinner.getSelectedItem().toString();
                         if (StringUtils.isBlank(address)) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.address_not_empty));
                         }
                         byte[] pubKeyHash = Address.fromBase58(WalletContextHolder.networkParameters, address).getHash160();
 
@@ -177,25 +177,25 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 typeStr.equals("sell") ? tokenid : NetworkParameters.BIGTANGLE_TOKENID_STRING);
 
                         if (amountTextInput.getText() == null) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
                         if (StringUtils.isBlank(amountTextInput.getText().toString())) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
                         long amount = Long.valueOf(amountTextInput.getText().toString());
                         if (amount <= 0) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
                         if (unitPriceInput.getText() == null) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
                         Coin price = Coin.parseCoin(unitPriceInput.getText().toString(), NetworkParameters.BIGTANGLE_TOKENID);
                         if (price.getValue() <= 0) {
-                            throw new ToastException("地址不可以为空");
+                            throw new ToastException(getContext().getString(R.string.insufficient_price));
                         }
 
                         if (!typeStr.equals("sell")) {
@@ -203,24 +203,24 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         }
 
                         if (coin.getValue() < amount) {
-                            throw new ToastException(" 余额不足");
+                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
                         if (startDateTextView.getText() == null) {
-                            throw new ToastException("开始日期不可以为空");
+                            throw new ToastException(getContext().getString(R.string.start_date_not_empty));
                         }
-                        String startDateStr = startDateTextView.getText().toString();
-                        if (StringUtils.isBlank(startDateStr)) {
-                            throw new ToastException("开始日期不可以为空");
-                        }
-                        long dateBeginLong = DateTimeUtils.toDateMillis(startDateStr);
 
+                        String dateBeginStr = startDateTextView.getText().toString();
+                        if (StringUtils.isBlank(dateBeginStr)) {
+                            throw new ToastException(getContext().getString(R.string.start_date_not_empty));
+                        }
+                        long dateBeginLong = DateTimeUtils.toDateMillis(dateBeginStr);
                         if (endDateTextView.getText() == null) {
-                            throw new ToastException("结束日期不可以为空");
+                            throw new ToastException(getContext().getString(R.string.end_date_not_empty));
                         }
                         String dateEndStr = endDateTextView.getText().toString();
                         if (StringUtils.isBlank(dateEndStr)) {
-                            throw new ToastException("结束日期不可以为空");
+                            throw new ToastException(getContext().getString(R.string.end_date_not_empty));
                         }
                         long dateEndLong = DateTimeUtils.toDateMillis(dateEndStr);
                         if (dateEndLong < dateBeginLong) {
