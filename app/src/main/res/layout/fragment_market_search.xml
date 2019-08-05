@@ -24,7 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/address_text_input"
@@ -55,8 +57,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:gravity="center_vertical"
             android:checkedButton="@+id/a"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <RadioButton
