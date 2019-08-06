@@ -31,15 +31,15 @@ public class VerifyWalletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify_wallet);
         ButterKnife.bind(this);
 
-        if (!WalletContextHolder.get().checkWalletExists()) {
+        /*if (!WalletContextHolder.get().checkWalletExists()) {
             Intent intent = new Intent(VerifyWalletActivity.this, ImportWalletActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
             return;
         }
+        WalletContextHolder.get().initData();*/
 
-        WalletContextHolder.get().initData();
         if (WalletContextHolder.get().checkWalletHavePassword()) {
             this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
 

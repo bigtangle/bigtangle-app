@@ -1,5 +1,7 @@
 package net.bigtangle.wallet.core.utils;
 
+import android.util.Log;
+
 import net.bigtangle.core.Context;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.params.MainNetParams;
@@ -7,6 +9,7 @@ import net.bigtangle.wallet.KeyChainGroup;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.WalletProtobufSerializer;
 import net.bigtangle.wallet.core.LocalStorageContext;
+import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,9 +46,13 @@ public class WalletFileUtils {
         fileInputStream.close();
     }
 
-    public static void createWalletFileAndLoad() throws IOException {
-        String walletDirectory = LocalStorageContext.get().readWalletDirectory();
-        String walletFilename = LocalStorageContext.get().readWalletFilePrefix();
-        createWalletFile(walletDirectory, walletFilename + ".wallet");
+    public static void createWalletFileAndLoad() {
+        try {
+            String walletDirectory = LocalStorageContext.get().readWalletDirectory();
+            String walletFilename = LocalStorageContext.get().readWalletFilePrefix();
+            createWalletFile(walletDirectory, walletFilename + ".wallet");
+        } catch (Exception e) {
+            Log.e(LogConstant.TAG, "createWalletFileAndLoad", e);
+        }
     }
 }
