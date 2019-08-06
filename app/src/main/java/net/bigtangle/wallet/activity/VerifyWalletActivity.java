@@ -1,11 +1,15 @@
 package net.bigtangle.wallet.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
@@ -16,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class VerifyWalletActivity extends AppCompatActivity {
 
@@ -39,6 +45,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
             return;
         }
         WalletContextHolder.get().initData();*/
+
+        this.requetPermission();
 
         if (WalletContextHolder.get().checkWalletHavePassword()) {
             this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +86,14 @@ public class VerifyWalletActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void requetPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
         }
     }
 }
