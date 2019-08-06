@@ -136,13 +136,11 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                         intent.setData(uri);
                                         startActivityForResult(intent, NOT_NOTICE);
                                     }
-                                })
-                                .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                     }
-                                })
-                                .show();
+                        }).show();
                     } else {//选择禁止
                         new LovelyStandardDialog(VerifyWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                                 .setTopColorRes(R.color.colorPrimary)
@@ -156,13 +154,11 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                         ActivityCompat.requestPermissions(VerifyWalletActivity.this,
                                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                                     }
-                                })
-                                .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                     }
-                                })
-                                .show();
+                        }).show();
                     }
                 }
             }

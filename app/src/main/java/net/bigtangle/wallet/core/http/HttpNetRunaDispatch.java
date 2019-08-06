@@ -101,13 +101,11 @@ public class HttpNetRunaDispatch {
                             public void onClick(View v) {
                                 new HttpNetRunaDispatch(context, httpNetComplete, httpRunaExecute).execute();
                             }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                        }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                             }
-                        })
-                        .show();
+                }).show();
 
                 return;
             } else if (message.what == MessageStateCode.WALLET_ERROR) {

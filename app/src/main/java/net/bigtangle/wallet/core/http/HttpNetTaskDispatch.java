@@ -115,13 +115,11 @@ public class HttpNetTaskDispatch {
                                 };
                                 new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
                             }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                        }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                             }
-                        })
-                        .show();
+                }).show();
                 return;
             } else if (message.what == MessageStateCode.TOAST_ERROR) {
                 Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
@@ -167,13 +165,11 @@ public class HttpNetTaskDispatch {
                                         };
                                         new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
                                     }
-                                })
-                                .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                     }
-                                })
-                                .show();
+                        }).show();
                         return;
                     }
                 }
