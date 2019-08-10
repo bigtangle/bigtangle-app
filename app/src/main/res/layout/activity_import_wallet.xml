@@ -64,7 +64,7 @@
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_vertical"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/bottom_confirm"
                 android:elevation="24dp"
                 android:text="@string/choose_wallet" />
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_vertical"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/bottom_confirm"
                 android:elevation="24dp"
                 android:text="@string/import_wallet" />
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_vertical"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/bottom_confirm"
                 android:elevation="24dp"
                 android:text="@string/create_wallet" />
         </GridLayout>

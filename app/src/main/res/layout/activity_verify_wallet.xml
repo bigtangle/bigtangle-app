@@ -52,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_vertical"
-                android:backgroundTint="@color/colorPrimary"
                 android:elevation="24dp"
+                android:background="@drawable/bottom_confirm"
                 android:text="@string/verify_wallet" />
 
         </GridLayout>

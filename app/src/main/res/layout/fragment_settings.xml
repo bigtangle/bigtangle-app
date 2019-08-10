@@ -21,7 +21,7 @@
             android:id="@+id/connection_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:backgroundTint="#323232"
+            android:background="@drawable/bottom_confirm"
             android:text="@string/settings_tab_connection"
             android:textSize="16sp" />
 
@@ -29,7 +29,7 @@
             android:id="@+id/wallet_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:backgroundTint="#323232"
+            android:background="@drawable/bottom_confirm"
             android:text="@string/settings_tab_wallet"
             android:textSize="16sp" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/about_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:backgroundTint="#323232"
+            android:background="@drawable/bottom_confirm"
             android:text="@string/settings_tab_about"
             android:textSize="16sp" />
     </LinearLayout>
