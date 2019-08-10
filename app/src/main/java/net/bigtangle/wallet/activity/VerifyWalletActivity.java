@@ -107,8 +107,6 @@ public class VerifyWalletActivity extends AppCompatActivity {
     private void requetPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -137,9 +135,9 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                         startActivityForResult(intent, NOT_NOTICE);
                                     }
                                 }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                    }
+                            @Override
+                            public void onClick(View v) {
+                            }
                         }).show();
                     } else {//选择禁止
                         new LovelyStandardDialog(VerifyWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
@@ -155,9 +153,9 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                                     }
                                 }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                    }
+                            @Override
+                            public void onClick(View v) {
+                            }
                         }).show();
                     }
                 }
