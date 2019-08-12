@@ -61,10 +61,13 @@
 
                     <Spinner
                         android:id="@+id/server_connection_spinner"
+                        style="@style/spinner"
                         android:layout_width="match_parent"
                         android:layout_height="58dp"
                         android:overlapAnchor="false"
                         android:spinnerMode="dialog"
+                        android:background="@color/colorPrimary"
+                        android:theme="@style/spinnerHead"
                         app:layout_constraintHorizontal_bias="0.0" />
                 </android.support.v7.widget.CardView>
 
