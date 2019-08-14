@@ -102,4 +102,8 @@ public class WalletContextHolder {
     public String getCurrentPassword() {
         return this.password;
     }
+
+    public void savePasswordToLocal(String password) {
+        this.password = password;
+    }
 }

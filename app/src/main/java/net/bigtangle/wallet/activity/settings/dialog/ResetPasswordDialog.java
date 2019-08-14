@@ -84,6 +84,8 @@ public class ResetPasswordDialog extends Dialog {
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
 
+                    WalletContextHolder.get().savePasswordToLocal(password);
+
                     dismiss();
                 } catch (Exception e) {
                     new LovelyInfoDialog(context)
