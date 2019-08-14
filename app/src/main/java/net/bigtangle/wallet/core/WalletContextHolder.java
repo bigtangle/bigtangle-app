@@ -98,4 +98,8 @@ public class WalletContextHolder {
         String walletFilename = LocalStorageContext.get().readWalletFilePrefix();
         WalletContextHolder.get().reloadWalletFile(walletDirectory, walletFilename);
     }
+
+    public String getCurrentPassword() {
+        return this.password;
+    }
 }

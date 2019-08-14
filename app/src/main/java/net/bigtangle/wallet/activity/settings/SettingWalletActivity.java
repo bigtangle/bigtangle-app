@@ -3,9 +3,12 @@ package net.bigtangle.wallet.activity.settings;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.settings.dialog.ResetPasswordDialog;
 import net.bigtangle.wallet.core.LocalStorageContext;
 
 import butterknife.BindView;
@@ -22,6 +25,9 @@ public class SettingWalletActivity extends AppCompatActivity {
     @BindView(R.id.toolbar_localMain)
     Toolbar toolbarLocalMain;
 
+    @BindView(R.id.reset_password_button)
+    Button resetPasswordButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,14 @@ public class SettingWalletActivity extends AppCompatActivity {
 
         this.walletNameTextView.setText(LocalStorageContext.get().readWalletFilePrefix());
         this.walletPathTextView.setText(LocalStorageContext.get().readWalletDirectory());
+
+        this.resetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ResetPasswordDialog(SettingWalletActivity.this, R.style.CustomDialogStyle)
+                        .show();
+            }
+        });
     }
 
     @Override
