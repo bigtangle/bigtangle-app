@@ -58,6 +58,7 @@ public class ResetPasswordDialog extends Dialog {
         ButterKnife.bind(this, view);
 
         positiveButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 final String password = passwordTextInput.getText().toString();
