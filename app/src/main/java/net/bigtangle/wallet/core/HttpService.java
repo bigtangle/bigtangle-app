@@ -143,4 +143,17 @@ public class HttpService {
         }
         return listUTXO;
     }
+
+    public static Map<String, String> getTokenNameMap() throws Exception {
+        Map<String, Object> requestParam = new HashMap<String, Object>();
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTokens.name(),
+                Json.jsonmapper().writeValueAsString(requestParam).getBytes());
+
+        GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);
+        Map<String, String> map = new HashMap<String, String>();
+        for (Token tokens : getTokensResponse.getTokens()) {
+            map.put(tokens.getTokenid(), tokens.getTokennameDisplay());
+        }
+        return map;
+    }
 }

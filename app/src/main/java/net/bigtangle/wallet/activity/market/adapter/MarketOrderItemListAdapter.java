@@ -74,6 +74,9 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         @BindView(R.id.validate_from_text_view)
         TextView validateFromTextView;
 
+        @BindView(R.id.token_name_text_view)
+        TextView tokenNameTextView;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -89,6 +92,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             this.statusTextView.setText("");
             this.validateToTextView.setText(marketOrderItem.getValidateTo());
             this.validateFromTextView.setText(marketOrderItem.getValidateFrom());
+            this.tokenNameTextView.setText(marketOrderItem.getTokenName());
         }
     }
 }

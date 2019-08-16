@@ -21,20 +21,26 @@ import net.bigtangle.core.Json;
 import net.bigtangle.core.OrderRecord;
 import net.bigtangle.core.http.server.resp.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
-import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
+import net.bigtangle.wallet.core.http.HttpRunaExecute;
 
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -100,14 +106,30 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             requestParam.put("addresses", addressList);
         }
 
-        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getOrders, requestParam, new HttpNetComplete() {
+        new HttpNetRunaDispatch(this.getContext(), new HttpNetComplete() {
             @Override
             public void completeCallback(String jsonStr) {
+
+            }
+        }, new HttpRunaExecute() {
+
+            @Override
+            public void execute() throws Exception {
                 try {
+                    Map<String, String> tokenNameMap = HttpService.getTokenNameMap();
+
+                    String jsonStr = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOrders.name(),
+                            Json.jsonmapper().writeValueAsString(requestParam).getBytes());
+
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
                     for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
                         MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord);
+                        String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
+                        if (StringUtils.isBlank(tokenName)) {
+                            tokenName = marketOrderItem.getTokenId();
+                        }
+                        marketOrderItem.setTokenName(tokenName);
                         itemList.add(marketOrderItem);
                     }
                     getActivity().runOnUiThread(new Runnable() {
@@ -116,11 +138,11 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                             mAdapter.notifyDataSetChanged();
                         }
                     });
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Log.e(LogConstant.TAG, "reqCmd getOrders failure to parse data", e);
                 }
             }
-        });
+        }).execute();
     }
 
     @Override

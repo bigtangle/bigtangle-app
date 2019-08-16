@@ -52,6 +52,8 @@ public class MarketOrderItem implements java.io.Serializable {
 
     private String initialBlockHashHex;
 
+    private String tokenName;
+
     public String getType() {
         return type;
     }
@@ -122,5 +124,13 @@ public class MarketOrderItem implements java.io.Serializable {
 
     public void setInitialBlockHashHex(String initialBlockHashHex) {
         this.initialBlockHashHex = initialBlockHashHex;
+    }
+
+    public String getTokenName() {
+        return tokenName;
+    }
+
+    public void setTokenName(String tokenName) {
+        this.tokenName = tokenName;
     }
 }
