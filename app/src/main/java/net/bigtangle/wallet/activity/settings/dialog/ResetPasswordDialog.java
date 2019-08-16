@@ -31,6 +31,9 @@ public class ResetPasswordDialog extends Dialog {
     @BindView(R.id.password_text_input)
     TextInputEditText passwordTextInput;
 
+    @BindView(R.id.cancle_button)
+    Button cancle_button;
+
     @BindView(R.id.positive_button)
     Button positiveButton;
 
@@ -56,46 +59,60 @@ public class ResetPasswordDialog extends Dialog {
 
         setContentView(view);
         ButterKnife.bind(this, view);
+        initView();
+    }
 
-        positiveButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                final String password = passwordTextInput.getText().toString();
-                if (StringUtils.isBlank(password)) {
-                    new LovelyInfoDialog(context)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(context.getString(R.string.dialog_title_error))
-                            .setMessage("设置密码不可以为空")
-                            .show();
-                    return;
-                }
-
-                try {
-                    KeyCrypterScrypt scrypt = new KeyCrypterScrypt(SCRYPT_PARAMETERS);
-                    KeyParameter aesKey = scrypt.deriveKey(password);
-                    if (WalletContextHolder.get().wallet().isEncrypted()) {
-                        WalletContextHolder.get().wallet().decrypt(WalletContextHolder.get().getCurrentPassword());
-                    }
-                    WalletContextHolder.get().wallet().encrypt(scrypt, aesKey);
-
-                    Toast toast = Toast.makeText(context, "密码设置成功", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.BOTTOM, 0, 0);
-                    toast.show();
-
-                    WalletContextHolder.get().savePasswordToLocal(password);
-
+    private void initView() {
+        if (cancle_button != null) {
+            cancle_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     dismiss();
-                } catch (Exception e) {
-                    new LovelyInfoDialog(context)
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(context.getString(R.string.dialog_title_error))
-                            .setMessage("设置密码失败")
-                            .show();
                 }
-            }
-        });
+            });
+        }
+
+        if (positiveButton !=null){
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    final String password = passwordTextInput.getText().toString();
+                    if (StringUtils.isBlank(password)) {
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(context.getString(R.string.dialog_title_error))
+                                .setMessage("设置密码不可以为空")
+                                .show();
+                        return;
+                    }
+
+                    try {
+                        KeyCrypterScrypt scrypt = new KeyCrypterScrypt(SCRYPT_PARAMETERS);
+                        KeyParameter aesKey = scrypt.deriveKey(password);
+                        if (WalletContextHolder.get().wallet().isEncrypted()) {
+                            WalletContextHolder.get().wallet().decrypt(WalletContextHolder.get().getCurrentPassword());
+                        }
+                        WalletContextHolder.get().wallet().encrypt(scrypt, aesKey);
+
+                        Toast toast = Toast.makeText(context, "密码设置成功", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.show();
+
+                        WalletContextHolder.get().savePasswordToLocal(password);
+
+                        dismiss();
+                    } catch (Exception e) {
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(context.getString(R.string.dialog_title_error))
+                                .setMessage("设置密码失败")
+                                .show();
+                    }
+                }
+            });
+        }
     }
 }
