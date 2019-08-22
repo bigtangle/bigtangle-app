@@ -379,5 +379,4 @@ public class PickerView extends View {
             mTimer = null;
         }
     }
-
 }

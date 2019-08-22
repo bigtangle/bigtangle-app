@@ -13,8 +13,10 @@ public class AppNetInfo {
     // app 版号号
     private int versionCode;
 
-    public AppNetInfo(String versionName, String versionDes,
-                      String downloadUrl, int versionCode) {
+    public AppNetInfo() {
+    }
+
+    public AppNetInfo(String versionName, String versionDes, String downloadUrl, int versionCode) {
         this.versionName = versionName;
         this.versionDes = versionDes;
         this.downloadUrl = downloadUrl;
@@ -53,10 +55,10 @@ public class AppNetInfo {
         this.versionCode = versionCode;
     }
 
-    public String toString(){
-        return "{versionName="+versionName+";" +
-                "versionCode="+versionCode+";" +
-                "versionDes="+versionDes+";" +
-                "downloadUrl="+downloadUrl+"}";
+    public String toString() {
+        return "{versionName=" + versionName + ";" +
+                "versionCode=" + versionCode + ";" +
+                "versionDes=" + versionDes + ";" +
+                "downloadUrl=" + downloadUrl + "}";
     }
 }

@@ -72,7 +72,7 @@ public class ResetPasswordDialog extends Dialog {
             });
         }
 
-        if (positiveButton !=null){
+        if (positiveButton != null) {
             positiveButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override

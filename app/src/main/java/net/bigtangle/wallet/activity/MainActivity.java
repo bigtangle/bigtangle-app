@@ -12,13 +12,10 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
-import net.bigtangle.wallet.activity.update.UpdateManager;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private UpdateManager mUpdateManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +84,5 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(position);
             }
         });
-    }
-
-    private void checkVersion(){
-        //这里来检测版本是否需要更新
-        mUpdateManager = new UpdateManager(this);
-        mUpdateManager.checkUpdateInfo();
     }
 }

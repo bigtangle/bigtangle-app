@@ -44,7 +44,7 @@ public abstract class BaseLazyFragment extends Fragment {
         if (isFirstLoad && isVisibleToUser) {//视图变为可见并且是第一次加载
             onLazyLoad();
             isFirstLoad = false;
-        }else if (froceLoadData && isVisibleToUser){
+        } else if (froceLoadData && isVisibleToUser) {
             onLazyLoad();
         }
     }

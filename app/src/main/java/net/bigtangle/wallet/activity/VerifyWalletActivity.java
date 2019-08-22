@@ -18,6 +18,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.update.UpdateManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
     @BindView(R.id.verify_wallet_button)
     Button verifyWalletButton;
 
+    private UpdateManager mUpdateManager;
+
     private static final int NOT_NOTICE = 2; //如果勾选了不再询问
 
     @Override
@@ -43,16 +46,11 @@ public class VerifyWalletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify_wallet);
         ButterKnife.bind(this);
 
-        /*if (!WalletContextHolder.get().checkWalletExists()) {
-            Intent intent = new Intent(VerifyWalletActivity.this, ImportWalletActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
+        this.requetPermission();
+
+        if (this.checkVersion()) {
             return;
         }
-        WalletContextHolder.get().initData();*/
-
-        this.requetPermission();
 
         if (WalletContextHolder.get().checkWalletHavePassword()) {
             this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
@@ -161,5 +159,11 @@ public class VerifyWalletActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private boolean checkVersion() {
+        //这里来检测版本是否需要更新
+        mUpdateManager = new UpdateManager(this);
+        return mUpdateManager.checkUpdateInfo();
     }
 }

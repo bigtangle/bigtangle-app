@@ -166,9 +166,9 @@ public class HttpNetTaskDispatch {
                                         new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
                                     }
                                 }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                    }
+                            @Override
+                            public void onClick(View v) {
+                            }
                         }).show();
                         return;
                     }

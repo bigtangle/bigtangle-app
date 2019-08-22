@@ -57,5 +57,4 @@ public class DateFormatUtils {
             return DATE_FORMAT_PATTERN_YMD;
         }
     }
-
 }

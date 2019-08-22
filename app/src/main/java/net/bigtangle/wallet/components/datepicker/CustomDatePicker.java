@@ -631,5 +631,4 @@ public class CustomDatePicker implements View.OnClickListener, PickerView.OnSele
             mDpvMinute.onDestroy();
         }
     }
-
 }
