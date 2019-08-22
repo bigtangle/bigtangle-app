@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.update;
+package net.bigtangle.wallet.core.update;
 
 public class AppNetInfo {
     // app 名称
@@ -14,13 +14,6 @@ public class AppNetInfo {
     private int versionCode;
 
     public AppNetInfo() {
-    }
-
-    public AppNetInfo(String versionName, String versionDes, String downloadUrl, int versionCode) {
-        this.versionName = versionName;
-        this.versionDes = versionDes;
-        this.downloadUrl = downloadUrl;
-        this.versionCode = versionCode;
     }
 
     public String getVersionName() {

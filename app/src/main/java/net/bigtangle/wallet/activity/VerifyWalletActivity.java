@@ -18,8 +18,8 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.update.UpdateManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.update.UpdateManager;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,4 +1,4 @@
-package net.bigtangle.wallet.activity.update;
+package net.bigtangle.wallet.core.update;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
