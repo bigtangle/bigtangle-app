@@ -43,7 +43,7 @@ public class UpdateManager {
     private AppNetInfo appNetInfo;
 
     //返回的 app 包 版本号
-    private String apkVersionUrl = "https://bigtangle.org/app-version";
+    private String apkVersionUrl = "http://39.107.85.226:8080/api/app.version";
 
     private Dialog noticeDialog;
 
