@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Bigtangle Wallet</string>
+    <string name="version" translatable="false">Version</string>
 
     <string name="title_tab_transaction">Transaction</string>
     <string name="title_tab_wallet">Wallet</string>

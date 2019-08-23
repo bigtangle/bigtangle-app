@@ -163,6 +163,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
 
     private boolean checkVersion() {
         //这里来检测版本是否需要更新
+        setContentView(R.layout.progress);
         mUpdateManager = new UpdateManager(this);
         return mUpdateManager.checkUpdateInfo();
     }

@@ -149,9 +149,10 @@ public class UpdateManager {
                         showDownloadDialog();
                     }
                 }).setNegativeButton("以后再说", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
+                    @Override
+                    public void onClick(View v) {
+                        UpdateUtil.closeApp();
+                    }
         }).show();
     }
 
@@ -169,6 +170,7 @@ public class UpdateManager {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 interceptFlag = true;
+                UpdateUtil.closeApp();
             }
         });
         downloadDialog = builder.create();

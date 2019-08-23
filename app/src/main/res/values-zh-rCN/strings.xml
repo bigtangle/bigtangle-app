@@ -1,4 +1,6 @@
 <resources>
+    <string name="version" translatable="false">版本</string>
+
     <string name="title_tab_transaction">交易</string>
     <string name="title_tab_wallet">钱包</string>
     <string name="title_tab_market">市场</string>
