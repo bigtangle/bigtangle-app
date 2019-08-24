@@ -40,7 +40,7 @@ public class UpdateUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "V.1.0.0.0";
+        return "V.1.0.0";
     }
 
     public static  void closeApp(){
