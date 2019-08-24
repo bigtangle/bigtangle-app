@@ -10,7 +10,7 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 public class UpdateUtil {
 
     /**
-     * 2 * 获取版本号 3 * @return 当前应用的版本号 4
+     *  获取版本号
      */
     public static int getVersion(Context context) {
         try {
@@ -27,7 +27,7 @@ public class UpdateUtil {
     }
 
     /**
-     * 2 * 获取版本号 3 * @return 当前应用的版本号 4
+     *  获取版本序列
      */
     public static String getVersionName(Context context) {
         try {
@@ -40,7 +40,7 @@ public class UpdateUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "V.1.0.0";
+        return "V1.0.0";
     }
 
     public static  void closeApp(){
