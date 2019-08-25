@@ -196,14 +196,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         }
 
                         if (!find) {
-                            new ContactAddDialog(getActivity(), R.style.CustomDialogStyle).setAddress(toAddressTextInput.getText().toString())
-                                    .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
-
-                                        @Override
-                                        public void refreshView() {
-
-                                        }
-                                    }).show();
+                            new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
+                                    .setAddress(toAddressTextInput.getText().toString())
+                                    .show();
                         } else {
                             new LovelyInfoDialog(getContext())
                                     .setTopColorRes(R.color.colorPrimary)
