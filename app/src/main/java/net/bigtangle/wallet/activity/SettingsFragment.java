@@ -1,11 +1,8 @@
 package net.bigtangle.wallet.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +16,7 @@ import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.settings.SettingConnectionActivity;
+import net.bigtangle.wallet.activity.settings.SettingContactActivity;
 import net.bigtangle.wallet.activity.settings.SettingWalletActivity;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.core.utils.UpdateUtil;
@@ -35,6 +33,9 @@ public class SettingsFragment extends BaseLazyFragment {
 
     @BindView(R.id.about_button)
     Button aboutButton;
+
+    @BindView(R.id.contact_button)
+    Button contactButton;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -74,7 +75,15 @@ public class SettingsFragment extends BaseLazyFragment {
             }
         });
 
-        if (aboutButton !=null){
+        this.contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SettingContactActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        if (aboutButton != null) {
             this.aboutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,10 +93,10 @@ public class SettingsFragment extends BaseLazyFragment {
         }
     }
 
-    private  void showVersionDialog(){
+    private void showVersionDialog() {
         String versionName = UpdateUtil.getVersionName(getContext());
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(),R.style.AppTheme);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(), R.style.AppTheme);
 
         dialog.setPositiveButton(getContext().getString(R.string.ok), (dialog1, which) -> dialog1.dismiss());
         dialog.setCancelable(true);
@@ -117,6 +126,5 @@ public class SettingsFragment extends BaseLazyFragment {
         button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.btn_bg));
         button.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         button.setTextSize(16);
-
     }
 }

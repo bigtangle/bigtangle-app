@@ -25,6 +25,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
+import net.bigtangle.wallet.activity.transaction.dialog.ContactChooseDialog;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -61,6 +62,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
     @BindView(R.id.pay_button)
     Button payButton;
+
+    @BindView(R.id.contact_button)
+    Button contactButton;
 
     TokenItemListAdapter tokenAdapter;
     ArrayAdapter<String> payMethodAdapter;
@@ -191,6 +195,18 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
                     }
                 }).execute();
+            }
+        });
+
+        this.contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ContactChooseDialog(getContext(), R.style.CustomDialogStyle).setListener(new ContactChooseDialog.OnContactChooseItemListener() {
+                    @Override
+                    public void chooseAddress(String address) {
+                        toAddressTextInput.setText(address);
+                    }
+                }).show();
             }
         });
     }

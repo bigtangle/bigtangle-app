@@ -1,12 +1,17 @@
 package net.bigtangle.wallet.core;
 
 import net.bigtangle.core.Coin;
+import net.bigtangle.core.ContactInfo;
+import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
+import net.bigtangle.core.MyHomeAddress;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
+import net.bigtangle.core.UploadfileInfo;
 import net.bigtangle.core.Utils;
+import net.bigtangle.core.WatchedInfo;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.core.http.server.resp.GetOutputsResponse;
 import net.bigtangle.core.http.server.resp.GetTokensResponse;
@@ -15,6 +20,8 @@ import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -155,5 +162,61 @@ public class HttpService {
             map.put(tokens.getTokenid(), tokens.getTokennameDisplay());
         }
         return map;
+    }
+
+    public static Serializable getUserdata(String type) throws IOException {
+
+        // Main.IpAddress
+        // + ":" + Main.port + "/";
+        HashMap<String, String> requestParam = new HashMap<String, String>();
+
+        ECKey pubKeyTo = null;
+        if (WalletContextHolder.get().wallet().isEncrypted()) {
+            List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys();
+            pubKeyTo = issuedKeys.get(0);
+        } else {
+            pubKeyTo = WalletContextHolder.get().wallet().currentReceiveKey();
+        }
+
+        if (DataClassName.TOKEN.name().equals(type) || DataClassName.LANG.name().equals(type)
+                || DataClassName.SERVERURL.name().equals(type)
+                || DataClassName.BlockSolveType.name().equals(type)) {
+            type = DataClassName.WATCHED.name();
+        }
+        requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
+        requestParam.put("dataclassname", type);
+        byte[] bytes = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
+                Json.jsonmapper().writeValueAsString(requestParam));
+        if (DataClassName.CONTACTINFO.name().equals(type)) {
+            if (bytes == null || bytes.length == 0) {
+                return new ContactInfo();
+            }
+            ContactInfo contactInfo = new ContactInfo().parse(bytes);
+            return contactInfo;
+        } else if (DataClassName.MYHOMEADDRESS.name().equals(type)) {
+            if (bytes == null || bytes.length == 0) {
+                return new MyHomeAddress();
+            }
+            MyHomeAddress myHomeAddress = new MyHomeAddress().parse(bytes);
+            return myHomeAddress;
+        } else if (DataClassName.UPLOADFILE.name().equals(type)) {
+            if (bytes == null || bytes.length == 0) {
+                return new UploadfileInfo();
+            }
+            UploadfileInfo uploadfileInfo = new UploadfileInfo().parse(bytes);
+            return uploadfileInfo;
+        } else if (DataClassName.SERVERURL.name().equals(type) || DataClassName.LANG.name().equals(type)
+                || DataClassName.TOKEN.name().equals(type) || DataClassName.WATCHED.name().equals(type)) {
+            WatchedInfo watchedInfo = null;
+
+            if (bytes == null || bytes.length == 0) {
+                return new WatchedInfo();
+            }
+            watchedInfo = new WatchedInfo().parse(bytes);
+
+            return watchedInfo;
+        } else {
+            return null;
+        }
     }
 }
