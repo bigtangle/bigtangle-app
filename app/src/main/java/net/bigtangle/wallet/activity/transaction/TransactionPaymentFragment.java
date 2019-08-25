@@ -15,6 +15,9 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Address;
 import net.bigtangle.core.Coin;
+import net.bigtangle.core.Contact;
+import net.bigtangle.core.ContactInfo;
+import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
 import net.bigtangle.core.Token;
@@ -24,10 +27,12 @@ import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.dialog.ContactChooseDialog;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
+import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.exception.ToastException;
@@ -136,6 +141,23 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         });
     }
 
+    public void checkContact() throws Exception {
+
+        ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
+        List<Contact> list = contactInfo.getContactList();
+        boolean find = false;
+        for (Contact contact : list) {
+            if (contact.getAddress().equals(toAddressTextInput.getText().toString())) {
+                find = true;
+                break;
+            }
+        }
+
+        if (!find) {
+            new ContactAddDialog(getContext(), R.style.CustomDialogStyle).show();
+        }
+    }
+
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_transaction_payment, container, false);
@@ -157,7 +179,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                                 .setTitle(getContext().getString(R.string.dialog_title_info))
                                 .setMessage(getContext().getString(R.string.wallet_payment_success))
                                 .show();
-                        return;
+
+                        checkContact();
                     }
                 }, new HttpRunaExecute() {
                     @Override
