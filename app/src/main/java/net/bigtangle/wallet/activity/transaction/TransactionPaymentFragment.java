@@ -153,13 +153,6 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         });
     }
 
-    public void checkContact() throws Exception {
-
-
-
-
-    }
-
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_transaction_payment, container, false);
@@ -195,9 +188,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         // 启动线程请求当前应用程序版本号
                         new Thread(futureTask).start();
                         // 处理网络请求后的appNetInfo
-                        boolean find = false;
+                        boolean find = true;
                         try {
-                             find = futureTask.get();
+                            find = futureTask.get();
                             Log.i(LogConstant.TAG, "dig");
                         } catch (Exception e) {
                         }
@@ -211,8 +204,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
                                         }
                                     }).show();
-                        }
-                        else {
+                        } else {
                             new LovelyInfoDialog(getContext())
                                     .setTopColorRes(R.color.colorPrimary)
                                     .setIcon(R.drawable.ic_info_white_24px)
