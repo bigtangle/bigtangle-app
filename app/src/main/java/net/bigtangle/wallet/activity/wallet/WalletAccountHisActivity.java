@@ -98,7 +98,7 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
                         walletAccountHisItem.setTokenId(Utils.HEX.encode(tokenid));
                         Token token = getBalancesResponse.getTokennames().get(walletAccountHisItem.getTokenId());
                         if (token != null) {
-                            walletAccountHisItem.setTokenName(token.getTokenname());
+                            walletAccountHisItem.setTokenName(token.getTokennameDisplay());
                         } else {
                             walletAccountHisItem.setTokenName(walletAccountHisItem.getTokenId());
                         }

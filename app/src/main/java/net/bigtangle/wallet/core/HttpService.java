@@ -42,7 +42,7 @@ public class HttpService {
         for (Token token : getTokensResponse.getTokens()) {
             TokenItem tokenItem = new TokenItem();
             tokenItem.setTokenId(token.getTokenid());
-            tokenItem.setTokenName(token.getTokenname());
+            tokenItem.setTokenName(token.getTokennameDisplay());
             tokenItemList.add(tokenItem);
         }
 
@@ -69,7 +69,7 @@ public class HttpService {
             tokenItem.setTokenId(Utils.HEX.encode(tokenid));
             Token token = getBalancesResponse.getTokennames().get(tokenItem.getTokenId());
             if (token != null) {
-                tokenItem.setTokenName(token.getTokenname());
+                tokenItem.setTokenName(token.getTokennameDisplay());
             } else {
                 tokenItem.setTokenName(tokenItem.getTokenId());
             }

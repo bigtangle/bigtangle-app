@@ -3,6 +3,7 @@ package net.bigtangle.wallet.activity.transaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Address;
@@ -27,6 +29,7 @@ import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.settings.SettingContactActivity;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.dialog.ContactChooseDialog;
@@ -35,16 +38,25 @@ import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.update.AppNetInfo;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import butterknife.BindView;
 
@@ -122,7 +134,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
                         Token token = getBalancesResponse.getTokennames().get(tokenItem.getTokenId());
                         if (token != null) {
-                            tokenItem.setTokenName(token.getTokenname());
+                            tokenItem.setTokenName(token.getTokennameDisplay());
                         } else {
                             tokenItem.setTokenName(tokenItem.getTokenId());
                         }
@@ -143,19 +155,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
     public void checkContact() throws Exception {
 
-        ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
-        List<Contact> list = contactInfo.getContactList();
-        boolean find = false;
-        for (Contact contact : list) {
-            if (contact.getAddress().equals(toAddressTextInput.getText().toString())) {
-                find = true;
-                break;
-            }
-        }
 
-        if (!find) {
-            new ContactAddDialog(getContext(), R.style.CustomDialogStyle).show();
-        }
+
+
     }
 
     @Override
@@ -173,14 +175,52 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
                     public void completeCallback(String jsonStr) {
-                        new LovelyInfoDialog(getContext())
-                                .setTopColorRes(R.color.colorPrimary)
-                                .setIcon(R.drawable.ic_info_white_24px)
-                                .setTitle(getContext().getString(R.string.dialog_title_info))
-                                .setMessage(getContext().getString(R.string.wallet_payment_success))
-                                .show();
 
-                        checkContact();
+
+                        FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
+                                List<Contact> list = contactInfo.getContactList();
+                                boolean find = false;
+                                for (Contact contact : list) {
+                                    if (contact.getAddress().equals(toAddressTextInput.getText().toString())) {
+                                        find = true;
+                                        break;
+                                    }
+                                }
+                                return find;
+                            }
+                        });
+                        // 启动线程请求当前应用程序版本号
+                        new Thread(futureTask).start();
+                        // 处理网络请求后的appNetInfo
+                        boolean find = false;
+                        try {
+                             find = futureTask.get();
+                            Log.i(LogConstant.TAG, "dig");
+                        } catch (Exception e) {
+                        }
+
+                        if (!find) {
+                            new ContactAddDialog(getActivity(), R.style.CustomDialogStyle).setAddress(toAddressTextInput.getText().toString())
+                                    .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                        @Override
+                                        public void refreshView() {
+
+                                        }
+                                    }).show();
+                        }
+                        else {
+                            new LovelyInfoDialog(getContext())
+                                    .setTopColorRes(R.color.colorPrimary)
+                                    .setIcon(R.drawable.ic_info_white_24px)
+                                    .setTitle(getContext().getString(R.string.dialog_title_info))
+                                    .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                    .show();
+                        }
+
                     }
                 }, new HttpRunaExecute() {
                     @Override

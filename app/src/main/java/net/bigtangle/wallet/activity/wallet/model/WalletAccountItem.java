@@ -13,7 +13,7 @@ public class WalletAccountItem {
         walletAccountItem.setValue(coin.toPlainString());
         Token token = tokennames.get(coin.getTokenHex());
         if (token != null) {
-            walletAccountItem.setTokenName(token.getTokenname());
+            walletAccountItem.setTokenName(token.getTokennameDisplay());
         } else {
             walletAccountItem.setTokenName(coin.getTokenHex());
         }

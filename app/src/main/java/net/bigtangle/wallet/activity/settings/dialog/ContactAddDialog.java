@@ -57,11 +57,18 @@ public class ContactAddDialog extends Dialog {
     @BindView(R.id.positive_button)
     Button positiveButton;
 
+    private String address;
+
     private ContactAddDialog.OnContactAddCallbackListenter listenter;
 
     public ContactAddDialog(Context context, int theme) {
         super(context, theme);
         this.context = context;
+    }
+
+    public ContactAddDialog setAddress(String address) {
+        this.address = address;
+        return this;
     }
 
     @Override
@@ -81,6 +88,9 @@ public class ContactAddDialog extends Dialog {
     }
 
     private void initView() {
+        if (!StringUtils.isBlank(this.address)) {
+            this.addressTextInput.setText(address);
+        }
         if (negativeButton != null) {
             negativeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
