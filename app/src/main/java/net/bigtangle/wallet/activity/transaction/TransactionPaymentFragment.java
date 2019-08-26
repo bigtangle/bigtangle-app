@@ -244,15 +244,12 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         this.contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new ContactChooseDialog(getContext(), R.style.CustomDialogStyle).setListener(new ContactChooseDialog.OnContactChooseItemListener() {
+                new ContactChooseDialog(getContext(), R.style.CustomDialogStyle).setListener(new ContactChooseDialog.OnContactChooseItemListener() {
                     @Override
                     public void chooseAddress(String address) {
                         toAddressTextInput.setText(address);
                     }
-                });
-                dialog.setCanceledOnTouchOutside(true);
-                getActivity().setFinishOnTouchOutside(true);
-                dialog.show();
+                }).show();
             }
         });
     }
