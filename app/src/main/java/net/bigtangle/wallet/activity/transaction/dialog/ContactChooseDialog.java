@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 
 import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
@@ -40,6 +41,9 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
+
+    @BindView(R.id.cancel_button)
+    Button cancelButton;
 
     private ContactItemListAdapter mAdapter;
 
@@ -95,6 +99,16 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
             }
         });
         this.recyclerViewContainer.setAdapter(this.mAdapter);
+
+        this.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.chooseAddress("");
+                }
+                dismiss();
+            }
+        });
 
         initData();
     }
