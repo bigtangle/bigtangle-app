@@ -87,7 +87,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                             tokenInfoItem.setConfirmed((Boolean) map.get("confirmed"));
                             tokenInfoItem.setTokenId((String) map.get("tokenid"));
                             tokenInfoItem.setTokenIndex((Integer) map.get("tokenindex"));
-                            tokenInfoItem.setTokenName((String) map.get("tokenname"));
+                            tokenInfoItem.setTokenName((String) map.get("tokennameDisplay"));
                             tokenInfoItem.setDescription((String) map.get("description"));
                             tokenInfoItem.setDomainMame((String) map.get("domainname"));
                             tokenInfoItem.setSignNumber((Integer) map.get("signnumber"));
