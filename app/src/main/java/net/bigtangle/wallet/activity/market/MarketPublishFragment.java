@@ -364,7 +364,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 }
                 if (dateStartInputFlag) {
                     startDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
-                    endDateTextView.setText(DateFormatUtils.long2Str(timestamp + TimeUnit.HOURS.toMillis(6), true));
+                    endDateTextView.setText(DateFormatUtils.long2Str(timestamp
+                            + TimeUnit.HOURS.toMillis(6), true));
                 }
                 dateStartInputFlag = false;
                 dateEndInputFlag = false;
