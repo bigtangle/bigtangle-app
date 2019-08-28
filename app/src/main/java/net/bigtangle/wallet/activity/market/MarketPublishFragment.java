@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -362,6 +363,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                     endDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
                 } else if (dateInputInputFlag) {
                     startDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
+                    endDateTextView.setText(DateFormatUtils.long2Str(timestamp + TimeUnit.HOURS.toMillis(6), true));
                 }
                 dateEndInputFlag = false;
                 dateInputInputFlag = false;
