@@ -17,7 +17,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.ImportWalletActivity"></activity>
         <activity
             android:name=".activity.VerifyWalletActivity"
             android:label="@string/app_name"
@@ -39,14 +38,13 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="net.bigtangle.wallet.fileProvider"
-            android:grantUriPermissions="true"
             android:exported="false"
+            android:grantUriPermissions="true"
             tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"
-                tools:replace="android:resource"
-                />
+                tools:replace="android:resource" />
         </provider>
     </application>
 </manifest>
