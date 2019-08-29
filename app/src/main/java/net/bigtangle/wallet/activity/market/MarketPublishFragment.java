@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -77,8 +78,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     private CustomDatePicker mTimerPicker;
 
+    private boolean dateStartInputFlag;
     private boolean dateEndInputFlag;
-    private boolean dateInputInputFlag;
 
     private List<String> addressList;
     private List<TokenItem> tokenItemList;
@@ -250,7 +251,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         startDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateInputInputFlag = true;
+                dateStartInputFlag = true;
                 mTimerPicker.show(startDateTextView.getText().toString());
             }
         });
@@ -360,11 +361,14 @@ public class MarketPublishFragment extends BaseLazyFragment {
             public void onTimeSelected(long timestamp) {
                 if (dateEndInputFlag) {
                     endDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
-                } else if (dateInputInputFlag) {
-                    startDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
                 }
+                if (dateStartInputFlag) {
+                    startDateTextView.setText(DateFormatUtils.long2Str(timestamp, true));
+                    endDateTextView.setText(DateFormatUtils.long2Str(timestamp
+                            + TimeUnit.HOURS.toMillis(6), true));
+                }
+                dateStartInputFlag = false;
                 dateEndInputFlag = false;
-                dateInputInputFlag = false;
             }
         }, beginTime, endTime);
         // 允许点击屏幕或物理返回键关闭

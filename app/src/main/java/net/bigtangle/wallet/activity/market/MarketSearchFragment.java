@@ -109,7 +109,6 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         new HttpNetRunaDispatch(this.getContext(), new HttpNetComplete() {
             @Override
             public void completeCallback(String jsonStr) {
-
             }
         }, new HttpRunaExecute() {
 
