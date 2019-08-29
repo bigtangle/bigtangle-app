@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        versionCode 2
-        versionName "V1.0.1"
+        versionCode 1
+        versionName "V1.0.0"
         applicationId "net.bigtangle.wallet"
         minSdkVersion 21
         targetSdkVersion 27

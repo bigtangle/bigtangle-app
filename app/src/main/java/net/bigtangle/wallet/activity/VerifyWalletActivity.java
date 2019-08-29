@@ -100,6 +100,9 @@ public class VerifyWalletActivity extends AppCompatActivity {
             //由于不知道是否选择了允许所以需要再次判断
             requetPermission();
         }
+        if (requestCode == 100){
+            mUpdateManager.installApk();
+        }
     }
 
     private void requetPermission() {
@@ -164,7 +167,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
     private boolean checkVersion() {
         //这里来检测版本是否需要更新
         setContentView(R.layout.progress);
-        mUpdateManager = new UpdateManager(this);
+        mUpdateManager = new UpdateManager(this,this);
         return mUpdateManager.checkUpdateInfo();
     }
 }

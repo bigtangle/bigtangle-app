@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.core.update;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -9,14 +10,18 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
@@ -45,8 +50,6 @@ public class UpdateManager {
     //返回的 app 包 版本号
     private String apkVersionUrl = "https://bigtangle.oss-cn-beijing.aliyuncs.com/download/app.version";
 
-    private Dialog noticeDialog;
-
     private Dialog downloadDialog;
 
     private String apkDownloadPath;
@@ -66,6 +69,8 @@ public class UpdateManager {
 
     private boolean interceptFlag = false;
 
+    private Activity mActivity;
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -83,8 +88,9 @@ public class UpdateManager {
         ;
     };
 
-    public UpdateManager(Context context) {
+    public UpdateManager(Context context,Activity activity) {
         this.mContext = context;
+        this.mActivity = activity;
         this.apkDownloadPath = LocalStorageContext.get().readWalletDirectory();
         this.apkDownloadName = "app-release.apk";
     }
@@ -236,14 +242,48 @@ public class UpdateManager {
     /**
      * 安装apk
      */
-    private void installApk() {
+    public void installApk() {
+        checkHaveInstallPermission();
         File apkfile = new File(apkDownloadPath + apkDownloadName);
         if (!apkfile.exists()) {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+        // 由于没有在Activity环境下启动Activity,设置下面的标签
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");
+//            intent.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+        } else {//Android7.0之后获取uri要用contentProvider
+            intent.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         mContext.startActivity(intent);
+    }
+
+    //安装应用的流程
+    private void checkHaveInstallPermission() {
+        boolean haveInstallPermission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //先获取是否有安装未知来源应用的权限
+            haveInstallPermission = mContext.getPackageManager().canRequestPackageInstalls();
+            if (!haveInstallPermission) {//没有权限
+                new LovelyInfoDialog(mActivity)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setIcon(R.drawable.ic_error_white_24px)
+                        .setTitle(mContext.getString(R.string.dialog_title_info))
+                        .setMessage("安装应用需要打开未知来源权限，请去设置中开启权限")
+                        .show();
+                return;
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity() {
+        //注意这个是8.0新API
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        mActivity.startActivityForResult(intent, 100);
     }
 
     /**
