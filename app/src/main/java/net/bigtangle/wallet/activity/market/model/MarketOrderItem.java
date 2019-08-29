@@ -1,9 +1,12 @@
 package net.bigtangle.wallet.activity.market.model;
 
+import android.content.Context;
+
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.OrderRecord;
+import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.text.DateFormat;
@@ -12,16 +15,16 @@ import java.util.Date;
 
 public class MarketOrderItem implements java.io.Serializable {
 
-    public static MarketOrderItem build(OrderRecord orderRecord) {
+    public static MarketOrderItem build(OrderRecord orderRecord, Context context) {
         MarketOrderItem marketOrderItem = new MarketOrderItem();
         if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
-            marketOrderItem.setType("BUY");
-            marketOrderItem.setAmount(orderRecord.getTargetValue());
+            marketOrderItem.setType(context.getString(R.string.buy));
+            marketOrderItem.setAmount(Coin.toPlainString(orderRecord.getTargetValue()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
             marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getOfferValue() / orderRecord.getTargetValue()));
         } else {
-            marketOrderItem.setType("SELL");
-            marketOrderItem.setAmount(orderRecord.getOfferValue());
+            marketOrderItem.setType(context.getString(R.string.sell));
+            marketOrderItem.setAmount(Coin.toPlainString(orderRecord.getOfferValue()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
             marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getTargetValue() / orderRecord.getOfferValue()));
         }
@@ -36,7 +39,7 @@ public class MarketOrderItem implements java.io.Serializable {
 
     private String type;
 
-    private Long amount;
+    private String amount;
 
     private String tokenId;
 
@@ -62,11 +65,11 @@ public class MarketOrderItem implements java.io.Serializable {
         this.type = type;
     }
 
-    public Long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

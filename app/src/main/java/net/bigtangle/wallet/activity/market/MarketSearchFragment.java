@@ -123,7 +123,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
                     for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord);
+                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, getContext());
                         String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                         if (StringUtils.isBlank(tokenName)) {
                             tokenName = marketOrderItem.getTokenId();
