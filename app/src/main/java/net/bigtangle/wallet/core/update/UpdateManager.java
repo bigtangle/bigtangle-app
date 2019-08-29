@@ -268,12 +268,17 @@ public class UpdateManager {
             //先获取是否有安装未知来源应用的权限
             haveInstallPermission = mContext.getPackageManager().canRequestPackageInstalls();
             if (!haveInstallPermission) {//没有权限
-                new LovelyInfoDialog(mActivity)
+                new LovelyStandardDialog(mActivity)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle(mContext.getString(R.string.dialog_title_info))
                         .setMessage("安装应用需要打开未知来源权限，请去设置中开启权限")
-                        .show();
+                        .setPositiveButton("去允许", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startInstallPermissionSettingActivity();
+                            }
+                        }).show();
                 return;
             }
         }
