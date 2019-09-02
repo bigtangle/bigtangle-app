@@ -1,5 +1,5 @@
 <resources>
-    <string name="version" translatable="false">版本</string>
+    <string name="version" translatable="false">版本号</string>
 
     <string name="title_tab_transaction">交易</string>
     <string name="title_tab_wallet">钱包</string>
@@ -27,7 +27,7 @@
     <string name="settings_tab_connection">连接设置</string>
     <string name="settings_tab_about">关于</string>
     <string name="settings_tab_wallet">钱包设置</string>
-
+    <string name="settings_tab_version">应用版本号</string>
 
     <string name="pay">支付</string>
     <string name="multiple_signature_pay">多重签名支付</string>

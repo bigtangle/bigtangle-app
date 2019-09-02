@@ -179,13 +179,8 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
         coinbase.setDataClassName(DataClassName.CONTACTINFO.name());
         coinbase.setData(contactInfo.toByteArray());
 
-        ECKey pubKeyTo;
-        if (WalletContextHolder.get().wallet().isEncrypted()) {
-            List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
-            pubKeyTo = issuedKeys.get(0);
-        } else {
-            pubKeyTo = WalletContextHolder.get().wallet().currentReceiveKey();
-        }
+        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        ECKey pubKeyTo = issuedKeys.get(0);
 
         Sha256Hash sighash = coinbase.getHash();
         ECKey.ECDSASignature party1Signature = pubKeyTo.sign(sighash, WalletContextHolder.get().getAesKey());

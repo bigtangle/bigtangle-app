@@ -18,6 +18,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.core.Address;
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.NetworkParameters;
+import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
@@ -194,7 +195,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
-                        Coin price = Coin.parseCoin(unitPriceInput.getText().toString(), NetworkParameters.BIGTANGLE_TOKENID);
+                        Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
                         if (price.getValue() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
                         }

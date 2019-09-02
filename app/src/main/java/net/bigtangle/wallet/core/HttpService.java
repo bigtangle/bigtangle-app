@@ -165,18 +165,10 @@ public class HttpService {
     }
 
     public static Serializable getUserdata(String type) throws IOException {
-
-        // Main.IpAddress
-        // + ":" + Main.port + "/";
         HashMap<String, String> requestParam = new HashMap<String, String>();
 
-        ECKey pubKeyTo = null;
-        if (WalletContextHolder.get().wallet().isEncrypted()) {
-            List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys();
-            pubKeyTo = issuedKeys.get(0);
-        } else {
-            pubKeyTo = WalletContextHolder.get().wallet().currentReceiveKey();
-        }
+        List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys();
+        ECKey pubKeyTo = issuedKeys.get(0);
 
         if (DataClassName.TOKEN.name().equals(type) || DataClassName.LANG.name().equals(type)
                 || DataClassName.SERVERURL.name().equals(type)

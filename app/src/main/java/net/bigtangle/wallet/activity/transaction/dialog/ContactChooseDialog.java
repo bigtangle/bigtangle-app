@@ -116,13 +116,9 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
     private void initData() {
         HashMap<String, String> requestParam = new HashMap<String, String>();
 
-        ECKey pubKeyTo = null;
-        if (WalletContextHolder.get().wallet().isEncrypted()) {
-            List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
-            pubKeyTo = issuedKeys.get(0);
-        } else {
-            pubKeyTo = WalletContextHolder.get().wallet().currentReceiveKey();
-        }
+        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        ECKey pubKeyTo = issuedKeys.get(0);
+
         requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
         requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
 

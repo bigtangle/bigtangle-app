@@ -139,13 +139,9 @@ public class ContactAddDialog extends Dialog {
                         Block block = WalletContextHolder.networkParameters.getDefaultSerializer().makeBlock(data);
                         block.setBlockType(Block.Type.BLOCKTYPE_USERDATA);
 
-                        ECKey pubKeyTo = null;
-                        if (WalletContextHolder.get().wallet().isEncrypted()) {
-                            List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
-                            pubKeyTo = issuedKeys.get(0);
-                        } else {
-                            pubKeyTo = WalletContextHolder.get().wallet().currentReceiveKey();
-                        }
+                        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+                        ECKey pubKeyTo = issuedKeys.get(0);
+
                         Transaction coinbase = new Transaction(WalletContextHolder.networkParameters);
                         Contact contact = new Contact();
                         contact.setName(contactNameTextInput.getText().toString());

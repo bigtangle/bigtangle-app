@@ -1,6 +1,5 @@
 package net.bigtangle.wallet.activity.transaction;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -27,6 +26,7 @@ import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
@@ -229,7 +229,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         wallet.setServerURL(CONTEXT_ROOT);
 
                         byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
-                        Coin amount = Coin.parseCoin(amountValue, tokenidBuf);
+                        Token t = wallet.checkTokenId(tokenValue);
+                        Coin amount = MonetaryFormat.FIAT.noCode().parse(amountValue, tokenidBuf, t.getDecimals());
 
                         long factor = 1;
                         amount = amount.multiply(factor);
