@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import net.bigtangle.core.Coin;
 import net.bigtangle.core.Json;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.token.adapter.TokenInfoItemListAdapter;
 import net.bigtangle.wallet.activity.token.model.TokenInfoItem;
@@ -80,6 +82,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                 try {
                     Map<String, Object> data = Json.jsonmapper().readValue(jsonStr, Map.class);
                     List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("tokens");
+                    Map<String, Object> amountMap = (Map<String, Object>) data.get("amountMap");
                     if (list != null) {
                         itemList.clear();
                         for (Map<String, Object> map : list) {
@@ -93,7 +96,18 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                             tokenInfoItem.setSignNumber((Integer) map.get("signnumber"));
                             tokenInfoItem.setTokenType((Integer) map.get("tokentype"));
                             tokenInfoItem.setTokenStop((Boolean) map.get("tokenstop"));
-                            tokenInfoItem.setAmount(String.valueOf(map.get("amount")));
+
+                            if (amountMap.containsKey(map.get("tokenid"))) {
+                                long count = Long.parseLong(amountMap.get((String) map.get("tokenid")).toString());
+                                Coin fromAmount = Coin.valueOf(count, (String) map.get("tokenid"));
+                                String amountString = MonetaryFormat.FIAT.noCode().format(fromAmount, (int) map.get("decimals"));
+                                if (amountString.startsWith("0"))
+                                    amountString = "";
+                                tokenInfoItem.setAmount(amountString);
+                            } else {
+                                tokenInfoItem.setAmount("");
+                            }
+
                             itemList.add(tokenInfoItem);
                         }
                     }

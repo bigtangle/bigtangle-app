@@ -15,9 +15,10 @@ import android.widget.TextView;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import net.bigtangle.core.Address;
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.NetworkParameters;
+import net.bigtangle.core.Token;
+import net.bigtangle.core.Utils;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
@@ -32,7 +33,6 @@ import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
-import net.bigtangle.wallet.core.utils.CoinbaseUtil;
 import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -146,6 +146,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 }, new HttpRunaExecute() {
                     @Override
                     public void execute() throws Exception {
+                        WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
@@ -173,39 +174,23 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(address)) {
                             throw new ToastException(getContext().getString(R.string.address_not_empty));
                         }
-                        byte[] pubKeyHash = Address.fromBase58(WalletContextHolder.networkParameters, address).getHash160();
 
-                        Coin coin = CoinbaseUtil.calculateTotalUTXOList(pubKeyHash,
-                                typeStr.equals("sell") ? tokenid : NetworkParameters.BIGTANGLE_TOKENID_STRING);
-
-                        if (amountTextInput.getText() == null) {
-                            throw new ToastException(getContext().getString(R.string.amount_not_empty));
-                        }
                         if (StringUtils.isBlank(amountTextInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
-                        long amount = Long.valueOf(amountTextInput.getText().toString());
-                        if (amount <= 0) {
+                        Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
+                        Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
+                                t.getDecimals());
+                        if (quantity.getValue() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
-                        if (unitPriceInput.getText() == null) {
-                            throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
-                        }
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
                         if (price.getValue() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
-                        }
-
-                        if (!typeStr.equals("sell")) {
-                            amount = amount * price.getValue();
-                        }
-
-                        if (coin.getValue() < amount) {
-                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
                         if (startDateTextView.getText() == null) {
@@ -231,10 +216,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
                         WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (typeStr.equals("sell")) {
-                            WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), amount,
+                            WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), quantity.getValue(),
                                     dateBeginLong, dateEndLong);
                         } else {
-                            WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), amount,
+                            WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), quantity.getValue(),
                                     dateBeginLong, dateEndLong);
                         }
                     }

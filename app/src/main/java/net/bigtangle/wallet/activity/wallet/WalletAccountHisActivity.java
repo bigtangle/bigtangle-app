@@ -16,6 +16,7 @@ import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.http.server.resp.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountHisListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountHisItem;
@@ -90,7 +91,10 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
                         if (coin.isZero()) {
                             continue;
                         }
-                        String balance = coin.toPlainString();
+                        Token t = getBalancesResponse.getTokennames().get(
+                                Utils.HEX.encode(coin.getTokenid()));
+                        String balance = MonetaryFormat.FIAT.noCode().format(
+                                coin.getValue(), t.getDecimals());
                         byte[] tokenid = coin.getTokenid();
                         String address = utxo.getAddress();
 

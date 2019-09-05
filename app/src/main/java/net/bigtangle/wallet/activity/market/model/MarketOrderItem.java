@@ -2,31 +2,39 @@ package net.bigtangle.wallet.activity.market.model;
 
 import android.content.Context;
 
-import net.bigtangle.core.Coin;
+import com.google.common.math.LongMath;
+
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.OrderRecord;
+import net.bigtangle.core.Token;
+import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class MarketOrderItem implements java.io.Serializable {
 
-    public static MarketOrderItem build(OrderRecord orderRecord, Context context) {
+    public static MarketOrderItem build(OrderRecord orderRecord, Map<String, Token> tokennames, Context context) {
+        MonetaryFormat mf = MonetaryFormat.FIAT.noCode();
         MarketOrderItem marketOrderItem = new MarketOrderItem();
+        Token t = tokennames.get(orderRecord.getTargetTokenid());
         if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
             marketOrderItem.setType(context.getString(R.string.buy));
-            marketOrderItem.setAmount(Coin.toPlainString(orderRecord.getTargetValue()));
+            marketOrderItem.setAmount(mf.format(orderRecord.getTargetValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
-            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getOfferValue() / orderRecord.getTargetValue()));
+            marketOrderItem.setPrice(mf.format(orderRecord.getOfferValue() * LongMath.pow(10, t.getDecimals())
+                    / orderRecord.getTargetValue()));
         } else {
             marketOrderItem.setType(context.getString(R.string.sell));
-            marketOrderItem.setAmount(Coin.toPlainString(orderRecord.getOfferValue()));
+            marketOrderItem.setAmount(mf.format(orderRecord.getOfferValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
-            marketOrderItem.setPrice(Coin.toPlainString(orderRecord.getTargetValue() / orderRecord.getOfferValue()));
+            marketOrderItem.setPrice(mf.format(orderRecord.getTargetValue() * LongMath.pow(10, t.getDecimals())
+                    / orderRecord.getOfferValue()));
         }
         marketOrderItem.setOrderId(orderRecord.getInitialBlockHashHex());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

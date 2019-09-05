@@ -2,6 +2,8 @@ package net.bigtangle.wallet.activity.wallet.model;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.Token;
+import net.bigtangle.core.Utils;
+import net.bigtangle.utils.MonetaryFormat;
 
 import java.util.Map;
 
@@ -10,7 +12,12 @@ public class WalletAccountItem {
     public static WalletAccountItem build(Coin coin, Map<String, Token> tokennames) {
         WalletAccountItem walletAccountItem = new WalletAccountItem();
         walletAccountItem.setTokenId(coin.getTokenHex());
-        walletAccountItem.setValue(coin.toPlainString());
+
+        Token t = tokennames.get(Utils.HEX.encode(coin.getTokenid()));
+        String balance = MonetaryFormat.FIAT.noCode().format(
+                coin.getValue(), t.getDecimals());
+        walletAccountItem.setValue(balance);
+
         Token token = tokennames.get(coin.getTokenHex());
         if (token != null) {
             walletAccountItem.setTokenName(token.getTokennameDisplay());
