@@ -108,7 +108,7 @@ public class ContactAddDialog extends Dialog {
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(context.getString(R.string.dialog_title_error))
-                            .setMessage("联系人不可以为空")
+                            .setMessage(context.getString(R.string.contacts_not_empty))
                             .show();
                     return;
                 }
@@ -118,7 +118,7 @@ public class ContactAddDialog extends Dialog {
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(context.getString(R.string.dialog_title_error))
-                            .setMessage("地址不可以为空")
+                            .setMessage(context.getString(R.string.address_not_empty))
                             .show();
                     return;
                 }

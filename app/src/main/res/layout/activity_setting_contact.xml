@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:title="联系人列表" />
+                app:title="@string/contact_list" />
         </android.support.design.widget.AppBarLayout>
 
         <Button
@@ -43,7 +43,7 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/bottom_confirm"
             android:elevation="24dp"
-            android:text="添加联系人" />
+            android:text="@string/add_contact" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"

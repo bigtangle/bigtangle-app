@@ -66,7 +66,7 @@ public class SettingConnectionActivity extends AppCompatActivity {
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_info_white_24px)
                         .setTitle(SettingConnectionActivity.this.getString(R.string.dialog_title_info))
-                        .setMessage("保存服务器连接信息成功")
+                        .setMessage(SettingConnectionActivity.this.getString(R.string.save_server_connection_information_successfully))
                         .show();
             }
         });

@@ -27,7 +27,7 @@ public class HttpNetTaskRequest {
     public void httpRequest(ReqCmd reqCmd, byte[] b, HttpNetComplete httpNetComplete) {
         HttpNetProgress httpNetProgress = null;
         if (showDialog) {
-            final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), "数据努力加载中...");
+            final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.data_efforts_request_loading));
             httpNetProgress = new HttpNetProgress() {
                 @Override
                 public void endProgress() {

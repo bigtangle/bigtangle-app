@@ -55,12 +55,25 @@
     <string name="remove_wallet">移除钱包</string>
     <string name="about_app">关于APP</string>
     <string name="account_info">帐户信息</string>
+    <string name="talk_later">以后再说</string>
+    <string name="version_update">app 版本更新</string>
+    <string name="cancel_selection">取消选择</string>
+    <string name="selection_contact">选择联系人</string>
+    <string name="contact_list">联系人列表</string>
+    <string name="add_contact">添加联系人</string>
 
     <string name="token_id">通证ID</string>
     <string name="token_name">通证名称</string>
     <string name="publish">发布</string>
     <string name="match">匹配</string>
+    <string name="permissions">权限</string>
+    <string name="download">下载</string>
+    <string name="contact">联系人</string>
+    <string name="contact_colon">联系人 ：</string>
 
+    <string name="private_key_address_not_empty">公钥地址不可以为空</string>
+    <string name="public_key_address_not_empty">公钥地址不可以为空</string>
+    <string name="contacts_not_empty">联系人不可以为空</string>
     <string name="address_not_empty">地址不可以为空</string>
     <string name="amount_not_empty">金额不可以为空</string>
     <string name="token_not_empty">通证不可以为空</string>
@@ -68,16 +81,22 @@
     <string name="start_date_not_empty">开始日期不可以为空</string>
     <string name="end_date_not_empty">结束日期不可以为空</string>
     <string name="password_not_empty">密码不可以为空</string>
+    <string name="setting_password_not_empty">设置密码不可以为空</string>
 
     <string name="insufficient_amount">金额不足</string>
     <string name="insufficient_price">价格不足</string>
     <string name="wallet_payment_success">钱包支付成功</string>
     <string name="successful_order_release">订单发布成功</string>
+    <string name="password_setting_successfully">密码设置成功</string>
+    <string name="password_setting_failed">密码设置失败</string>
+    <string name="successful_application">申请成功</string>
+    <string name="password_setting">密码设置</string>
 
     <string name="dialog_title_info">信息</string>
     <string name="dialog_title_error">错误</string>
     <string name="dialog_please_wait">请销候</string>
 
+    <string name="save_server_connection_information_successfully">保存服务器连接信息成功</string>
     <string name="network_request_failed">网络请求失败，是否重新？</string>
     <string name="wallet_operation_failed">钱包操作失败，请稍候重试？</string>
     <string name="network_response_data_failed">网络响应数据解析失败</string>
@@ -89,6 +108,8 @@
     <string name="input_password_incorrect">输入密码不正确</string>
     <string name="please_select_your_wallet_file">请选择钱包文件</string>
     <string name="current_selection_file_error">当前选择文件错误</string>
+    <string name="current_selection_file">当前选择文件</string>
+    <string name="data_efforts_request_loading">数据努力加载中...</string>
 
     <string name="dialog_secretkey_add_key_message">确认要添加钥匙吗?</string>
     <string name="dialog_wallet_secretkey_add_key">添加钥匙</string>
@@ -96,6 +117,8 @@
     <string name="dialog_wallet_secretkey_new_key">新建钥匙</string>
     <string name="dialog_wallet_secretkey_public_key">公钥</string>
     <string name="dialog_wallet_secretkey_private_key">私钥</string>
+    <string name="dialog_wallet_secretkey_add_key_successfully">添加钥匙成功</string>
+    <string name="dialog_wallet_secretkey_add_key_failed">添加钥匙失败</string>
 
     <string name="amount">数量</string>
     <string name="description">描述</string>
@@ -104,6 +127,7 @@
     <string name="token_type">通证类型</string>
     <string name="address">地址</string>
     <string name="memo">用途</string>
+    <string name="address_colon">地址 ：</string>
 
     <string name="wallet_path">钱包地址</string>
     <string name="wallet_name">钱包名称</string>
@@ -127,4 +151,12 @@
     <string name="import_wallet">导入钱包</string>
     <string name="create_wallet">创建钱包</string>
     <string name="verify_wallet">验证密码</string>
+
+    <string name="whether_to_delete">是否删除</string>
+    <string name="whether_to_delete_user_contact_data">是否删除用户联系人数据</string>
+    <string name="to_allow">去允许</string>
+    <string name="click_permit">点击允许才可以使用我们的app哦</string>
+    <string name="software_version_update">软件版本更新</string>
+    <string name="new_packages">有最新的软件包哦，亲快下载吧~</string>
+
 </resources>

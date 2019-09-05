@@ -31,6 +31,7 @@
     <string name="settings_tab_wallet">Wallet Setting</string>
     <string name="settings_tab_version">App Version</string>
 
+
     <string name="search">Search</string>
     <string name="pay">Pay</string>
     <string name="multiple_signature_pay">Multi-signature Pay</string>
@@ -56,29 +57,48 @@
     <string name="remove_wallet">Remove Wallet</string>
     <string name="about_app">About app</string>
     <string name="account_info">Account Info</string>
+    <string name="talk_later">Talk Later</string>
+    <string name="version_update">App version update</string>
+    <string name="cancel_selection">Cancel Selection</string>
+    <string name="selection_contact">Selection contact</string>
+    <string name="contact_list">contact list</string>
+    <string name="add_contact">Add contact</string>
 
     <string name="token_id">Token ID</string>
     <string name="token_name">Token Name</string>
     <string name="publish">Publish</string>
     <string name="match">Match</string>
+    <string name="permissions">Permissions</string>
+    <string name="download">Download</string>
+    <string name="contact">Contact</string>
+    <string name="contact_colon">Contact ：</string>
 
+    <string name="private_key_address_not_empty">Private key address not empty</string>
+    <string name="public_key_address_not_empty">Public key address not empty</string>
+    <string name="contacts_not_empty">Contacts not empty</string>
     <string name="address_not_empty">Address not empty</string>
     <string name="amount_not_empty">Amount not empty</string>
     <string name="token_not_empty">Token not empty</string>
     <string name="unit_price_not_empty">Unit price not empty</string>
     <string name="start_date_not_empty">State date not empty</string>
     <string name="end_date_not_empty">End date not empty</string>
-    <string name="password_not_empty">Password_not_empty</string>
+    <string name="password_not_empty">Password not empty</string>
+    <string name="setting_password_not_empty">Setting password not empty</string>
+    <string name="successful_application">Successful application</string>
+    <string name="password_setting">Password setting</string>
 
     <string name="insufficient_amount">Insufficient Amount</string>
     <string name="insufficient_price">insufficient Price</string>
     <string name="wallet_payment_success">Wallet payment success</string>
     <string name="successful_order_release">Successful order release</string>
+    <string name="password_setting_successfully">Password setting successfully</string>
+    <string name="password_setting_failed">Password setting failed</string>
 
     <string name="dialog_title_info">Info</string>
     <string name="dialog_title_error">Error</string>
     <string name="dialog_please_wait">Please wait</string>
 
+    <string name="save_server_connection_information_successfully">Save Server Connection Information Successfully</string>
     <string name="network_request_failed">Network request failed, whether to restart?</string>
     <string name="wallet_operation_failed">The wallet operation failed. Please try again later？</string>
     <string name="network_response_data_failed">Network response data parsing failure</string>
@@ -90,6 +110,8 @@
     <string name="input_password_incorrect">Input password incorrect</string>
     <string name="please_select_your_wallet_file">Please_select_your_wallet_file</string>
     <string name="current_selection_file_error">Current selection file error</string>
+    <string name="current_selection_file">Current selection file</string>
+    <string name="data_efforts_request_loading">Data efforts request loading...</string>
 
     <string name="dialog_secretkey_add_key_message">Are you sure you want to add a new key?</string>
     <string name="dialog_wallet_secretkey_add_key">Add Key</string>
@@ -97,6 +119,8 @@
     <string name="dialog_wallet_secretkey_new_key">New Key</string>
     <string name="dialog_wallet_secretkey_public_key">Public Key</string>
     <string name="dialog_wallet_secretkey_private_key">Private Key</string>
+    <string name="dialog_wallet_secretkey_add_key_successfully">Add Key Successfully</string>
+    <string name="dialog_wallet_secretkey_add_key_failed">Add Key Failed</string>
 
     <string name="amount">Amount</string>
     <string name="description">Description</string>
@@ -106,6 +130,7 @@
     <string name="address">Address</string>
     <string name="memo">Memo</string>
     <string name="ok">OK</string>
+    <string name="address_colon">address ：</string>
 
     <string name="wallet_path">Wallet Directory</string>
     <string name="wallet_name">Wallet Name</string>
@@ -129,4 +154,12 @@
     <string name="import_wallet">Import Wallet</string>
     <string name="create_wallet">Create Wallet</string>
     <string name="verify_wallet">Verify Password</string>
+
+    <string name="whether_to_delete">Whether to delete</string>
+    <string name="whether_to_delete_user_contact_data">Whether to delete user contact data</string>
+    <string name="to_allow">To allow</string>
+    <string name="click_permit">Click on permission to use our app</string>
+    <string name="software_version_update">Software Version Update</string>
+    <string name="new_packages">There are the latest software packages, so download them.~</string>
+
 </resources>

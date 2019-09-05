@@ -105,9 +105,9 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
                             .setTopColorRes(R.color.colorPrimary)
                             .setButtonsColor(Color.WHITE)
                             .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle("是否删除")
-                            .setMessage("是否删除用户联系人数据")
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                            .setTitle(mContext.getString(R.string.whether_to_delete))
+                            .setMessage(mContext.getString(R.string.whether_to_delete_user_contact_data))
+                            .setPositiveButton(mContext.getString(R.string.ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     new HttpNetRunaDispatch(mContext, new HttpNetComplete() {
@@ -124,7 +124,7 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
                                         }
                                     }).execute();
                                 }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
+                            }).setNegativeButton(mContext.getString(R.string.cancel), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                         }

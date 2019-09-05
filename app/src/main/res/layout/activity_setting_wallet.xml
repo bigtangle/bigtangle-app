@@ -86,7 +86,7 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/bottom_confirm"
                     android:elevation="24dp"
-                    android:text="设置密码" />
+                    android:text="@string/password_setting" />
 
             </GridLayout>
         </ScrollView>

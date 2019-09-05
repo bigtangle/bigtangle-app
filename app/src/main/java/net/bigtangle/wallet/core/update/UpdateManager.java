@@ -146,14 +146,14 @@ public class UpdateManager {
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColor(Color.WHITE)
                 .setIcon(R.drawable.ic_error_white_24px)
-                .setTitle("软件版本更新")
-                .setMessage("有最新的软件包哦，亲快下载吧~")
-                .setPositiveButton("下载", new View.OnClickListener() {
+                .setTitle(mContext.getString(R.string.software_version_update))
+                .setMessage(mContext.getString(R.string.new_packages))
+                .setPositiveButton(mContext.getString(R.string.download), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showDownloadDialog();
                     }
-                }).setNegativeButton("以后再说", new View.OnClickListener() {
+                }).setNegativeButton(mContext.getString(R.string.talk_later), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         UpdateUtil.closeApp();
@@ -163,14 +163,14 @@ public class UpdateManager {
 
     private void showDownloadDialog() {
         AlertDialog.Builder builder = new Builder(mContext);
-        builder.setTitle("app 版本更新");
+        builder.setTitle(mContext.getString(R.string.version_update));
 
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.progress, null);
         mProgress = (ProgressBar) v.findViewById(R.id.progress);
 
         builder.setView(v);
-        builder.setNegativeButton("取消", new OnClickListener() {
+        builder.setNegativeButton(mContext.getString(R.string.cancel), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

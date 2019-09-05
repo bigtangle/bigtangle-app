@@ -190,7 +190,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     .setTopColorRes(R.color.colorPrimary)
                                     .setIcon(R.drawable.ic_error_white_24px)
                                     .setTitle(getContext().getString(R.string.dialog_title_error))
-                                    .setMessage("添加用户密钥失败")
+                                    .setMessage(getContext().getString(R.string.dialog_wallet_secretkey_add_key_failed))
                                     .show();
                         }
                     }
@@ -208,7 +208,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(getContext().getString(R.string.dialog_title_error))
-                            .setMessage("当前选择文件错误")
+                            .setMessage(getContext().getString(R.string.current_selection_file))
                             .show();
                     return;
                 }
@@ -237,7 +237,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle(getContext().getString(R.string.dialog_title_error))
-                            .setMessage("当前选择文件错误")
+                            .setMessage(getContext().getString(R.string.current_selection_file_error))
                             .show();
                 }
             }

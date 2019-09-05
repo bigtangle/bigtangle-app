@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="添加联系人"
+            android:text="@string/add_contact"
             android:textColor="@color/colorPrimary"
             android:textSize="20dp" />
 
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="联系人"
+                android:text="@string/contact"
                 android:textColor="@color/colorPrimary" />
 
             <LinearLayout
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="地址"
+                android:text="@string/address"
                 android:textColor="@color/colorPrimary" />
 
             <LinearLayout

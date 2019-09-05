@@ -76,7 +76,7 @@ public class WalletSecretkeyDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("公钥地址不可以为空")
+                                .setMessage(context.getString(R.string.public_key_address_not_empty))
                                 .show();
                         return;
                     }
@@ -86,7 +86,7 @@ public class WalletSecretkeyDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("私钥地址不可以为空")
+                                .setMessage(context.getString(R.string.private_key_address_not_empty))
                                 .show();
                         return;
                     }

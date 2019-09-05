@@ -83,7 +83,7 @@ public class ResetPasswordDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("设置密码不可以为空")
+                                .setMessage(context.getString(R.string.setting_password_not_empty))
                                 .show();
                         return;
                     }
@@ -96,7 +96,7 @@ public class ResetPasswordDialog extends Dialog {
                         }
                         WalletContextHolder.get().wallet().encrypt(scrypt, aesKey);
 
-                        Toast toast = Toast.makeText(context, "密码设置成功", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(context, context.getString(R.string.password_setting_successfully), Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.BOTTOM, 0, 0);
                         toast.show();
 
@@ -108,7 +108,7 @@ public class ResetPasswordDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("设置密码失败")
+                                .setMessage(context.getString(R.string.password_setting_failed))
                                 .show();
                     }
                 }

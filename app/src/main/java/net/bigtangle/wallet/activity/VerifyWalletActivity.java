@@ -115,7 +115,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "" + VerifyWalletActivity.this.getString(R.string.permissions) + permissions[i] + VerifyWalletActivity.this.getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {//用户选择了禁止不再询问
                         new LovelyStandardDialog(VerifyWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
@@ -123,8 +123,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                 .setButtonsColor(Color.WHITE)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage("点击允许才可以使用我们的app哦")
-                                .setPositiveButton("去允许", new View.OnClickListener() {
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.click_permit))
+                                .setPositiveButton(VerifyWalletActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -143,8 +143,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
                                 .setButtonsColor(Color.WHITE)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage("点击允许才可以使用我们的app哦")
-                                .setPositiveButton("去允许", new View.OnClickListener() {
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.click_permit))
+                                .setPositiveButton(VerifyWalletActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         ActivityCompat.requestPermissions(VerifyWalletActivity.this,

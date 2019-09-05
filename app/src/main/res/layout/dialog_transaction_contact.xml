@@ -39,7 +39,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/bottom_confirm"
                 android:elevation="24dp"
-                android:text="取消选择" />
+                android:text="@string/cancel_selection" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
