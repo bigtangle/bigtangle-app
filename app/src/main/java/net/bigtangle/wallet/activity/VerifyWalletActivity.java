@@ -30,10 +30,10 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class VerifyWalletActivity extends AppCompatActivity {
 
-    @BindView(R.id.password_text_input)
+    @BindView(R.id.verify_password_text_input)
     TextInputEditText passwordTextInput;
 
-    @BindView(R.id.verify_wallet_button)
+    @BindView(R.id.verify_password_button)
     Button verifyWalletButton;
 
     private UpdateManager mUpdateManager;
@@ -43,8 +43,6 @@ public class VerifyWalletActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify_wallet);
-        ButterKnife.bind(this);
 
         this.requetPermission();
 
@@ -52,7 +50,12 @@ public class VerifyWalletActivity extends AppCompatActivity {
             return;
         }
 
+        setContentView(R.layout.activity_verify_wallet);
+        ButterKnife.bind(this);
+
+
         if (WalletContextHolder.get().checkWalletHavePassword()) {
+
             this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
