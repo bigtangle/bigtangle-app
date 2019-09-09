@@ -64,7 +64,7 @@ public class WalletContextHolder {
     }
 
     public List<ECKey> walletKeys() {
-        return wallet().walletKeys(getAesKey());
+       return walletKeys0();
     }
 
     private void setupWalletData() {
@@ -105,5 +105,16 @@ public class WalletContextHolder {
 
     public void savePasswordToLocal(String password) {
         this.password = password;
+    }
+
+    public List<ECKey> walletKeys0() {
+        List<ECKey> issuedKeys = null;
+        if (wallet().isEncrypted()) {
+            // 加密之后 读取ECKey 需要 aesKey
+            issuedKeys = wallet().walletKeys(getAesKey());
+        } else {
+            issuedKeys = wallet().walletKeys();
+        }
+        return issuedKeys;
     }
 }
