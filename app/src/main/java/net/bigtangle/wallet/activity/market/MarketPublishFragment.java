@@ -181,7 +181,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
                         Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
                                 t.getDecimals());
-                        if (quantity.getValue() <= 0) {
+                        if (quantity.getValue().longValue() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
@@ -189,7 +189,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
-                        if (price.getValue() <= 0) {
+                        if (price.getValue().longValue() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
                         }
 
@@ -216,10 +216,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
                         WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (typeStr.equals("sell")) {
-                            WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), quantity.getValue(),
+                            WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                     dateBeginLong, dateEndLong);
                         } else {
-                            WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue(), quantity.getValue(),
+                            WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                     dateBeginLong, dateEndLong);
                         }
                     }

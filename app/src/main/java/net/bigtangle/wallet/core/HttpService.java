@@ -144,7 +144,7 @@ public class HttpService {
             if (!utxo.getTokenId().equals(tokenid)) {
                 continue;
             }
-            if (utxo.getValue().getValue() > 0) {
+            if (utxo.getValue().getValue().longValue() > 0) {
                 listUTXO.add(utxo);
             }
         }
@@ -166,8 +166,15 @@ public class HttpService {
 
     public static Serializable getUserdata(String type) throws IOException {
         HashMap<String, String> requestParam = new HashMap<String, String>();
+        // 读取 ECKey
+        List<ECKey> issuedKeys = null;
+        if (WalletContextHolder.get().wallet().isEncrypted() ) {
+            // 加密之后 读取ECKey 需要 aesKey
+            issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
+        }else {
+            issuedKeys = WalletContextHolder.get().wallet().walletKeys();
+        }
 
-        List<ECKey> issuedKeys = WalletContextHolder.get().wallet().walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 
         if (DataClassName.TOKEN.name().equals(type) || DataClassName.LANG.name().equals(type)
