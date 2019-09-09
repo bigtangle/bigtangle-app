@@ -181,7 +181,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
                         Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
                                 t.getDecimals());
-                        if (quantity.getValue().longValue() <= 0) {
+                        if (quantity.getValue().signum() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
 
@@ -189,7 +189,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
-                        if (price.getValue().longValue() <= 0) {
+                        if (price.getValue().signum() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
                         }
 

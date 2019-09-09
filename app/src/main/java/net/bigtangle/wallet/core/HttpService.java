@@ -35,7 +35,8 @@ public class HttpService {
         Map<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", null);
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTokens.name(), Json.jsonmapper().writeValueAsString(requestParam).getBytes());
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTokens.name(),
+                Json.jsonmapper().writeValueAsString(requestParam).getBytes());
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);
 
         List<TokenItem> tokenItemList = new ArrayList<TokenItem>();
@@ -55,7 +56,8 @@ public class HttpService {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(), Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
+                Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
         GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
 
         List<TokenItem> tokenItemList = new ArrayList<>();
@@ -87,7 +89,8 @@ public class HttpService {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(), Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
+                Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
         GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
 
         HashMap<String, Set<String>> tokenResult = new HashMap<String, Set<String>>();
@@ -117,7 +120,8 @@ public class HttpService {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(), Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
+                Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
         GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
 
         Set<String> addressSet = new HashSet<String>();
@@ -144,7 +148,7 @@ public class HttpService {
             if (!utxo.getTokenId().equals(tokenid)) {
                 continue;
             }
-            if (utxo.getValue().getValue().longValue() > 0) {
+            if (utxo.getValue().getValue().signum() > 0) {
                 listUTXO.add(utxo);
             }
         }
@@ -168,18 +172,17 @@ public class HttpService {
         HashMap<String, String> requestParam = new HashMap<String, String>();
         // 读取 ECKey
         List<ECKey> issuedKeys = null;
-        if (WalletContextHolder.get().wallet().isEncrypted() ) {
+        if (WalletContextHolder.get().wallet().isEncrypted()) {
             // 加密之后 读取ECKey 需要 aesKey
             issuedKeys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
-        }else {
+        } else {
             issuedKeys = WalletContextHolder.get().wallet().walletKeys();
         }
 
         ECKey pubKeyTo = issuedKeys.get(0);
 
         if (DataClassName.TOKEN.name().equals(type) || DataClassName.LANG.name().equals(type)
-                || DataClassName.SERVERURL.name().equals(type)
-                || DataClassName.BlockSolveType.name().equals(type)) {
+                || DataClassName.SERVERURL.name().equals(type) || DataClassName.BlockSolveType.name().equals(type)) {
             type = DataClassName.WATCHED.name();
         }
         requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
