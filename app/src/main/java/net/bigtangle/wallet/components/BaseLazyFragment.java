@@ -25,7 +25,7 @@ public abstract class BaseLazyFragment extends Fragment {
 
         isFirstLoad = true;//视图创建完成，将变量置为true
 
-        if (getUserVisibleHint()) {//如果Fragment可见进行数据加载
+         if (getUserVisibleHint()) {//如果Fragment可见进行数据加载
             onLazyLoad();
             isFirstLoad = false;
         }

@@ -336,10 +336,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
     private void initTimerPicker() {
 
         String beginTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
-        String endTime = getAddYear(30);
+        String endTime = DateFormatUtils.long2Str(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(6), true);
 
         startDateTextView.setText(beginTime);
-        endDateTextView.setText(beginTime);
+        endDateTextView.setText(endTime);
 
         // 通过日期字符串初始化日期，格式请用：yyyy-MM-dd HH:mm
         mTimerPicker = new CustomDatePicker(getContext(), new CustomDatePicker.Callback() {

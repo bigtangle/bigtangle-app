@@ -39,9 +39,9 @@ public class SettingConnectionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://bigtangle.org/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://bigtangle.info/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://bigtangle.de/"));
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://test.bigtangle.info/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://test.bigtangle.de/"));
         ServerItemListAdapter adapter = new ServerItemListAdapter(this, itemList);
         this.serverConnectionSpinner.setAdapter(adapter);
 
@@ -53,6 +53,11 @@ public class SettingConnectionActivity extends AppCompatActivity {
             }
             index++;
         }
+
+        if (index >= itemList.size()){
+            index=0;
+        }
+
         this.serverConnectionSpinner.setSelection(index, true);
 
         this.saveButton.setOnClickListener(new View.OnClickListener() {

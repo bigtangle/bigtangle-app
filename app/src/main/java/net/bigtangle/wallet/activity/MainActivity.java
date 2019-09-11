@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         BottomBar bottomBar = findViewById(R.id.bottom_bar);
-        bottomBar.setDefaultTab(R.id.tab_market);
+        bottomBar.setDefaultTab(R.id.tab_wallet);
 
         ExtendedViewPager mViewPager = findViewById(R.id.main_container);
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
