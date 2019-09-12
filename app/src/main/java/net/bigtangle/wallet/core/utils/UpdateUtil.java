@@ -7,6 +7,11 @@ import android.util.Log;
 
 import net.bigtangle.wallet.core.constant.LogConstant;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+
 public class UpdateUtil {
 
     /**
@@ -41,6 +46,17 @@ public class UpdateUtil {
             e.printStackTrace();
         }
         return "V1.0.0";
+    }
+
+    public static  HashMap<String,Object> showExceptionInfo(Exception e) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Writer writer = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(writer);
+        e.printStackTrace(printWriter);
+        printWriter.close();
+        map.put("eName",e.getMessage());
+        map.put("eInfo",writer.toString());
+        return  map;
     }
 
     public static  void closeApp(){

@@ -9,6 +9,9 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.core.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
+
+import java.util.HashMap;
 
 public class HttpNetTaskRequest {
 
@@ -67,11 +70,12 @@ public class HttpNetTaskRequest {
         try {
             b = Json.jsonmapper().writeValueAsString(o).getBytes();
         } catch (JsonProcessingException e) {
+            HashMap<String,Object> infoMap = UpdateUtil.showExceptionInfo(e);
             new LovelyInfoDialog(this.context)
                     .setTopColorRes(R.color.colorPrimary)
                     .setIcon(R.drawable.ic_info_white_24px)
-                    .setTitle(context.getString(R.string.data_parsing))
-                    .setMessage(context.getString(R.string.network_response_data_failed))
+                    .setTitle(infoMap.get("eName").toString())
+                    .setMessage(infoMap.get("eInfo").toString())
                     .show();
             return;
         }

@@ -24,13 +24,13 @@ public class BigtangleWlletApplication extends Application implements LifecycleO
         }
         walletContextHolder.initData();
 
-        if (walletContextHolder.walletKeys() == null ){
-            WalletFileUtils.createWalletFileAndLoad();
-        }
-        if (walletContextHolder.walletKeys() != null && walletContextHolder.walletKeys().size()<=0){
-            WalletFileUtils.createWalletFileAndLoad();
-        }
-        walletContextHolder.initData();
+//        if (walletContextHolder.walletKeys() == null ){
+//            WalletFileUtils.createWalletFileAndLoad();
+//        }
+//        if (walletContextHolder.walletKeys() != null && walletContextHolder.walletKeys().size()<=0){
+//            WalletFileUtils.createWalletFileAndLoad();
+//        }
+//        walletContextHolder.initData();
     }
 
     private void initLocalStorage() {

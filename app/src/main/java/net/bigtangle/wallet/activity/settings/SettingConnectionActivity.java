@@ -39,7 +39,7 @@ public class SettingConnectionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
+      //  itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
         itemList.add(ServerInfoItem.build("bigtangle.info", "https://test.bigtangle.info/"));
         itemList.add(ServerInfoItem.build("bigtangle.de", "https://test.bigtangle.de/"));
         ServerItemListAdapter adapter = new ServerItemListAdapter(this, itemList);

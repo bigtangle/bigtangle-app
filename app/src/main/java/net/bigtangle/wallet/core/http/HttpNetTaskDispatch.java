@@ -22,12 +22,18 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
 import net.bigtangle.wallet.core.exception.ToastException;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.Attributes;
 
 @SuppressLint("HandlerLeak")
 public class HttpNetTaskDispatch {
@@ -88,6 +94,7 @@ public class HttpNetTaskDispatch {
             httpNetCompleteHandler.sendMessage(message);
         } catch (Exception e) {
             message.what = MessageStateCode.NETWORK_ERROR;
+            message.obj = UpdateUtil.showExceptionInfo(e);
             httpNetCompleteHandler.sendMessage(message);
         }
     }
@@ -97,12 +104,13 @@ public class HttpNetTaskDispatch {
         @Override
         public void handleMessage(Message message) {
             if (message.what == MessageStateCode.NETWORK_ERROR) {
+                HashMap<String,Object> infoMap = (HashMap<String, Object>) message.obj;
                 new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                         .setTopColorRes(R.color.colorPrimary)
                         .setButtonsColor(Color.WHITE)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle(context.getString(R.string.dialog_title_error))
-                        .setMessage(context.getString(R.string.network_request_failed))
+                        .setTitle(infoMap.get("eName").toString())
+                        .setMessage(infoMap.get("eInfo").toString())
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -131,11 +139,12 @@ public class HttpNetTaskDispatch {
                 try {
                     result = (HashMap) Json.jsonmapper().readValue(jsonStr, HashMap.class);
                 } catch (IOException e) {
+                    HashMap<String,Object> infoMap = UpdateUtil.showExceptionInfo(e);
                     new LovelyInfoDialog(context)
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(context.getString(R.string.dialog_title_error))
-                            .setMessage(context.getString(R.string.network_response_data_failed))
+                            .setTitle(infoMap.get("eName").toString())
+                            .setMessage(infoMap.get("eInfo").toString())
                             .show();
                     return;
                 }

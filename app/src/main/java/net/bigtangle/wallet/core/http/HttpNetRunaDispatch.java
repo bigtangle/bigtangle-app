@@ -18,6 +18,9 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.constant.MessageStateCode;
 import net.bigtangle.wallet.core.exception.ToastException;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
+
+import java.util.HashMap;
 
 public class HttpNetRunaDispatch {
 
@@ -77,6 +80,7 @@ public class HttpNetRunaDispatch {
                     Log.e(LogConstant.TAG, context.getString(R.string.wallet_http_request), e);
                     Message message = new Message();
                     message.what = MessageStateCode.WALLET_ERROR;
+                    message.obj = UpdateUtil.showExceptionInfo(e);
                     httpNetCompleteHandler.sendMessage(message);
                 } finally {
                     httpNetProgressHandler.sendEmptyMessage(0);
@@ -109,11 +113,12 @@ public class HttpNetRunaDispatch {
 
                 return;
             } else if (message.what == MessageStateCode.WALLET_ERROR) {
+                HashMap<String,Object> infoMap = (HashMap<String, Object>) message.obj;
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle(context.getString(R.string.dialog_title_error))
-                        .setMessage(context.getString(R.string.wallet_operation_failed))
+                        .setTitle(infoMap.get("eName").toString())
+                        .setMessage(infoMap.get("eInfo").toString())
                         .show();
                 return;
             } else if (message.what == MessageStateCode.TOAST_ERROR) {
