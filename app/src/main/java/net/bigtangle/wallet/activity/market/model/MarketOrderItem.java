@@ -22,14 +22,16 @@ public class MarketOrderItem implements java.io.Serializable {
     public static MarketOrderItem build(OrderRecord orderRecord, Map<String, Token> tokennames, Context context) {
         MonetaryFormat mf = MonetaryFormat.FIAT.noCode();
         MarketOrderItem marketOrderItem = new MarketOrderItem();
-        Token t = tokennames.get(orderRecord.getTargetTokenid());
+      
         if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
+            Token t = tokennames.get(orderRecord.getTargetTokenid());
             marketOrderItem.setType(context.getString(R.string.buy));
             marketOrderItem.setAmount(mf.format(orderRecord.getTargetValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
             marketOrderItem.setPrice(mf.format(orderRecord.getOfferValue() * LongMath.pow(10, t.getDecimals())
                     / orderRecord.getTargetValue()));
         } else {
+            Token t =tokennames.get(orderRecord.getOfferTokenid());
             marketOrderItem.setType(context.getString(R.string.sell));
             marketOrderItem.setAmount(mf.format(orderRecord.getOfferValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
