@@ -97,6 +97,7 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
                                 coin.getValue(), t.getDecimals());
                         byte[] tokenid = coin.getTokenid();
                         String address = utxo.getAddress();
+                        String memo = utxo.getMemo();
 
                         WalletAccountHisItem walletAccountHisItem = new WalletAccountHisItem();
                         walletAccountHisItem.setTokenId(Utils.HEX.encode(tokenid));
@@ -108,6 +109,7 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
                         }
                         walletAccountHisItem.setAddress(address);
                         walletAccountHisItem.setAmount(balance);
+                        walletAccountHisItem.setMemo(memo);
 
                         if (walletAccountHisItem.getTokenId().equals(tokenId_)) {
                             itemList.add(walletAccountHisItem);
