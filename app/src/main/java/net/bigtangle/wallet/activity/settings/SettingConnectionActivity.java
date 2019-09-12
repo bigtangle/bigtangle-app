@@ -38,10 +38,7 @@ public class SettingConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting_connection);
         ButterKnife.bind(this);
 
-        List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-      //  itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://test.bigtangle.info/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://test.bigtangle.de/"));
+        List<ServerInfoItem> itemList = getServerInfoItems();
         ServerItemListAdapter adapter = new ServerItemListAdapter(this, itemList);
         this.serverConnectionSpinner.setAdapter(adapter);
 
@@ -80,6 +77,22 @@ public class SettingConnectionActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+    }
+
+    private List<ServerInfoItem> getTestServerInfoItems() {
+        List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://test.bigtangle.info/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://test.bigtangle.de/"));
+        return itemList;
+    }
+
+    private List<ServerInfoItem> getServerInfoItems() {
+        List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://bigtangle.org/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://bigtangle.info/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://bigtangle.de/"));
+        return itemList;
     }
 
     @Override
