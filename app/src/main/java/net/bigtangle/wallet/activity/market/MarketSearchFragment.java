@@ -20,9 +20,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
 import net.bigtangle.core.OrderRecord;
+import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.core.http.server.resp.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
@@ -41,6 +44,7 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,8 +101,6 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         setFroceLoadData(true);
         this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
 //        longClickEvent();
-        this.recyclerViewContainer.setAdapter(mAdapter);
-        helper.attachToRecyclerView(this.recyclerViewContainer);
     }
 
     ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
@@ -120,7 +122,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             // 侧滑事件
-            noticEvent();
+            cancelOrderDo(itemList.get(viewHolder.getAdapterPosition()));
             itemList.remove(viewHolder.getAdapterPosition());
             mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
         }
@@ -132,9 +134,30 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         }
     });
 
-    private void noticEvent() {
-        // updata
+    private void cancelOrderDo(MarketOrderItem marketOrderItem)  {
+        try {
+            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
+            ECKey legitimatingKey = null;
 
+            List<ECKey> keys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
+            for (ECKey ecKey : keys) {
+                if (marketOrderItem.getAddress().equals(ecKey.toAddress(WalletContextHolder.networkParameters).toString())) {
+                    legitimatingKey = ecKey;
+                    WalletContextHolder.get().wallet().cancelOrder(hash, legitimatingKey);
+                    break;
+                }
+            }
+        }catch (Exception e){
+            HashMap<String,Object> infoMap = UpdateUtil.showExceptionInfo(e);;
+            new LovelyInfoDialog(getContext())
+                    .setTopColorRes(R.color.colorPrimary)
+                    .setIcon(R.drawable.ic_error_white_24px)
+                    .setTitle(infoMap.get("eName").toString())
+                    .setMessage(infoMap.get("eInfo").toString())
+                    .show();
+
+        }
     }
 
     private void longClickEvent() {
@@ -283,6 +306,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         this.recyclerViewContainer.setHasFixedSize(true);
         this.recyclerViewContainer.setLayoutManager(layoutManager);
         this.recyclerViewContainer.setAdapter(mAdapter);
+        helper.attachToRecyclerView(this.recyclerViewContainer);
     }
 
     @Override
