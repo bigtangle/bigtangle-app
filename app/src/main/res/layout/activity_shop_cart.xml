@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/id_title"
+        android:layout_width="fill_parent"
+        android:layout_height="45dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:text="@string/shop_cart"
+            android:textColor="#ffffff"
+              />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_cart"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+       >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/dialog_bg" >
+
+            
+
+            <ImageView
+                android:id="@+id/cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+               android:layout_gravity="center"
+                android:background="@drawable/cart_no_data_icon"
+                android:padding="10dp" />
+
+           <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="15dp"
+                android:textColor="@color/backgroundColor"
+                android:text="@string/shop_cartinfo_no" />
+            
+        </LinearLayout>
+
+        
+        <Button 
+            android:id="@+id/cart_market"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/back_bg"
+            android:text="@string/shop_cart_market"
+            android:textSize="18sp"
+           android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            />
+        
+        
+        </LinearLayout>
+        
+</LinearLayout>

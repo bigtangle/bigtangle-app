@@ -7,11 +7,15 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -23,7 +27,10 @@ import net.bigtangle.core.http.server.resp.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.OnItemClickListener;
+import net.bigtangle.wallet.activity.market.adapter.CurAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
+import net.bigtangle.wallet.activity.market.adapter.RecyclerItemClickListener;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
@@ -38,6 +45,7 @@ import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +76,14 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     private MarketOrderItemListAdapter mAdapter;
 
+    private ListView curListView;
+
+    private CurAdapter adapter;
+
+    private int lastPress = 0;
+
+    private boolean delState = false;
+
     public static MarketSearchFragment newInstance() {
         return new MarketSearchFragment();
     }
@@ -80,6 +96,105 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         }
         setFroceLoadData(true);
         this.mAdapter = new MarketOrderItemListAdapter(getContext(), itemList);
+//        longClickEvent();
+        this.recyclerViewContainer.setAdapter(mAdapter);
+        helper.attachToRecyclerView(this.recyclerViewContainer);
+    }
+
+    ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            // 首先回调的方法 返回int表示是否监听该方向
+            int dragFlags = ItemTouchHelper.UP|ItemTouchHelper.DOWN;//拖拽
+            int swipeFlags = ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT;//侧滑删除
+            return makeMovementFlags(dragFlags,swipeFlags);
+        }
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            // 滑动事件
+            Collections.swap(itemList,viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            mAdapter.notifyItemMoved(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            // 侧滑事件
+            noticEvent();
+            itemList.remove(viewHolder.getAdapterPosition());
+            mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            // 是否可拖拽
+            return true;
+        }
+    });
+
+    private void noticEvent() {
+        // updata
+
+    }
+
+    private void longClickEvent() {
+//        curListView = (ListView) findViewById(R.id.lv_contents);
+//        adapter = new CurAdapter();
+        curListView.setAdapter((ListAdapter) mAdapter);
+
+        curListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (delState) {
+                    if (lastPress < parent.getCount()) {
+                        View delview = parent.getChildAt(lastPress).findViewById(R.id.linear_del);
+                        if (null != delview) {
+                            delview.setVisibility(View.GONE);
+                        }
+                    }
+                    delState = false;
+                    return;
+                } else {
+                    Log.d("click:", position + "");
+                }
+//                lastPress = position;
+            }
+        });
+        curListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            private View delview;
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                if (lastPress < parent.getCount()) {
+                    delview = parent.getChildAt(lastPress).findViewById(R.id.linear_del);
+                    if (null != delview) {
+                        delview.setVisibility(View.GONE);
+                    }
+                }
+
+                delview = view.findViewById(R.id.linear_del);
+                delview.setVisibility(View.VISIBLE);
+
+                delview.findViewById(R.id.tv_del).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        delview.setVisibility(View.GONE);
+                        itemList.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                delview.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        delview.setVisibility(View.GONE);
+                    }
+                });
+
+                lastPress = position;
+                delState = true;
+                return true;
+            }
+        });
     }
 
     @Override

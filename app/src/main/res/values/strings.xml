@@ -162,4 +162,9 @@
     <string name="software_version_update">Software Version Update</string>
     <string name="new_packages">There are the latest software packages, so download them.~</string>
 
+    <string name="shop_cart">cart</string>
+    <string name="shop_cartinfo_no">Your shopping cart is empty. Go shopping!</string>
+    <string name="shop_cart_market">Hypermarket</string>
+    <string name="shop_category">All categories</string>
+
 </resources>
