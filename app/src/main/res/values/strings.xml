@@ -8,6 +8,7 @@
     <string name="title_tab_market">Market</string>
     <string name="title_tab_settings">Settings</string>
     <string name="title_tab_token">Token</string>
+    <string name="title_tab_shoping">shoping</string>
 
     <string name="transaction_tab_single">Transaction</string>
     <string name="transaction_tab_signature">Signature</string>
@@ -31,8 +32,11 @@
     <string name="settings_tab_wallet">Wallet Setting</string>
     <string name="settings_tab_version">App Version</string>
 
+    <string name="shoping_tab_goods">goods</string>
+    <string name="shoping_tab_payment">Pay Cart</string>
 
     <string name="search">Search</string>
+    <string name="query">query</string>
     <string name="pay">Pay</string>
     <string name="multiple_signature_pay">Multi-signature Pay</string>
     <string name="multiple_addresses_pay">Multi-addresses Pay</string>
@@ -157,6 +161,7 @@
 
     <string name="whether_to_delete">Whether to delete</string>
     <string name="whether_to_delete_user_contact_data">Whether to delete user contact data</string>
+    <string name="whether_to_delete_user_order_data">Whether to delete user order data</string>
     <string name="to_allow">To allow</string>
     <string name="click_permit">Click on permission to use our app</string>
     <string name="software_version_update">Software Version Update</string>
@@ -166,5 +171,18 @@
     <string name="shop_cartinfo_no">Your shopping cart is empty. Go shopping!</string>
     <string name="shop_cart_market">Hypermarket</string>
     <string name="shop_category">All categories</string>
+    <string name="shop_market_goods">Marker Goods</string>
+    <string name="shop_goods_type">Goods type</string>
+    <string name="shop_goods_RMB">RMB</string>
+    <string name="shop_goods_bigtang_currency">Bigtang Currency</string>
+    <string name="shop_goods_name">Goods Name</string>
+    <string name="shop_goods_price">Goods Price</string>
+    <string name="shop_goods_num">Goods Num</string>
+    <string name="shop_buy_now">BUY NOW</string>
+    <string name="shop_join_cart">JOIN CART</string>
+    <string name="shop_payment">payment</string>
+    <string name="shop_payment_goodsid">Pay Goodsid</string>
+    <string name="shop_payment_name">pay Name</string>
+    <string name="shop_payment_num">Pay Num</string>
 
 </resources>
