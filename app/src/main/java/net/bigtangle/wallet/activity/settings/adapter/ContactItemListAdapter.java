@@ -156,7 +156,7 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
 
         HashMap<String, String> requestParam = new HashMap<String, String>();
 
-        byte[] data = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
+        byte[] data = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
                 Json.jsonmapper().writeValueAsString(requestParam));
 
         Block block = WalletContextHolder.networkParameters.getDefaultSerializer().makeBlock(data);

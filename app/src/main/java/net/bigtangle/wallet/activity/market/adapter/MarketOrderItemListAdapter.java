@@ -4,29 +4,27 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
-import net.bigtangle.wallet.activity.settings.adapter.ContactItemListAdapter;
-import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
-import net.bigtangle.wallet.core.utils.UpdateUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,7 +52,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         return viewHolder;
     }
 
-    public void setOnOrderRemCallbackListener(OnOrderRemCallbackListener onOrderRemCallbackListener){
+    public void setOnOrderRemCallbackListener(OnOrderRemCallbackListener onOrderRemCallbackListener) {
         this.onOrderRemCallbackListener = onOrderRemCallbackListener;
     }
 
@@ -69,7 +67,6 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-
 
         @BindView(R.id.order_id_text_view)
         TextView orderIdTextView;
@@ -109,7 +106,6 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             ButterKnife.bind(this, itemView);
         }
 
-
         public void bind(MarketOrderItem marketOrderItem) {
             this.orderIdTextView.setText(marketOrderItem.getOrderId());
             this.tokenIdTextView.setText(marketOrderItem.getTokenId());
@@ -140,6 +136,9 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
                                     if (onOrderRemCallbackListener != null) {
                                         onOrderRemCallbackListener.refreshView();
                                     }
+                                    Toast toast = Toast.makeText(mContext, R.string.order_remove_success, Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                    toast.show();
                                 }
                             }, new HttpRunaExecute() {
                                 @Override
@@ -162,20 +161,26 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
     }
 
     private void removeOrderDo(MarketOrderItem marketOrderItem) throws Exception {
-        if (marketOrderItem == null){
+        if (marketOrderItem == null) {
             return;
         }
         WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
         Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
         ECKey legitimatingKey = null;
 
+        boolean find = false;
         List<ECKey> keys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
         for (ECKey ecKey : keys) {
             if (marketOrderItem.getAddress().equals(ecKey.toAddress(WalletContextHolder.networkParameters).toString())) {
                 legitimatingKey = ecKey;
                 WalletContextHolder.get().wallet().cancelOrder(hash, legitimatingKey);
+                find = true;
                 break;
             }
+        }
+
+        if (!find) {
+            throw new ToastException(mContext.getString(R.string.order_remove_fail));
         }
     }
 
@@ -183,5 +188,4 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
 
         void refreshView();
     }
-
 }

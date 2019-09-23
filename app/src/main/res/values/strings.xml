@@ -184,5 +184,7 @@
     <string name="shop_payment_goodsid">Pay Goodsid</string>
     <string name="shop_payment_name">pay Name</string>
     <string name="shop_payment_num">Pay Num</string>
+    <string name="order_remove_success">Order cancel success</string>
+    <string name="order_remove_fail">Order cancel fail</string>
 
 </resources>

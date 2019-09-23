@@ -131,7 +131,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
             @Override
             public void execute() throws Exception {
                 itemList.clear();
-                byte[] bytes = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
+                byte[] bytes = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
                         Json.jsonmapper().writeValueAsString(requestParam));
 
                 if (bytes == null || bytes.length == 0) {

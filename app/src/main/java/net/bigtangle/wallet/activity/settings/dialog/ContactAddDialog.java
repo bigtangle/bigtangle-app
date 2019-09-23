@@ -134,7 +134,7 @@ public class ContactAddDialog extends Dialog {
                     @Override
                     public void execute() throws Exception {
                         HashMap<String, String> requestParam = new HashMap<String, String>();
-                        byte[] data = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
+                        byte[] data = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
                                 Json.jsonmapper().writeValueAsString(requestParam));
                         Block block = WalletContextHolder.networkParameters.getDefaultSerializer().makeBlock(data);
                         block.setBlockType(Block.Type.BLOCKTYPE_USERDATA);

@@ -183,4 +183,7 @@
     <string name="shop_payment_name">支付名称</string>
     <string name="shop_payment_num">支付数量</string>
 
+    <string name="order_remove_success">订单取消成功</string>
+    <string name="order_remove_fail">选择订单不属于自已</string>
+
 </resources>
