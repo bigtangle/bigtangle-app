@@ -23,12 +23,18 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/shop_goods_item_line"
+                android:id="@+id/payment_goods_item_line"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/item_main_point"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/radio_choose_select" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -36,14 +42,15 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/item_main_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shop_goods_name"
+                        android:text="@string/shop_payment_goodsid"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/goods_name_text_view"
+                        android:id="@+id/payment_goods_id_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -63,12 +70,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shop_goods_price"
+                        android:text="@string/shop_payment_name"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/goods_price_text_view"
+                        android:id="@+id/payment_name_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -88,12 +95,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shop_goods_num"
+                        android:text="@string/shop_payment_num"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/goods_num_text_view"
+                        android:id="@+id/payment_num_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -108,43 +115,6 @@
                     android:layout_height="1px"
                     android:layout_marginTop="10dp"
                     android:background="@color/color_e5e5e5" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:paddingTop="1px">
-
-                    <Button
-                        android:id="@+id/shop_negative_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@color/base_00000000"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/shop_buy_now"
-                        android:textColor="@color/color_333333"
-                        android:textSize="16sp" />
-
-                    <View
-                        android:id="@+id/dialog_divider_line"
-                        android:layout_width="1px"
-                        android:layout_height="44dp"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/color_e5e5e5" />
-
-                    <Button
-                        android:id="@+id/shop_positive_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_weight="1"
-                        android:background="@color/base_00000000"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/shop_join_cart"
-                        android:textColor="@color/color_f6b340"
-                        android:textSize="16sp" />
-                </LinearLayout>
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>

@@ -29,4 +29,10 @@
         icon="@drawable/ic_settings_black"
         title="@string/title_tab_settings"
         barColorWhenSelected="#4F6194" />
+
+    <tab
+        id="@+id/tab_shoping"
+        icon="@drawable/ic_shoping_black"
+        title="@string/title_tab_shoping"
+        barColorWhenSelected="#4F6194" />
 </tabs>

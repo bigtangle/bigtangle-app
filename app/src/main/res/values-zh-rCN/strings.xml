@@ -6,6 +6,7 @@
     <string name="title_tab_market">市场</string>
     <string name="title_tab_settings">设置</string>
     <string name="title_tab_token">通证</string>
+    <string name="title_tab_shoping">商城</string>
 
     <string name="transaction_tab_single">支付</string>
     <string name="transaction_tab_signature">签名</string>
@@ -29,6 +30,9 @@
     <string name="settings_tab_wallet">钱包设置</string>
     <string name="settings_tab_version">应用版本号</string>
 
+    <string name="shoping_tab_goods">商城</string>
+    <string name="shoping_tab_payment">购物车</string>
+
     <string name="pay">支付</string>
     <string name="multiple_signature_pay">多重签名支付</string>
     <string name="multiple_addresses_pay">多重地址支付</string>
@@ -36,6 +40,7 @@
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="search">搜索</string>
+    <string name="query">查询</string>
     <string name="certain">确定</string>
     <string name="state">状态</string>
     <string name="buy">买</string>
@@ -154,6 +159,7 @@
 
     <string name="whether_to_delete">是否删除</string>
     <string name="whether_to_delete_user_contact_data">是否删除用户联系人数据</string>
+    <string name="whether_to_delete_user_order_data">是否删除用户订单数据</string>
     <string name="to_allow">去允许</string>
     <string name="click_permit">点击允许才可以使用我们的app哦</string>
     <string name="software_version_update">软件版本更新</string>
@@ -163,5 +169,21 @@
     <string name="shop_cartinfo_no">您的购物车是空的，快去选购吧！</string>
     <string name="shop_cart_market">大卖场</string>
     <string name="shop_category">全部分类</string>
-    All categories
+    <string name="shop_market_goods">商场商品</string>
+    <string name="shop_goods_type">商品类型</string>
+    <string name="shop_goods_RMB">人民币</string>
+    <string name="shop_goods_bigtang_currency">大网币</string>
+    <string name="shop_goods_name">名称</string>
+    <string name="shop_goods_price">价格</string>
+    <string name="shop_goods_num">数量</string>
+    <string name="shop_buy_now">立即购买</string>
+    <string name="shop_join_cart">加入购物车</string>
+    <string name="shop_payment">支付</string>
+    <string name="shop_payment_goodsid">支付序号</string>
+    <string name="shop_payment_name">支付名称</string>
+    <string name="shop_payment_num">支付数量</string>
+
+    <string name="order_remove_success">订单取消成功</string>
+    <string name="order_remove_fail">选择订单不属于自已</string>
+
 </resources>

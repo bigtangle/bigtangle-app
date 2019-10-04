@@ -9,6 +9,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.shoping.ShopingGoodsFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
@@ -34,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(MarketFragment.newInstance());
         fragments.add(TokenFragment.newInstance());
         fragments.add(SettingsFragment.newInstance());
+        fragments.add(ShopingFragment.newInstance());
 
         String[] title = new String[]{getString(R.string.title_tab_transaction),
                 getString(R.string.title_tab_wallet),
                 getString(R.string.title_tab_market),
                 getString(R.string.title_tab_token),
-                getString(R.string.title_tab_settings)};
+                getString(R.string.title_tab_settings),
+                getString(R.string.title_tab_shoping)
+                };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(6);
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -77,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.tab_settings:
                         position = 4;
+                        break;
+                    case R.id.tab_shoping:
+                        position = 5;
                         break;
                 }
 

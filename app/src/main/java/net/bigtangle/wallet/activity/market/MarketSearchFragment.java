@@ -306,7 +306,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         this.recyclerViewContainer.setHasFixedSize(true);
         this.recyclerViewContainer.setLayoutManager(layoutManager);
         this.recyclerViewContainer.setAdapter(mAdapter);
-        helper.attachToRecyclerView(this.recyclerViewContainer);
+//        helper.attachToRecyclerView(this.recyclerViewContainer);
     }
 
     @Override
