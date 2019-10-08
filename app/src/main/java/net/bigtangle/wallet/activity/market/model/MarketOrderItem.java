@@ -22,7 +22,7 @@ public class MarketOrderItem implements java.io.Serializable {
     public static MarketOrderItem build(OrderRecord orderRecord, Map<String, Token> tokennames, Context context) {
         MonetaryFormat mf = MonetaryFormat.FIAT.noCode();
         MarketOrderItem marketOrderItem = new MarketOrderItem();
-      
+
         if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
             Token t = tokennames.get(orderRecord.getTargetTokenid());
             marketOrderItem.setType(context.getString(R.string.buy));
@@ -44,6 +44,8 @@ public class MarketOrderItem implements java.io.Serializable {
         marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));
         marketOrderItem.setAddress(ECKey.fromPublicOnly(orderRecord.getBeneficiaryPubKey()).toAddress(WalletContextHolder.networkParameters).toString());
         marketOrderItem.setInitialBlockHashHex(orderRecord.getInitialBlockHashHex());
+        marketOrderItem.setCancelPending(orderRecord.isCancelPending());
+
         return marketOrderItem;
     }
 
@@ -66,6 +68,8 @@ public class MarketOrderItem implements java.io.Serializable {
     private String initialBlockHashHex;
 
     private String tokenName;
+
+    private boolean cancelPending;
 
     public String getType() {
         return type;
@@ -145,5 +149,13 @@ public class MarketOrderItem implements java.io.Serializable {
 
     public void setTokenName(String tokenName) {
         this.tokenName = tokenName;
+    }
+
+    public boolean isCancelPending() {
+        return cancelPending;
+    }
+
+    public void setCancelPending(boolean cancelPending) {
+        this.cancelPending = cancelPending;
     }
 }

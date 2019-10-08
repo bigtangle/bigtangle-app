@@ -101,6 +101,9 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         @BindView(R.id.market_order_item_line)
         LinearLayout itemLine;
 
+        @BindView(R.id.cancel_pending_text_view)
+        TextView cancelPendingTextView;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -117,6 +120,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             this.validateToTextView.setText(marketOrderItem.getValidateTo());
             this.validateFromTextView.setText(marketOrderItem.getValidateFrom());
             this.tokenNameTextView.setText(marketOrderItem.getTokenName());
+            this.cancelPendingTextView.setText(marketOrderItem.isCancelPending() ? mContext.getString(R.string.yes) : mContext.getString(R.string.no));
 
             itemLine.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

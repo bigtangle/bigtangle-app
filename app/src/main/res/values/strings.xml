@@ -50,6 +50,7 @@
     <string name="unit_price">Unit-price</string>
     <string name="the_validity_period_begins">Start Date</string>
     <string name="end_of_validity_period">End Date</string>
+    <string name="cancel_pending">Cancel Pending</string>
     <string name="save">Save</string>
     <string name="test">Test</string>
     <string name="Unopened">Unopened</string>
@@ -186,5 +187,8 @@
     <string name="shop_payment_num">Pay Num</string>
     <string name="order_remove_success">Order cancel success</string>
     <string name="order_remove_fail">Order cancel fail</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

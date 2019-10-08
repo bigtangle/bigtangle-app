@@ -49,6 +49,7 @@
     <string name="unit_price">单价</string>
     <string name="the_validity_period_begins">有效期开始</string>
     <string name="end_of_validity_period">有效期结束</string>
+    <string name="cancel_pending">取消</string>
     <string name="save">保存</string>
     <string name="test">测试</string>
     <string name="Unopened">暂未开启</string>
@@ -185,5 +186,8 @@
 
     <string name="order_remove_success">订单取消成功</string>
     <string name="order_remove_fail">选择订单不属于自已</string>
+
+    <string name="yes">是</string>
+    <string name="no">否</string>
 
 </resources>
