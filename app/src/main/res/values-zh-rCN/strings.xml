@@ -100,7 +100,7 @@
 
     <string name="dialog_title_info">信息</string>
     <string name="dialog_title_error">错误</string>
-    <string name="dialog_please_wait">请销候</string>
+    <string name="dialog_please_wait">请稍候</string>
 
     <string name="save_server_connection_information_successfully">保存服务器连接信息成功</string>
     <string name="network_request_failed">网络请求失败，是否重新？</string>
