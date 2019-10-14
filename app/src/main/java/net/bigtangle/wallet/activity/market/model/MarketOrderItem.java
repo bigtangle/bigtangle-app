@@ -38,12 +38,12 @@ public class MarketOrderItem implements java.io.Serializable {
             marketOrderItem.setPrice(mf.format(orderRecord.getTargetValue() * LongMath.pow(10, t.getDecimals())
                     / orderRecord.getOfferValue()));
         }
-        marketOrderItem.setOrderId(orderRecord.getInitialBlockHashHex());
+        marketOrderItem.setOrderId(orderRecord.getBlockHashHex());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         marketOrderItem.setValidateTo(dateFormat.format(new Date(orderRecord.getValidToTime() * 1000)));
         marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));
         marketOrderItem.setAddress(ECKey.fromPublicOnly(orderRecord.getBeneficiaryPubKey()).toAddress(WalletContextHolder.networkParameters).toString());
-        marketOrderItem.setInitialBlockHashHex(orderRecord.getInitialBlockHashHex());
+        marketOrderItem.setInitialBlockHashHex(orderRecord.getBlockHashHex());
         marketOrderItem.setCancelPending(orderRecord.isCancelPending());
 
         return marketOrderItem;

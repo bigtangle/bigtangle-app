@@ -12,15 +12,19 @@ import net.bigtangle.core.UTXO;
 import net.bigtangle.core.UploadfileInfo;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.WatchedInfo;
-import net.bigtangle.core.http.server.resp.GetBalancesResponse;
-import net.bigtangle.core.http.server.resp.GetOutputsResponse;
-import net.bigtangle.core.http.server.resp.GetTokensResponse;
+import net.bigtangle.core.response.GetBalancesResponse;
+import net.bigtangle.core.response.GetOutputsResponse;
+import net.bigtangle.core.response.GetTokensResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,13 +33,82 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class HttpService {
+
+    public static void downloadWalletFile(String signin, String password, String filename, WalletDownfileDialog.OnWalletDownfileListenter listenter) throws Exception {
+        //
+        //https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
+
+        String url = "https://m.bigtangle.com.cn/vm//vm/walletfilepullout?signin=" + signin + "&password=" + password;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                listenter.downloadFileStatus(false);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                InputStream is = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                FileOutputStream fos = null;
+                File file = new File(filename);
+
+                boolean success = true;
+                try {
+
+                    is = response.body().byteStream();
+                    long total = response.body().contentLength();
+                    fos = new FileOutputStream(file);
+                    long sum = 0;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                        sum += len;
+                        int progress = (int) (sum * 1.0f / total * 100);
+                        //下载中更新进度条
+                        //listener.onDownloading(progress);
+                    }
+                    fos.flush();
+                    //下载完成
+                    success = true;
+                } catch (Exception e) {
+                    success = false;
+                } finally {
+
+                    try {
+                        if (is != null) {
+                            is.close();
+                        }
+                        if (fos != null) {
+                            fos.close();
+                        }
+                    } catch (IOException e) {
+
+                    }
+                }
+                listenter.downloadFileStatus(success);
+            }
+        });
+    }
 
     public static List<TokenItem> getTokensItemList() throws Exception {
         Map<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", null);
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTokens.name(),
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);
 
@@ -157,7 +230,7 @@ public class HttpService {
 
     public static Map<String, String> getTokenNameMap() throws Exception {
         Map<String, Object> requestParam = new HashMap<String, Object>();
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTokens.name(),
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);

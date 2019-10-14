@@ -3,6 +3,8 @@ package net.bigtangle.wallet.core.utils;
 import android.util.Log;
 
 import net.bigtangle.kits.WalletUtil;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
+import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -29,6 +31,14 @@ public class WalletFileUtils {
             createWalletFile(walletDirectory, walletFilename + ".wallet");
         } catch (Exception e) {
             Log.e(LogConstant.TAG, "createWalletFileAndLoad", e);
+        }
+    }
+
+    public static void download(String username, String password, WalletDownfileDialog.OnWalletDownfileListenter listenter) {
+        try {
+            HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter);
+        } catch (Exception e) {
+            listenter.downloadFileStatus(false);
         }
     }
 }
