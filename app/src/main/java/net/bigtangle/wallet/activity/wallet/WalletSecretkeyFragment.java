@@ -168,7 +168,6 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     String filename = file.getName();
                                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                                     WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
                                     if (WalletContextHolder.get().checkWalletHavePassword()) {
                                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
@@ -181,7 +180,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     } else {
                                         onLazyLoad();
                                     }
-
+                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
                                     Toast toast = Toast.makeText(getContext(), "下载wallet file文件成功", Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();

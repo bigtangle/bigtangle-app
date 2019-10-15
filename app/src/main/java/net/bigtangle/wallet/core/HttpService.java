@@ -45,7 +45,7 @@ public class HttpService {
         //
         //https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
 
-        String url = "https://m.bigtangle.com.cn/vm//vm/walletfilepullout?signin=" + signin + "&password=" + password;
+        String url = "https://testcc.bigtangle.xyz/vm/walletfilepullout?signin=" + signin + "&password=" + password;
 
         Request request = new Request.Builder()
                 .url(url)
