@@ -51,7 +51,7 @@
                         android:layout_height="42dp"
                         android:background="@drawable/back_bg"
                         android:textColor="@color/colorPrimary"
-                        android:text="cui@inasset.de"
+                        android:text=""
                         android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -80,7 +80,7 @@
                         android:layout_height="42dp"
                         android:background="@drawable/back_bg"
                         android:textColor="@color/backgroundColor"
-                        android:text="kaicui1234"
+                        android:text=""
                         android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>

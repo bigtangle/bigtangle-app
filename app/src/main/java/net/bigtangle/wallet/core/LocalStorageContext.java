@@ -61,7 +61,7 @@ public class LocalStorageContext {
 
     public String readWalletDirectory() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("wallet.directory", "/sdcard/");
+        return sharedPreferences.getString("wallet.directory", "/storage/emulated/0/Download/");
     }
 
     public String readWalletFilePrefix() {

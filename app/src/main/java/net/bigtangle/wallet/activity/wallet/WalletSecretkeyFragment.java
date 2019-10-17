@@ -159,7 +159,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
                     @Override
                     public void downloadFileStatus(boolean success) {
-                        new Thread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (success) {
@@ -190,7 +190,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     toast.show();
                                 }
                             }
-                        }).start();
+                        });
                     }
                 }).show();
             }

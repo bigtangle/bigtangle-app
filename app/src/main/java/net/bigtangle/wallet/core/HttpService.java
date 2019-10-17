@@ -1,5 +1,7 @@
 package net.bigtangle.wallet.core;
 
+import android.util.Log;
+
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
@@ -32,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,22 +48,35 @@ public class HttpService {
         //
         //https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
 
-        String url = "https://testcc.bigtangle.xyz/vm/walletfilepullout?signin=" + signin + "&password=" + password;
+//        String url = "https://testcc.bigtangle.xyz/vm/walletfilepullout?signin=" + signin + "&password=" + password;
+
+        String url = "http://10.0.2.2:8080/cc/vm/walletfilepullout?signin=" + signin + "&password=" + password;
 
         Request request = new Request.Builder()
                 .url(url)
+                .get()
                 .build();
 
-        OkHttpClient client = new OkHttpClient();
+        Log.d("bigtangle-wallet", url);
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)//设置连接超时时间
+                .readTimeout(20, TimeUnit.SECONDS)//设置读取超时时间;
+                .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
                 listenter.downloadFileStatus(false);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() != 200) {
+                    listenter.downloadFileStatus(false);
+                    return;
+                }
                 InputStream is = null;
                 byte[] buf = new byte[2048];
                 int len = 0;
