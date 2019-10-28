@@ -9,7 +9,6 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.shoping.ShopingGoodsFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
@@ -82,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_settings:
                         position = 4;
                         break;
-                    case R.id.tab_shoping:
-                        position = 5;
-                        break;
+//                    case R.id.tab_shoping:
+//                        position = 5;
+//                        break;
                 }
 
                 mViewPager.setCurrentItem(position);
