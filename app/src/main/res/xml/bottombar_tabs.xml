@@ -30,9 +30,9 @@
         title="@string/title_tab_settings"
         barColorWhenSelected="#4F6194" />
 
-    <tab
+    <!--<tab
         id="@+id/tab_shoping"
         icon="@drawable/ic_shoping_black"
         title="@string/title_tab_shoping"
-        barColorWhenSelected="#4F6194" />
+        barColorWhenSelected="#4F6194" />-->
 </tabs>

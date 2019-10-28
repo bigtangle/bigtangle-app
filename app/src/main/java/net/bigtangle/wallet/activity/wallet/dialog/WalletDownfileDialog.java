@@ -77,7 +77,7 @@ public class WalletDownfileDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("用户名不可以为空")
+                                .setMessage(R.string.username_not_empty)
                                 .show();
                         return;
                     }
@@ -87,7 +87,7 @@ public class WalletDownfileDialog extends Dialog {
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
-                                .setMessage("密码不可以为空")
+                                .setMessage(R.string.password_not_empty)
                                 .show();
                         return;
                     }

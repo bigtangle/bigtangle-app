@@ -181,11 +181,11 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                         onLazyLoad();
                                     }
                                     LocalStorageContext.get().writeWalletPath(directory, prefix);
-                                    Toast toast = Toast.makeText(getContext(), "下载wallet file文件成功", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 } else {
-                                    Toast toast = Toast.makeText(getContext(), "下载wallet file文件失败，请重试", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail), Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 }

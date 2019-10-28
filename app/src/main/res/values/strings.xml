@@ -87,6 +87,7 @@
     <string name="unit_price_not_empty">Unit price not empty</string>
     <string name="start_date_not_empty">State date not empty</string>
     <string name="end_date_not_empty">End date not empty</string>
+    <string name="username_not_empty">Username not empty</string>
     <string name="password_not_empty">Password not empty</string>
     <string name="setting_password_not_empty">Setting password not empty</string>
     <string name="successful_application">Successful application</string>
@@ -190,5 +191,8 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="download_wallet_file_success">Download Wallet File Success</string>
+    <string name="download_wallet_file_fail">Download Wallet File Fail</string>
 
 </resources>
