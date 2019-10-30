@@ -194,5 +194,5 @@
 
     <string name="download_wallet_file_success">Download Wallet File Success</string>
     <string name="download_wallet_file_fail">Download Wallet File Fail</string>
-
+    <string name="dialog_wallet_secretkey_load_key">Load Key</string>
 </resources>

@@ -193,4 +193,6 @@
 
     <string name="download_wallet_file_success">下载wallet file文件成功</string>
     <string name="download_wallet_file_fail">下载wallet file文件失败，请重试</string>
+
+    <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
 </resources>
