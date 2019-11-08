@@ -161,8 +161,6 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
                     public void completeCallback(String jsonStr) {
-
-
                         FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
                             @Override
                             public Boolean call() throws Exception {
@@ -199,8 +197,13 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                                     .setTitle(getContext().getString(R.string.dialog_title_info))
                                     .setMessage(getContext().getString(R.string.wallet_payment_success))
                                     .show();
-                        }
 
+                            amountTextInput.setText("");
+                            toAddressTextInput.setText("");
+                            memoTextInput.setText("");
+                            tokenSpinner.setSelection(0);
+                            payMethodSpinner.setSelection(0);
+                        }
                     }
                 }, new HttpRunaExecute() {
                     @Override
