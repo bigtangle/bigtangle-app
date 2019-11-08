@@ -142,7 +142,6 @@
     <string name="wallet_name">Wallet Name</string>
 
     <string name="dialog_title_password">Input Password</string>
-    <string name="password">Password</string>
 
     <string name="title">please select time</string>
     <string name="confirm">sure</string>
@@ -195,4 +194,7 @@
     <string name="download_wallet_file_success">Download Wallet File Success</string>
     <string name="download_wallet_file_fail">Download Wallet File Fail</string>
     <string name="dialog_wallet_secretkey_load_key">Load Key</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

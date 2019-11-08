@@ -140,7 +140,6 @@
     <string name="wallet_name">钱包名称</string>
 
     <string name="dialog_title_password">输入密码</string>
-    <string name="password">密码</string>
 
     <string name="title">请选择时间</string>
     <string name="confirm">确定</string>
@@ -195,4 +194,6 @@
     <string name="download_wallet_file_fail">下载wallet file文件失败，请重试</string>
 
     <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
 </resources>
