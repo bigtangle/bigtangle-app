@@ -10,10 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.transaction.TransactionBankFragment;
-import net.bigtangle.wallet.activity.transaction.TransactionHistoryFragment;
 import net.bigtangle.wallet.activity.transaction.TransactionPaymentFragment;
-import net.bigtangle.wallet.activity.transaction.TransactionSignatureFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
@@ -45,15 +42,15 @@ public class TransactionFragment extends BaseLazyFragment {
         this.mTabLayout.setupWithViewPager(mViewPager);
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(TransactionPaymentFragment.newInstance());
-        fragments.add(TransactionSignatureFragment.newInstance());
-        fragments.add(TransactionBankFragment.newInstance());
-        fragments.add(TransactionHistoryFragment.newInstance());
+//        fragments.add(TransactionSignatureFragment.newInstance());
+//        fragments.add(TransactionBankFragment.newInstance());
+//        fragments.add(TransactionHistoryFragment.newInstance());
 
         String[] title = new String[]{
                 this.getString(R.string.transaction_tab_single),
-                this.getString(R.string.transaction_tab_signature),
-                this.getString(R.string.transaction_tab_bank),
-                this.getString(R.string.transaction_tab_history)
+//                this.getString(R.string.transaction_tab_signature),
+//                this.getString(R.string.transaction_tab_bank),
+//                this.getString(R.string.transaction_tab_history)
         };
 
         this.mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);

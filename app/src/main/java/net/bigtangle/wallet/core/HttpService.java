@@ -46,11 +46,13 @@ public class HttpService {
 
     public static void downloadWalletFile(String signin, String password, String filename, WalletDownfileDialog.OnWalletDownfileListenter listenter) throws Exception {
         //
-        //https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
-
-        String url = "https://testcc.bigtangle.xyz/vm/walletfilepullout?signin=" + signin + "&password=" + password;
+//        https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
+//                    https://testcc.bigtangle.xyz
+        String url = "https://cc.bigtangle.net/public/walletfilepullout?signin=" + signin + "&password=" + password;
 
 //        String url = "http://10.0.2.2:8080/cc/vm/walletfilepullout?signin=" + signin + "&password=" + password;
+
+        //String url = "https://testm.bigtangle.xyz/vm/walletfilepullout?signin=" + signin + "&password=" + password;
 
         Request request = new Request.Builder()
                 .url(url)

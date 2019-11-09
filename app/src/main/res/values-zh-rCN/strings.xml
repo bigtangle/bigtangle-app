@@ -86,6 +86,7 @@
     <string name="unit_price_not_empty">单价不可以为空</string>
     <string name="start_date_not_empty">开始日期不可以为空</string>
     <string name="end_date_not_empty">结束日期不可以为空</string>
+    <string name="username_not_empty">用户名不可以为空</string>
     <string name="password_not_empty">密码不可以为空</string>
     <string name="setting_password_not_empty">设置密码不可以为空</string>
 
@@ -139,7 +140,6 @@
     <string name="wallet_name">钱包名称</string>
 
     <string name="dialog_title_password">输入密码</string>
-    <string name="password">密码</string>
 
     <string name="title">请选择时间</string>
     <string name="confirm">确定</string>
@@ -190,4 +190,10 @@
     <string name="yes">是</string>
     <string name="no">否</string>
 
+    <string name="download_wallet_file_success">下载wallet file文件成功</string>
+    <string name="download_wallet_file_fail">下载wallet file文件失败，请重试</string>
+
+    <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
 </resources>
