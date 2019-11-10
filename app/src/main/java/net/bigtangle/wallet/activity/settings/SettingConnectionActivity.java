@@ -81,17 +81,17 @@ public class SettingConnectionActivity extends AppCompatActivity {
 
     private List<ServerInfoItem> getTestServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://test.bigtangle.org/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://test.bigtangle.info/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://test.bigtangle.de/"));
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
         return itemList;
     }
 
     private List<ServerInfoItem> getServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://bigtangle.org/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://bigtangle.info/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://bigtangle.de/"));
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
         return itemList;
     }
 
