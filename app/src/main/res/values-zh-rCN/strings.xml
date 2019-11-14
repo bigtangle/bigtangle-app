@@ -196,4 +196,6 @@
     <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
+
+    <string name="chart">订单行情</string>
 </resources>

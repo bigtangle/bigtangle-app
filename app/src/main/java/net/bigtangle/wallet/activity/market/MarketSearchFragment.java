@@ -1,5 +1,7 @@
 package net.bigtangle.wallet.activity.market;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
@@ -73,6 +76,9 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
+
+    @BindView(R.id.chart_button)
+    TextView chartButton;
 
     private List<MarketOrderItem> itemList;
 
@@ -292,6 +298,17 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             @Override
             public void onClick(View v) {
                 onLazyLoad();
+            }
+        });
+
+        this.chartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("https://www.baidu.com/");//此处填链接
+                intent.setData(content_url);
+                startActivity(intent);
             }
         });
     }
