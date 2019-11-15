@@ -6,7 +6,6 @@ import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -41,9 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -52,9 +49,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     @BindView(R.id.state_radio_group)
     RadioGroup statusRadioGroup;
-
-    @BindView(R.id.address_spinner)
-    Spinner addressSpinner;
 
     @BindView(R.id.token_spinner)
     Spinner tokenSpinner;
@@ -75,14 +69,12 @@ public class MarketPublishFragment extends BaseLazyFragment {
     TextView endDateTextView;
 
     TokenItemListAdapter tokenAdapter;
-    ArrayAdapter<String> addressAdapter;
 
     private CustomDatePicker mTimerPicker;
 
     private boolean dateStartInputFlag;
     private boolean dateEndInputFlag;
 
-    private List<String> addressList;
     private List<TokenItem> tokenItemList;
 
     public static MarketPublishFragment newInstance() {
@@ -96,12 +88,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         if (this.tokenItemList == null) {
             this.tokenItemList = new ArrayList<TokenItem>();
         }
-        if (this.addressList == null) {
-            this.addressList = new ArrayList<String>();
-        }
         setFroceLoadData(true);
-        this.addressAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, addressList);
-        this.addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenItemList);
     }
 
@@ -122,9 +109,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
         this.tokenSpinner.setAdapter(tokenAdapter);
         this.tokenSpinner.setSelection(0);
 
-        this.addressSpinner.setAdapter(addressAdapter);
-        this.addressSpinner.setSelection(0);
-
         this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +123,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .setMessage(getContext().getString(R.string.successful_order_release))
                                 .show();
                         tokenSpinner.setSelection(0, true);
-                        addressSpinner.setSelection(0, true);
                         amountTextInput.setText("");
                         unitPriceInput.setText("");
                     }
@@ -166,15 +149,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             }
                         }
                         String typeStr = isBuy_ ? "buy" : "sell";
-
-                        if (addressSpinner.getSelectedItem() == null) {
-                            throw new ToastException(getContext().getString(R.string.address_not_empty));
-                        }
-                        String address = addressSpinner.getSelectedItem().toString();
-                        if (StringUtils.isBlank(address)) {
-                            throw new ToastException(getContext().getString(R.string.address_not_empty));
-                        }
-
                         if (StringUtils.isBlank(amountTextInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
@@ -289,39 +263,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                     @Override
                     public void run() {
                         tokenAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        }).execute();
-
-        new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
-            @Override
-            public void completeCallback(String jsonStr) {
-
-            }
-        }, new HttpRunaExecute() {
-
-            @Override
-            public void execute() throws Exception {
-                addressList.clear();
-                if (!isBuy) {
-                    if (tokenSpinner.getSelectedItem() != null) {
-                        TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
-                        final String tokenValue = tokenIdTextView.getText().toString();
-                        if (!StringUtils.isBlank(tokenValue)) {
-                            HashMap<String, Set<String>> validToken = HttpService.getValidTokenAddressResult();
-                            if (validToken.get(tokenValue) != null && !validToken.get(tokenValue).isEmpty()) {
-                                addressList.addAll(validToken.get(tokenValue));
-                            }
-                        }
-                    }
-                } else {
-                    addressList.addAll(HttpService.getValidAddressSet());
-                }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        addressAdapter.notifyDataSetChanged();
                     }
                 });
             }

@@ -68,9 +68,6 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.order_id_text_view)
-        TextView orderIdTextView;
-
         @BindView(R.id.token_id_text_view)
         TextView tokenIdTextView;
 
@@ -110,7 +107,6 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         }
 
         public void bind(MarketOrderItem marketOrderItem) {
-            this.orderIdTextView.setText(marketOrderItem.getOrderId());
             this.tokenIdTextView.setText(marketOrderItem.getTokenId());
             this.priceTextView.setText(marketOrderItem.getPrice());
             this.amountTextView.setText(String.valueOf(marketOrderItem.getAmount()));
