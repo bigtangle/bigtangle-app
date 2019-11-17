@@ -202,7 +202,7 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/validate_to_text_view"
+                        android:id="@+id/validate_from_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -226,7 +226,7 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/validate_from_text_view"
+                        android:id="@+id/validate_to_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

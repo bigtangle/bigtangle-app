@@ -18,6 +18,7 @@ import net.bigtangle.core.Coin;
 import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
+import net.bigtangle.core.exception.InsufficientMoneyException;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
@@ -188,13 +189,17 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             dateEndLong = dateBeginLong;
                         }
 
-                        WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
-                        if (typeStr.equals("sell")) {
-                            WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                    dateBeginLong, dateEndLong);
-                        } else {
-                            WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                    dateBeginLong, dateEndLong);
+                        try {
+                            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                            if (typeStr.equals("sell")) {
+                                WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                        dateBeginLong, dateEndLong);
+                            } else {
+                                WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                        dateBeginLong, dateEndLong);
+                            }
+                        } catch (InsufficientMoneyException e) {
+                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
                 }).execute();
