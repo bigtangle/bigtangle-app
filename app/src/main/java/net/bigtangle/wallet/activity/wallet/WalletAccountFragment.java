@@ -1,5 +1,7 @@
 package net.bigtangle.wallet.activity.wallet;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
@@ -44,6 +47,15 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     private WalletAccountItemListAdapter mAdapter;
 
     private List<WalletAccountItem> itemList;
+
+    @BindView(R.id.register_button)
+    Button registerButton;
+
+    @BindView(R.id.recharge_button)
+    Button rechargeButton;
+
+    @BindView(R.id.payoff_button)
+    Button payoffButton;
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -98,6 +110,36 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void initEvent() {
+        this.registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("https://m.bigtangle.net/public/reg.jsf");//此处填链接
+                intent.setData(content_url);
+                startActivity(intent);
+            }
+        });
+        this.rechargeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("https://m.bigtangle.net/shop/recharge.jsf");//此处填链接
+                intent.setData(content_url);
+                startActivity(intent);
+            }
+        });
+        this.payoffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("https://m.bigtangle.net/shop/payoff.jsf");//此处填链接
+                intent.setData(content_url);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

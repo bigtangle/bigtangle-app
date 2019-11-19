@@ -199,4 +199,7 @@
     <string name="password">Password</string>
 
     <string name="chart">Order Chart</string>
+    <string name="register_button">Register</string>
+    <string name="recharge_button">Recharge</string>
+    <string name="payoff_button">Payoff</string>
 </resources>
