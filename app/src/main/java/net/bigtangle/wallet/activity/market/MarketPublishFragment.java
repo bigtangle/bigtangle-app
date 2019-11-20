@@ -176,7 +176,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(dateBeginStr)) {
                             throw new ToastException(getContext().getString(R.string.start_date_not_empty));
                         }
-                        long dateBeginLong = DateTimeUtils.toDateMillis(dateBeginStr);
+                        long dateBeginLong = DateTimeUtils.toDateMillis(dateBeginStr + ":00");
                         if (endDateTextView.getText() == null) {
                             throw new ToastException(getContext().getString(R.string.end_date_not_empty));
                         }
@@ -184,7 +184,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(dateEndStr)) {
                             throw new ToastException(getContext().getString(R.string.end_date_not_empty));
                         }
-                        long dateEndLong = DateTimeUtils.toDateMillis(dateEndStr);
+                        long dateEndLong = DateTimeUtils.toDateMillis(dateEndStr + ":00");
                         if (dateEndLong < dateBeginLong) {
                             dateEndLong = dateBeginLong;
                         }
