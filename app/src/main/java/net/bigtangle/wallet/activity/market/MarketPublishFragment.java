@@ -193,10 +193,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
                                 WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateBeginLong, dateEndLong);
+                                        dateEndLong, dateBeginLong);
                             } else {
                                 WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateBeginLong, dateEndLong);
+                                        dateEndLong, dateBeginLong);
                             }
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
