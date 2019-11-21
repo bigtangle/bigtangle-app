@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.activity.transaction;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -186,15 +187,16 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         } catch (Exception e) {
                         }
 
-                        amountTextInput.setText("");
-                        toAddressTextInput.setText("");
-                        memoTextInput.setText("");
-                        tokenSpinner.setSelection(0);
-                        payMethodSpinner.setSelection(0);
-
                         if (!find) {
                             new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
                                     .setAddress(toAddressTextInput.getText().toString())
+                                    .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                        @Override
+                                        public void refreshView() {
+                                            cleanInputContent();
+                                        }
+                                    })
                                     .show();
                         } else {
                             new LovelyInfoDialog(getContext())
@@ -202,8 +204,15 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                                     .setIcon(R.drawable.ic_info_white_24px)
                                     .setTitle(getContext().getString(R.string.dialog_title_info))
                                     .setMessage(getContext().getString(R.string.wallet_payment_success))
-                                    .show();
+                                    .show()
+                                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            cleanInputContent();
+                                        }
+                                    });
                         }
+
                     }
                 }, new HttpRunaExecute() {
                     @Override
@@ -256,6 +265,14 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 }).show();
             }
         });
+    }
+
+    private void cleanInputContent() {
+        amountTextInput.setText("");
+        toAddressTextInput.setText("");
+        memoTextInput.setText("");
+        tokenSpinner.setSelection(0);
+        payMethodSpinner.setSelection(0);
     }
 
     private void initView() {
