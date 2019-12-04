@@ -23,7 +23,6 @@ import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
 import net.bigtangle.core.Token;
-import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
@@ -117,21 +116,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
                     tokenNames.clear();
-                    for (UTXO utxo : getBalancesResponse.getOutputs()) {
-                        Coin coin = utxo.getValue();
-                        if (coin.isZero()) {
-                            continue;
-                        }
-                        byte[] tokenid = coin.getTokenid();
+                    for (Token token : getBalancesResponse.getTokennames().values()) {
                         TokenItem tokenItem = new TokenItem();
-                        tokenItem.setTokenId(Utils.HEX.encode(tokenid));
-
-                        Token token = getBalancesResponse.getTokennames().get(tokenItem.getTokenId());
-                        if (token != null) {
-                            tokenItem.setTokenName(token.getTokennameDisplay());
-                        } else {
-                            tokenItem.setTokenName(tokenItem.getTokenId());
-                        }
+                        tokenItem.setTokenId(token.getTokenid());
+                        tokenItem.setTokenName(token.getTokennameDisplay());
                         tokenNames.add(tokenItem);
                     }
                     getActivity().runOnUiThread(new Runnable() {

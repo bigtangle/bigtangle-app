@@ -51,8 +51,8 @@ public class SettingConnectionActivity extends AppCompatActivity {
             index++;
         }
 
-        if (index >= itemList.size()){
-            index=0;
+        if (index >= itemList.size()) {
+            index = 0;
         }
 
         this.serverConnectionSpinner.setSelection(index, true);
@@ -79,19 +79,20 @@ public class SettingConnectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
-    private List<ServerInfoItem> getTestServerInfoItems() {
+    /*private List<ServerInfoItem> getTestServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
         itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
         return itemList;
-    }
+    }*/
 
     private List<ServerInfoItem> getServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
         itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
+        itemList.add(ServerInfoItem.build("LOCAL", "http://10.0.3.2:8088/"));
         return itemList;
     }
 
