@@ -54,8 +54,7 @@
                 android:id="@+id/amount_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textIsSelectable="true" />
+                android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
