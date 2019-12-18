@@ -126,7 +126,7 @@ public class HttpService {
         Map<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", null);
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchTokens.name(),
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);
 
@@ -248,7 +248,7 @@ public class HttpService {
 
     public static Map<String, String> getTokenNameMap() throws Exception {
         Map<String, Object> requestParam = new HashMap<String, Object>();
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchTokens.name(),
+        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);

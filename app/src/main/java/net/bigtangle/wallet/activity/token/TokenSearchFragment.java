@@ -76,7 +76,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
         HashMap<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", address);
 
-        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.searchTokens, requestParam, new HttpNetComplete() {
+        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.searchExchangeTokens, requestParam, new HttpNetComplete() {
             @Override
             public void completeCallback(String jsonStr) {
                 try {
