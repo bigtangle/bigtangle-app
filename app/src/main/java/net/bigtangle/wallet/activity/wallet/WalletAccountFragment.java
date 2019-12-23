@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
@@ -29,6 +31,8 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,9 +127,23 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.rechargeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<ECKey> ecKeys = WalletContextHolder.get().walletKeys();
+                if (CollectionUtils.isEmpty(ecKeys)) {
+                    new LovelyInfoDialog(getContext())
+                            .setTopColorRes(R.color.colorPrimary)
+                            .setIcon(R.drawable.ic_info_white_24px)
+                            .setTitle(R.string.dialog_title_error)
+                            .setMessage(R.string.current_wallet_eckeys_empty)
+                            .show();
+                    return;
+                }
+
+                ECKey ecKey = ecKeys.get(0);
+                final String address = ecKey.toAddress(WalletContextHolder.networkParameters).toBase58();
+
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.net/shop/recharge.jsf");//此处填链接
+                Uri content_url = Uri.parse("https://m.bigtangle.net/public/recharge.jsf?address=" + address);//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);
             }
