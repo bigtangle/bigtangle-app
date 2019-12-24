@@ -52,8 +52,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     private List<WalletAccountItem> itemList;
 
-    @BindView(R.id.register_button)
-    Button registerButton;
+    @BindView(R.id.shop_button)
+    Button shopButton;
 
     @BindView(R.id.recharge_button)
     Button rechargeButton;
@@ -114,12 +114,12 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void initEvent() {
-        this.registerButton.setOnClickListener(new View.OnClickListener() {
+        this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.net/public/reg.jsf");//此处填链接
+                Uri content_url = Uri.parse("https://m.bigtangle.net/");//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);
             }

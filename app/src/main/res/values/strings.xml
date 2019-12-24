@@ -203,4 +203,6 @@
     <string name="recharge_button">Recharge</string>
     <string name="payoff_button">Payoff</string>
     <string name="current_wallet_eckeys_empty">Current Wallet ECKey Empty</string>
+
+    <string name="shop_button">Shop</string>
 </resources>

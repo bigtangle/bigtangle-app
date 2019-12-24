@@ -13,13 +13,13 @@
         android:paddingRight="20dp">
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/shop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bottom_confirm"
             android:elevation="24dp"
-            android:text="@string/register_button" />
+            android:text="@string/shop_button" />
 
         <Button
             android:id="@+id/recharge_button"

@@ -202,4 +202,6 @@
     <string name="recharge_button">充值</string>
     <string name="payoff_button">提现</string>
     <string name="current_wallet_eckeys_empty">当前钱包中没有eckey地址</string>
+
+    <string name="shop_button">商城</string>
 </resources>
