@@ -37,10 +37,7 @@ import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -311,14 +308,5 @@ public class MarketPublishFragment extends BaseLazyFragment {
         mTimerPicker.setScrollLoop(true);
         // 允许滚动动画
         mTimerPicker.setCanShowAnim(true);
-    }
-
-    public static String getAddYear(int addyear) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, addyear);
-        Date date = cal.getTime();
-        String year = dateFormat.format(date);
-        return year;
     }
 }
