@@ -2,13 +2,11 @@ package net.bigtangle.wallet.core;
 
 import android.util.Log;
 
-import net.bigtangle.core.Coin;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Json;
 import net.bigtangle.core.MyHomeAddress;
-import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
 import net.bigtangle.core.UploadfileInfo;
@@ -30,10 +28,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -151,83 +147,15 @@ public class HttpService {
                 Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
         GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
 
-        List<TokenItem> tokenItemList = new ArrayList<>();
-        for (UTXO utxo : getBalancesResponse.getOutputs()) {
-            Coin c = utxo.getValue();
-            if (c.isZero()) {
-                continue;
-            }
-            byte[] tokenid = c.getTokenid();
+        List<TokenItem> tokenItemList = new ArrayList<TokenItem>();
+        for (Token token : getBalancesResponse.getTokennames().values()) {
             TokenItem tokenItem = new TokenItem();
-            tokenItem.setTokenId(Utils.HEX.encode(tokenid));
-            Token token = getBalancesResponse.getTokennames().get(tokenItem.getTokenId());
-            if (token != null) {
-                tokenItem.setTokenName(token.getTokennameDisplay());
-            } else {
-                tokenItem.setTokenName(tokenItem.getTokenId());
-            }
-            if (!utxo.isMultiSig()) {
-                tokenItemList.add(tokenItem);
-            }
+            tokenItem.setTokenId(token.getTokenid());
+            tokenItem.setTokenName(token.getTokennameDisplay());
+            tokenItemList.add(tokenItem);
         }
 
         return tokenItemList;
-    }
-
-    public static HashMap<String, Set<String>> getValidTokenAddressResult() throws Exception {
-        List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-            keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
-        }
-
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
-                Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
-        GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
-
-        HashMap<String, Set<String>> tokenResult = new HashMap<String, Set<String>>();
-        for (UTXO utxo : getBalancesResponse.getOutputs()) {
-            Coin c = utxo.getValue();
-            if (c.isZero()) {
-                continue;
-            }
-            byte[] tokenid = c.getTokenid();
-            String address = utxo.getAddress();
-            String key = Utils.HEX.encode(tokenid);
-
-            Set<String> addressList = tokenResult.get(key);
-            if (addressList == null) {
-                addressList = new HashSet<String>();
-                tokenResult.put(key, addressList);
-            }
-            addressList.add(address);
-        }
-
-        return tokenResult;
-    }
-
-    public static Set<String> getValidAddressSet() throws Exception {
-        List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-            keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
-        }
-
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
-                Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
-        GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
-
-        Set<String> addressSet = new HashSet<String>();
-        for (UTXO utxo : getBalancesResponse.getOutputs()) {
-            Coin c = utxo.getValue();
-            if (c.isZero()) {
-                continue;
-            }
-            String address = utxo.getAddress();
-            if (utxo.getTokenId().trim().equals(NetworkParameters.BIGTANGLE_TOKENID_STRING)) {
-                addressSet.add(address);
-            }
-        }
-
-        return addressSet;
     }
 
     public static List<UTXO> getUTXOWithPubKeyHash(List<String> pubKeyHashs, String tokenid) throws Exception {

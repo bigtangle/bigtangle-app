@@ -258,7 +258,6 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             public void execute() throws Exception {
                 try {
                     Map<String, String> tokenNameMap = HttpService.getTokenNameMap();
-
                     String jsonStr = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOrders.name(),
                             Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
