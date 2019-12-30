@@ -14,7 +14,6 @@ import net.bigtangle.wallet.activity.settings.SettingContactActivity;
 import net.bigtangle.wallet.activity.settings.SettingVersionActivity;
 import net.bigtangle.wallet.activity.settings.SettingWalletActivity;
 import net.bigtangle.wallet.components.BaseLazyFragment;
-import net.bigtangle.wallet.core.BrowserAccessTokenContext;
 
 import butterknife.BindView;
 
@@ -31,11 +30,6 @@ public class SettingsFragment extends BaseLazyFragment {
 
     @BindView(R.id.contact_button)
     Button contactButton;
-
-    @BindView(R.id.token_button)
-    Button tokenButton;
-
-    private static long timeoutMinute = 16L;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -89,24 +83,6 @@ public class SettingsFragment extends BaseLazyFragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), SettingVersionActivity.class);
                     startActivity(intent);
-                }
-            });
-        }
-
-        if (this.tokenButton != null) {
-            this.tokenButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.net/wallet/balance.jsf");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
                 }
             });
         }

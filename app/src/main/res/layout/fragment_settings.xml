@@ -58,16 +58,5 @@
             android:background="@drawable/bottom_confirm"
             android:text="@string/settings_tab_about"
             android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/token_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/bottom_confirm"
-            android:text="Test Access Token"
-            android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

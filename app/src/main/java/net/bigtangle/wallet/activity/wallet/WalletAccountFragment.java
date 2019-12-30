@@ -27,6 +27,7 @@ import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapte
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
+import net.bigtangle.wallet.core.BrowserAccessTokenContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -117,11 +118,16 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.net/");//此处填链接
-                intent.setData(content_url);
-                startActivity(intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.net/");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
         this.rechargeButton.setOnClickListener(new View.OnClickListener() {
@@ -151,11 +157,16 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.payoffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.net/shop/payoff.jsf");//此处填链接
-                intent.setData(content_url);
-                startActivity(intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.net/shop/payoff.jsf");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
     }
