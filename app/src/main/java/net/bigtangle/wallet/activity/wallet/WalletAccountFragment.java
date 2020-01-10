@@ -122,7 +122,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.net/");
+                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.xyz/shop/browse.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -161,7 +161,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.net/shop/payoff.jsf");
+                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.xyz/shop/payoff.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
