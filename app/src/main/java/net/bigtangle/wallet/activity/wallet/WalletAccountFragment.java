@@ -43,6 +43,7 @@ import butterknife.BindView;
 
 public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static final String HTTPS_M_BIGTANGLE = "https://m.bigtangle.org";
     @BindView(R.id.recycler_view_container)
     RecyclerView recyclerViewContainer;
 
@@ -122,7 +123,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.xyz/shop/browse.jsf");
+                            BrowserAccessTokenContext.get().open(getContext(), HTTPS_M_BIGTANGLE +
+                                    "/shop/browse.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -149,7 +151,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.xyz/public/recharge.jsf?address=" + address);//此处填链接
+                Uri content_url = Uri.parse(HTTPS_M_BIGTANGLE +
+                        "/public/recharge.jsf?address=" + address);//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);
             }
@@ -161,7 +164,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.get().open(getContext(), "https://m.bigtangle.xyz/shop/payoff.jsf");
+                            BrowserAccessTokenContext.get().open(getContext(), HTTPS_M_BIGTANGLE +
+                                    "/shop/payoff.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
