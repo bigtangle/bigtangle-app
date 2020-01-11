@@ -36,6 +36,7 @@ import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.adapter.CurAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
+import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.HttpService;
@@ -305,7 +306,8 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("https://m.bigtangle.net/chartdata/index.html");//此处填链接
+                Uri content_url = Uri.parse(WalletAccountFragment.HTTPS_M_BIGTANGLE +
+                        "/chartdata/index.html");//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);
             }
