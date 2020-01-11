@@ -18,35 +18,33 @@ import okhttp3.Response;
 
 public class BrowserAccessTokenContext {
 
-    private static BrowserAccessTokenContext instance = new BrowserAccessTokenContext();
+   // private static BrowserAccessTokenContext instance = new BrowserAccessTokenContext();
 
-    public static final BrowserAccessTokenContext get() {
-        return instance;
-    }
+   // public static final BrowserAccessTokenContext get() {
+   //     return instance;
+   // }
 
-    private String accessToken;
 
-    public void open(Context context, String url) throws Exception {
-        if (StringUtils.isBlank(accessToken)) {
+
+    public static void open(Context context, String url) throws Exception {
+
             ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
             OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
             Request request = new Request.Builder().url(WalletAccountFragment.HTTPS_M_BIGTANGLE +
-                    "accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
+                    "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
             Response response = client.newCall(request).execute();
             String accessToken = response.body().string();
 
             byte[] buf = Utils.HEX.decode(accessToken);
             byte[] bytes = ECIESCoder.decrypt(ecKey.getPrivKey(), buf);
             String verifyHex = new String(bytes);
-            this.accessToken = verifyHex;
-        }
+
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse(url + "?user_access_token=" + accessToken);
+        Uri content_url = Uri.parse(url + "?user_access_token=" + verifyHex);
         intent.setData(content_url);
         context.startActivity(intent);
     }
 
-    private static long timeoutMinute = 16L;
 }
