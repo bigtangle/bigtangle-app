@@ -8,6 +8,7 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +31,8 @@ public class BrowserAccessTokenContext {
             ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
             OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
-            Request request = new Request.Builder().url("https://m.bigtangle.net/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
+            Request request = new Request.Builder().url(WalletAccountFragment.HTTPS_M_BIGTANGLE +
+                    "accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
             Response response = client.newCall(request).execute();
             String accessToken = response.body().string();
 
