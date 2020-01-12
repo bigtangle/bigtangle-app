@@ -18,6 +18,7 @@ import net.bigtangle.core.response.GetTokensResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
+import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 
@@ -44,7 +45,8 @@ public class HttpService {
         //
 //        https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
 //                    https://testcc.bigtangle.xyz
-        String url = "https://cc.bigtangle.net/public/walletfilepullout?signin=" + signin + "&password=" + password;
+        String url = WalletAccountFragment.HTTPS_M_BIGTANGLE +
+                "/public/walletfilepullout?signin=" + signin + "&password=" + password;
 
 //        String url = "http://10.0.2.2:8080/cc/vm/walletfilepullout?signin=" + signin + "&password=" + password;
 
