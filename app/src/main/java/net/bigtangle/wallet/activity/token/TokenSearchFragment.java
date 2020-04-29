@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.Json;
+import net.bigtangle.core.Utils;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
@@ -98,8 +99,9 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                             tokenInfoItem.setTokenStop((Boolean) map.get("tokenstop"));
 
                             if (amountMap.containsKey(map.get("tokenid"))) {
-                                long count = Long.parseLong(amountMap.get((String) map.get("tokenid")).toString());
-                                Coin fromAmount = Coin.valueOf(count, (String) map.get("tokenid"));
+                                Coin fromAmount =  MonetaryFormat.FIAT.noCode().parse(""+amountMap.get((String) map.get("tokenid")),
+                                        Utils.HEX.decode((String) map.get("tokenid")),
+                                        (int) map.get("decimals"));
                                 String amountString = MonetaryFormat.FIAT.noCode().format(fromAmount, (int) map.get("decimals"));
                                 if (amountString.startsWith("0"))
                                     amountString = "";
@@ -117,7 +119,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                             mAdapter.notifyDataSetChanged();
                         }
                     });
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Log.e(LogConstant.TAG, "ReqCmd.getTokens", e);
                 }
             }
