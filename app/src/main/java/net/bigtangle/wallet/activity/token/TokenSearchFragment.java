@@ -28,6 +28,7 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,11 +100,11 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
                             tokenInfoItem.setTokenStop((Boolean) map.get("tokenstop"));
 
                             if (amountMap.containsKey(map.get("tokenid"))) {
-                                Coin fromAmount =  MonetaryFormat.FIAT.noCode().parse(""+amountMap.get((String) map.get("tokenid")),
-                                        Utils.HEX.decode((String) map.get("tokenid")),
-                                        (int) map.get("decimals"));
+                                BigInteger count = new BigInteger(amountMap.get((String) map.get("tokenid")).toString());
+                                Coin fromAmount = new Coin(count, (String) map.get("tokenid"));
                                 String amountString = MonetaryFormat.FIAT.noCode().format(fromAmount, (int) map.get("decimals"));
-                                if (amountString.startsWith("0"))
+
+                                if(amountString.startsWith("0"))
                                     amountString = "";
                                 tokenInfoItem.setAmount(amountString);
                             } else {
