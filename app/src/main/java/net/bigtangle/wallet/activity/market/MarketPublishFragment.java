@@ -106,7 +106,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         initTimerPicker();
         this.tokenSpinner.setAdapter(tokenAdapter);
         this.tokenSpinner.setSelection(0);
-
+        unitPriceInput.setText("50");
         this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +122,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .show();
                         tokenSpinner.setSelection(0, true);
                         amountTextInput.setText("");
-                        unitPriceInput.setText("");
+                        unitPriceInput.setText("50");
                     }
                 }, new HttpRunaExecute() {
                     @Override
@@ -138,6 +138,13 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         }
                         String tokenid = tokenValue;
 
+                        //fix price
+                        if (tokenid.equals("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba")
+                                && !"50".equals(unitPriceInput.getText().toString())) {
+                            unitPriceInput.setText("50");
+                            throw new ToastException("固定价格阶段 价格=50");
+
+                        }
                         boolean isBuy_ = true;
                         for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
                             RadioButton radioButton = (RadioButton) statusRadioGroup.getChildAt(i);
@@ -160,6 +167,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
+
+
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
                         if (price.getValue().signum() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
@@ -228,7 +237,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
     }
 
     public void initData() {
-        boolean isBuy_ = true;
+        boolean isBuy_ = false;
         for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
             RadioButton radioButton = (RadioButton) statusRadioGroup.getChildAt(i);
             if (radioButton.isChecked()) {

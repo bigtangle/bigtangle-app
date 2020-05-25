@@ -12,6 +12,7 @@ import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.WalletContextHolder;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,15 +29,15 @@ public class MarketOrderItem implements java.io.Serializable {
             marketOrderItem.setType(context.getString(R.string.buy));
             marketOrderItem.setAmount(mf.format(orderRecord.getTargetValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
-            marketOrderItem.setPrice(mf.format(orderRecord.getOfferValue() * LongMath.pow(10, t.getDecimals())
-                    / orderRecord.getTargetValue()));
+            marketOrderItem.setPrice(mf.format(calc(orderRecord.getOfferValue() , LongMath.pow(10, t.getDecimals())
+                   , orderRecord.getTargetValue())));
         } else {
             Token t =tokennames.get(orderRecord.getOfferTokenid());
             marketOrderItem.setType(context.getString(R.string.sell));
             marketOrderItem.setAmount(mf.format(orderRecord.getOfferValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
-            marketOrderItem.setPrice(mf.format(orderRecord.getTargetValue() * LongMath.pow(10, t.getDecimals())
-                    / orderRecord.getOfferValue()));
+            marketOrderItem.setPrice(mf.format(calc(orderRecord.getTargetValue() , LongMath.pow(10, t.getDecimals())
+                    , orderRecord.getOfferValue())));
         }
         marketOrderItem.setOrderId(orderRecord.getBlockHashHex());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -49,6 +50,9 @@ public class MarketOrderItem implements java.io.Serializable {
         return marketOrderItem;
     }
 
+    public static Long calc(long m, long factor, long d) {
+        return BigInteger.valueOf(m).multiply(BigInteger.valueOf(factor)).divide(BigInteger.valueOf(d)).longValue();
+    }
     private String type;
 
     private String amount;
