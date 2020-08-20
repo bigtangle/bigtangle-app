@@ -204,4 +204,5 @@
     <string name="current_wallet_eckeys_empty">当前钱包中没有eckey地址</string>
 
     <string name="shop_button">商城</string>
+    <string name="qrscan">二维码扫描</string>
 </resources>

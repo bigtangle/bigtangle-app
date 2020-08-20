@@ -205,4 +205,6 @@
     <string name="current_wallet_eckeys_empty">Current Wallet ECKey Empty</string>
 
     <string name="shop_button">Shop</string>
+    <string name="qrscan">QR Scan</string>
+
 </resources>
