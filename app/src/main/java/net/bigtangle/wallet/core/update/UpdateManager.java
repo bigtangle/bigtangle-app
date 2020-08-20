@@ -275,7 +275,7 @@ public class UpdateManager {
         }
         int appNetVersion = appNetInfo.getVersionCode();
         if (UpdateUtil.getVersion(mContext) > 0 && appNetVersion > UpdateUtil.getVersion(mContext)) {
-            return true;
+            return false;
         }
         return false;
     }
