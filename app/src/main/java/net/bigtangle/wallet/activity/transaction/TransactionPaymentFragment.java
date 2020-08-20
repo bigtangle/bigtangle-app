@@ -290,8 +290,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
     //Getting the scan results
 //https://www.simplifiedcoding.net/android-qr-code-scanner-tutorial/
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //  super.onActivityResult(requestCode, resultCode, data);
+          super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             //if qrcode has nothing in it
@@ -333,5 +334,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         payMethodSpinner.setSelection(0);
     }
 
-
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 }
