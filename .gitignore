@@ -6,3 +6,5 @@ local.properties
 /.classpath
 /.project
 /bin
+/app/.cxx/
+/.settings/

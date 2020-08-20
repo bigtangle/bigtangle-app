@@ -1,21 +1,12 @@
 package net.bigtangle.wallet.activity;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-
-import com.huawei.hms.hmsscankit.ScanUtil;
-import com.huawei.hms.ml.scan.HmsScan;
-import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -101,59 +92,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void loadScanKitBtnClick(View view) {
-        requestPermission(CAMERA_REQ_CODE, DECODE);
-    }
 
-    /**
-     * Apply for permissions.
-     */
-    private void requestPermission(int requestCode, int mode) {
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
-                requestCode);
-    }
-
-    /**
-     * Call back the permission application result. If the permission application is successful, the code scanning view is displayed.
-     *
-     * @param requestCode   Permission application code.
-     * @param permissions   Permission array.
-     * @param grantResults: Permission application result array.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (permissions == null || grantResults == null) {
-            return;
-        }
-        if (grantResults.length < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (requestCode == CAMERA_REQ_CODE) {
-            ScanUtil.startScan(this, REQUEST_CODE_SCAN_ONE, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE).create());
-        }
-    }
-
-    /**
-     * vent for receiving the activity result.
-     *
-     * @param requestCode Request code.
-     * @param resultCode  Result code.
-     * @param data        Result.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK || data == null) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE_SCAN_ONE) {
-            HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
-            if (obj != null) {
-                this.textView.setText(obj.originalValue);
-            }
-        }
-    }
 }
