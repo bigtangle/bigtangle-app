@@ -147,5 +147,18 @@
             android:elevation="24dp"
             android:text="@string/pay" />
 
+        <Button
+            android:id="@+id/pay_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/pay" />
+
     </GridLayout>
 </ScrollView>
