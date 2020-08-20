@@ -3,11 +3,14 @@ buildscript {
         mavenLocal()
         google()
         jcenter()
+        maven {url 'http://developer.huawei.com/repo/'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.6"
         classpath 'com.google.gms:google-services:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.huawei.agconnect:agcp:1.2.0.300'
     }
 }
 
@@ -18,6 +21,7 @@ allprojects {
         mavenLocal()
         google()
         jcenter()
+        maven { url 'http://developer.huawei.com/repo/'}
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
