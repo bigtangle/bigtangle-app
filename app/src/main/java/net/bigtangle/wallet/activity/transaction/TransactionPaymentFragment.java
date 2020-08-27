@@ -33,6 +33,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.dialog.ContactChooseDialog;
@@ -114,7 +115,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
         setFroceLoadData(true);
-        qrScan = new IntentIntegrator(this.getActivity());
+        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);;
     }
 
     @Override
@@ -294,6 +295,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
           super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getContext(),  result.getContents() ,Toast.LENGTH_LONG  ).show();
+
         if (result != null) {
             //if qrcode has nothing in it
             if (result.getContents() == null) {
