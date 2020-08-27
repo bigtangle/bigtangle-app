@@ -1,2 +1,2 @@
-# Bigtangle Wallet and  virus track  app 
+# Bigtangle Wallet
 ## https://bigtangle.net
