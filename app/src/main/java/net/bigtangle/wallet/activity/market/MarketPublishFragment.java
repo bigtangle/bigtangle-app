@@ -122,7 +122,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .show();
                         tokenSpinner.setSelection(0, true);
                         amountTextInput.setText("");
-                        unitPriceInput.setText("50");
+                   //     unitPriceInput.setText("50");
                     }
                 }, new HttpRunaExecute() {
                     @Override
@@ -139,12 +139,14 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         String tokenid = tokenValue;
 
                         //fix price
-                        if (tokenid.equals("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba")
+                 /*       if (tokenid.equals("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba")
                                 && !"50".equals(unitPriceInput.getText().toString())) {
                           //  unitPriceInput.setText("50");
                             throw new ToastException("固定价格阶段 价格=50");
 
                         }
+
+                  */
                         boolean isBuy_ = true;
                         for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
                             RadioButton radioButton = (RadioButton) statusRadioGroup.getChildAt(i);
