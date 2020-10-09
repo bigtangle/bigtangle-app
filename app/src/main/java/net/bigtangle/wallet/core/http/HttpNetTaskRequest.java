@@ -6,7 +6,7 @@ import android.content.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.utils.UpdateUtil;

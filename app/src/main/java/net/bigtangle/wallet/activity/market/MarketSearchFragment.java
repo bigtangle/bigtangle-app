@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.core.OrderRecord;
 import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.core.response.OrderdataResponse;

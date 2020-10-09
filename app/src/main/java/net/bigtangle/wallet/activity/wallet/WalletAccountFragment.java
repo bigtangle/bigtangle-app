@@ -18,7 +18,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;

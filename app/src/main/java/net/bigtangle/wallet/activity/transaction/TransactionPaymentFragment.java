@@ -25,7 +25,7 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;

@@ -5,7 +5,7 @@ import android.util.Log;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.core.MyHomeAddress;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;

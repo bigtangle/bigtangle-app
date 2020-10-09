@@ -10,7 +10,7 @@ import android.util.Log;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Json;
+import net.bigtangle.utils.Json;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;

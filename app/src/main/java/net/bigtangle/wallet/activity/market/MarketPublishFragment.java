@@ -66,6 +66,11 @@ public class MarketPublishFragment extends BaseLazyFragment {
     @BindView(R.id.end_date_text_view)
     TextView endDateTextView;
 
+    @BindView(R.id.basetoken_spinner)
+    Spinner basetokenSpinner;
+
+    TokenItemListAdapter basetokenAdapter;
+
     TokenItemListAdapter tokenAdapter;
 
     private CustomDatePicker mTimerPicker;
@@ -88,6 +93,16 @@ public class MarketPublishFragment extends BaseLazyFragment {
         }
         setFroceLoadData(true);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenItemList);
+        List<TokenItem> basetokenItemList = new  ArrayList<TokenItem>() ;
+        TokenItem yuan = new TokenItem();
+        yuan.setTokenId("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba");
+        yuan.setTokenName("人民币@bigtangle");
+        basetokenItemList.add(yuan);
+        TokenItem bc = new TokenItem();
+        bc.setTokenId("bc");
+        bc.setTokenName("BIG");
+        basetokenItemList.add(bc);
+        this.basetokenAdapter = new TokenItemListAdapter(getContext(), basetokenItemList);
     }
 
     @Override
@@ -106,7 +121,9 @@ public class MarketPublishFragment extends BaseLazyFragment {
         initTimerPicker();
         this.tokenSpinner.setAdapter(tokenAdapter);
         this.tokenSpinner.setSelection(0);
-        unitPriceInput.setText("50");
+        this.basetokenSpinner.setAdapter(basetokenAdapter);
+        this.basetokenSpinner.setSelection(0);
+       // unitPriceInput.setText("50");
         this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,16 +154,9 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
                         String tokenid = tokenValue;
+                       String basetokenValue=( (TokenItem)basetokenSpinner.getSelectedItem()).getTokenId();
 
-                        //fix price
-                 /*       if (tokenid.equals("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba")
-                                && !"50".equals(unitPriceInput.getText().toString())) {
-                          //  unitPriceInput.setText("50");
-                            throw new ToastException("固定价格阶段 价格=50");
 
-                        }
-
-                  */
                         boolean isBuy_ = true;
                         for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
                             RadioButton radioButton = (RadioButton) statusRadioGroup.getChildAt(i);
@@ -201,10 +211,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
                                 WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateEndLong, dateBeginLong);
+                                        dateEndLong, dateBeginLong, basetokenValue,true);
                             } else {
                                 WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateEndLong, dateBeginLong);
+                                        dateEndLong, dateBeginLong, basetokenValue,true);
                             }
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
