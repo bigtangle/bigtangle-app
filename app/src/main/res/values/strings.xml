@@ -23,6 +23,8 @@
     <string name="wallet_secretkey_pubkey">Public Key</string>
     <string name="wallet_creation_failed">Wallet creation failed</string>
 
+    <string name="wallet_basetoken">basetoken</string>
+
     <string name="market_tab_order">Order</string>
     <string name="market_tab_outside_trade">Outside Trade</string>
     <string name="market_tab_exchange">Exchange</string>

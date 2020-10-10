@@ -21,6 +21,8 @@
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
     <string name="wallet_creation_failed">钱包创建失败</string>
 
+    <string name="wallet_basetoken">基础货币</string>
+
     <string name="market_tab_order">订单</string>
     <string name="market_tab_outside_trade">场外交易</string>
     <string name="market_tab_exchange">交换</string>
