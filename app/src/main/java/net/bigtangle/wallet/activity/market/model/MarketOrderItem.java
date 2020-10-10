@@ -23,23 +23,24 @@ public class MarketOrderItem implements java.io.Serializable {
     public static MarketOrderItem build(OrderRecord orderRecord, Map<String, Token> tokennames, Context context) {
         MonetaryFormat mf = MonetaryFormat.FIAT.noCode();
         MarketOrderItem marketOrderItem = new MarketOrderItem();
-
-        if (NetworkParameters.BIGTANGLE_TOKENID_STRING.equals(orderRecord.getOfferTokenid())) {
+        Token base = tokennames.get(orderRecord.getOrderBaseToken());
+        Integer priceshift = WalletContextHolder.networkParameters.getOrderPriceShift(orderRecord.getOrderBaseToken());
+        if (orderRecord.getOrderBaseToken().equals(orderRecord.getOfferTokenid())) {
             Token t = tokennames.get(orderRecord.getTargetTokenid());
             marketOrderItem.setType(context.getString(R.string.buy));
             marketOrderItem.setAmount(mf.format(orderRecord.getTargetValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
-            marketOrderItem.setPrice(mf.format(calc(orderRecord.getOfferValue() , LongMath.pow(10, t.getDecimals())
-                   , orderRecord.getTargetValue())));
+            marketOrderItem.setPrice(mf.format( orderRecord.getPrice() , base.getDecimals()+priceshift));
+            marketOrderItem.setOrderId(mf.format(orderRecord.getOfferValue()  ,base.getDecimals() )+ base .getTokennameDisplay());
         } else {
             Token t =tokennames.get(orderRecord.getOfferTokenid());
             marketOrderItem.setType(context.getString(R.string.sell));
             marketOrderItem.setAmount(mf.format(orderRecord.getOfferValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
-            marketOrderItem.setPrice(mf.format(calc(orderRecord.getTargetValue() , LongMath.pow(10, t.getDecimals())
-                    , orderRecord.getOfferValue())));
+            marketOrderItem.setPrice(mf.format(  orderRecord.getPrice(),base.getDecimals()+priceshift ));
+            marketOrderItem.setOrderId(mf.format(orderRecord.getTargetValue() , base.getDecimals()  )+ base .getTokennameDisplay());
         }
-        marketOrderItem.setOrderId(orderRecord.getBlockHashHex());
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         marketOrderItem.setValidateTo(dateFormat.format(new Date(orderRecord.getValidToTime() * 1000)));
         marketOrderItem.setValidateFrom(dateFormat.format(new Date(orderRecord.getValidFromTime() * 1000)));

@@ -155,7 +155,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         }
                         String tokenid = tokenValue;
                        String basetokenValue=( (TokenItem)basetokenSpinner.getSelectedItem()).getTokenId();
-
+                        Integer priceshift = WalletContextHolder.networkParameters.getOrderPriceShift(basetokenValue);
 
                         boolean isBuy_ = true;
                         for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
@@ -169,6 +169,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(amountTextInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
+
                         Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
                         Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
                                 t.getDecimals());
@@ -179,9 +180,11 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
+                        Token base = WalletContextHolder.get().wallet().checkTokenId(basetokenValue);
 
+                        Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString() ,
+                                Utils.HEX.decode( basetokenValue),  base.getDecimals()+priceshift);
 
-                        Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString());
                         if (price.getValue().signum() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
                         }
@@ -271,15 +274,13 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 tokenItemList.clear();
                 if (!isBuy) {
                     for (TokenItem tokenItem : HttpService.getValidTokenItemList()) {
-                        if (!isSystemCoin(tokenItem.getTokenId())) {
+
                             tokenItemList.add(tokenItem);
-                        }
+
                     }
                 } else {
                     for (TokenItem tokenItem : HttpService.getTokensItemList()) {
-                        if (!isSystemCoin(tokenItem.getTokenId())) {
                             tokenItemList.add(tokenItem);
-                        }
                     }
                 }
                 getActivity().runOnUiThread(new Runnable() {
@@ -290,11 +291,6 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 });
             }
         }).execute();
-    }
-
-    public boolean isSystemCoin(String tokenId) {
-        return ("BIG:" + NetworkParameters.BIGTANGLE_TOKENID_STRING).equals(tokenId)
-                || (NetworkParameters.BIGTANGLE_TOKENID_STRING).equals(tokenId);
     }
 
     private void initTimerPicker() {
