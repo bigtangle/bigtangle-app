@@ -68,8 +68,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.token_id_text_view)
-        TextView tokenIdTextView;
+
 
         @BindView(R.id.price_text_view)
         TextView priceTextView;
@@ -101,13 +100,16 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         @BindView(R.id.cancel_pending_text_view)
         TextView cancelPendingTextView;
 
+        @BindView(R.id.total_text_view)
+        TextView totalTextView;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(MarketOrderItem marketOrderItem) {
-            this.tokenIdTextView.setText(marketOrderItem.getTokenId());
+
             this.priceTextView.setText(marketOrderItem.getPrice());
             this.amountTextView.setText(String.valueOf(marketOrderItem.getAmount()));
             this.addressTextView.setText(marketOrderItem.getAddress());
@@ -117,7 +119,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             this.validateFromTextView.setText(marketOrderItem.getValidateFrom());
             this.tokenNameTextView.setText(marketOrderItem.getTokenName());
             this.cancelPendingTextView.setText(marketOrderItem.isCancelPending() ? mContext.getString(R.string.yes) : mContext.getString(R.string.no));
-
+            this.totalTextView.setText(marketOrderItem.getTotal());
             itemLine.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

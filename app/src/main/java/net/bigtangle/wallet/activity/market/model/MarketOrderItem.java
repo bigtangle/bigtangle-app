@@ -30,15 +30,17 @@ public class MarketOrderItem implements java.io.Serializable {
             marketOrderItem.setType(context.getString(R.string.buy));
             marketOrderItem.setAmount(mf.format(orderRecord.getTargetValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getTargetTokenid());
+            marketOrderItem.setTokenName(t.getTokennameDisplay());
             marketOrderItem.setPrice(mf.format( orderRecord.getPrice() , base.getDecimals()+priceshift));
-            marketOrderItem.setOrderId(mf.format(orderRecord.getOfferValue()  ,base.getDecimals() )+ base .getTokennameDisplay());
+            marketOrderItem.setTotal(mf.format(orderRecord.getOfferValue()  ,base.getDecimals() )+   " (" + base .getTokennameDisplay() +")");
         } else {
             Token t =tokennames.get(orderRecord.getOfferTokenid());
             marketOrderItem.setType(context.getString(R.string.sell));
             marketOrderItem.setAmount(mf.format(orderRecord.getOfferValue(), t.getDecimals()));
             marketOrderItem.setTokenId(orderRecord.getOfferTokenid());
+            marketOrderItem.setTokenName(t.getTokennameDisplay());
             marketOrderItem.setPrice(mf.format(  orderRecord.getPrice(),base.getDecimals()+priceshift ));
-            marketOrderItem.setOrderId(mf.format(orderRecord.getTargetValue() , base.getDecimals()  )+ base .getTokennameDisplay());
+            marketOrderItem.setTotal(mf.format(orderRecord.getTargetValue() , base.getDecimals()  )+ " (" + base .getTokennameDisplay() +")" );
         }
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -51,9 +53,6 @@ public class MarketOrderItem implements java.io.Serializable {
         return marketOrderItem;
     }
 
-    public static Long calc(long m, long factor, long d) {
-        return BigInteger.valueOf(m).multiply(BigInteger.valueOf(factor)).divide(BigInteger.valueOf(d)).longValue();
-    }
     private String type;
 
     private String amount;
@@ -75,6 +74,16 @@ public class MarketOrderItem implements java.io.Serializable {
     private String tokenName;
 
     private boolean cancelPending;
+
+    private String total;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public String getType() {
         return type;

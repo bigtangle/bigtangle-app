@@ -7,7 +7,7 @@
     <string name="title_tab_settings">设置</string>
     <string name="title_tab_token">通证</string>
     <string name="title_tab_shoping">商城</string>
-
+    <string name="title_tab_total">总金额</string>
     <string name="transaction_tab_single">支付</string>
     <string name="transaction_tab_signature">签名</string>
     <string name="transaction_tab_bank">银行</string>
