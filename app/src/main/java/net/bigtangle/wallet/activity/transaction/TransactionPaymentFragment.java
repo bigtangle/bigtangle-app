@@ -307,8 +307,19 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
-                    amountTextInput.setText(obj.getString("amount"));
+
                     toAddressTextInput.setText(obj.getString("address"));
+                    if (obj.has("quantity"))
+                    amountTextInput.setText(obj.getString("quantity"));
+                    int count=tokenAdapter.getCount();
+                    for (int i=0;i<count;i++){
+                        TokenItem token= (TokenItem) tokenAdapter.getItem(i);
+                        if (token.getTokenId().equals(obj.getString("tokenid")))
+                        {
+                            tokenSpinner.setSelection(i);
+                            break;
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
