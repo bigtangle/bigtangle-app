@@ -116,6 +116,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
         setFroceLoadData(true);
         qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);;
+        qrScan.  setOrientationLocked(false);
+
     }
 
     @Override
