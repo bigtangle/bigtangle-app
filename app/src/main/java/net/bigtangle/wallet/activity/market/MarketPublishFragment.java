@@ -37,6 +37,7 @@ import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,6 +80,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
     private boolean dateEndInputFlag;
 
     private List<TokenItem> tokenItemList;
+    private  boolean flag=false;
 
     public static MarketPublishFragment newInstance() {
         MarketPublishFragment fragment = new MarketPublishFragment();
@@ -209,8 +211,17 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (dateEndLong < dateBeginLong) {
                             dateEndLong = dateBeginLong;
                         }
+                       String priceTemp=unitPriceInput.getText().toString();
+                        BigDecimal lastPrice =   WalletContextHolder.get().wallet().getLastPrice(tokenid,basetokenValue);
+                       if (!flag)
+                        if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
+                                || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
 
-                        try {
+                            flag = true;
+                            throw new ToastException(getContext().getString(R.string.price_warn));
+
+                        }
+                            try {
                             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
                                 WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
@@ -219,6 +230,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue,true);
                             }
+                            flag=false;
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
