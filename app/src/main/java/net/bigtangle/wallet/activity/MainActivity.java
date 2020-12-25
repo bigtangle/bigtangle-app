@@ -11,6 +11,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.scanlogin.ScanLoginFragment;
 import net.bigtangle.wallet.components.ExtendedViewPager;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 import net.bigtangle.wallet.components.SwipeDirection;
@@ -36,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(MarketFragment.newInstance());
         fragments.add(TokenFragment.newInstance());
         fragments.add(SettingsFragment.newInstance());
-        fragments.add(ShopingFragment.newInstance());
+        fragments.add(ScanLoginFragment.newInstance());
 
         String[] title = new String[]{getString(R.string.title_tab_transaction),
                 getString(R.string.title_tab_wallet),
                 getString(R.string.title_tab_market),
                 getString(R.string.title_tab_token),
                 getString(R.string.title_tab_settings),
-                getString(R.string.title_tab_shoping)
+                getString(R.string.qrscan)
                 };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_settings:
                         position = 4;
                         break;
-//                    case R.id.tab_shoping:
-//                        position = 5;
-//                        break;
+                   case R.id.tab_scanlogin:
+                       position = 5;
+                        break;
                 }
 
                 mViewPager.setCurrentItem(position);
