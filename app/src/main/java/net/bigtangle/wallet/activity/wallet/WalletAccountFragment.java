@@ -59,7 +59,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.recharge_button)
     Button rechargeButton;
-
+    @BindView(R.id.mining_button)
+    Button miningButton;
     @BindView(R.id.payoff_button)
     Button payoffButton;
 
@@ -166,6 +167,22 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                         try {
                             BrowserAccessTokenContext.open(getContext(), HTTPS_M_BIGTANGLE +
                                     "/shop/payoff.jsf");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+        this.miningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            BrowserAccessTokenContext.open(getContext(), HTTPS_M_BIGTANGLE +
+                                    "/wallet/miningreward.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

@@ -20,6 +20,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.Utils;
+import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MonetaryFormat;
@@ -53,11 +55,12 @@ import butterknife.BindView;
  * @author lijian
  * @date 2019-07-06 00:06:01
  */
-public class ScanLoginFragment extends BaseLazyFragment  {
+public class ScanLoginFragment extends BaseLazyFragment {
 
     public static ScanLoginFragment newInstance() {
         return new ScanLoginFragment();
     }
+
     @BindView(R.id.qrscanlogin_button)
     Button qrscanloginButton;
     //qr code scanner object
@@ -67,9 +70,11 @@ public class ScanLoginFragment extends BaseLazyFragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFroceLoadData(true);
-        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);;
+        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        ;
         qrScan.setOrientationLocked(false);
     }
+
     @Override
     public void onLazyLoad() {
 
@@ -85,20 +90,23 @@ public class ScanLoginFragment extends BaseLazyFragment  {
     public void initEvent() {
         this.qrscanloginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)     {    //initiating the qr code scan
+            public void onClick(View v) {    //initiating the qr code scan
                 qrScan.initiateScan();
-            }});
+            }
+        });
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getContext(),  result.getContents() ,Toast.LENGTH_LONG  ).show();
+        Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
 
         if (result != null) {
             //if qrcode has nothing in it
@@ -106,18 +114,34 @@ public class ScanLoginFragment extends BaseLazyFragment  {
                 //    Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
                 //if qr contains data
-                String string=result.getContents();
-                ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
-                HashMap<String, Object> requestParam = new HashMap<String, Object>();
-                requestParam.put("pubKey",ecKey.getPublicKeyAsHex());
-                requestParam.put("uuid",string);
+                String string = result.getContents();
 
-                try {
-                    String jsonStr = OkHttp3Util.post("https://testcc.bigtangle.xyz/public/afterScan",
-                            Json.jsonmapper().writeValueAsString(requestParam).getBytes());
-                } catch (IOException e) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject obj = new JSONObject(string);
+                            String uuid = obj.getString("uuid");
+                            ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
+                            HashMap<String, Object> requestParam = new HashMap<String, Object>();
+                            requestParam.put("pubKey", ecKey.getPublicKeyAsHex());
+                            requestParam.put("uuid", uuid);
+                            requestParam.put("flag", "0");
+                            String jsonStr = OkHttp3Util.post(obj.getString("url"),
+                                    Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
-                }
+                            byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr));
+                            if (uuid.equals(new String(decryptedPayload))) {
+                                requestParam.put("flag", "1");
+                                requestParam.put("useraccesstoken", jsonStr);
+                                OkHttp3Util.post(obj.getString("url"),
+                                        Json.jsonmapper().writeValueAsString(requestParam).getBytes());
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).start();
             }
 
         }
