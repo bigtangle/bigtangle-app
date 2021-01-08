@@ -50,6 +50,11 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @author lijian
@@ -123,19 +128,52 @@ public class ScanLoginFragment extends BaseLazyFragment {
                             JSONObject obj = new JSONObject(string);
                             String uuid = obj.getString("uuid");
                             ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
-                            HashMap<String, Object> requestParam = new HashMap<String, Object>();
-                            requestParam.put("pubKey", ecKey.getPublicKeyAsHex());
-                            requestParam.put("uuid", uuid);
-                            requestParam.put("flag", "0");
-                            String jsonStr = OkHttp3Util.post(obj.getString("url"),
-                                    Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
-                            byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr));
+                            String[] jsonStr = {""};
+                            String url = obj.getString("url") + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
+                            OkHttpClient okHttpClient = new OkHttpClient();
+                            final Request request = new Request.Builder()
+                                    .url(url)
+                                    .get()//默认就是GET请求，可以不写
+                                    .build();
+                            Call call = okHttpClient.newCall(request);
+                            call.enqueue(new Callback() {
+
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    jsonStr[0] = response.body().string();
+
+                                    //Log.d(TAG, "onResponse: " + response.body().string());
+                                }
+                            });
+                            Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
+                            byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr[0]));
                             if (uuid.equals(new String(decryptedPayload))) {
-                                requestParam.put("flag", "1");
-                                requestParam.put("useraccesstoken", jsonStr);
-                                OkHttp3Util.post(obj.getString("url"),
-                                        Json.jsonmapper().writeValueAsString(requestParam).getBytes());
+
+                                url = obj.getString("url") + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex() + "&useraccesstoken=" + jsonStr[0];
+
+                                final Request request2 = new Request.Builder()
+                                        .url(url)
+                                        .get()//默认就是GET请求，可以不写
+                                        .build();
+                                call = okHttpClient.newCall(request2);
+                                call.enqueue(new Callback() {
+
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+
+                                    }
+                                });
                             }
                         } catch (Exception e) {
                             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
