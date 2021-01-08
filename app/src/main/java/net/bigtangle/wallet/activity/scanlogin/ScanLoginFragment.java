@@ -192,6 +192,8 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                 }
                             }
                         }).start();
+                    }else {
+                        Toast.makeText(getContext(),"decrypt no equal", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (Exception e) {
