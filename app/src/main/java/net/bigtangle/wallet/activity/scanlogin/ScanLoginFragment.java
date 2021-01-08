@@ -120,48 +120,24 @@ public class ScanLoginFragment extends BaseLazyFragment {
             } else {
                 //if qr contains data
                 String string = result.getContents();
+                try {
+                    JSONObject obj = new JSONObject(string);
+                    String uuid = obj.getString("uuid");
+                    ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
+                    final String[] jsonStr = {""};
+                    final String url = obj.getString("url");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject obj = new JSONObject(string);
-                            String uuid = obj.getString("uuid");
-                            ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
-
-                            String[] jsonStr = {""};
-                            String url = obj.getString("url") + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
-                            OkHttpClient okHttpClient = new OkHttpClient();
-                            final Request request = new Request.Builder()
-                                    .url(url)
-                                    .get()//默认就是GET请求，可以不写
-                                    .build();
-                            Call call = okHttpClient.newCall(request);
-                            call.enqueue(new Callback() {
-
-                                @Override
-                                public void onFailure(Call call, IOException e) {
-
-                                }
-
-                                @Override
-                                public void onResponse(Call call, Response response) throws IOException {
-                                    jsonStr[0] = response.body().string();
-
-                                    //Log.d(TAG, "onResponse: " + response.body().string());
-                                }
-                            });
-                            Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
-                            byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr[0]));
-                            if (uuid.equals(new String(decryptedPayload))) {
-
-                                url = obj.getString("url") + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex() + "&useraccesstoken=" + jsonStr[0];
-
-                                final Request request2 = new Request.Builder()
-                                        .url(url)
+                                String url1 = url + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
+                                OkHttpClient okHttpClient = new OkHttpClient();
+                                final Request request = new Request.Builder()
+                                        .url(url1)
                                         .get()//默认就是GET请求，可以不写
                                         .build();
-                                call = okHttpClient.newCall(request2);
+                                Call call = okHttpClient.newCall(request);
                                 call.enqueue(new Callback() {
 
                                     @Override
@@ -171,15 +147,57 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-
+                                        jsonStr[0] = response.body().string();
+                                        Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
                                     }
                                 });
+                                Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
+
+                            } catch (Exception e) {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             }
-                        } catch (Exception e) {
-                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
+                    }).start();
+                    byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr[0]));
+                    if (uuid.equals(new String(decryptedPayload))) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    String url2 = url + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex()+ "&useraccesstoken=" + jsonStr[0];
+                                    OkHttpClient okHttpClient = new OkHttpClient();
+                                    final Request request = new Request.Builder()
+                                            .url(url2)
+                                            .get()//默认就是GET请求，可以不写
+                                            .build();
+                                    Call call = okHttpClient.newCall(request);
+                                    call.enqueue(new Callback() {
+
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            jsonStr[0] = response.body().string();
+                                            Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
+
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }).start();
                     }
-                }).start();
+
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
             }
 
         }
