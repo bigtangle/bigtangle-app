@@ -28,6 +28,8 @@ import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,7 +88,14 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
                     itemList.clear();
-                    for (UTXO utxo : getBalancesResponse.getOutputs()) {
+                    List<UTXO> utxoList=getBalancesResponse.getOutputs();
+                    Collections.sort(utxoList, new Comparator<UTXO>() {
+                        @Override
+                        public int compare(UTXO order1, UTXO order2) {
+                            return order1.getTime() > order2.getTime() ? -1:1;
+                        }
+                    });
+                    for (UTXO utxo : utxoList) {
                         Coin coin = utxo.getValue();
                         if (coin.isZero()) {
                             continue;
