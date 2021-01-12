@@ -138,23 +138,27 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                         .get()//默认就是GET请求，可以不写
                                         .build();
                                 Call call = okHttpClient.newCall(request);
-                                call.enqueue(new Callback() {
+
+                                Response response = call.execute();
+                                jsonStr[0] = response.body().string();
+
+                               /* call.enqueue(new Callback() {
 
                                     @Override
                                     public void onFailure(Call call, IOException e) {
-
+                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     }
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
                                         jsonStr[0] = response.body().string();
-                                        Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
+                                       // Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
                                     }
-                                });
-                                Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
+                                });*/
+                               // Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
 
                             } catch (Exception e) {
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
                             }
                         }
                     }).start();
@@ -172,7 +176,9 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                             .get()//默认就是GET请求，可以不写
                                             .build();
                                     Call call = okHttpClient.newCall(request);
-                                    call.enqueue(new Callback() {
+                                    Response response = call.execute();
+                                    jsonStr[0] = response.body().string();
+                                   /* call.enqueue(new Callback() {
 
                                         @Override
                                         public void onFailure(Call call, IOException e) {
@@ -182,10 +188,10 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                         @Override
                                         public void onResponse(Call call, Response response) throws IOException {
                                             jsonStr[0] = response.body().string();
-                                            Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
+                                           Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
                                         }
-                                    });
-                                    Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
+                                    });*/
+                                     Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
 
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
