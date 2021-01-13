@@ -127,19 +127,19 @@ public class ScanLoginFragment extends BaseLazyFragment {
                     JSONObject obj = new JSONObject(string);
                     String uuid = obj.getString("uuid");
                     ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
-                    final String[] jsonStr = {""};
-                    final String url = obj.getString("url");
+                    String jsonStr = "";
+                    String url = obj.getString("url");
                     String url1 = url + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
-                    String url2 = url + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex() + "&useraccesstoken=" + jsonStr[0];
+                    String url2 = url + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex() + "&useraccesstoken=" + jsonStr;
 
-                    Future<byte[]> future = new URLUtil().calculate(url1);
-                    byte[] bytes = future.get();
+                    Future<String> future = new URLUtil().calculateString(url1);
 
-
+                    jsonStr = future.get();
+                    byte[] bytes = Utils.HEX.decode(jsonStr);
                     byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), bytes);
                     if (uuid.equals(new String(decryptedPayload))) {
-                        Future<byte[]> future2 = new URLUtil().calculate(url2);
-                        bytes = future2.get();
+                        Future<String> future2 = new URLUtil().calculateString(url2);
+                        jsonStr = future2.get();
 
                     } else {
                         Toast.makeText(getContext(), "decrypt no equal", Toast.LENGTH_LONG).show();
