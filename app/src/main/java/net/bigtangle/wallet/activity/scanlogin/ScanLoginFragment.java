@@ -23,6 +23,7 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.Gzip;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.utils.OkHttp3Util;
@@ -38,6 +39,7 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.http.URLUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import butterknife.BindView;
 import okhttp3.Call;
@@ -126,80 +129,20 @@ public class ScanLoginFragment extends BaseLazyFragment {
                     ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
                     final String[] jsonStr = {""};
                     final String url = obj.getString("url");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
+                    String url1 = url + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
+                    String url2 = url + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex() + "&useraccesstoken=" + jsonStr[0];
 
-                                String url1 = url + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();
-                                OkHttpClient okHttpClient = new OkHttpClient();
-                                final Request request = new Request.Builder()
-                                        .url(url1)
-                                        .get()//默认就是GET请求，可以不写
-                                        .build();
-                                Call call = okHttpClient.newCall(request);
+                    Future<byte[]> future = new URLUtil().calculate(url1);
+                    byte[] bytes = future.get();
 
-                                Response response = call.execute();
-                                jsonStr[0] = response.body().string();
 
-                               /* call.enqueue(new Callback() {
-
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
-                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-                                        jsonStr[0] = response.body().string();
-                                       // Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
-                                    }
-                                });*/
-                               // Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                    byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), Utils.HEX.decode(jsonStr[0]));
+                    byte[] decryptedPayload = ECIESCoder.decrypt(ecKey.getPrivKey(), bytes);
                     if (uuid.equals(new String(decryptedPayload))) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
+                        Future<byte[]> future2 = new URLUtil().calculate(url2);
+                        bytes = future2.get();
 
-                                    String url2 = url + "?flag=1&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex()+ "&useraccesstoken=" + jsonStr[0];
-                                    OkHttpClient okHttpClient = new OkHttpClient();
-                                    final Request request = new Request.Builder()
-                                            .url(url2)
-                                            .get()//默认就是GET请求，可以不写
-                                            .build();
-                                    Call call = okHttpClient.newCall(request);
-                                    Response response = call.execute();
-                                    jsonStr[0] = response.body().string();
-                                   /* call.enqueue(new Callback() {
-
-                                        @Override
-                                        public void onFailure(Call call, IOException e) {
-
-                                        }
-
-                                        @Override
-                                        public void onResponse(Call call, Response response) throws IOException {
-                                            jsonStr[0] = response.body().string();
-                                           Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });*/
-                                     Toast.makeText(getContext(), jsonStr[0], Toast.LENGTH_LONG).show();
-
-                                } catch (Exception e) {
-                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }).start();
-                    }else {
-                        Toast.makeText(getContext(),"decrypt no equal", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "decrypt no equal", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (Exception e) {
