@@ -80,7 +80,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
     private boolean dateEndInputFlag;
 
     private List<TokenItem> tokenItemList;
-    private  boolean flag=false;
+    private boolean flag = false;
 
     public static MarketPublishFragment newInstance() {
         MarketPublishFragment fragment = new MarketPublishFragment();
@@ -95,7 +95,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         }
         setFroceLoadData(true);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenItemList);
-        List<TokenItem> basetokenItemList = new  ArrayList<TokenItem>() ;
+        List<TokenItem> basetokenItemList = new ArrayList<TokenItem>();
         TokenItem yuan = new TokenItem();
         yuan.setTokenId("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba");
         yuan.setTokenName("人民币@bigtangle");
@@ -125,7 +125,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         this.tokenSpinner.setSelection(0);
         this.basetokenSpinner.setAdapter(basetokenAdapter);
         this.basetokenSpinner.setSelection(0);
-       // unitPriceInput.setText("50");
+        // unitPriceInput.setText("50");
         this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +141,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .show();
                         tokenSpinner.setSelection(0, true);
                         amountTextInput.setText("");
-                   //     unitPriceInput.setText("50");
+                        //     unitPriceInput.setText("50");
                     }
                 }, new HttpRunaExecute() {
                     @Override
@@ -156,7 +156,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
                         String tokenid = tokenValue;
-                       String basetokenValue=( (TokenItem)basetokenSpinner.getSelectedItem()).getTokenId();
+                        String basetokenValue = ((TokenItem) basetokenSpinner.getSelectedItem()).getTokenId();
                         Integer priceshift = WalletContextHolder.networkParameters.getOrderPriceShift(basetokenValue);
 
                         boolean isBuy_ = true;
@@ -184,8 +184,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         }
                         Token base = WalletContextHolder.get().wallet().checkTokenId(basetokenValue);
 
-                        Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString() ,
-                                Utils.HEX.decode( basetokenValue),  base.getDecimals()+priceshift);
+                        Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString(),
+                                Utils.HEX.decode(basetokenValue), base.getDecimals() + priceshift);
 
                         if (price.getValue().signum() <= 0) {
                             throw new ToastException(getContext().getString(R.string.insufficient_price));
@@ -211,26 +211,26 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (dateEndLong < dateBeginLong) {
                             dateEndLong = dateBeginLong;
                         }
-                       String priceTemp=unitPriceInput.getText().toString();
-                        BigDecimal lastPrice =   WalletContextHolder.get().wallet().getLastPrice(tokenid,basetokenValue);
-                       if (!flag)
-                        if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
-                                || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
+                        String priceTemp = unitPriceInput.getText().toString();
+                        BigDecimal lastPrice = WalletContextHolder.get().wallet().getLastPrice(tokenid, basetokenValue);
+                        if (!flag)
+                            if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
+                                    || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
 
-                            flag = true;
-                            throw new ToastException(getContext().getString(R.string.price_warn));
+                                flag = true;
+                                throw new ToastException(getContext().getString(R.string.lastPrice)+lastPrice.toString()+","+getContext().getString(R.string.price_warn));
 
-                        }
-                            try {
+                            }
+                        try {
                             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
                                 WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateEndLong, dateBeginLong, basetokenValue,true);
+                                        dateEndLong, dateBeginLong, basetokenValue, true);
                             } else {
                                 WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
-                                        dateEndLong, dateBeginLong, basetokenValue,true);
+                                        dateEndLong, dateBeginLong, basetokenValue, true);
                             }
-                            flag=false;
+                            flag = false;
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
@@ -287,12 +287,12 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 if (!isBuy) {
                     for (TokenItem tokenItem : HttpService.getValidTokenItemList()) {
 
-                            tokenItemList.add(tokenItem);
+                        tokenItemList.add(tokenItem);
 
                     }
                 } else {
                     for (TokenItem tokenItem : HttpService.getTokensItemList()) {
-                            tokenItemList.add(tokenItem);
+                        tokenItemList.add(tokenItem);
                     }
                 }
                 getActivity().runOnUiThread(new Runnable() {
