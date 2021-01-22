@@ -210,4 +210,5 @@
     <string name="shop_button">Shop</string>
     <string name="qrscan">QR Scan</string>
     <string name="price_warn">price_warn:30%</string>
+    <string name="lastPrice">lastPrice</string>
 </resources>

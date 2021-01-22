@@ -1,6 +1,8 @@
 package net.bigtangle.wallet.activity.scanlogin;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -40,6 +43,7 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +75,9 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
     @BindView(R.id.qrscanlogin_button)
     Button qrscanloginButton;
+    @BindView(R.id.qrcode_image)
+    ImageView qrcodeImageView;
+
     //qr code scanner object
     private IntentIntegrator qrScan;
 
@@ -85,7 +92,12 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
     @Override
     public void onLazyLoad() {
+        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        String address=issuedKeys.get(0).toAddress(WalletContextHolder.networkParameters).toBase58();
+        String content="{\"address\":\""+address+"\"}";
+        Bitmap bitmap = CommonUtil.createQRCodeBitmap(content, 500, 500,"UTF-8","H", "1", Color.BLACK, Color.WHITE);
 
+        qrcodeImageView.setImageBitmap(bitmap);
     }
 
     @Override
