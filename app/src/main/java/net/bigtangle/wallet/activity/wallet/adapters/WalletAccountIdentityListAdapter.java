@@ -33,7 +33,7 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
     @Override
     public WalletAccountIdentityListAdapter.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_wallet_account_identity_item, parent, false);
-        WalletAccountIdentityListAdapter.ItemViewHolder viewHolder = new WalletAccountIdentityListAdapter.ItemViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(view);
         return viewHolder;
     }
 
