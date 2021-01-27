@@ -1,5 +1,14 @@
 package net.bigtangle.wallet.core.http;
 
+import net.bigtangle.apps.data.IdentityData;
+import net.bigtangle.core.ECKey;
+import net.bigtangle.core.Token;
+import net.bigtangle.wallet.core.utils.CommonUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -38,6 +47,14 @@ public class URLUtil {
 
             Response response = call.execute();
             return response.body().string();
+        });
+    }
+    public Future<List<IdentityData>> calculateIdentity(ECKey signerKey, ECKey userKey) {
+        return executor.submit(() -> {
+            List<IdentityData> identityDatas = new ArrayList<IdentityData>();
+            Map<String, Token> tokennames = new HashMap<String, Token>();
+            CommonUtil.identityList(signerKey, userKey, identityDatas, tokennames);
+            return identityDatas;
         });
     }
 }

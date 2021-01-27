@@ -34,6 +34,7 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,19 +81,16 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
     private void initData() {
 
         List<IdentityData> identityDatas = new ArrayList<IdentityData>();
-        Map<String, Token> tokennames = new HashMap<String, Token>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-                        CommonUtil.identityList(ecKey, ecKey, identityDatas, tokennames);
-                    }
-                } catch (Exception e) {
 
-                }
+        try {
+            for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+                Future<List<IdentityData>> future = new URLUtil().calculateIdentity(ecKey, ecKey);
+                identityDatas.addAll(future.get());
             }
-        }).start();
+        } catch (Exception e) {
+
+        }
+
         if (identityDatas != null && !identityDatas.isEmpty()) {
             for (IdentityData identityData : identityDatas) {
                 WalletAccountIdentiyItem walletAccountIdentiyItem = new WalletAccountIdentiyItem();
