@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
+import net.bigtangle.wallet.activity.wallet.WalletAccountIdentityFragment;
 import net.bigtangle.wallet.activity.wallet.WalletSecretkeyFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
@@ -45,15 +46,16 @@ public class WalletFragment extends BaseLazyFragment {
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(WalletAccountFragment.newInstance());
         fragments.add(WalletSecretkeyFragment.newInstance());
-
+        fragments.add(WalletAccountIdentityFragment.newInstance());
         String[] title = new String[]{
                 this.getString(R.string.wallet_tab_account),
-                this.getString(R.string.wallet_tab_secretkey)
+                this.getString(R.string.wallet_tab_secretkey),
+                this.getString(R.string.wallet_tab_identity)
         };
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     @Override

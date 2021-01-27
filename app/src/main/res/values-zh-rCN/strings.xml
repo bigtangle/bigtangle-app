@@ -16,6 +16,7 @@
 
     <string name="wallet_tab_account">帐户</string>
     <string name="wallet_tab_secretkey">密钥</string>
+    <string name="wallet_tab_identity">证件</string>
     <string name="wallet_account_value">数量</string>
     <string name="wallet_secretkey_address">地址</string>
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
@@ -210,4 +211,11 @@
     <string name="qrscan">二维码扫描</string>
     <string name="price_warn">价格超出当前价格的30%</string>
     <string name="lastPrice">当前价格</string>
+
+    <string name="identitynumber">身份证号码</string>
+    <string name="sex">性别</string>
+    <string name="name">姓名</string>
+    <string name="birthday">出生日期</string>
+    <string name="photo">照片</string>
+    <string name="homeaddress">住址</string>
 </resources>

@@ -49,22 +49,22 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.token_id_text_view)
-        TextView identiynumberTextView;
+        @BindView(R.id.identitynumber_text_view)
+        TextView identitynumberTextView;
 
-        @BindView(R.id.token_name_text_view)
+        @BindView(R.id.name_text_view)
         TextView nameTextView;
 
-        @BindView(R.id.amount_text_view)
+        @BindView(R.id.sex_text_view)
         TextView sexTextView;
 
-        @BindView(R.id.address_text_view)
+        @BindView(R.id.homeaddress_text_view)
         TextView homeaddressTextView;
 
-        @BindView(R.id.memo_text_view)
+        @BindView(R.id.birthday_text_view)
         TextView birthdayTextView;
 
-        @BindView(R.id.memo_text_view)
+        @BindView(R.id.photo_image_view)
         ImageView photoImageView;
 
         public ItemViewHolder(View itemView) {
@@ -73,7 +73,7 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
         }
 
         public void bind(WalletAccountIdentiyItem walletAccountIdentityItem) {
-            this.identiynumberTextView.setText(walletAccountIdentityItem.getIdentitynumber());
+            this.identitynumberTextView.setText(walletAccountIdentityItem.getIdentitynumber());
             this.nameTextView.setText(walletAccountIdentityItem.getName());
             this.sexTextView.setText(walletAccountIdentityItem.getSex());
             this.homeaddressTextView.setText(walletAccountIdentityItem.getHomeaddress());

@@ -39,12 +39,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/token_id"
+                        android:text="@string/identitynumber"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/token_id_text_view"
+                        android:id="@+id/identitynumber_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -64,12 +64,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/token_name"
+                        android:text="@string/name"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/token_name_text_view"
+                        android:id="@+id/name_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -82,12 +82,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/amount"
+                        android:text="@string/sex"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/amount_text_view"
+                        android:id="@+id/sex_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -105,12 +105,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/address"
+                        android:text="@string/homeaddress"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/address_text_view"
+                        android:id="@+id/homeaddress_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -128,12 +128,34 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/memo"
+                        android:text="@string/birthday"
                         android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/memo_text_view"
+                        android:id="@+id/birthday_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text=""
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/photo_image_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

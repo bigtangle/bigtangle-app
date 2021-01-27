@@ -18,6 +18,7 @@
 
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
+    <string name="wallet_tab_identity">Identity</string>
     <string name="wallet_account_value">Amount</string>
     <string name="wallet_secretkey_address">Address</string>
     <string name="wallet_secretkey_pubkey">Public Key</string>
@@ -211,4 +212,11 @@
     <string name="qrscan">QR Scan</string>
     <string name="price_warn">price_warn:30%</string>
     <string name="lastPrice">lastPrice</string>
+
+    <string name="identitynumber">identitynumber</string>
+    <string name="sex">identitynumber</string>
+    <string name="name">identitynumber</string>
+    <string name="homeaddress">homeaddress</string>
+    <string name="birthday">identitynumber</string>
+    <string name="photo">identitynumber</string>
 </resources>

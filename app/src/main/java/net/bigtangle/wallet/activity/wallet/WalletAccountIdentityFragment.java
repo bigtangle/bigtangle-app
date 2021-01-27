@@ -1,12 +1,17 @@
 package net.bigtangle.wallet.activity.wallet;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.Coin;
@@ -23,6 +28,7 @@ import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountHisListAdapter
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountHisItem;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
+import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -41,7 +47,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalletAccountIdentityActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+import static net.bigtangle.utils.OrderState.finish;
+
+public class WalletAccountIdentityFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view_container)
     RecyclerView recyclerViewContainer;
@@ -49,37 +57,23 @@ public class WalletAccountIdentityActivity extends AppCompatActivity implements 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
 
-    @BindView(R.id.toolbar_localMain)
-    Toolbar toolbarLocalMain;
 
     private WalletAccountIdentityListAdapter mAdapter;
 
     private List<WalletAccountIdentiyItem> itemList;
 
+    public static WalletAccountIdentityFragment newInstance() {
+        return new WalletAccountIdentityFragment();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletAccountIdentiyItem>();
         }
-        setContentView(R.layout.activity_wallet_account_his);
-        ButterKnife.bind(this);
-
-        this.swipeContainer.setOnRefreshListener(this);
-
-        this.recyclerViewContainer.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(this);
-        this.recyclerViewContainer.setLayoutManager(layoutManager);
-
-        this.mAdapter = new WalletAccountHisListAdapter(this, this.itemList);
-        this.recyclerViewContainer.setAdapter(this.mAdapter);
-
-        setSupportActionBar(toolbarLocalMain);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-
-        this.initData();
+        setFroceLoadData(true);
+        this.mAdapter = new WalletAccountIdentityListAdapter(getContext(), this.itemList);
     }
 
     private void initData() {
@@ -98,19 +92,51 @@ public class WalletAccountIdentityActivity extends AppCompatActivity implements 
                 }
             }
         }).start();
+        if (identityDatas != null && !identityDatas.isEmpty()) {
+            for (IdentityData identityData : identityDatas) {
+                WalletAccountIdentiyItem walletAccountIdentiyItem = new WalletAccountIdentiyItem();
+                walletAccountIdentiyItem.setName(identityData.getIdentityCore().getSurname());
+                walletAccountIdentiyItem.setIdentitynumber(identityData.getIdentificationnumber());
+                walletAccountIdentiyItem.setHomeaddress(identityData.getIdentityCore().getPlaceofbirth());
+                walletAccountIdentiyItem.setSex(identityData.getIdentityCore().getSex());
+                walletAccountIdentiyItem.setPhoto(identityData.getPhoto());
+                walletAccountIdentiyItem.setBirthday(identityData.getIdentityCore().getDateofbirth());
+                itemList.add(walletAccountIdentiyItem);
+            }
+        }
 
     }
 
     @Override
     public void onRefresh() {
-        this.initData();
         this.swipeContainer.setRefreshing(false);
-        this.mAdapter.notifyDataSetChanged();
+        this.onLazyLoad();
+
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return super.onSupportNavigateUp();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.swipeContainer.setOnRefreshListener(this);
+
+        this.recyclerViewContainer.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(getContext());
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.recyclerViewContainer.setAdapter(this.mAdapter);
+    }
+
+    @Override
+    public void onLazyLoad() {
+        initData();
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_wallet_identity, container, false);
+    }
+
+    @Override
+    public void initEvent() {
+
     }
 }
