@@ -20,7 +20,9 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountHisListAdapter;
+import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountHisItem;
+import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -50,15 +52,15 @@ public class WalletAccountIdentityActivity extends AppCompatActivity implements 
     @BindView(R.id.toolbar_localMain)
     Toolbar toolbarLocalMain;
 
-    private WalletAccountHisListAdapter mAdapter;
+    private WalletAccountIdentityListAdapter mAdapter;
 
-    private List<WalletAccountHisItem> itemList;
+    private List<WalletAccountIdentiyItem> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (this.itemList == null) {
-            this.itemList = new ArrayList<WalletAccountHisItem>();
+            this.itemList = new ArrayList<WalletAccountIdentiyItem>();
         }
         setContentView(R.layout.activity_wallet_account_his);
         ButterKnife.bind(this);
