@@ -1,8 +1,11 @@
 package net.bigtangle.wallet.core.http;
 
+import android.util.Log;
+
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Token;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.util.ArrayList;
@@ -49,11 +52,14 @@ public class URLUtil {
             return response.body().string();
         });
     }
+
     public Future<List<IdentityData>> calculateIdentity(ECKey signerKey, ECKey userKey) {
         return executor.submit(() -> {
             List<IdentityData> identityDatas = new ArrayList<IdentityData>();
             Map<String, Token> tokennames = new HashMap<String, Token>();
+            Log.i(LogConstant.TAG, "calculateIdentity");
             CommonUtil.identityList(signerKey, userKey, identityDatas, tokennames);
+            Log.i(LogConstant.TAG, "calculateIdentity identityDatas.size()" + identityDatas.size());
             return identityDatas;
         });
     }

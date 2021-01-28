@@ -1,6 +1,7 @@
 package net.bigtangle.wallet.core.utils;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -23,6 +24,7 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -81,10 +83,10 @@ public class CommonUtil {
     public static void identityList(ECKey signerKey, ECKey userKey, List<IdentityData> identityDatas, Map<String, Token> tokennames) throws Exception {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
-
+        Log.i(LogConstant.TAG, "identityList start");
         String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
                 Json.jsonmapper().writeValueAsString(param));
-
+        Log.i(LogConstant.TAG, "identityList end==" + response);
         GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
         tokennames.putAll(balancesResponse.getTokennames());
         for (UTXO utxo : balancesResponse.getOutputs()) {
@@ -93,6 +95,7 @@ public class CommonUtil {
                 //  identitiesAdd(utxo, signerKey,identityDatas,tokennames);
                 //} else {
                 if (!utxo.isSpent()) {
+                    Log.i(LogConstant.TAG, "checkIdentity end");
                     identitiesAdd(utxo, signerKey, identityDatas, tokennames);
                 }
                 // }
@@ -118,6 +121,7 @@ public class CommonUtil {
                     SignedData sdata = new SignedData().parse(decryptedPayload);
                     IdentityData prescription = new IdentityData().parse(Utils.HEX.decode(sdata.getSerializedData()));
                     identityDatas.add(prescription);
+                    Log.i(LogConstant.TAG, "identitiesAdd");
                     // sdata.verify();
                 } catch (Exception e) {
                 }
