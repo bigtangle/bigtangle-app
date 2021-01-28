@@ -100,7 +100,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
                 walletAccountIdentiyItem.setName(identityData.getIdentityCore().getSurname());
                 walletAccountIdentiyItem.setIdentitynumber(identityData.getIdentificationnumber());
                 walletAccountIdentiyItem.setHomeaddress(identityData.getIdentityCore().getPlaceofbirth());
-                walletAccountIdentiyItem.setSex(identityData.getIdentityCore().getSex());
+                walletAccountIdentiyItem.setSex(getSex(identityData.getIdentityCore().getSex()));
                 walletAccountIdentiyItem.setPhoto(identityData.getPhoto());
                 walletAccountIdentiyItem.setBirthday(identityData.getIdentityCore().getDateofbirth());
                 Log.i(LogConstant.TAG, "initData " + walletAccountIdentiyItem.getIdentitynumber());
@@ -111,6 +111,11 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
         }
 
     }
+
+    private String getSex(String sex) {
+        return "Male".equals(sex) ? "男" : "女";
+    }
+
 
     @Override
     public void onRefresh() {
