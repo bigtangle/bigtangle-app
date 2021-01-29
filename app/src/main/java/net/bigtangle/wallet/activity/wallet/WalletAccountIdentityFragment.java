@@ -102,7 +102,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
                 walletAccountIdentiyItem.setHomeaddress(identityData.getIdentityCore().getPlaceofbirth());
                 walletAccountIdentiyItem.setSex(getSex(identityData.getIdentityCore().getSex()));
                 walletAccountIdentiyItem.setPhoto(identityData.getPhoto());
-                walletAccountIdentiyItem.setBirthday(identityData.getIdentityCore().getDateofbirth());
+
                 Log.i(LogConstant.TAG, "initData " + walletAccountIdentiyItem.getIdentitynumber());
                 itemList.add(walletAccountIdentiyItem);
             }
