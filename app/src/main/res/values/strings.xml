@@ -19,6 +19,7 @@
     <string name="wallet_tab_account">Account</string>
     <string name="wallet_tab_secretkey">Secret Key</string>
     <string name="wallet_tab_identity">Identity</string>
+    <string name="wallet_tab_certificate">Identity</string>
     <string name="wallet_account_value">Amount</string>
     <string name="wallet_secretkey_address">Address</string>
     <string name="wallet_secretkey_pubkey">Public Key</string>
@@ -219,4 +220,5 @@
     <string name="homeaddress">homeaddress</string>
     <string name="birthday">identitynumber</string>
     <string name="photo">identitynumber</string>
+    
 </resources>

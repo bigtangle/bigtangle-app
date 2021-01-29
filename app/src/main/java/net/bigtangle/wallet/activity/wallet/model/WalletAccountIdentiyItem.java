@@ -5,7 +5,7 @@ public class WalletAccountIdentiyItem {
     private String identitynumber;
 
     private String name;
-    private String birthday;
+
     private String sex;
 
     private String homeaddress;
@@ -26,14 +26,6 @@ public class WalletAccountIdentiyItem {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 
     public String getSex() {

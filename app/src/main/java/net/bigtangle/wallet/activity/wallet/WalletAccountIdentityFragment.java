@@ -94,7 +94,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
         }
         Log.i(LogConstant.TAG, "initData adapter identityDatas.size()" + identityDatas.size());
         if (identityDatas != null && !identityDatas.isEmpty()) {
-            this.itemList = new ArrayList<WalletAccountIdentiyItem>();
+           // this.itemList = new ArrayList<WalletAccountIdentiyItem>();
             for (IdentityData identityData : identityDatas) {
                 WalletAccountIdentiyItem walletAccountIdentiyItem = new WalletAccountIdentiyItem();
                 walletAccountIdentiyItem.setName(identityData.getIdentityCore().getSurname());
@@ -102,7 +102,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
                 walletAccountIdentiyItem.setHomeaddress(identityData.getIdentityCore().getPlaceofbirth());
                 walletAccountIdentiyItem.setSex(getSex(identityData.getIdentityCore().getSex()));
                 walletAccountIdentiyItem.setPhoto(identityData.getPhoto());
-                walletAccountIdentiyItem.setBirthday(identityData.getIdentityCore().getDateofbirth());
+
                 Log.i(LogConstant.TAG, "initData " + walletAccountIdentiyItem.getIdentitynumber());
                 itemList.add(walletAccountIdentiyItem);
             }

@@ -16,7 +16,8 @@
 
     <string name="wallet_tab_account">帐户</string>
     <string name="wallet_tab_secretkey">密钥</string>
-    <string name="wallet_tab_identity">证件</string>
+    <string name="wallet_tab_identity">身份证</string>
+    <string name="wallet_tab_certificate">证明</string>
     <string name="wallet_account_value">数量</string>
     <string name="wallet_secretkey_address">地址</string>
     <string name="wallet_secretkey_pubkey">公用钥匙</string>
@@ -218,4 +219,5 @@
     <string name="birthday">出生日期</string>
     <string name="photo">照片</string>
     <string name="homeaddress">住址</string>
+
 </resources>
