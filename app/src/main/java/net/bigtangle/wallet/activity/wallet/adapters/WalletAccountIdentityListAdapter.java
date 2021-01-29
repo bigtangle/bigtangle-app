@@ -61,9 +61,6 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
         @BindView(R.id.homeaddress_text_view)
         TextView homeaddressTextView;
 
-        @BindView(R.id.birthday_text_view)
-        TextView birthdayTextView;
-
         @BindView(R.id.photo_image_view)
         ImageView photoImageView;
 
@@ -77,8 +74,6 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
             this.nameTextView.setText(walletAccountIdentityItem.getName());
             this.sexTextView.setText(walletAccountIdentityItem.getSex());
             this.homeaddressTextView.setText(walletAccountIdentityItem.getHomeaddress());
-            this.birthdayTextView.setText(walletAccountIdentityItem.getBirthday());
-
             byte[] photo = walletAccountIdentityItem.getPhoto();
             if (photo != null)
                 photoImageView.setImageBitmap(BitmapFactory.decodeByteArray(photo, 0, photo.length));
