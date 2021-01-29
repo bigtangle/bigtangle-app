@@ -2,6 +2,7 @@ package net.bigtangle.wallet.core.http;
 
 import android.util.Log;
 
+import net.bigtangle.apps.data.Certificate;
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Token;
@@ -61,6 +62,16 @@ public class URLUtil {
             CommonUtil.identityList(signerKey, userKey, identityDatas, tokennames);
             Log.i(LogConstant.TAG, "calculateIdentity identityDatas.size()" + identityDatas.size());
             return identityDatas;
+        });
+    }
+    public Future<List<Certificate>> calculateCertificate(ECKey signerKey, ECKey userKey) {
+        return executor.submit(() -> {
+            List<Certificate> certificates = new ArrayList<Certificate>();
+            Map<String, Token> tokennames = new HashMap<String, Token>();
+            Log.i(LogConstant.TAG, "calculateCertificate");
+            CommonUtil.certificateList(signerKey, userKey, certificates, tokennames);
+            Log.i(LogConstant.TAG, "calculateCertificate certificates.size()" + certificates.size());
+            return certificates;
         });
     }
 }
