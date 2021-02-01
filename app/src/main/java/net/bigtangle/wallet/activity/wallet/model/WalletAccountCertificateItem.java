@@ -7,6 +7,15 @@ public class WalletAccountCertificateItem {
 
 
     private byte[] photo;
+    private String idtoken;
+
+    public String getIdtoken() {
+        return idtoken;
+    }
+
+    public void setIdtoken(String idtoken) {
+        this.idtoken = idtoken;
+    }
 
     public String getDescription() {
         return description;
