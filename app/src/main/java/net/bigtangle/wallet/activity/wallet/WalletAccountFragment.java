@@ -43,7 +43,7 @@ import butterknife.BindView;
 
 public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String HTTPS_M_BIGTANGLE = "https://m.bigtangle.org";
+    public static final String HTTPS_M_BIGTANGLE = "https://m.bigtangle.xyz";
     @BindView(R.id.recycler_view_container)
     RecyclerView recyclerViewContainer;
 

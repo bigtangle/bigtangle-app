@@ -86,10 +86,10 @@ public class CommonUtil {
         try {
             Map<String, String> param = new HashMap<String, String>();
             param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
-            Log.i(LogConstant.TAG, "identityList start");
+            Log.i(LogConstant.TAG, "getIdtoken start");
             String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
                     Json.jsonmapper().writeValueAsString(param));
-            Log.i(LogConstant.TAG, "identityList end==" + response);
+            Log.i(LogConstant.TAG, "getIdtoken end==" + response);
             GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
             Map<String, Token> tokennames = new HashMap<>();
             tokennames.putAll(balancesResponse.getTokennames());
@@ -97,6 +97,7 @@ public class CommonUtil {
             for (UTXO utxo : balancesResponse.getOutputs()) {
                 if (checkIdentity(utxo, tokennames)) {
                     idtoken = utxo.getTokenId();
+                    break;
                 }
             }
             return idtoken;
