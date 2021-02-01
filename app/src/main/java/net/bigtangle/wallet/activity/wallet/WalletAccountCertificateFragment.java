@@ -78,7 +78,7 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
         }
         Log.i(LogConstant.TAG, "initData adapter certificates.size()" + certificates.size());
         if (certificates != null && !certificates.isEmpty()) {
-            this.itemList = new ArrayList<WalletAccountCertificateItem>();
+            //this.itemList = new ArrayList<WalletAccountCertificateItem>();
             for (Certificate certificate : certificates) {
                 WalletAccountCertificateItem walletAccountCertificateItem = new WalletAccountCertificateItem();
                 walletAccountCertificateItem.setDescription(certificate.getDescription());
