@@ -55,14 +55,6 @@
                     android:layout_marginBottom="3dp"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text=""
-                        android:textColor="@android:color/white"
-                        android:textSize="13sp" />
-
                     <ImageView
                         android:id="@+id/certificate_photo_image_view"
                         android:layout_width="wrap_content"
