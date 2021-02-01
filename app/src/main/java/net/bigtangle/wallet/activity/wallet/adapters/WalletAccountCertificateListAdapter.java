@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
 
         public void bind(WalletAccountCertificateItem walletAccountCertificateItem) {
             this.descriptionTextView.setText(walletAccountCertificateItem.getDescription());
-
+            descriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
             byte[] photo = walletAccountCertificateItem.getPhoto();
             if (photo != null)
