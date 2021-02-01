@@ -1,5 +1,7 @@
 package net.bigtangle.wallet.activity.wallet.model;
 
+import android.graphics.Bitmap;
+
 public class WalletAccountIdentiyItem {
 
     private String identitynumber;
@@ -11,6 +13,15 @@ public class WalletAccountIdentiyItem {
     private String homeaddress;
 
     private byte[] photo;
+    private String idtoken;
+
+    public String getIdtoken() {
+        return idtoken;
+    }
+
+    public void setIdtoken(String idtoken) {
+        this.idtoken = idtoken;
+    }
 
     public String getIdentitynumber() {
         return identitynumber;

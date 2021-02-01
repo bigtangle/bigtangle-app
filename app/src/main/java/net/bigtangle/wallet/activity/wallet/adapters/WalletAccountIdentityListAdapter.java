@@ -1,7 +1,9 @@
 package net.bigtangle.wallet.activity.wallet.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountHisItem;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.util.List;
 
@@ -63,6 +66,8 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
 
         @BindView(R.id.photo_image_view)
         ImageView photoImageView;
+        @BindView(R.id.qrcode_image_view)
+        ImageView qrcodeImageView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +82,11 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
             byte[] photo = walletAccountIdentityItem.getPhoto();
             if (photo != null)
                 photoImageView.setImageBitmap(BitmapFactory.decodeByteArray(photo, 0, photo.length));
+            if (walletAccountIdentityItem.getIdtoken() != null && !"".equals(walletAccountIdentityItem.getIdtoken().trim())) {
+                String content = "{\"tokenid\":\"" + walletAccountIdentityItem.getIdtoken() + "\"}";
+                Bitmap bitmap = CommonUtil.createQRCodeBitmap(content, 500, 500, "UTF-8", "H", "1", Color.BLACK, Color.WHITE);
+                qrcodeImageView.setImageBitmap(bitmap);
+            }
         }
     }
 }

@@ -64,6 +64,14 @@ public class URLUtil {
             return identityDatas;
         });
     }
+
+    public Future<String> getIdtoken(ECKey userKey) {
+        return executor.submit(() -> {
+            String idtoken = CommonUtil.getIdtoken(userKey);
+            return idtoken;
+        });
+    }
+
     public Future<List<Certificate>> calculateCertificate(ECKey signerKey, ECKey userKey) {
         return executor.submit(() -> {
             List<Certificate> certificates = new ArrayList<Certificate>();

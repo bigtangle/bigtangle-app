@@ -3,6 +3,7 @@ package net.bigtangle.wallet.core.utils;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -81,6 +82,30 @@ public class CommonUtil {
         }
     }
 
+    public static String getIdtoken(ECKey userKey) {
+        try {
+            Map<String, String> param = new HashMap<String, String>();
+            param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
+            Log.i(LogConstant.TAG, "identityList start");
+            String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
+                    Json.jsonmapper().writeValueAsString(param));
+            Log.i(LogConstant.TAG, "identityList end==" + response);
+            GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
+            Map<String, Token> tokennames = new HashMap<>();
+            tokennames.putAll(balancesResponse.getTokennames());
+            String idtoken = "";
+            for (UTXO utxo : balancesResponse.getOutputs()) {
+                if (checkIdentity(utxo, tokennames)) {
+                    idtoken = utxo.getTokenId();
+                }
+            }
+            return idtoken;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+
     public static void identityList(ECKey signerKey, ECKey userKey, List<IdentityData> identityDatas, Map<String, Token> tokennames) throws Exception {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
@@ -104,6 +129,7 @@ public class CommonUtil {
             }
         }
     }
+
     public static void certificateList(ECKey signerKey, ECKey userKey, List<Certificate> certificates, Map<String, Token> tokennames) throws Exception {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
@@ -127,14 +153,17 @@ public class CommonUtil {
             }
         }
     }
+
     public static boolean checkIdentity(UTXO utxo, Map<String, Token> tokennames) {
         return TokenType.identity.ordinal() == tokennames.get(utxo.getTokenId()).getTokentype();
 
     }
+
     public static boolean checkCertificate(UTXO utxo, Map<String, Token> tokennames) {
         return TokenType.certificate.ordinal() == tokennames.get(utxo.getTokenId()).getTokentype();
 
     }
+
     public static void identitiesAdd(UTXO utxo, ECKey signerKey, List<IdentityData> identityDatas, Map<String, Token> tokennames) throws Exception {
         Token token = tokennames.get(utxo.getTokenId());
         if (token == null || token.getTokenKeyValues() == null)
@@ -154,6 +183,7 @@ public class CommonUtil {
             }
         }
     }
+
     public static void certificateAdd(UTXO utxo, ECKey signerKey, List<Certificate> certificates, Map<String, Token> tokennames) throws Exception {
         Token token = tokennames.get(utxo.getTokenId());
         if (token == null || token.getTokenKeyValues() == null)
