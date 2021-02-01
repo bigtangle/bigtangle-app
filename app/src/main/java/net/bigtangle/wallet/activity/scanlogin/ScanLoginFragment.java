@@ -86,7 +86,7 @@ public class ScanLoginFragment extends BaseLazyFragment {
         super.onCreate(savedInstanceState);
         setFroceLoadData(true);
         qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
-        ;
+
         qrScan.setOrientationLocked(false);
     }
 

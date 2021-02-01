@@ -1,9 +1,12 @@
 package net.bigtangle.wallet.activity.wallet.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountCertificateItem;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.util.List;
 
@@ -54,7 +58,8 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
 
         @BindView(R.id.certificate_photo_image_view)
         ImageView photoImageView;
-
+        @BindView(R.id.certificate_qrcode_image_view)
+        ImageView certificateQrcodeImageView;
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -62,11 +67,16 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
 
         public void bind(WalletAccountCertificateItem walletAccountCertificateItem) {
             this.descriptionTextView.setText(walletAccountCertificateItem.getDescription());
-
+            descriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
             byte[] photo = walletAccountCertificateItem.getPhoto();
             if (photo != null)
                 photoImageView.setImageBitmap(BitmapFactory.decodeByteArray(photo, 0, photo.length));
+            if (walletAccountCertificateItem.getIdtoken() != null && !"".equals(walletAccountCertificateItem.getIdtoken().trim())) {
+                String content = "{\"tokenid\":\"" + walletAccountCertificateItem.getIdtoken() + "\"}";
+                Bitmap bitmap = CommonUtil.createQRCodeBitmap(content, 500, 500, "UTF-8", "H", "1", Color.GREEN, Color.WHITE);
+                certificateQrcodeImageView.setImageBitmap(bitmap);
+            }
         }
     }
 }
