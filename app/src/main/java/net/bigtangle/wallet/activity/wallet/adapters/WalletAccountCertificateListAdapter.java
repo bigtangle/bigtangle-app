@@ -67,7 +67,6 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
 
         public void bind(WalletAccountCertificateItem walletAccountCertificateItem) {
             this.descriptionTextView.setText(walletAccountCertificateItem.getDescription());
-            descriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
             byte[] photo = walletAccountCertificateItem.getPhoto();
             if (photo != null)
