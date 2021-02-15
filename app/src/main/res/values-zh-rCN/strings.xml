@@ -194,8 +194,8 @@
     <string name="yes">是</string>
     <string name="no">否</string>
 
-    <string name="download_wallet_file_success">下载wallet file文件成功</string>
-    <string name="download_wallet_file_fail">下载wallet file文件失败，请重试</string>
+    <string name="download_wallet_file_success">下载文件成功</string>
+    <string name="download_wallet_file_fail">下载文件失败，请重试</string>
 
     <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
     <string name="username">用户名</string>
@@ -206,7 +206,11 @@
     <string name="recharge_button">充值</string>
     <string name="payoff_button">提现</string>
     <string name="mining_button">矿机</string>
-    <string name="current_wallet_eckeys_empty">当前钱包中没有eckey地址</string>
+    <string name="aliverify_button">实人认证下载</string>
+    <string name="help_button">帮助</string>
+    <string name="current_wallet_eckeys_empty">当前钱包中没有地址</string>
+    <string name="refresh_button">刷新数据</string>
+
 
     <string name="shop_button">商城</string>
     <string name="qrscan">二维码扫描</string>

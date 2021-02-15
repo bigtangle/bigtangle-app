@@ -61,13 +61,29 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     Button rechargeButton;
     @BindView(R.id.mining_button)
     Button miningButton;
+
     @BindView(R.id.payoff_button)
     Button payoffButton;
+
+    @BindView(R.id.aliverify_button)
+    Button aliverifyButton;
+
+
+    @BindView(R.id.help_button)
+    Button helpButton;
+
+    @BindView(R.id.refresh_button)
+    Button refreshButton;
+
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
     }
 
+    @Override
+    public void onLazyLoad() {
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +94,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.mAdapter = new WalletAccountItemListAdapter(getContext(), itemList);
     }
 
-    @Override
-    public void onLazyLoad() {
+
+    public void refreshData() {
         List<String> keyStrHex = new ArrayList<String>();
         for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
@@ -190,6 +206,55 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 }).start();
             }
         });
+
+        this.refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)  {
+                refreshData();
+            }
+        });
+
+        this.aliverifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(
+                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk"  );//此处填链接
+                            intent.setData(content_url);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+
+        this.helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(
+                                    "https://www.bigtangle.xyz"  );//此处填链接
+                            intent.setData(content_url);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
     }
 
     @Override
@@ -206,6 +271,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     @Override
     public void onRefresh() {
         this.swipeContainer.setRefreshing(false);
-        this.onLazyLoad();
+        this.refreshData();
     }
 }

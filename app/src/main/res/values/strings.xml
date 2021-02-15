@@ -207,7 +207,10 @@
     <string name="recharge_button">Recharge</string>
     <string name="payoff_button">Payoff</string>
     <string name="mining_button">Mining</string>
+    <string name="aliverify_button">ID Verify</string>
+    <string name="help_button">Help</string>
     <string name="current_wallet_eckeys_empty">Current Wallet ECKey Empty</string>
+    <string name="refresh_button">Refresh</string>
 
     <string name="shop_button">Shop</string>
     <string name="qrscan">QR Scan</string>
