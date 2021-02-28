@@ -9,10 +9,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
@@ -24,10 +26,13 @@ import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
+import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.BrowserAccessTokenContext;
+import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -35,6 +40,7 @@ import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +80,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.refresh_button)
     Button refreshButton;
-
+    @BindView(R.id.load_key_button)
+    Button loadKeyButton;
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -255,7 +262,51 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 }).start();
             }
         });
-    }
+
+        this.loadKeyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
+                    @Override
+                    public void downloadFileStatus(boolean success) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (success) {
+                                    File file = new File(LocalStorageContext.get().readWalletDirectory() + "download.wallet");
+                                    String directory = file.getParent() + "/";
+                                    String filename = file.getName();
+                                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
+                                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
+                                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                                        new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
+                                                .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
+
+                                                    @Override
+                                                    public void verifyPassword(String password) {
+                                                        onLazyLoad();
+                                                    }
+                                                }).show();
+                                    } else {
+                                        onLazyLoad();
+                                    }
+                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER, 0, 0);
+                                    toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail), Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER, 0, 0);
+                                    toast.show();
+                                }
+                            }
+                        });
+                    }
+                }).show();
+            }
+        });
+
+}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

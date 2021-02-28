@@ -38,6 +38,7 @@ public class WalletFileUtils {
         try {
             HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter);
         } catch (Exception e) {
+            Log.e(LogConstant.TAG, "download", e);
             listenter.downloadFileStatus(false);
         }
     }
