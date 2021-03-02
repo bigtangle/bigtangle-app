@@ -68,13 +68,13 @@ public class HttpService {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                listenter.downloadFileStatus(false);
+                listenter.downloadFileStatus(false,e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.code() != 200) {
-                    listenter.downloadFileStatus(false);
+                    listenter.downloadFileStatus(false,new RuntimeException(response.code()+""));
                     return;
                 }
                 InputStream is = null;
@@ -115,7 +115,7 @@ public class HttpService {
 
                     }
                 }
-                listenter.downloadFileStatus(success);
+                listenter.downloadFileStatus(success,null);
             }
         });
     }

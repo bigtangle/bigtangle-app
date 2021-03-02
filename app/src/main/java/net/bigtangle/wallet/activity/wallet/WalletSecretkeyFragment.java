@@ -158,7 +158,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
             public void onClick(View v) {
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
                     @Override
-                    public void downloadFileStatus(boolean success) {
+                    public void downloadFileStatus(boolean success,Exception e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -39,7 +39,7 @@ public class WalletFileUtils {
             HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter);
         } catch (Exception e) {
             Log.e(LogConstant.TAG, "download", e);
-            listenter.downloadFileStatus(false);
+            listenter.downloadFileStatus(false,e);
         }
     }
 }

@@ -268,7 +268,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             public void onClick(View v) {
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
                     @Override
-                    public void downloadFileStatus(boolean success) {
+                    public void downloadFileStatus(boolean success,Exception e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -295,7 +295,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 } else {
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail), Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail)+e.getMessage(), Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 }

@@ -105,6 +105,6 @@ public class WalletDownfileDialog extends Dialog {
 
     public interface OnWalletDownfileListenter {
 
-        void downloadFileStatus(boolean success);
+        void downloadFileStatus(boolean success,Exception e);
     }
 }
