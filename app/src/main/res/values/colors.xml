@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4F6194</color>
-    <color name="colorPrimaryDark">#4F6194</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorPrimary">#EFF3F6</color>
+    <color name="colorPrimaryDark">#EFF3F6</color>
+    <color name="colorAccent">#000000</color>
 
     <color name="positiveChange">#4CAF50</color>
     <color name="negativeChange">#D50000</color>
@@ -10,6 +10,7 @@
     <color name="positive">#2E7D32</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="color_e5e5e5">#e5e5e5</color>
     <color name="base_00000000">#00000000</color>
     <color name="color_666666">#666666</color>
