@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/token_id"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -50,7 +50,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/token_name"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -76,7 +76,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/token_type"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/amount"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -121,7 +121,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/domainname"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -147,7 +147,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/sign_number"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -173,7 +173,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -187,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/description"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -198,7 +198,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>

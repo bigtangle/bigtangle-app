@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/token_name"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -50,7 +50,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/title_tab_total"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -75,7 +75,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/price"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -99,7 +99,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/wallet_account_value"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -118,7 +118,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -131,7 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/wallet_secretkey_address"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -142,7 +142,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -155,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/type"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -166,7 +166,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="@string/state"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -185,7 +185,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -198,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/the_validity_period_begins"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -209,7 +209,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -222,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/end_of_validity_period"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -233,7 +233,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -246,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cancel_pending"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -257,7 +257,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>

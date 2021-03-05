@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/token_name"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -50,7 +50,7 @@
                         android:layout_marginStart="10dp"
                         android:singleLine="true"
                         android:ellipsize="end"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/token_id"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -75,7 +75,7 @@
                         android:layout_marginStart="10dp"
                         android:singleLine="true"
                         android:ellipsize="end"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/wallet_account_value"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
 
                     <TextView
@@ -98,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:textColor="@android:color/white"
+
                         android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
