@@ -132,7 +132,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
-                    public void completeCallback(String jsonStr) {
+                    public void completeCallback(byte[] jsonStr) {
                         new LovelyInfoDialog(getContext())
                                 .setTopColorRes(R.color.colorPrimary)
                                 .setIcon(R.drawable.ic_info_white_24px)
@@ -277,7 +277,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
         new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
 
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
             }
         }, new HttpRunaExecute() {
 

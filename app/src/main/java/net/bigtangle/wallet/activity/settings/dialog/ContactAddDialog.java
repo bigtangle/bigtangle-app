@@ -124,7 +124,7 @@ public class ContactAddDialog extends Dialog {
                 }
                 new HttpNetRunaDispatch(context, new HttpNetComplete() {
                     @Override
-                    public void completeCallback(String jsonStr) {
+                    public void completeCallback(byte[] jsonStr) {
                         dismiss();
                         if (listenter != null) {
                             listenter.refreshView();

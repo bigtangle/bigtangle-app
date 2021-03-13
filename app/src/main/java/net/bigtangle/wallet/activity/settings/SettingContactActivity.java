@@ -118,7 +118,7 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
 
         new HttpNetRunaDispatch(this, new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 mAdapter.notifyDataSetChanged();
             }
         }, new HttpRunaExecute() {

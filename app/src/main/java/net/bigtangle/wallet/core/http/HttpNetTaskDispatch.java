@@ -8,14 +8,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
-import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
@@ -27,26 +26,21 @@ import net.bigtangle.wallet.core.utils.UpdateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.Attributes;
 
 @SuppressLint("HandlerLeak")
 public class HttpNetTaskDispatch {
 
     private final Context context;
 
-    private HttpNetComplete httpNetComplete;
+    private final HttpNetComplete httpNetComplete;
 
-    private HttpNetProgress httpNetProgress;
+    private final HttpNetProgress httpNetProgress;
 
-    private ReqCmd reqCmd;
+    private final ReqCmd reqCmd;
 
-    private byte[] buf;
+    private final byte[] buf;
 
     public HttpNetTaskDispatch(Context context, HttpNetComplete httpNetComplete, final HttpNetProgress httpNetProgress, ReqCmd reqCmd, byte[] b) {
         this.context = context;
@@ -69,14 +63,11 @@ public class HttpNetTaskDispatch {
             httpNetCompleteHandler.sendMessage(message);
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    newThreadHttpPostRequestProcess();
-                } finally {
-                    httpNetProgressHandler.sendEmptyMessage(0);
-                }
+        new Thread(() -> {
+            try {
+                newThreadHttpPostRequestProcess();
+            } finally {
+                httpNetProgressHandler.sendEmptyMessage(0);
             }
         }).start();
     }
@@ -84,8 +75,7 @@ public class HttpNetTaskDispatch {
     public void newThreadHttpPostRequestProcess() {
         Message message = new Message();
         try {
-            String jsonStr = doInBackground();
-            message.obj = jsonStr;
+            message.obj = doInBackground();
             message.what = MessageStateCode.SUCCESS;
             httpNetCompleteHandler.sendMessage(message);
         } catch (ToastException e) {
@@ -100,7 +90,7 @@ public class HttpNetTaskDispatch {
     }
 
     @SuppressLint("HandlerLeak")
-    private Handler httpNetCompleteHandler = new Handler() {
+    private final Handler httpNetCompleteHandler = new Handler() {
         @Override
         public void handleMessage(Message message) {
             if (message.what == MessageStateCode.NETWORK_ERROR) {
@@ -111,33 +101,21 @@ public class HttpNetTaskDispatch {
                         .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle(infoMap.get("eName").toString())
                         .setMessage(infoMap.get("eInfo").toString())
-                        .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
-                                HttpNetProgress httpNetProgress = new HttpNetProgress() {
-                                    @Override
-                                    public void endProgress() {
-                                        progressDialog.dismiss();
-                                    }
-                                };
-                                new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
-                            }
-                        }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
-                }).show();
-                return;
+                        .setPositiveButton(android.R.string.ok, v -> {
+                            final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
+                            HttpNetProgress httpNetProgress = progressDialog::dismiss;
+                            new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
+                        }).setNegativeButton(android.R.string.cancel, v -> {
+                        }).show();
             } else if (message.what == MessageStateCode.TOAST_ERROR) {
                 Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
             } else {
-                String jsonStr = (String) message.obj;
-                HashMap<String, Object> result = null;
+                byte[]  jsonStr = ( byte[]) message.obj;
+                HashMap<String, Object> result;
                 try {
-                    result = (HashMap) Json.jsonmapper().readValue(jsonStr, HashMap.class);
+                    result =  Json.jsonmapper().readValue(jsonStr, HashMap.class);
                 } catch (IOException e) {
                     HashMap<String,Object> infoMap = UpdateUtil.showExceptionInfo(e);
                     new LovelyInfoDialog(context)
@@ -162,35 +140,24 @@ public class HttpNetTaskDispatch {
                                 .setIcon(R.drawable.ic_error_white_24px)
                                 .setTitle(context.getString(R.string.dialog_title_error))
                                 .setMessage(str)
-                                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
-                                        HttpNetProgress httpNetProgress = new HttpNetProgress() {
-                                            @Override
-                                            public void endProgress() {
-                                                progressDialog.dismiss();
-                                            }
-                                        };
-                                        new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
-                                    }
-                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
-                        }).show();
+                                .setPositiveButton(android.R.string.ok, v -> {
+                                    final ProgressDialog progressDialog = ProgressDialog.show(context, context.getString(R.string.dialog_please_wait), context.getString(R.string.network_request_loading));
+                                    HttpNetProgress httpNetProgress = progressDialog::dismiss;
+                                    new HttpNetTaskDispatch(context, httpNetComplete, httpNetProgress, reqCmd, buf).execute();
+                                }).setNegativeButton(android.R.string.cancel, v -> {
+                                }).show();
                         return;
                     }
                 }
 
                 if (httpNetComplete != null) {
-                    httpNetComplete.completeCallback((String) message.obj);
+                    httpNetComplete.completeCallback((byte[]) message.obj);
                 }
             }
         }
     };
 
-    private Handler httpNetProgressHandler = new Handler() {
+    private final Handler httpNetProgressHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (httpNetProgress != null) {
@@ -200,8 +167,8 @@ public class HttpNetTaskDispatch {
         }
     };
 
-    private String doInBackground() throws Exception {
-        String s = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + reqCmd.name(), buf);
-        return s;
+    private   byte[] doInBackground() throws Exception {
+         return OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + reqCmd.name(), buf);
+
     }
 }

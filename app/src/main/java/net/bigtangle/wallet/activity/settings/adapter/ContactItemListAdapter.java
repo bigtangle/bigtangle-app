@@ -112,7 +112,7 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
                                 public void onClick(View v) {
                                     new HttpNetRunaDispatch(mContext, new HttpNetComplete() {
                                         @Override
-                                        public void completeCallback(String jsonStr) {
+                                        public void completeCallback(byte[] jsonStr) {
                                             if (onContactRemCallbackListenter != null) {
                                                 onContactRemCallbackListenter.refreshView();
                                             }

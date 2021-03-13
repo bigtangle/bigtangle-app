@@ -87,7 +87,7 @@ public class CommonUtil {
             Map<String, String> param = new HashMap<String, String>();
             param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
             Log.i(LogConstant.TAG, "getIdtoken start");
-            String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
+            byte[] response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
                     Json.jsonmapper().writeValueAsString(param));
             Log.i(LogConstant.TAG, "getIdtoken end==" + response);
             GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
@@ -111,7 +111,7 @@ public class CommonUtil {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
         Log.i(LogConstant.TAG, "identityList start");
-        String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
+        byte[] response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
                 Json.jsonmapper().writeValueAsString(param));
         Log.i(LogConstant.TAG, "identityList end==" + response);
         GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
@@ -135,7 +135,7 @@ public class CommonUtil {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
         Log.i(LogConstant.TAG, "certificateList start");
-        String response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
+        byte[] response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
                 Json.jsonmapper().writeValueAsString(param));
         Log.i(LogConstant.TAG, "certificateList end==" + response);
         GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);

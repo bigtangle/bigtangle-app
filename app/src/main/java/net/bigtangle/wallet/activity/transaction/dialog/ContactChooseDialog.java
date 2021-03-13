@@ -124,7 +124,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
 
         new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 mAdapter.notifyDataSetChanged();
             }
         }, new HttpRunaExecute() {

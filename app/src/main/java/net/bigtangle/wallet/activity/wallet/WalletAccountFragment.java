@@ -109,7 +109,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         }
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
                     itemList.clear();

@@ -84,7 +84,7 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
         }
         new HttpNetTaskRequest(this).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
                     itemList.clear();

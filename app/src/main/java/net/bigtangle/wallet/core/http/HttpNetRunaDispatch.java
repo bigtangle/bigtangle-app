@@ -125,10 +125,6 @@ public class HttpNetRunaDispatch {
                 Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
-            } else {
-                if (httpNetComplete != null) {
-                    httpNetComplete.completeCallback("");
-                }
             }
         }
     };

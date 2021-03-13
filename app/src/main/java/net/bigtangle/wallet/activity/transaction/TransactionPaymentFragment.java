@@ -128,7 +128,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         }
         new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 try {
                     GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(jsonStr, GetBalancesResponse.class);
                     tokenNames.clear();
@@ -165,7 +165,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
             public void onClick(View v) {
                 new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
                     @Override
-                    public void completeCallback(String jsonStr) {
+                    public void completeCallback(byte[] jsonStr) {
                         FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
                             @Override
                             public Boolean call() throws Exception {

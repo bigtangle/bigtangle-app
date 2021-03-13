@@ -80,7 +80,7 @@ public class TokenSearchFragment extends BaseLazyFragment implements SwipeRefres
 
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.searchExchangeTokens, requestParam, new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
                 try {
                     Map<String, Object> data = Json.jsonmapper().readValue(jsonStr, Map.class);
                     List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("tokens");

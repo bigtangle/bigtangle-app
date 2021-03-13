@@ -134,7 +134,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
                         public void onClick(View v) {
                             new HttpNetRunaDispatch(mContext, new HttpNetComplete() {
                                 @Override
-                                public void completeCallback(String jsonStr) {
+                                public void completeCallback(byte[] jsonStr) {
                                     if (onOrderRemCallbackListener != null) {
                                         onOrderRemCallbackListener.refreshView();
                                     }

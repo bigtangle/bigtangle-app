@@ -124,7 +124,7 @@ public class HttpService {
         Map<String, Object> requestParam = new HashMap<String, Object>();
         requestParam.put("name", null);
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
+        byte[] response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);
 
@@ -145,7 +145,7 @@ public class HttpService {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
+        byte[] response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getBalances.name(),
                 Json.jsonmapper().writeValueAsString(keyStrHex).getBytes());
         GetBalancesResponse getBalancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
 
@@ -162,7 +162,7 @@ public class HttpService {
 
     public static List<UTXO> getUTXOWithPubKeyHash(List<String> pubKeyHashs, String tokenid) throws Exception {
         List<UTXO> listUTXO = new ArrayList<UTXO>();
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputs.name(),
+        byte[] response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputs.name(),
                 Json.jsonmapper().writeValueAsString(pubKeyHashs).getBytes());
         GetOutputsResponse getOutputsResponse = Json.jsonmapper().readValue(response, GetOutputsResponse.class);
         for (UTXO utxo : getOutputsResponse.getOutputs()) {
@@ -178,7 +178,7 @@ public class HttpService {
 
     public static Map<String, String> getTokenNameMap() throws Exception {
         Map<String, Object> requestParam = new HashMap<String, Object>();
-        String response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
+        byte[] response = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.searchExchangeTokens.name(),
                 Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
         GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(response, GetTokensResponse.class);

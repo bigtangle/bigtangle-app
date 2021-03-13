@@ -251,7 +251,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
         new HttpNetRunaDispatch(this.getContext(), new HttpNetComplete() {
             @Override
-            public void completeCallback(String jsonStr) {
+            public void completeCallback(byte[] jsonStr) {
             }
         }, new HttpRunaExecute() {
 
@@ -259,7 +259,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             public void execute() throws Exception {
                 try {
                     Map<String, String> tokenNameMap = HttpService.getTokenNameMap();
-                    String jsonStr = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOrders.name(),
+                    byte[] jsonStr = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOrders.name(),
                             Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
