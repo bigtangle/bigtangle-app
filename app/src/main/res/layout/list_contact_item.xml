@@ -40,14 +40,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/contact_colon"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/contact_name_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/address_colon"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
 

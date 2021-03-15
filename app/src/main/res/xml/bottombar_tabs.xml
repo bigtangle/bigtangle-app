@@ -4,36 +4,36 @@
         id="@+id/tab_transaction"
         icon="@drawable/ic_transaction_black"
         title="@string/title_tab_transaction"
-        barColorWhenSelected="#EFF3F6" />
+        barColorWhenSelected="#4F6194" />
 
     <tab
         id="@+id/tab_wallet"
         icon="@drawable/ic_wallet_black"
         title="@string/title_tab_wallet"
-        barColorWhenSelected="#EFF3F6" />
+        barColorWhenSelected="#4F6194" />
 
     <tab
         id="@+id/tab_market"
         icon="@drawable/ic_market_black"
         title="@string/title_tab_market"
-        barColorWhenSelected="#EFF3F6"/>
+        barColorWhenSelected="#4F6194"/>
 
     <tab
         id="@+id/tab_token"
         icon="@drawable/ic_token_black"
         title="@string/title_tab_token"
-        barColorWhenSelected="#EFF3F6" />
+        barColorWhenSelected="#4F6194" />
 
     <tab
         id="@+id/tab_settings"
         icon="@drawable/ic_settings_black"
         title="@string/title_tab_settings"
-        barColorWhenSelected="#EFF3F6" />
+        barColorWhenSelected="#4F6194" />
     <tab
         id="@+id/tab_scanlogin"
         icon="@drawable/ic_settings_black"
         title="@string/qrscan"
-        barColorWhenSelected="#EFF3F6" />
+        barColorWhenSelected="#4F6194" />
     <!--<tab
         id="@+id/tab_shoping"
         icon="@drawable/ic_shoping_black"

@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/shop_goods_name"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
@@ -50,7 +50,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/shop_goods_price"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
@@ -75,7 +75,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/shop_goods_num"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
 
                     <TextView
@@ -100,7 +100,7 @@
                         android:layout_marginRight="20dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-
+                        android:textColor="@android:color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
                 <View
