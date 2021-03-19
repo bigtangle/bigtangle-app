@@ -25,6 +25,7 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.exception.InsufficientMoneyException;
 import net.bigtangle.utils.Json;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
@@ -252,7 +253,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         amount = amount.multiply(factor);
 
                         final String memo = memoTextInput.getText().toString();
-                        wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
+                        try {
+                            wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
+                        }catch (InsufficientMoneyException e){
+                            throw new ToastException(getContext().getString(R.string.insufficient_token));
+                        }
                     }
                 }).execute();
             }

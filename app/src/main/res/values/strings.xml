@@ -96,7 +96,7 @@
     <string name="setting_password_not_empty">Setting password not empty</string>
     <string name="successful_application">Successful application</string>
     <string name="password_setting">Password setting</string>
-
+    <string name="insufficient_token">Insufficient Token Amount</string>
     <string name="insufficient_amount">Insufficient Amount</string>
     <string name="insufficient_price">insufficient Price</string>
     <string name="wallet_payment_success">Wallet payment success</string>
