@@ -15,6 +15,8 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.UserSettingData;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.utils.Json;
 import net.bigtangle.core.MultiSignBy;
 import net.bigtangle.core.Sha256Hash;
@@ -133,45 +135,28 @@ public class ContactAddDialog extends Dialog {
                 }, new HttpRunaExecute() {
                     @Override
                     public void execute() throws Exception {
-                        HashMap<String, String> requestParam = new HashMap<String, String>();
-                        byte[] data = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
-                                Json.jsonmapper().writeValueAsString(requestParam));
-                        Block block = WalletContextHolder.networkParameters.getDefaultSerializer().makeBlock(data);
-                        block.setBlockType(Block.Type.BLOCKTYPE_USERDATA);
 
                         List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
                         ECKey pubKeyTo = issuedKeys.get(0);
 
-                        Transaction coinbase = new Transaction(WalletContextHolder.networkParameters);
-                        Contact contact = new Contact();
-                        contact.setName(contactNameTextInput.getText().toString());
-                        contact.setAddress(addressTextInput.getText().toString());
-                        ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
-
-                        List<Contact> list = contactInfo.getContactList();
-                        list.add(contact);
-                        contactInfo.setContactList(list);
-
-                        coinbase.setDataClassName(DataClassName.CONTACTINFO.name());
-                        coinbase.setData(contactInfo.toByteArray());
-
-                        Sha256Hash sighash = coinbase.getHash();
-
-                        ECKey.ECDSASignature party1Signature = pubKeyTo.sign(sighash, WalletContextHolder.get().getAesKey());
-                        byte[] buf1 = party1Signature.encodeToDER();
-
-                        List<MultiSignBy> multiSignBies = new ArrayList<MultiSignBy>();
-                        MultiSignBy multiSignBy0 = new MultiSignBy();
-                        multiSignBy0.setAddress(pubKeyTo.toAddress(WalletContextHolder.networkParameters).toBase58());
-                        multiSignBy0.setPublickey(Utils.HEX.encode(pubKeyTo.getPubKey()));
-                        multiSignBy0.setSignature(Utils.HEX.encode(buf1));
-                        multiSignBies.add(multiSignBy0);
-                        coinbase.setDataSignature(Json.jsonmapper().writeValueAsBytes(multiSignBies));
-
-                        block.addTransaction(coinbase);
-                        block.solve();
-
-                        OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.saveBlock.name(), block.bitcoinSerialize());
+                        UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
+                        if (userSettingDataInfo0 == null) {
+                            userSettingDataInfo0 = new UserSettingDataInfo();
+                        }
+                        List<UserSettingData> contacts = userSettingDataInfo0.getUserSettingDatas();
+                        if (contacts == null || contacts.isEmpty()) {
+                            contacts = new ArrayList<UserSettingData>();
+                        }
+                        UserSettingData userSettingData = new UserSettingData();
+                        userSettingData.setDomain("ContactInfo");
+                        userSettingData.setKey(addressTextInput.getText().toString());
+                        userSettingData.setValue(contactNameTextInput.getText().toString());
+                        contacts.add(userSettingData);
+                        Transaction transaction = new Transaction(WalletContextHolder.networkParameters);
+                        userSettingDataInfo0.setUserSettingDatas(contacts);
+                        transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
+                        transaction.setData(userSettingDataInfo0.toByteArray());
+                        WalletContextHolder.get().wallet().saveUserdata(pubKeyTo, transaction, false);
                     }
                 }).execute();
             }

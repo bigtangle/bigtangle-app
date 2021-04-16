@@ -14,6 +14,9 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.Transaction;
+import net.bigtangle.core.UserSettingData;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
@@ -27,6 +30,9 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 
+import org.spongycastle.crypto.InvalidCipherTextException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,39 +120,82 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
     }
 
     private void initData() {
-        HashMap<String, String> requestParam = new HashMap<String, String>();
+
 
         List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 
-        requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
-        requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
 
-        new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
-            @Override
-            public void completeCallback(byte[] jsonStr) {
-                mAdapter.notifyDataSetChanged();
-            }
-        }, new HttpRunaExecute() {
-            @Override
-            public void execute() throws Exception {
+        try {
+            UserSettingDataInfo userSettingDataInfo = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo,false);
+            HashMap<String, String> requestParam = new HashMap<String, String>();
+            requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
+            requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
+            if (userSettingDataInfo == null) {
+                new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
+                    @Override
+                    public void completeCallback(byte[] jsonStr) {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, new HttpRunaExecute() {
+                    @Override
+                    public void execute() throws Exception {
+                        itemList.clear();
+                        byte[] bytes = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
+                                Json.jsonmapper().writeValueAsString(requestParam));
+
+                        if (bytes == null || bytes.length == 0) {
+                            return;
+                        }
+                        ContactInfo contactInfo = new ContactInfo().parse(bytes);
+                        List<Contact> list = contactInfo.getContactList();
+                        if (list != null && !list.isEmpty()) {
+                            UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo,false);
+                            if (userSettingDataInfo0 == null) {
+                                userSettingDataInfo0 = new UserSettingDataInfo();
+                            }
+                            List<UserSettingData> contacts = userSettingDataInfo0.getUserSettingDatas();
+                            if (contacts == null || contacts.isEmpty()) {
+                                contacts = new ArrayList<UserSettingData>();
+                            }
+                            for (Contact contact : list) {
+                                ContactInfoItem contactInfoItem = ContactInfoItem.build(contact.getName(), contact.getAddress());
+                                itemList.add(contactInfoItem);
+                                UserSettingData userSettingData = new UserSettingData();
+                                userSettingData.setDomain("ContactInfo");
+                                userSettingData.setKey(contact.getAddress());
+                                userSettingData.setValue(contact.getName());
+                                contacts.add(userSettingData);
+                            }
+                            Transaction transaction = new Transaction(WalletContextHolder.networkParameters);
+
+
+                            userSettingDataInfo0.setUserSettingDatas(contacts);
+                            transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
+                            transaction.setData(userSettingDataInfo0.toByteArray());
+                            WalletContextHolder.get().wallet().saveUserdata(pubKeyTo, transaction, false);
+                        }
+                    }
+                }).execute();
+            } else {
                 itemList.clear();
-                byte[] bytes = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
-                        Json.jsonmapper().writeValueAsString(requestParam));
-
-                if (bytes == null || bytes.length == 0) {
-                    return;
-                }
-                ContactInfo contactInfo = new ContactInfo().parse(bytes);
-                List<Contact> list = contactInfo.getContactList();
-                if (list != null && !list.isEmpty()) {
-                    for (Contact contact : list) {
-                        ContactInfoItem contactInfoItem = ContactInfoItem.build(contact.getName(), contact.getAddress());
-                        itemList.add(contactInfoItem);
+                List<UserSettingData> userSettingDataList = userSettingDataInfo.getUserSettingDatas();
+                if (userSettingDataList != null) {
+                    for (UserSettingData userSettingData : userSettingDataList) {
+                        if (userSettingData.getDomain().equals("ContactInfo")) {
+                            ContactInfoItem contactInfoItem = ContactInfoItem.build(userSettingData.getValue(), userSettingData.getKey());
+                            itemList.add(contactInfoItem);
+                        }
                     }
                 }
+
             }
-        }).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidCipherTextException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

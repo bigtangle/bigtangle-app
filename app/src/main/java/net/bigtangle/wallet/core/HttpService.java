@@ -11,7 +11,7 @@ import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
 import net.bigtangle.core.UploadfileInfo;
 import net.bigtangle.core.Utils;
-import net.bigtangle.core.WatchedInfo;
+
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.core.response.GetOutputsResponse;
 import net.bigtangle.core.response.GetTokensResponse;
@@ -198,7 +198,7 @@ public class HttpService {
 
         if (DataClassName.TOKEN.name().equals(type) || DataClassName.LANG.name().equals(type)
                 || DataClassName.SERVERURL.name().equals(type) || DataClassName.BlockSolveType.name().equals(type)) {
-            type = DataClassName.WATCHED.name();
+            type = DataClassName.UserSettingDataInfo.name();
         }
         requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
         requestParam.put("dataclassname", type);
@@ -210,28 +210,6 @@ public class HttpService {
             }
             ContactInfo contactInfo = new ContactInfo().parse(bytes);
             return contactInfo;
-        } else if (DataClassName.MYHOMEADDRESS.name().equals(type)) {
-            if (bytes == null || bytes.length == 0) {
-                return new MyHomeAddress();
-            }
-            MyHomeAddress myHomeAddress = new MyHomeAddress().parse(bytes);
-            return myHomeAddress;
-        } else if (DataClassName.UPLOADFILE.name().equals(type)) {
-            if (bytes == null || bytes.length == 0) {
-                return new UploadfileInfo();
-            }
-            UploadfileInfo uploadfileInfo = new UploadfileInfo().parse(bytes);
-            return uploadfileInfo;
-        } else if (DataClassName.SERVERURL.name().equals(type) || DataClassName.LANG.name().equals(type)
-                || DataClassName.TOKEN.name().equals(type) || DataClassName.WATCHED.name().equals(type)) {
-            WatchedInfo watchedInfo = null;
-
-            if (bytes == null || bytes.length == 0) {
-                return new WatchedInfo();
-            }
-            watchedInfo = new WatchedInfo().parse(bytes);
-
-            return watchedInfo;
         } else {
             return null;
         }
