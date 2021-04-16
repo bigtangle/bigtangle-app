@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.activity.market;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -231,6 +232,13 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
                             flag = false;
+                            new LovelyInfoDialog(getContext())
+                                    .setTopColorRes(R.color.colorPrimary)
+                                    .setIcon(R.drawable.ic_info_white_24px)
+                                    .setTitle(getContext().getString(R.string.dialog_title_info))
+                                    .setMessage(getContext().getString(R.string.successful_order_release))
+                                    .show();
+
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }

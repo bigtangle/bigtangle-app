@@ -256,7 +256,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         try {
                             wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
                         }catch (InsufficientMoneyException e){
-                            throw new ToastException(getContext().getString(R.string.insufficient_token));
+                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
                 }).execute();
