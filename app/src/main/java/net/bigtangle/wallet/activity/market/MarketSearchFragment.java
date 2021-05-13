@@ -306,7 +306,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(WalletAccountFragment.HTTPS_M_BIGTANGLE +
+                Uri content_url = Uri.parse(WalletContextHolder.getMBigtangle() +
                         "/chartdata/index.html");//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);

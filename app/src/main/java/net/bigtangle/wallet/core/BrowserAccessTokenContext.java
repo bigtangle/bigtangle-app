@@ -31,7 +31,7 @@ public class BrowserAccessTokenContext {
             ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
             OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
-            Request request = new Request.Builder().url(WalletAccountFragment.HTTPS_M_BIGTANGLE +
+            Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
                     "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
             Response response = client.newCall(request).execute();
             String accessToken = response.body().string();

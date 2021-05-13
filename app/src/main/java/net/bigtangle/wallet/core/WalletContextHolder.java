@@ -5,6 +5,7 @@ import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.kits.WalletAppKit;
 import net.bigtangle.params.MainNetParams;
+import net.bigtangle.params.TestParams;
 import net.bigtangle.wallet.Wallet;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,13 +18,20 @@ public class WalletContextHolder {
 
     private WalletAppKit walletAppKit;
 
-    public static NetworkParameters networkParameters = MainNetParams.get();
+    public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
+
 
     private String password;
 
     public void reloadWalletFile(String directory, String filename) {
         walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
         setupWalletData();
+    }
+
+    public static String getMBigtangle() {
+        if (networkParameters instanceof TestParams)
+            return "https://testm.bigtangle.xyz";
+        else return "https://m.bigtangle.xyz";
     }
 
     public KeyParameter getAesKey() {
@@ -64,7 +72,7 @@ public class WalletContextHolder {
     }
 
     public List<ECKey> walletKeys() {
-       return walletKeys0();
+        return walletKeys0();
     }
 
     private void setupWalletData() {

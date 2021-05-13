@@ -49,7 +49,6 @@ import butterknife.BindView;
 
 public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String HTTPS_M_BIGTANGLE = "https://m.bigtangle.xyz";
     @BindView(R.id.recycler_view_container)
     RecyclerView recyclerViewContainer;
 
@@ -91,6 +90,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     public void onLazyLoad() {
 
     }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +148,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.open(getContext(), HTTPS_M_BIGTANGLE +
+                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
                                     "/shop/browse.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -175,7 +176,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(HTTPS_M_BIGTANGLE +
+                Uri content_url = Uri.parse(WalletContextHolder.getMBigtangle() +
                         "/public/recharge.jsf?address=" + address);//此处填链接
                 intent.setData(content_url);
                 startActivity(intent);
@@ -188,7 +189,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.open(getContext(), HTTPS_M_BIGTANGLE +
+                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
                                     "/shop/payoff.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -204,7 +205,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            BrowserAccessTokenContext.open(getContext(), HTTPS_M_BIGTANGLE +
+                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
                                     "/wallet/miningreward.jsf");
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -216,7 +217,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)  {
+            public void onClick(View v) {
                 refreshData();
             }
         });
@@ -231,7 +232,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
                             Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk"  );//此处填链接
+                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
                             intent.setData(content_url);
                             startActivity(intent);
                         } catch (Exception e) {
@@ -252,7 +253,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
                             Uri content_url = Uri.parse(
-                                    "https://www.bigtangle.xyz"  );//此处填链接
+                                    "https://www.bigtangle.xyz");//此处填链接
                             intent.setData(content_url);
                             startActivity(intent);
                         } catch (Exception e) {
@@ -268,7 +269,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             public void onClick(View v) {
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
                     @Override
-                    public void downloadFileStatus(boolean success,Exception e) {
+                    public void downloadFileStatus(boolean success, Exception e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -295,7 +296,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 } else {
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail)+e.getMessage(), Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail) + e.getMessage(), Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                 }
@@ -306,7 +307,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
-}
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

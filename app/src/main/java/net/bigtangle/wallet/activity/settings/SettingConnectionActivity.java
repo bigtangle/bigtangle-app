@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
+import net.bigtangle.params.TestParams;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.settings.adapter.ServerItemListAdapter;
 import net.bigtangle.wallet.activity.settings.model.ServerInfoItem;
 import net.bigtangle.wallet.core.LocalStorageContext;
+import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,21 +81,25 @@ public class SettingConnectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
-    /*private List<ServerInfoItem> getTestServerInfoItems() {
-        List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
-        return itemList;
-    }*/
-
     private List<ServerInfoItem> getServerInfoItems() {
+        if (WalletContextHolder.networkParameters instanceof TestParams)
+            return getTestServerInfoItems();
+        else return getProdServerInfoItems();
+    }
+
+    private List<ServerInfoItem> getTestServerInfoItems() {
+        List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
+        itemList.add(ServerInfoItem.build("test", "https://test.bigtangle.de:8089/"));
+
+        return itemList;
+    }
+
+    private List<ServerInfoItem> getProdServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
         itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
         //itemList.add(ServerInfoItem.build("LOCAL", "http://10.0.3.2:8088/"));
-        itemList.add(ServerInfoItem.build("test", "https://test.bigtangle.de:8089/"));
         return itemList;
     }
 
