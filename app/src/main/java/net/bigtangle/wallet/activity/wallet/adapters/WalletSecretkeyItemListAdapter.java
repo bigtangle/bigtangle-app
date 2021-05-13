@@ -49,8 +49,8 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         @BindView(R.id.addressTextView)
         TextView addressTextView;
 
-//        @BindView(R.id.pubkeyTextView)
-//        TextView pubkeyTextView;
+        @BindView(R.id.pubkeyTextView)
+       TextView pubkeyTextView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -59,7 +59,7 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
 
         public void bind(WalletSecretkeyItem walletSecretkeyItem) {
             addressTextView.setText(walletSecretkeyItem.getAddress());
-//            pubkeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
+            pubkeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
         }
     }
 }
