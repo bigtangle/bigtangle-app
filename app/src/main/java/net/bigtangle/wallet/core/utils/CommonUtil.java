@@ -178,6 +178,7 @@ public class CommonUtil {
                     IdentityData prescription = new IdentityData().parse(Utils.HEX.decode(sdata.getSerializedData()));
                     identityDatas.add(prescription);
                     Log.i(LogConstant.TAG, "identitiesAdd");
+
                     // sdata.verify();
                 } catch (Exception e) {
                 }

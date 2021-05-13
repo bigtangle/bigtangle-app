@@ -66,13 +66,13 @@
     <string name="about_app">关于APP</string>
     <string name="account_info">帐户信息</string>
     <string name="talk_later">以后再说</string>
-    <string name="version_update">版本更新</string>
+    <string name="version_update">app 版本更新</string>
     <string name="cancel_selection">取消选择</string>
     <string name="selection_contact">选择联系人</string>
     <string name="contact_list">联系人列表</string>
     <string name="add_contact">添加联系人</string>
 
-    <string name="token_id">通证</string>
+    <string name="token_id">通证ID</string>
     <string name="token_name">通证名称</string>
     <string name="publish">发布</string>
     <string name="match">匹配</string>
@@ -223,6 +223,14 @@
     <string name="birthday">出生日期</string>
     <string name="photo">照片</string>
     <string name="homeaddress">住址</string>
-    <string name="insufficient_token">通证金额不足</string>
-
+    <string name="app_name">PrivacyView</string>
+    <string name="privacy_exit">退出</string>
+    <string name="privacy_agree">同意</string>
+    <string name="users_note">用户须知</string>
+    <string name="privacy_tips_key1">《用户协议》</string>
+    <string name="privacy_tips_key2">《隐私政策》</string>
+    <string name="privacy_tips">欢迎使用PrivacyView！为了保护您的隐私和使用安全，请您务必仔细阅读我们的《用户协议》和《隐私政策》。在确认充分理解并同意后再开始使用此应用。感谢！</string>
+    <string name="confirmed">用户须知已确认</string>
+    <string name="opt_terms">用户协议</string>
+    <string name="opt_privacy">隐私政策</string>
 </resources>

@@ -93,7 +93,7 @@ public class SettingConnectionActivity extends AppCompatActivity {
         itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
         itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
         //itemList.add(ServerInfoItem.build("LOCAL", "http://10.0.3.2:8088/"));
-        //itemList.add(ServerInfoItem.build("test", "https://test.bigtangle.info:8089/"));
+        itemList.add(ServerInfoItem.build("test", "https://test.bigtangle.de:8089/"));
         return itemList;
     }
 
