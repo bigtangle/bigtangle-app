@@ -6,6 +6,8 @@ import net.bigtangle.apps.data.Certificate;
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Token;
+import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
+import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
@@ -54,9 +56,9 @@ public class URLUtil {
         });
     }
 
-    public Future<List<IdentityData>> calculateIdentity(ECKey signerKey, ECKey userKey) {
+    public Future<List<IdentityVO>> calculateIdentity(ECKey signerKey, ECKey userKey) {
         return executor.submit(() -> {
-            List<IdentityData> identityDatas = new ArrayList<IdentityData>();
+            List<IdentityVO> identityDatas = new ArrayList<IdentityVO>();
             Map<String, Token> tokennames = new HashMap<String, Token>();
             Log.i(LogConstant.TAG, "calculateIdentity");
             CommonUtil.identityList(signerKey, userKey, identityDatas, tokennames);
@@ -72,9 +74,9 @@ public class URLUtil {
         });
     }
 
-    public Future<List<Certificate>> calculateCertificate(ECKey signerKey, ECKey userKey) {
+    public Future<List<CertificateVO>> calculateCertificate(ECKey signerKey, ECKey userKey) {
         return executor.submit(() -> {
-            List<Certificate> certificates = new ArrayList<Certificate>();
+            List<CertificateVO> certificates = new ArrayList<CertificateVO>();
             Map<String, Token> tokennames = new HashMap<String, Token>();
             Log.i(LogConstant.TAG, "calculateCertificate");
             CommonUtil.certificateList(signerKey, userKey, certificates, tokennames);

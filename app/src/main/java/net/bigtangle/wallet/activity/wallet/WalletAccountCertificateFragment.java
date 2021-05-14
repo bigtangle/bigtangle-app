@@ -17,6 +17,7 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountCertificateListAdapter;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
+import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountCertificateItem;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
@@ -60,11 +61,11 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
 
     private void initData() {
 
-        List<Certificate> certificates = new ArrayList<Certificate>();
+        List<CertificateVO> certificates = new ArrayList<CertificateVO>();
         String idtoken = "";
         try {
             for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-                Future<List<Certificate>> future = new URLUtil().calculateCertificate(ecKey, ecKey);
+                Future<List<CertificateVO>> future = new URLUtil().calculateCertificate(ecKey, ecKey);
                 Future<String> future2 = new URLUtil().getIdtoken(ecKey);
                 String temp = future2.get();
                 if (temp != null && !"".equals(temp.trim()))
@@ -79,10 +80,11 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
         itemList.clear();
         Log.i(LogConstant.TAG, "initData adapter certificates.size()" + certificates.size());
         if (certificates != null && !certificates.isEmpty()) {
-            for (Certificate certificate : certificates) {
+            for (CertificateVO certificateVO : certificates) {
                 WalletAccountCertificateItem walletAccountCertificateItem = new WalletAccountCertificateItem();
-                walletAccountCertificateItem.setDescription(certificate.getDescription());
-                walletAccountCertificateItem.setPhoto(certificate.getFile());
+                walletAccountCertificateItem.setTokenid(certificateVO.getTokenid());
+                walletAccountCertificateItem.setDescription(certificateVO.getCertificate().getDescription());
+                walletAccountCertificateItem.setPhoto(certificateVO.getCertificate().getFile());
                 walletAccountCertificateItem.setIdtoken(idtoken);
                 Log.i(LogConstant.TAG, "initData " + walletAccountCertificateItem.getDescription());
                 itemList.add(walletAccountCertificateItem);

@@ -52,7 +52,8 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-
+        @BindView(R.id.tokenid_text_view)
+        TextView tokenidTextView;
         @BindView(R.id.certificate_description_text_view)
         TextView descriptionTextView;
 
@@ -60,6 +61,7 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
         ImageView photoImageView;
         @BindView(R.id.certificate_qrcode_image_view)
         ImageView certificateQrcodeImageView;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -67,7 +69,7 @@ public class WalletAccountCertificateListAdapter extends RecyclerView.Adapter<Wa
 
         public void bind(WalletAccountCertificateItem walletAccountCertificateItem) {
             this.descriptionTextView.setText(walletAccountCertificateItem.getDescription());
-
+            tokenidTextView.setText(walletAccountCertificateItem.getTokenid());
             byte[] photo = walletAccountCertificateItem.getPhoto();
             if (photo != null)
                 photoImageView.setImageBitmap(BitmapFactory.decodeByteArray(photo, 0, photo.length));

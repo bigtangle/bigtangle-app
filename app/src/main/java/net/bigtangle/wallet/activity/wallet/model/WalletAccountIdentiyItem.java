@@ -3,8 +3,16 @@ package net.bigtangle.wallet.activity.wallet.model;
 import android.graphics.Bitmap;
 
 public class WalletAccountIdentiyItem {
-
+    private String tokenid;
     private String identitynumber;
+
+    public String getTokenid() {
+        return tokenid;
+    }
+
+    public void setTokenid(String tokenid) {
+        this.tokenid = tokenid;
+    }
 
     private String name;
 

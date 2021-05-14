@@ -24,6 +24,8 @@ import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
+import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
@@ -107,7 +109,7 @@ public class CommonUtil {
     }
 
 
-    public static void identityList(ECKey signerKey, ECKey userKey, List<IdentityData> identityDatas, Map<String, Token> tokennames) throws Exception {
+    public static void identityList(ECKey signerKey, ECKey userKey, List<IdentityVO> identityDatas, Map<String, Token> tokennames) throws Exception {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
         Log.i(LogConstant.TAG, "identityList start");
@@ -131,7 +133,7 @@ public class CommonUtil {
         }
     }
 
-    public static void certificateList(ECKey signerKey, ECKey userKey, List<Certificate> certificates, Map<String, Token> tokennames) throws Exception {
+    public static void certificateList(ECKey signerKey, ECKey userKey, List<CertificateVO> certificates, Map<String, Token> tokennames) throws Exception {
         Map<String, String> param = new HashMap<String, String>();
         param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
         Log.i(LogConstant.TAG, "certificateList start");
@@ -165,7 +167,7 @@ public class CommonUtil {
 
     }
 
-    public static void identitiesAdd(UTXO utxo, ECKey signerKey, List<IdentityData> identityDatas, Map<String, Token> tokennames) throws Exception {
+    public static void identitiesAdd(UTXO utxo, ECKey signerKey, List<IdentityVO> identityDatas, Map<String, Token> tokennames) throws Exception {
         Token token = tokennames.get(utxo.getTokenId());
         if (token == null || token.getTokenKeyValues() == null)
             return;
@@ -176,17 +178,18 @@ public class CommonUtil {
                             Utils.HEX.decode(kvtemp.getValue()));
                     SignedData sdata = new SignedData().parse(decryptedPayload);
                     IdentityData prescription = new IdentityData().parse(Utils.HEX.decode(sdata.getSerializedData()));
-                    identityDatas.add(prescription);
+                    identityDatas.add(new IdentityVO(prescription, token.getTokenid()));
                     Log.i(LogConstant.TAG, "identitiesAdd");
 
                     // sdata.verify();
+                    break;
                 } catch (Exception e) {
                 }
             }
         }
     }
 
-    public static void certificateAdd(UTXO utxo, ECKey signerKey, List<Certificate> certificates, Map<String, Token> tokennames) throws Exception {
+    public static void certificateAdd(UTXO utxo, ECKey signerKey, List<CertificateVO> certificates, Map<String, Token> tokennames) throws Exception {
         Token token = tokennames.get(utxo.getTokenId());
         if (token == null || token.getTokenKeyValues() == null)
             return;
@@ -197,9 +200,10 @@ public class CommonUtil {
                             Utils.HEX.decode(kvtemp.getValue()));
                     SignedData sdata = new SignedData().parse(decryptedPayload);
                     Certificate certificate = new Certificate().parse(Utils.HEX.decode(sdata.getSerializedData()));
-                    certificates.add(certificate);
+                    certificates.add(new CertificateVO(certificate, token.getTokenid()));
                     Log.i(LogConstant.TAG, "certificateAdd");
                     // sdata.verify();
+                    break;
                 } catch (Exception e) {
                 }
             }

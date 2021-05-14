@@ -2,9 +2,16 @@ package net.bigtangle.wallet.activity.wallet.model;
 
 public class WalletAccountCertificateItem {
 
-
+    private String tokenid;
     private String description;
 
+    public String getTokenid() {
+        return tokenid;
+    }
+
+    public void setTokenid(String tokenid) {
+        this.tokenid = tokenid;
+    }
 
     private byte[] photo;
     private String idtoken;

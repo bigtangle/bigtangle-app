@@ -51,7 +51,8 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-
+        @BindView(R.id.tokenid_text_view)
+        TextView tokenidTextView;
         @BindView(R.id.identitynumber_text_view)
         TextView identitynumberTextView;
 
@@ -75,6 +76,7 @@ public class WalletAccountIdentityListAdapter extends RecyclerView.Adapter<Walle
         }
 
         public void bind(WalletAccountIdentiyItem walletAccountIdentityItem) {
+            tokenidTextView.setText(walletAccountIdentityItem.getTokenid());
             this.identitynumberTextView.setText(walletAccountIdentityItem.getIdentitynumber());
             this.nameTextView.setText(walletAccountIdentityItem.getName());
             this.sexTextView.setText(walletAccountIdentityItem.getSex());
