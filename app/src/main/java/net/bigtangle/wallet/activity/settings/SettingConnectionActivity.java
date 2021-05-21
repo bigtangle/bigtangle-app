@@ -90,6 +90,7 @@ public class SettingConnectionActivity extends AppCompatActivity {
     private List<ServerInfoItem> getTestServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
         itemList.add(ServerInfoItem.build("test", "https://test.bigtangle.de:8089/"));
+        itemList.add(ServerInfoItem.build("test.info", "https://test.bigtangle.info:8089/"));
 
         return itemList;
     }
