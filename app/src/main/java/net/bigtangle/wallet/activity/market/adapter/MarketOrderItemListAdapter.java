@@ -16,8 +16,8 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Sha256Hash;
+import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.exception.ToastException;

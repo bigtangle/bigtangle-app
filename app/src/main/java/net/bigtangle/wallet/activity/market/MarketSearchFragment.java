@@ -31,12 +31,12 @@ import net.bigtangle.core.OrderRecord;
 import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.core.response.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.utils.OrderUtil;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.adapter.CurAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
-import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
-import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.HttpService;
@@ -81,7 +81,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
     @BindView(R.id.chart_button)
     TextView chartButton;
 
-    private List<MarketOrderItem> itemList;
+    private List<net.bigtangle.utils.MarketOrderItem> itemList;
 
     private MarketOrderItemListAdapter mAdapter;
 
@@ -265,7 +265,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
                     for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), getContext());
+                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters,getString(R.string.buy),getString(R.string.sell));
                         String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                         if (StringUtils.isBlank(tokenName)) {
                             tokenName = marketOrderItem.getTokenId();
@@ -284,6 +284,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                 }
             }
         }).execute();
+        itemList= OrderUtil.resetOrderList(itemList);
     }
 
     @Override

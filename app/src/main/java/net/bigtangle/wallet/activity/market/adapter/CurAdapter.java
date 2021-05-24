@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.model.MarketOrderItem;
 
 import java.util.List;
 
