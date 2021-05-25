@@ -81,24 +81,21 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
 
     private void initData() {
 
-        List<IdentityVO> identityDatas = new ArrayList<IdentityVO>();
         String idtoken = "";
+        List<IdentityVO> identityDatas = null;
         try {
+            identityDatas = new URLUtil().calculateIdentity(WalletContextHolder.get().wallet()).get();
             for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-                Future<List<IdentityVO>> future = new URLUtil().calculateIdentity(ecKey, ecKey);
                 Future<String> future2 = new URLUtil().getIdtoken(ecKey);
                 String temp = future2.get();
                 if (temp != null && !"".equals(temp.trim()))
                     idtoken = temp;
 
-                Log.i(LogConstant.TAG, "future identity");
-                identityDatas.addAll(future.get());
-                Log.i(LogConstant.TAG, "initData identityDatas.size()" + identityDatas.size());
             }
         } catch (Exception e) {
 
         }
-        Log.i(LogConstant.TAG, "idtoken "+idtoken);
+        Log.i(LogConstant.TAG, "idtoken " + idtoken);
         itemList.clear();
         Log.i(LogConstant.TAG, "initData adapter identityDatas.size()" + identityDatas.size());
         if (identityDatas != null && !identityDatas.isEmpty()) {

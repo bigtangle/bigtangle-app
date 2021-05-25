@@ -6,8 +6,13 @@ import net.bigtangle.apps.data.Certificate;
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Token;
+import net.bigtangle.core.TokenType;
+import net.bigtangle.core.Utils;
+import net.bigtangle.utils.SignedDataWithToken;
+import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
 import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
+import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
@@ -81,6 +86,36 @@ public class URLUtil {
             Log.i(LogConstant.TAG, "calculateCertificate");
             CommonUtil.certificateList(signerKey, userKey, certificates, tokennames);
             Log.i(LogConstant.TAG, "calculateCertificate certificates.size()" + certificates.size());
+            return certificates;
+        });
+    }
+    public Future<List<CertificateVO>> calculateCertificate(Wallet wallet) {
+        return executor.submit(() -> {
+            List<CertificateVO> certificates = new ArrayList<CertificateVO>();
+            List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate);
+            if (sds != null && !sds.isEmpty()) {
+                for (SignedDataWithToken s : sds) {
+                    Certificate certificate = new Certificate()
+                            .parse(Utils.HEX.decode(s.getSignedData().getSerializedData()));
+                    certificates.add(new CertificateVO(certificate, s.getToken().getTokennameDisplay()));
+
+                }
+            }
+            return certificates;
+        });
+    }
+    public Future<List<IdentityVO>> calculateIdentity(Wallet wallet) {
+        return executor.submit(() -> {
+            List<IdentityVO> certificates = new ArrayList<IdentityVO>();
+            List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.identity);
+            if (sds != null && !sds.isEmpty()) {
+                for (SignedDataWithToken s : sds) {
+                    IdentityData identityData = new IdentityData()
+                            .parse(Utils.HEX.decode(s.getSignedData().getSerializedData()));
+                    certificates.add(new IdentityVO(identityData, s.getToken().getTokennameDisplay()));
+
+                }
+            }
             return certificates;
         });
     }
