@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.activity.wallet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.Coin;
@@ -20,6 +27,7 @@ import net.bigtangle.core.Token;
 import net.bigtangle.core.UTXO;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
+import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MonetaryFormat;
@@ -37,6 +45,8 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +70,14 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
 
+    @BindView(R.id.qrscanlogin_button)
+    Button qrscanloginButton;
+    @BindView(R.id.qrcode_image)
+    ImageView qrcodeImageView;
+
+    //qr code scanner object
+    private IntentIntegrator qrScan;
+
 
     private WalletAccountIdentityListAdapter mAdapter;
 
@@ -77,6 +95,9 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
         }
         setFroceLoadData(true);
         this.mAdapter = new WalletAccountIdentityListAdapter(getContext(), this.itemList);
+        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+
+        qrScan.setOrientationLocked(false);
     }
 
     private void initData() {
@@ -153,6 +174,37 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
 
     @Override
     public void initEvent() {
+        this.qrscanloginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {    //initiating the qr code scan
+                qrScan.initiateScan();
+            }
+        });
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
+
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                //    Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            } else {
+                //if qr contains data
+                String string = result.getContents();
+                try {
+                    JSONObject obj = new JSONObject(string);
+                    String tokenid = obj.getString("tokenid");
+
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        }
     }
 }

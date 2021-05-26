@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.wallet.R;
 
 import java.util.List;

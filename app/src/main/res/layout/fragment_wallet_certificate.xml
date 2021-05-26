@@ -22,4 +22,33 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp" />
     </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <Button
+            android:id="@+id/qrscanlogin_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/qrscan" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/qrcode_image"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
 </LinearLayout>
