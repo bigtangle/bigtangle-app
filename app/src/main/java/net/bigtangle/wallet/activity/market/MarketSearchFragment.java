@@ -112,15 +112,16 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             // 首先回调的方法 返回int表示是否监听该方向
-            int dragFlags = ItemTouchHelper.UP|ItemTouchHelper.DOWN;//拖拽
-            int swipeFlags = ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT;//侧滑删除
-            return makeMovementFlags(dragFlags,swipeFlags);
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;//拖拽
+            int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;//侧滑删除
+            return makeMovementFlags(dragFlags, swipeFlags);
         }
+
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             // 滑动事件
-            Collections.swap(itemList,viewHolder.getAdapterPosition(),target.getAdapterPosition());
-            mAdapter.notifyItemMoved(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            Collections.swap(itemList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            mAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             return false;
         }
 
@@ -139,7 +140,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         }
     });
 
-    private void cancelOrderDo(MarketOrderItem marketOrderItem)  {
+    private void cancelOrderDo(MarketOrderItem marketOrderItem) {
         try {
             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
@@ -153,8 +154,9 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                     break;
                 }
             }
-        }catch (Exception e){
-            HashMap<String,Object> infoMap = UpdateUtil.showExceptionInfo(e);;
+        } catch (Exception e) {
+            HashMap<String, Object> infoMap = UpdateUtil.showExceptionInfo(e);
+            ;
             new LovelyInfoDialog(getContext())
                     .setTopColorRes(R.color.colorPrimary)
                     .setIcon(R.drawable.ic_error_white_24px)
@@ -265,7 +267,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
                     for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters,getString(R.string.buy),getString(R.string.sell));
+                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
                         String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                         if (StringUtils.isBlank(tokenName)) {
                             tokenName = marketOrderItem.getTokenId();
@@ -273,6 +275,8 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                         marketOrderItem.setTokenName(tokenName);
                         itemList.add(marketOrderItem);
                     }
+                    if (itemList != null && !itemList.isEmpty())
+                        itemList = OrderUtil.resetOrderList(itemList);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -284,7 +288,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                 }
             }
         }).execute();
-        itemList= OrderUtil.resetOrderList(itemList);
+        itemList = OrderUtil.resetOrderList(itemList);
     }
 
     @Override

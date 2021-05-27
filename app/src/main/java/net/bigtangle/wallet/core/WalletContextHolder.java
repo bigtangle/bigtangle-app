@@ -18,7 +18,7 @@ public class WalletContextHolder {
 
     private WalletAppKit walletAppKit;
 
-    public static NetworkParameters networkParameters = MainNetParams.get();//MainNetParams.get();
+    public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
 
 
     private String password;

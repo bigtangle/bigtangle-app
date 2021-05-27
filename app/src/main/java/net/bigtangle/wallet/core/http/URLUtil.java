@@ -89,34 +89,49 @@ public class URLUtil {
             return certificates;
         });
     }
+
     public Future<List<CertificateVO>> calculateCertificate(Wallet wallet) {
         return executor.submit(() -> {
-            List<CertificateVO> certificates = new ArrayList<CertificateVO>();
-            List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate);
-            if (sds != null && !sds.isEmpty()) {
-                for (SignedDataWithToken s : sds) {
-                    Certificate certificate = new Certificate()
-                            .parse(Utils.HEX.decode(s.getSignedData().getSerializedData()));
-                    certificates.add(new CertificateVO(certificate, s.getToken().getTokennameDisplay()));
+            Log.i(LogConstant.TAG, "line1");
 
+            List<CertificateVO> certificates = new ArrayList<CertificateVO>();
+            Log.i(LogConstant.TAG, "line2");
+
+            List<SignedDataWithToken> sds = null;
+            try {
+                sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate);
+                Log.i(LogConstant.TAG, "SignedDataWithToken-certificates-size()" + certificates.size());
+                if (sds != null && !sds.isEmpty()) {
+                    for (SignedDataWithToken s : sds) {
+                        Certificate certificate = new Certificate()
+                                .parse(Utils.HEX.decode(s.getSignedData().getSerializedData()));
+                        certificates.add(new CertificateVO(certificate, s.getToken().getTokennameDisplay()));
+
+                    }
                 }
+            } catch (Exception e) {
+                Log.i(LogConstant.TAG, "error2：" + e.getMessage());
+                e.printStackTrace();
             }
+
             return certificates;
         });
     }
+
     public Future<List<IdentityVO>> calculateIdentity(Wallet wallet) {
         return executor.submit(() -> {
-            List<IdentityVO> certificates = new ArrayList<IdentityVO>();
+            List<IdentityVO> identities = new ArrayList<IdentityVO>();
             List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.identity);
+            Log.i(LogConstant.TAG, "SignedDataWithToken-identities-size()" + identities.size());
             if (sds != null && !sds.isEmpty()) {
                 for (SignedDataWithToken s : sds) {
                     IdentityData identityData = new IdentityData()
                             .parse(Utils.HEX.decode(s.getSignedData().getSerializedData()));
-                    certificates.add(new IdentityVO(identityData, s.getToken().getTokennameDisplay()));
+                    identities.add(new IdentityVO(identityData, s.getToken().getTokennameDisplay()));
 
                 }
             }
-            return certificates;
+            return identities;
         });
     }
 }
