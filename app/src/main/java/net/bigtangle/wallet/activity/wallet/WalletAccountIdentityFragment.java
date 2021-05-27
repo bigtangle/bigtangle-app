@@ -95,7 +95,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
         String idtoken = "";
         List<IdentityVO> identityDatas = null;
         try {
-            identityDatas = new URLUtil().calculateIdentity().get();
+            identityDatas = new URLUtil().calculateIdentityA().get();
             for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
                 Future<String> future2 = new URLUtil().getIdtoken(ecKey);
                 String temp = future2.get();

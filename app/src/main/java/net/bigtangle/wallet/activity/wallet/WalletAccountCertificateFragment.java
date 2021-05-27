@@ -66,7 +66,7 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
         List<CertificateVO> certificates=null;
         try {
             Log.i(LogConstant.TAG, "initdata 1" );
-            certificates = new URLUtil().calculateCertificate().get();
+            certificates = new URLUtil().calculateCertificateA().get();
             Log.i(LogConstant.TAG, "initdata 2" );
             for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
                 Future<String> future2 = new URLUtil().getIdtoken(ecKey);
