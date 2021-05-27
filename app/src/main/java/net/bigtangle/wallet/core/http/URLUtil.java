@@ -90,13 +90,17 @@ public class URLUtil {
         });
     }
 
-    public Future<List<CertificateVO>> calculateCertificate(Wallet wallet) {
+    public Future<List<CertificateVO>> calculateCertificate() {
         return executor.submit(() -> {
             Log.i(LogConstant.TAG, "line1");
-
+            Wallet wallet = WalletContextHolder.get().wallet();
             List<CertificateVO> certificates = new ArrayList<CertificateVO>();
             Log.i(LogConstant.TAG, "line2");
-
+            List<ECKey> keys = wallet.walletKeys(WalletContextHolder.get().getAesKey());
+            for (ECKey k : keys
+            ) {
+                Log.i(LogConstant.TAG, "pubkey" + k.getPublicKeyAsHex());
+            }
             List<SignedDataWithToken> sds = null;
             try {
                 sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate);
@@ -118,9 +122,10 @@ public class URLUtil {
         });
     }
 
-    public Future<List<IdentityVO>> calculateIdentity(Wallet wallet) {
+    public Future<List<IdentityVO>> calculateIdentity() {
         return executor.submit(() -> {
             List<IdentityVO> identities = new ArrayList<IdentityVO>();
+            Wallet wallet = WalletContextHolder.get().wallet();
             List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.identity);
             Log.i(LogConstant.TAG, "SignedDataWithToken-identities-size()" + identities.size());
             if (sds != null && !sds.isEmpty()) {
