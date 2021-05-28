@@ -109,54 +109,6 @@ public class CommonUtil {
     }
 
 
-    public static void identityList(ECKey signerKey, ECKey userKey, List<IdentityVO> identityDatas, Map<String, Token> tokennames) throws Exception {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
-        Log.i(LogConstant.TAG, "identityList start");
-        byte[] response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
-                Json.jsonmapper().writeValueAsString(param));
-        Log.i(LogConstant.TAG, "identityList end==" + response);
-        GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
-        tokennames.putAll(balancesResponse.getTokennames());
-        for (UTXO utxo : balancesResponse.getOutputs()) {
-            if (checkIdentity(utxo, tokennames)) {
-                //if (history) {
-                //  identitiesAdd(utxo, signerKey,identityDatas,tokennames);
-                //} else {
-                if (!utxo.isSpent()) {
-                    Log.i(LogConstant.TAG, "checkIdentity end");
-                    identitiesAdd(utxo, signerKey, identityDatas, tokennames);
-                }
-                // }
-
-            }
-        }
-    }
-
-    public static void certificateList(ECKey signerKey, ECKey userKey, List<CertificateVO> certificates, Map<String, Token> tokennames) throws Exception {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("toaddress", userKey.toAddress(WalletContextHolder.networkParameters).toString());
-        Log.i(LogConstant.TAG, "certificateList start");
-        byte[] response = OkHttp3Util.postString(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOutputsHistory.name(),
-                Json.jsonmapper().writeValueAsString(param));
-        Log.i(LogConstant.TAG, "certificateList end==" + response);
-        GetBalancesResponse balancesResponse = Json.jsonmapper().readValue(response, GetBalancesResponse.class);
-        tokennames.putAll(balancesResponse.getTokennames());
-        for (UTXO utxo : balancesResponse.getOutputs()) {
-            if (checkCertificate(utxo, tokennames)) {
-                //if (history) {
-                //  identitiesAdd(utxo, signerKey,identityDatas,tokennames);
-                //} else {
-                if (!utxo.isSpent()) {
-                    Log.i(LogConstant.TAG, "checkCertificate end");
-                    certificateAdd(utxo, signerKey, certificates, tokennames);
-                }
-                // }
-
-            }
-        }
-    }
-
     public static boolean checkIdentity(UTXO utxo, Map<String, Token> tokennames) {
         return TokenType.identity.ordinal() == tokennames.get(utxo.getTokenId()).getTokentype();
 
@@ -167,47 +119,5 @@ public class CommonUtil {
 
     }
 
-    public static void identitiesAdd(UTXO utxo, ECKey signerKey, List<IdentityVO> identityDatas, Map<String, Token> tokennames) throws Exception {
-        Token token = tokennames.get(utxo.getTokenId());
-        if (token == null || token.getTokenKeyValues() == null)
-            return;
-        for (KeyValue kvtemp : token.getTokenKeyValues().getKeyvalues()) {
-            if (kvtemp.getKey().equals(signerKey.getPublicKeyAsHex())) {
-                try {
-                    byte[] decryptedPayload = ECIESCoder.decrypt(signerKey.getPrivKey(),
-                            Utils.HEX.decode(kvtemp.getValue()));
-                    SignedData sdata = new SignedData().parse(decryptedPayload);
-                    IdentityData prescription = new IdentityData().parse(Utils.HEX.decode(sdata.getSerializedData()));
-                    identityDatas.add(new IdentityVO(prescription, token.getTokenid()));
-                    Log.i(LogConstant.TAG, "identitiesAdd");
-
-                    // sdata.verify();
-                    break;
-                } catch (Exception e) {
-                }
-            }
-        }
-    }
-
-    public static void certificateAdd(UTXO utxo, ECKey signerKey, List<CertificateVO> certificates, Map<String, Token> tokennames) throws Exception {
-        Token token = tokennames.get(utxo.getTokenId());
-        if (token == null || token.getTokenKeyValues() == null)
-            return;
-        for (KeyValue kvtemp : token.getTokenKeyValues().getKeyvalues()) {
-            if (kvtemp.getKey().equals(signerKey.getPublicKeyAsHex())) {
-                try {
-                    byte[] decryptedPayload = ECIESCoder.decrypt(signerKey.getPrivKey(),
-                            Utils.HEX.decode(kvtemp.getValue()));
-                    SignedData sdata = new SignedData().parse(decryptedPayload);
-                    Certificate certificate = new Certificate().parse(Utils.HEX.decode(sdata.getSerializedData()));
-                    certificates.add(new CertificateVO(certificate, token.getTokenid()));
-                    Log.i(LogConstant.TAG, "certificateAdd");
-                    // sdata.verify();
-                    break;
-                } catch (Exception e) {
-                }
-            }
-        }
-    }
 
 }
