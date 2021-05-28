@@ -16,6 +16,7 @@ import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.utils.OrderUtil;
 import net.bigtangle.utils.SignedDataWithToken;
 import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
@@ -112,7 +113,7 @@ public class URLUtil {
             }
             List<SignedDataWithToken> sds = null;
             try {
-                sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate);
+                sds = OrderUtil.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate,HttpConnectConstant.HTTP_SERVER_URL);
                 Log.i(LogConstant.TAG, "SignedDataWithToken-certificates-size()" + certificates.size());
                 if (sds != null && !sds.isEmpty()) {
                     for (SignedDataWithToken s : sds) {
@@ -135,7 +136,7 @@ public class URLUtil {
         return executor.submit(() -> {
             List<IdentityVO> identities = new ArrayList<IdentityVO>();
             Wallet wallet = WalletContextHolder.get().wallet();
-            List<SignedDataWithToken> sds = wallet.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.identity);
+            List<SignedDataWithToken> sds = OrderUtil.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.identity,HttpConnectConstant.HTTP_SERVER_URL);
             Log.i(LogConstant.TAG, "SignedDataWithToken-identities-size()" + identities.size());
             if (sds != null && !sds.isEmpty()) {
                 for (SignedDataWithToken s : sds) {
