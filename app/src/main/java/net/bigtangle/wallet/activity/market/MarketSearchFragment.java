@@ -33,7 +33,8 @@ import net.bigtangle.core.response.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.utils.OkHttp3Util;
-import net.bigtangle.utils.OrderUtil;
+
+import net.bigtangle.utils.WalletUtil;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.adapter.CurAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
@@ -276,7 +277,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                         itemList.add(marketOrderItem);
                     }
                     if (itemList != null && !itemList.isEmpty())
-                        itemList = OrderUtil.resetOrderList(itemList);
+                        itemList = WalletUtil.resetOrderList(itemList);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -288,7 +289,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                 }
             }
         }).execute();
-        itemList = OrderUtil.resetOrderList(itemList);
+        itemList = WalletUtil.resetOrderList(itemList);
     }
 
     @Override
