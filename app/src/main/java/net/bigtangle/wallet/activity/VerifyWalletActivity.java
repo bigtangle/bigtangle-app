@@ -64,54 +64,56 @@ public class VerifyWalletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify_wallet);
         ButterKnife.bind(this);
 
-        //isCheckPrivacy = (boolean) SPUtil.get(VerifyWalletActivity.this, SP_PRIVACY, false);
+        isCheckPrivacy = (boolean) SPUtil.get(VerifyWalletActivity.this, SP_PRIVACY, false);
 
-        //if (!isCheckPrivacy) {
-          //  showPrivacy();
-       // } else {
-            Toast.makeText(VerifyWalletActivity.this, getString(R.string.confirmed), Toast.LENGTH_SHORT).show();
+        if (!isCheckPrivacy) {
+            showPrivacy();
+        } else {
+            checkPassword();
+        }
+    }
 
-            if (WalletContextHolder.get().checkWalletHavePassword()) {
+    public void checkPassword() {
+        if (WalletContextHolder.get().checkWalletHavePassword()) {
 
-                this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
+            this.verifyWalletButton.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        final String password = passwordTextInput.getText().toString();
-                        if (StringUtils.isBlank(password)) {
-                            new LovelyInfoDialog(VerifyWalletActivity.this)
-                                    .setTopColorRes(R.color.colorPrimary)
-                                    .setIcon(R.drawable.ic_error_white_24px)
-                                    .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                    .setMessage(VerifyWalletActivity.this.getString(R.string.password_not_empty))
-                                    .show();
-                            return;
-                        }
-
-                        boolean b = WalletContextHolder.get().saveAndCheckPassword(password);
-                        if (!b) {
-                            new LovelyInfoDialog(VerifyWalletActivity.this)
-                                    .setTopColorRes(R.color.colorPrimary)
-                                    .setIcon(R.drawable.ic_error_white_24px)
-                                    .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
-                                    .setMessage(VerifyWalletActivity.this.getString(R.string.input_password_incorrect))
-                                    .show();
-                            return;
-                        }
-
-                        Intent intent = new Intent(VerifyWalletActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
+                @Override
+                public void onClick(View v) {
+                    final String password = passwordTextInput.getText().toString();
+                    if (StringUtils.isBlank(password)) {
+                        new LovelyInfoDialog(VerifyWalletActivity.this)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.password_not_empty))
+                                .show();
+                        return;
                     }
-                });
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-       // }
+
+                    boolean b = WalletContextHolder.get().saveAndCheckPassword(password);
+                    if (!b) {
+                        new LovelyInfoDialog(VerifyWalletActivity.this)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.input_password_incorrect))
+                                .show();
+                        return;
+                    }
+
+                    Intent intent = new Intent(VerifyWalletActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -296,6 +298,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
                 SPUtil.put(VerifyWalletActivity.this, SP_PRIVACY, true);
 
                 Toast.makeText(VerifyWalletActivity.this, getString(R.string.confirmed), Toast.LENGTH_SHORT).show();
+                checkPassword();
             }
         });
 

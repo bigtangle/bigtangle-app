@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name" translatable="false">Bigtangle Wallet</string>
+    <string name="app_name" translatable="false">bigtangle blockchain 钱包APP软件V1.0</string>
     <string name="version" translatable="false">Version</string>
 
     <string name="title_tab_transaction">Transaction</string>
