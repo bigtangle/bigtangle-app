@@ -60,20 +60,10 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
     }
 
     private void initData() {
-
-
-        String idtoken = "";
         List<CertificateVO> certificates=null;
         try {
             Log.i(LogConstant.TAG, "initdata 1" );
             certificates = new URLUtil().calculateCertificate().get();
-            Log.i(LogConstant.TAG, "initdata 2" );
-            for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-                Future<String> future2 = new URLUtil().getIdtoken(ecKey);
-                String temp = future2.get();
-                if (temp != null && !"".equals(temp.trim()))
-                    idtoken = temp;
-            }
         } catch (Exception e) {
             Log.i(LogConstant.TAG, "error1:"+e.getMessage() );
             e.printStackTrace();
@@ -86,7 +76,7 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
                 walletAccountCertificateItem.setTokenid(certificateVO.getTokenid());
                 walletAccountCertificateItem.setDescription(certificateVO.getCertificate().getDescription());
                 walletAccountCertificateItem.setPhoto(certificateVO.getCertificate().getFile());
-                walletAccountCertificateItem.setIdtoken(idtoken);
+                walletAccountCertificateItem.setIdtoken(certificateVO.getTokenid());
                 Log.i(LogConstant.TAG, "initData " + walletAccountCertificateItem.getDescription());
                 itemList.add(walletAccountCertificateItem);
             }

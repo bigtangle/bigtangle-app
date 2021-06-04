@@ -92,21 +92,15 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
 
     private void initData() {
 
-        String idtoken = "";
+
         List<IdentityVO> identityDatas = null;
         try {
             identityDatas = new URLUtil().calculateIdentity().get();
-            for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
-                Future<String> future2 = new URLUtil().getIdtoken(ecKey);
-                String temp = future2.get();
-                if (temp != null && !"".equals(temp.trim()))
-                    idtoken = temp;
 
-            }
         } catch (Exception e) {
 
         }
-        Log.i(LogConstant.TAG, "idtoken " + idtoken);
+
         itemList.clear();
 
         if (identityDatas != null && !identityDatas.isEmpty()) {
@@ -118,8 +112,7 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
                 walletAccountIdentiyItem.setHomeaddress(identityVO.getIdentityData().getIdentityCore().getPlaceofbirth());
                 walletAccountIdentiyItem.setSex(getSex(identityVO.getIdentityData().getIdentityCore().getSex()));
                 walletAccountIdentiyItem.setPhoto(identityVO.getIdentityData().getPhoto());
-                Log.i(LogConstant.TAG, "initData idtoken " + idtoken);
-                walletAccountIdentiyItem.setIdtoken(idtoken);
+                walletAccountIdentiyItem.setIdtoken(identityVO.getTokenid());
                 Log.i(LogConstant.TAG, "initData " + walletAccountIdentiyItem.getIdentitynumber());
                 itemList.add(walletAccountIdentiyItem);
             }
