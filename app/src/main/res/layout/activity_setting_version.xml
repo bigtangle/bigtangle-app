@@ -42,8 +42,8 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnCount="2"
-                android:rowCount="1">
+                android:columnCount="1"
+                android:rowCount="3">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -59,6 +59,17 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center" />
+
+                <Button
+                    android:id="@+id/privacy_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/bottom_confirm"
+                    android:text="@string/opt_privacy"
+                    android:textSize="16sp" />
             </GridLayout>
         </ScrollView>
     </LinearLayout>
