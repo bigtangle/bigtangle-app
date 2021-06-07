@@ -213,7 +213,7 @@
 
 
     <string name="shop_button">商城</string>
-    <string name="qrscan">二维码扫描</string>
+    <string name="qrscan">扫码登录</string>
     <string name="price_warn">价格超出当前价格的30%</string>
     <string name="lastPrice">当前价格</string>
 

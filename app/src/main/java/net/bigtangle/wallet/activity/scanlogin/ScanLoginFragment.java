@@ -75,8 +75,7 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
     @BindView(R.id.qrscanlogin_button)
     Button qrscanloginButton;
-    @BindView(R.id.qrcode_image)
-    ImageView qrcodeImageView;
+
 
     //qr code scanner object
     private IntentIntegrator qrScan;
@@ -92,12 +91,7 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
     @Override
     public void onLazyLoad() {
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
-        String address=issuedKeys.get(0).toAddress(WalletContextHolder.networkParameters).toBase58();
-        String content="{\"address\":\""+address+"\"}";
-        Bitmap bitmap = CommonUtil.createQRCodeBitmap(content, 500, 500,"UTF-8","H", "1", Color.BLACK, Color.WHITE);
 
-        qrcodeImageView.setImageBitmap(bitmap);
     }
 
     @Override

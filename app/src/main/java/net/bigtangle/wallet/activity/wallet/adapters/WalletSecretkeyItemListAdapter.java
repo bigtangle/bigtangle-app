@@ -1,15 +1,19 @@
 package net.bigtangle.wallet.activity.wallet.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.model.WalletSecretkeyItem;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.util.List;
 
@@ -50,7 +54,9 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         TextView addressTextView;
 
         @BindView(R.id.pubkeyTextView)
-       TextView pubkeyTextView;
+        TextView pubkeyTextView;
+        @BindView(R.id.address_qrcode_image)
+        ImageView addressQrcodeImageView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -60,6 +66,9 @@ public class WalletSecretkeyItemListAdapter extends RecyclerView.Adapter<WalletS
         public void bind(WalletSecretkeyItem walletSecretkeyItem) {
             addressTextView.setText(walletSecretkeyItem.getAddress());
             pubkeyTextView.setText(walletSecretkeyItem.getPubKeyHex());
+            String content = "{\"tokenid\":\"" + walletSecretkeyItem.getAddress() + "\"}";
+            Bitmap bitmap = CommonUtil.createQRCodeBitmap(content, 500, 500, "UTF-8", "H", "1", Color.BLACK, Color.WHITE);
+            addressQrcodeImageView.setImageBitmap(bitmap);
         }
     }
 }

@@ -31,7 +31,7 @@
         barColorWhenSelected="#4F6194" />
     <tab
         id="@+id/tab_scanlogin"
-        icon="@drawable/ic_settings_black"
+        icon="@drawable/ic_qrcode_black"
         title="@string/qrscan"
         barColorWhenSelected="#4F6194" />
     <!--<tab
