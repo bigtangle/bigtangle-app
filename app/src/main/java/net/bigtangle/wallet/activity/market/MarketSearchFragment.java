@@ -230,6 +230,10 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     @Override
     public void onLazyLoad() {
+
+    }
+
+    private void initOrderdata() {
         String state = "";
         for (int i = 0; i < stateRadioGroup.getChildCount(); i++) {
             RadioButton radioButton = (RadioButton) stateRadioGroup.getChildAt(i);
@@ -303,7 +307,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
             @Override
             public void onClick(View v) {
-                onLazyLoad();
+                initOrderdata();
             }
         });
 
@@ -333,7 +337,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     @Override
     public void onRefresh() {
-        this.onLazyLoad();
+        this.initOrderdata();
         this.swipeContainer.setRefreshing(false);
         this.mAdapter.notifyDataSetChanged();
     }
