@@ -279,10 +279,24 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                             tokenName = marketOrderItem.getTokenId();
                         }
                         marketOrderItem.setTokenName(tokenName);
+                        if (getString(R.string.buy).equals(marketOrderItem.getType()))
+                            marketOrderItem.setType("buy");
+                        else
+                            marketOrderItem.setType("sell");
                         itemList.add(marketOrderItem);
+
                     }
-                    if (itemList != null && !itemList.isEmpty())
-                      itemList = WalletUtil.resetOrderList(itemList);
+                    if (itemList != null && !itemList.isEmpty()) {
+                        itemList = WalletUtil.resetOrderList(itemList);
+                        for (MarketOrderItem marketOrderItem : itemList) {
+                            if ("buy".equals(marketOrderItem.getType()))
+                                marketOrderItem.setType(getString(R.string.buy));
+                            else
+                                marketOrderItem.setType(getString(R.string.sell));
+                        }
+                    }
+
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -294,7 +308,6 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                 }
             }
         }).execute();
-        //itemList = WalletUtil.resetOrderList(itemList);
     }
 
     @Override

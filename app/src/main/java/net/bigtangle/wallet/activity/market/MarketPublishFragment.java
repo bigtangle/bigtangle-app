@@ -82,6 +82,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     private List<TokenItem> tokenItemList;
     private boolean flag = false;
+    private boolean publishFlag = false;
 
     public static MarketPublishFragment newInstance() {
         MarketPublishFragment fragment = new MarketPublishFragment();
@@ -219,7 +220,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                     || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
 
                                 flag = true;
-                                throw new ToastException(getContext().getString(R.string.lastPrice)+lastPrice.toString()+","+getContext().getString(R.string.price_warn));
+                                throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
 
                             }
                         try {
@@ -232,18 +233,20 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
                             flag = false;
-                            new LovelyInfoDialog(getContext())
-                                    .setTopColorRes(R.color.colorPrimary)
-                                    .setIcon(R.drawable.ic_info_white_24px)
-                                    .setTitle(getContext().getString(R.string.dialog_title_info))
-                                    .setMessage(getContext().getString(R.string.successful_order_release))
-                                    .show();
+                            publishFlag = true;
 
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
                 }).execute();
+                if (publishFlag)
+                    new LovelyInfoDialog(getContext())
+                            .setTopColorRes(R.color.colorPrimary)
+                            .setIcon(R.drawable.ic_info_white_24px)
+                            .setTitle(getContext().getString(R.string.dialog_title_info))
+                            .setMessage(getContext().getString(R.string.successful_order_release))
+                            .show();
             }
         });
 
