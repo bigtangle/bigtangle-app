@@ -51,21 +51,21 @@ public class MarketFragment extends BaseLazyFragment {
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(MarketSearchFragment.newInstance());
         fragments.add(MarketPublishFragment.newInstance());
-        fragments.add(MarketOverCounterTradingFragment.newInstance());
-        fragments.add(MarketExchangeFragment.newInstance());
-        fragments.add(MarketSignatureFragment.newInstance());
+//        fragments.add(MarketOverCounterTradingFragment.newInstance());
+//        fragments.add(MarketExchangeFragment.newInstance());
+//        fragments.add(MarketSignatureFragment.newInstance());
 
         String[] title = new String[]{
                 this.getString(R.string.search),
-                this.getString(R.string.market_tab_order),
-                this.getString(R.string.market_tab_outside_trade),
-                this.getString(R.string.market_tab_exchange),
-                this.getString(R.string.transaction_tab_signature)
+                this.getString(R.string.market_tab_order)
+//                this.getString(R.string.market_tab_outside_trade),
+//                this.getString(R.string.market_tab_exchange),
+//                this.getString(R.string.transaction_tab_signature)
         };
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(2);
     }
 
     @Override

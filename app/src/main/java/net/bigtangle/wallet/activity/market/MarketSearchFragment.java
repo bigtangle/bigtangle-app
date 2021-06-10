@@ -266,6 +266,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             public void execute() throws Exception {
                 try {
                     Map<String, String> tokenNameMap = HttpService.getTokenNameMap();
+
                     byte[] jsonStr = OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getOrders.name(),
                             Json.jsonmapper().writeValueAsString(requestParam).getBytes());
 
@@ -281,7 +282,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                         itemList.add(marketOrderItem);
                     }
                     if (itemList != null && !itemList.isEmpty())
-                        itemList = WalletUtil.resetOrderList(itemList);
+                      itemList = WalletUtil.resetOrderList(itemList);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -293,7 +294,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
                 }
             }
         }).execute();
-        itemList = WalletUtil.resetOrderList(itemList);
+        //itemList = WalletUtil.resetOrderList(itemList);
     }
 
     @Override

@@ -26,20 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/market_tab_order" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/market_tab_outside_trade" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/market_tab_exchange" />
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/transaction_tab_signature" />
 
     </android.support.design.widget.TabLayout>
 
