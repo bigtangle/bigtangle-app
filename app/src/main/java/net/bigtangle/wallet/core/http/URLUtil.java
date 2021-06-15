@@ -10,6 +10,7 @@ import net.bigtangle.core.KeyValue;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.TokenType;
 import net.bigtangle.core.UTXO;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.encrypt.ECIESCoder;
@@ -125,5 +126,14 @@ public class URLUtil {
         });
     }
 
+    public Future<UserSettingDataInfo> calculateUserdata() {
+        return executor.submit(() -> {
+            List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+            ECKey pubKeyTo = issuedKeys.get(0);
+            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            UserSettingDataInfo userSettingDataInfo = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
+            return userSettingDataInfo;
+        });
+    }
 
 }

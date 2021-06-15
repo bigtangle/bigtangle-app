@@ -29,6 +29,7 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.http.URLUtil;
 
 import org.spongycastle.crypto.InvalidCipherTextException;
 
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,7 +129,9 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
 
 
         try {
-            UserSettingDataInfo userSettingDataInfo = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo,false);
+            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
+
             HashMap<String, String> requestParam = new HashMap<String, String>();
             requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
             requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
@@ -150,7 +154,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
                         ContactInfo contactInfo = new ContactInfo().parse(bytes);
                         List<Contact> list = contactInfo.getContactList();
                         if (list != null && !list.isEmpty()) {
-                            UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo,false);
+                            UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
                             if (userSettingDataInfo0 == null) {
                                 userSettingDataInfo0 = new UserSettingDataInfo();
                             }
@@ -190,9 +194,9 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
                 }
 
             }
-        } catch (IOException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (InvalidCipherTextException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
