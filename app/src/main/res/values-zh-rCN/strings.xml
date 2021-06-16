@@ -59,7 +59,7 @@
     <string name="Unopened">暂未开启</string>
     <string name="purpose">用途</string>
     <string name="type">类型</string>
-
+    <string name="pricetable">交易报表</string>
     <string name="only_oneself">仅自已</string>
     <string name="choose_wallet">选择钱包</string>
     <string name="remove_wallet">移除钱包</string>

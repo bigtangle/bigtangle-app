@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.core.http;
 
+import android.util.JsonReader;
 import android.util.Log;
 
 import net.bigtangle.apps.data.Certificate;
@@ -27,6 +28,8 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,6 +136,21 @@ public class URLUtil {
             WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             UserSettingDataInfo userSettingDataInfo = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
             return userSettingDataInfo;
+        });
+    }
+
+    public Future<String> calcTokenDisplay() {
+        return executor.submit(() -> {
+            OkHttpClient okHttpClient = new OkHttpClient();
+            final Request request = new Request.Builder()
+                    .url(WalletContextHolder.getMBigtangle()+"/chartdata/tokendata")
+                    .get()//默认就是GET请求，可以不写
+                    .build();
+            Call call = okHttpClient.newCall(request);
+
+            Response response = call.execute();
+            String json = response.body().string();
+            return json;
         });
     }
 
