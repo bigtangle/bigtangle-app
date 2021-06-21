@@ -84,14 +84,16 @@ public class MarketPriceFragment extends BaseLazyFragment implements SwipeRefres
             JSONObject jsonObject = new JSONObject(jsonStr);
             JSONArray tokenList = jsonObject.getJSONArray("tokenList");
             JSONObject data = jsonObject.getJSONObject("data");
-            for(int i=0;i<tokenList.length();i++){
-                JSONObject token=(JSONObject)tokenList.get(i);
-                String tokenid=token.getString("tokenid");
-                String tokenname=token.getString("tokennameDisplay");
-                JSONObject tokenprice=data.getJSONObject(tokenid);
-                String price=tokenprice.getString("price");
-                String executedQuantity=tokenprice.getString("executedQuantity");
-                itemList.add(new MarketPrice(tokenid,tokenname,price,executedQuantity));
+            for (int i = 0; i < tokenList.length(); i++) {
+                JSONObject token = (JSONObject) tokenList.get(i);
+                String tokenid = token.getString("tokenid");
+                String tokenname = token.getString("tokennameDisplay");
+                JSONObject tokenprice = data.getJSONObject(tokenid);
+                String price = tokenprice.getString("price");
+                String priceChange = tokenprice.getString("priceChange");
+                String executedQuantity = tokenprice.getString("executedQuantity");
+                String url = tokenprice.getString("url");
+                itemList.add(new MarketPrice(tokenid, tokenname, price + "（" + priceChange + "）", executedQuantity, url));
             }
         } catch (Exception e) {
         }

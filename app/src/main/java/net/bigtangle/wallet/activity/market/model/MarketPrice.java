@@ -1,16 +1,25 @@
 package net.bigtangle.wallet.activity.market.model;
 
 public class MarketPrice {
-    private  String tokenid;
-    private  String tokenname;
-    private  String price ;
-    private  String executedQuantity;
+    private String tokenid;
+    private String tokenname;
+    private String price;
+    private String executedQuantity;
+    private String url;
 
     public MarketPrice(String tokenid, String tokenname, String price, String executedQuantity) {
         this.tokenid = tokenid;
         this.tokenname = tokenname;
         this.price = price;
         this.executedQuantity = executedQuantity;
+    }
+
+    public MarketPrice(String tokenid, String tokenname, String price, String executedQuantity, String url) {
+        this.tokenid = tokenid;
+        this.tokenname = tokenname;
+        this.price = price;
+        this.executedQuantity = executedQuantity;
+        this.url = url;
     }
 
     public String getTokenid() {
@@ -43,5 +52,13 @@ public class MarketPrice {
 
     public void setExecutedQuantity(String executedQuantity) {
         this.executedQuantity = executedQuantity;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

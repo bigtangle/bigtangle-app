@@ -235,4 +235,5 @@
     <string name="confirmed">The user note has been confirmed</string>
     <string name="opt_terms">Terms of Use</string>
     <string name="opt_privacy">Privacy Policy</string>
+    <string name="otherPrice">otherPrice</string>
 </resources>

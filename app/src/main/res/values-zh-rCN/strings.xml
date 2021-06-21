@@ -234,4 +234,5 @@
     <string name="opt_terms">用户协议</string>
     <string name="opt_privacy">隐私政策</string>
     <string name="insufficient_token">Insufficient Token Amount</string>
+    <string name="otherPrice">外盘</string>
 </resources>

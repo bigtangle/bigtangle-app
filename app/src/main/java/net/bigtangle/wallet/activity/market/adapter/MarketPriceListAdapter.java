@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -87,6 +88,10 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
         Button buyButton;
         @BindView(R.id.sell_button)
         Button sellButton;
+        @BindView(R.id.chart_button)
+        Button chartButton;
+        @BindView(R.id.other_button)
+        Button otherButton;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -109,6 +114,45 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
                 @Override
                 public void onClick(View v) {
 
+                }
+            });
+            this.chartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(
+                                        "https://m.bigtangle.net/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
+                                intent.setData(content_url);
+                                mContext.startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            });
+            this.otherButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(marketPrice.getUrl());//此处填链接
+                                intent.setData(content_url);
+                                mContext.startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                 }
             });
         }
