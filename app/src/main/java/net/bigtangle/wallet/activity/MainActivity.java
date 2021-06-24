@@ -36,15 +36,15 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(WalletFragment.newInstance());
 //        fragments.add(MarketFragment.newInstance());
 //        fragments.add(TokenFragment.newInstance());
-//        fragments.add(SettingsFragment.newInstance());
-//        fragments.add(ScanLoginFragment.newInstance());
+       fragments.add(SettingsFragment.newInstance());
+        fragments.add(ScanLoginFragment.newInstance());
 
         String[] title = new String[]{//getString(R.string.title_tab_transaction),
                 getString(R.string.title_tab_wallet),
                // getString(R.string.title_tab_market),
               // getString(R.string.title_tab_token),
-               // getString(R.string.title_tab_settings),
-              //  getString(R.string.qrscan)
+               getString(R.string.title_tab_settings),
+                getString(R.string.qrscan)
                 };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mViewPager.setOffscreenPageLimit(6);
+        mViewPager.setOffscreenPageLimit(3);
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
