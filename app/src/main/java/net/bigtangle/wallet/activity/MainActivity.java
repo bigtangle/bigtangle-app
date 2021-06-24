@@ -32,19 +32,19 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
 
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(TransactionFragment.newInstance());
+//        fragments.add(TransactionFragment.newInstance());
         fragments.add(WalletFragment.newInstance());
-        fragments.add(MarketFragment.newInstance());
-        fragments.add(TokenFragment.newInstance());
-        fragments.add(SettingsFragment.newInstance());
-        fragments.add(ScanLoginFragment.newInstance());
+//        fragments.add(MarketFragment.newInstance());
+//        fragments.add(TokenFragment.newInstance());
+//        fragments.add(SettingsFragment.newInstance());
+//        fragments.add(ScanLoginFragment.newInstance());
 
-        String[] title = new String[]{getString(R.string.title_tab_transaction),
+        String[] title = new String[]{//getString(R.string.title_tab_transaction),
                 getString(R.string.title_tab_wallet),
-                getString(R.string.title_tab_market),
-                getString(R.string.title_tab_token),
-                getString(R.string.title_tab_settings),
-                getString(R.string.qrscan)
+               // getString(R.string.title_tab_market),
+              // getString(R.string.title_tab_token),
+               // getString(R.string.title_tab_settings),
+              //  getString(R.string.qrscan)
                 };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
