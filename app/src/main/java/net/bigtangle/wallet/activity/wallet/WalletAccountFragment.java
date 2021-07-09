@@ -150,21 +150,12 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-
-                            PackageManager packageManager = getActivity().getPackageManager();
-                            if (checkPackInfo("com.alibaba.sample")) {
-                                Intent intent = packageManager.getLaunchIntentForPackage("com.alibaba.sample");
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(
-                                        "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
-                                intent.setData(content_url);
-                                startActivity(intent);
-                            }
-
-
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(
+                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
+                            intent.setData(content_url);
+                            startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
