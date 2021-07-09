@@ -59,8 +59,12 @@ public class WalletContextHolder {
     }
 
     public boolean checkWalletHavePassword() {
-        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
-        return keyCrypter != null;
+        try {
+            final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) WalletContextHolder.get().wallet().getKeyCrypter();
+            return keyCrypter != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean saveAndCheckPassword(String password) {

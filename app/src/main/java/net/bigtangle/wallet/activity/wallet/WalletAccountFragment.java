@@ -1,6 +1,8 @@
 package net.bigtangle.wallet.activity.wallet;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,16 +61,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     private List<WalletAccountItem> itemList;
 
-    @BindView(R.id.shop_button)
-    Button shopButton;
-
-    @BindView(R.id.recharge_button)
-    Button rechargeButton;
-    @BindView(R.id.mining_button)
-    Button miningButton;
-
-    @BindView(R.id.payoff_button)
-    Button payoffButton;
 
     @BindView(R.id.aliverify_button)
     Button aliverifyButton;
@@ -94,6 +86,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletAccountItem>();
@@ -141,79 +134,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void initEvent() {
-        this.shopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/browse.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
-        this.rechargeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<ECKey> ecKeys = WalletContextHolder.get().walletKeys();
-                if (CollectionUtils.isEmpty(ecKeys)) {
-                    new LovelyInfoDialog(getContext())
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(R.string.dialog_title_error)
-                            .setMessage(R.string.current_wallet_eckeys_empty)
-                            .show();
-                    return;
-                }
 
-                ECKey ecKey = ecKeys.get(0);
-                final String address = ecKey.toAddress(WalletContextHolder.networkParameters).toBase58();
-
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(WalletContextHolder.getMBigtangle() +
-                        "/public/recharge.jsf?address=" + address);//此处填链接
-                intent.setData(content_url);
-                startActivity(intent);
-            }
-        });
-        this.payoffButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/payoff.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
-        this.miningButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/wallet/miningreward.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
 
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,12 +150,21 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.VIEW");
-                            Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
-                            intent.setData(content_url);
-                            startActivity(intent);
+
+                            PackageManager packageManager = getActivity().getPackageManager();
+                            if (checkPackInfo("com.alibaba.sample")) {
+                                Intent intent = packageManager.getLaunchIntentForPackage("com.alibaba.sample");
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(
+                                        "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
+                                intent.setData(content_url);
+                                startActivity(intent);
+                            }
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -307,6 +237,22 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
+    }
+
+    /**
+     * 检查包是否存在
+     *
+     * @param packname
+     * @return
+     */
+    private boolean checkPackInfo(String packname) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getActivity().getPackageManager().getPackageInfo(packname, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo != null;
     }
 
     @Override
