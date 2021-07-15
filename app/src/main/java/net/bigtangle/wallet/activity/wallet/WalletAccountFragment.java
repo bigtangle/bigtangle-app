@@ -3,6 +3,8 @@ package net.bigtangle.wallet.activity.wallet;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,9 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.SPUtil;
+import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
@@ -35,6 +40,7 @@ import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.BrowserAccessTokenContext;
 import net.bigtangle.wallet.core.LocalStorageContext;
+import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -42,6 +48,7 @@ import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,8 +78,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.refresh_button)
     Button refreshButton;
-    @BindView(R.id.load_key_button)
-    Button loadKeyButton;
+
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -98,7 +104,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     public void refreshData() {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
@@ -185,48 +192,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
-        this.loadKeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
-                    @Override
-                    public void downloadFileStatus(boolean success, Exception e) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (success) {
-                                    File file = new File(LocalStorageContext.get().readWalletDirectory() + "download.wallet");
-                                    String directory = file.getParent() + "/";
-                                    String filename = file.getName();
-                                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    if (WalletContextHolder.get().checkWalletHavePassword()) {
-                                        new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
-                                                .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
-
-                                                    @Override
-                                                    public void verifyPassword(String password) {
-                                                        onLazyLoad();
-                                                    }
-                                                }).show();
-                                    } else {
-                                        onLazyLoad();
-                                    }
-                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail) + e.getMessage(), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                }
-                            }
-                        });
-                    }
-                }).show();
-            }
-        });
 
     }
 
