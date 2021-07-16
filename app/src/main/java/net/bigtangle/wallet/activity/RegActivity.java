@@ -93,8 +93,10 @@ public class RegActivity extends AppCompatActivity {
             doReg();
             showlog("注册成功");
 
-            SPUtil.put(RegActivity.this, "username", signin);
-            SPUtil.put(RegActivity.this, "password", password);
+            //SPUtil.put(RegActivity.this, "username", signin);
+            //SPUtil.put(RegActivity.this, "password", password);
+            WalletContextHolder.username=signin;
+            WalletContextHolder.userpwd=password;
             Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

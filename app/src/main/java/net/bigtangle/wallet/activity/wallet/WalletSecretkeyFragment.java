@@ -84,7 +84,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onLazyLoad() {
         this.itemList.clear();
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
@@ -125,7 +125,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                             @Override
                             public void onClick(View v) {
                                 ECKey ecKey = new ECKey();
-                                WalletContextHolder.get().wallet().importKey(ecKey);
+                                WalletContextHolder.wallet.importKey(ecKey);
 
                                 onLazyLoad();
                             }
@@ -168,7 +168,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     String filename = file.getName();
                                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
                                     WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                                    if (WalletContextHolder.checkWalletHavePassword()) {
                                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
 
@@ -225,13 +225,13 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                             byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
                             byte[] privKeyBuf = Utils.HEX.decode(privateKey);
                             ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
-                            if (WalletContextHolder.get().getAesKey() == null) {
-                                WalletContextHolder.get().wallet().importKey(ecKey);
+                            if (WalletContextHolder.getAesKey() == null) {
+                                WalletContextHolder.wallet.importKey(ecKey);
                             } else {
                                 List<ECKey> walletKeys = new ArrayList<ECKey>();
                                 walletKeys.add(ecKey);
-                                WalletContextHolder.get().wallet().importKeysAndEncrypt(walletKeys,
-                                        WalletContextHolder.get().getAesKey());
+                                WalletContextHolder.wallet.importKeysAndEncrypt(walletKeys,
+                                        WalletContextHolder.getAesKey());
                             }
                             onLazyLoad();
                         } catch (Exception e) {

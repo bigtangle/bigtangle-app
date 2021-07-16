@@ -154,7 +154,8 @@ public class URLUtil {
 
     }
 
-    public InputStream downloadWalletFileToDB(String signin, String password, String filename) {
+    public void downloadWalletFileToDB(String signin, String password) {
+        Log.i("test","signin:"+signin+";password:"+password);
         String url = WalletContextHolder.getMBigtangle() +
                 "/public/walletfilepullout?signin=" + signin + "&password=" + password;
 
@@ -173,26 +174,29 @@ public class URLUtil {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                Log.i("test","onFailure",e);
                 e.printStackTrace();
 
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.d("bigtangle-wallet", "response.code()" + response.code());
                 if (response.code() != 200) {
                     return;
                 }
-
-                try {
-
-                    is[0] = response.body().byteStream();
-                } catch (Exception e) {
-
+                if (response.body().byteStream() != null) {
+                    try {
+                        WalletContextHolder.loadWallet(response.body().byteStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Log.i("test","response.body().byteStream() == null");
                 }
 
             }
         });
-        return is[0];
     }
 
     public Future<String> getIdtoken(ECKey userKey) {

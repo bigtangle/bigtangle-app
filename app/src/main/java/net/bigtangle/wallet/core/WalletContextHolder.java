@@ -30,10 +30,11 @@ public class WalletContextHolder {
     private WalletAppKit walletAppKit;
 
     public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
-
+    public static InputStream inputStream;
     public static Wallet wallet;
     private static String password;
-
+    public static String username;
+    public static String userpwd;
 
     public void reloadWalletFile(String directory, String filename) {
         walletAppKit = new WalletAppKit(networkParameters, new File(directory), filename);
@@ -42,7 +43,7 @@ public class WalletContextHolder {
 
     public static String getMBigtangle() {
         if (networkParameters instanceof TestParams)
-            return "https://testm.bigtangle.xyz";
+            return "http://192.168.1.6:8080";
         else return "https://m.bigtangle.xyz";
     }
 
@@ -115,9 +116,10 @@ public class WalletContextHolder {
     }
 
 
-    public static Wallet loadWallet(InputStream inputStream) {
+    public static Wallet loadWallet(InputStream is) {
         try {
-            wallet = WalletUtil.loadWallet(false, inputStream, networkParameters);
+            inputStream=is;
+            wallet = WalletUtil.loadWallet(false, is, networkParameters);
             return wallet;
         } catch (Exception e) {
             return null;

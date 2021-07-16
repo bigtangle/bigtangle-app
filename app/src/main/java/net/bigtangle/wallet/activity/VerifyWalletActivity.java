@@ -70,8 +70,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String un = (String) SPUtil.get(VerifyWalletActivity.this, "username", "");
-        String pwd = (String) SPUtil.get(VerifyWalletActivity.this, "password", "");
+        String un = WalletContextHolder.username;
+        String pwd = WalletContextHolder.userpwd;
         downloadWallet(un, pwd);
 
 
@@ -157,15 +157,15 @@ public class VerifyWalletActivity extends AppCompatActivity {
     }
 
     private void downloadWallet(String signin, String password) {
-        String un = (String) SPUtil.get(VerifyWalletActivity.this, "username", "");
+        String un = WalletContextHolder.username;
         MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(VerifyWalletActivity.this);
-        InputStream inputStream = new URLUtil().downloadWalletFileToDB(signin, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet");
-        WalletContextHolder.loadWallet(inputStream);
+        new URLUtil().downloadWalletFileToDB(signin, password);
+
         try {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put("username", un);
-            cv.put("file_data", urlTobyte(inputStream));
+            cv.put("file_data", urlTobyte(WalletContextHolder.inputStream));
 
             long result = db.insert("walletdata", null, cv);
 
