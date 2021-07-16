@@ -195,7 +195,7 @@ public class AliMainActivity extends AppCompatActivity {
         OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
         Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
-                "/public/aliyunToken?bizId=" + bizId
+                "/public/aliyunHuaweiToken?bizId=" + bizId
                 + "&signin=" + signin + "&password=" + password + "&walletpwd=" + walletpwd).get().build();
         Response response = client.newCall(request).execute();
         if (response.isSuccessful()) {
