@@ -123,6 +123,7 @@ public class RegActivity extends AppCompatActivity {
                         "/public/reg?username=" + signin + "&password=" + password).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
+                    WalletContextHolder.loadWallet(response.body().byteStream());
                 } else {
                     throw new RuntimeException("" + response);
                 }

@@ -72,7 +72,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
 
         String un = WalletContextHolder.username;
         String pwd = WalletContextHolder.userpwd;
-        downloadWallet(un, pwd);
+       // downloadWallet(un, pwd);
 
 
         setContentView(R.layout.activity_verify_wallet);
