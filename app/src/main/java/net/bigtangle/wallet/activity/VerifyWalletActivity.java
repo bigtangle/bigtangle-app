@@ -130,8 +130,73 @@ public class VerifyWalletActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NOT_NOTICE) {
+            //由于不知道是否选择了允许所以需要再次判断
+            requetPermission();
+        }
+    }
 
+    private void requetPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
+                    Toast.makeText(this, "" + VerifyWalletActivity.this.getString(R.string.permissions) + permissions[i] + VerifyWalletActivity.this.getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {//用户选择了禁止不再询问
+                        new LovelyStandardDialog(VerifyWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setButtonsColor(Color.WHITE)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.click_permit))
+                                .setPositiveButton(VerifyWalletActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getPackageName(), null);//注意就是"package",不用改成自己的包名
+                                        intent.setData(uri);
+                                        startActivityForResult(intent, NOT_NOTICE);
+                                    }
+                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        }).show();
+                    } else {//选择禁止
+                        new LovelyStandardDialog(VerifyWalletActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setButtonsColor(Color.WHITE)
+                                .setIcon(R.drawable.ic_error_white_24px)
+                                .setTitle(VerifyWalletActivity.this.getString(R.string.dialog_title_info))
+                                .setMessage(VerifyWalletActivity.this.getString(R.string.click_permit))
+                                .setPositiveButton(VerifyWalletActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ActivityCompat.requestPermissions(VerifyWalletActivity.this,
+                                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                                    }
+                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        }).show();
+                    }
+                }
+            }
+        }
+    }
 
 
 
