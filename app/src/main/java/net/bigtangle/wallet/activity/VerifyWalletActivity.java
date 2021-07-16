@@ -20,6 +20,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,8 +37,10 @@ import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.update.UpdateManager;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,11 +72,6 @@ public class VerifyWalletActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String un = WalletContextHolder.username;
-        String pwd = WalletContextHolder.userpwd;
-       // downloadWallet(un, pwd);
-
 
         setContentView(R.layout.activity_verify_wallet);
         ButterKnife.bind(this);
@@ -133,49 +131,8 @@ public class VerifyWalletActivity extends AppCompatActivity {
 
     }
 
-    public static byte[] urlTobyte(InputStream in) throws Exception {
-        ByteArrayOutputStream out = null;
-        try {
-
-            out = new ByteArrayOutputStream(1024);
-            byte[] temp = new byte[1024];
-            int size = 0;
-            while ((size = in.read(temp)) != -1) {
-                out.write(temp, 0, size);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        byte[] content = out.toByteArray();
-        return content;
-    }
-
-    private void downloadWallet(String signin, String password) {
-        String un = WalletContextHolder.username;
-        MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(VerifyWalletActivity.this);
-        new URLUtil().downloadWalletFileToDB(signin, password);
-
-        try {
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-            cv.put("username", un);
-            cv.put("file_data", urlTobyte(WalletContextHolder.inputStream));
-
-            long result = db.insert("walletdata", null, cv);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
 
 
-    }
 
 
 }

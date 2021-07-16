@@ -1,5 +1,9 @@
 package net.bigtangle.wallet.core.utils;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -26,10 +30,15 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
 import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
+import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.constant.LogConstant;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -116,6 +125,68 @@ public class CommonUtil {
 
     public static boolean checkCertificate(UTXO utxo, Map<String, Token> tokennames) {
         return TokenType.certificate.ordinal() == tokennames.get(utxo.getTokenId()).getTokentype();
+
+    }
+
+    public static byte[] urlTobyte(InputStream in) throws Exception {
+        ByteArrayOutputStream out = null;
+        try {
+
+            out = new ByteArrayOutputStream(1024);
+            byte[] temp = new byte[1024];
+            int size = 0;
+            while ((size = in.read(temp)) != -1) {
+                out.write(temp, 0, size);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        byte[] content = out.toByteArray();
+        return content;
+    }
+
+    public static InputStream loadFromDB(String un, Context context) {
+        Log.i("loadFromDB", "un==" + un);
+        MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select  * from walletdata where username=?", new String[]{un});
+        if (cursor.moveToFirst()) {
+            Log.i("loadFromDBcursor", cursor.getString(0));
+            if (cursor.getBlob(1) == null) {
+                Log.i("loadFromDBcursor", "inputStream==null");
+            }
+            ByteArrayInputStream stream = new ByteArrayInputStream(cursor.getBlob(1));
+            cursor.close();
+            db.close();
+            dbHelper.close();
+            return stream;
+        } else {
+            cursor.close();
+            db.close();
+            dbHelper.close();
+            return null;
+        }
+    }
+
+    public static void saveDB(String signin, byte[] bytes, Context context) {
+        MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("username", signin);
+        if (bytes == null)
+            Log.i("saveDB", "inputStream==null");
+        cv.put("file_data", bytes);
+        long result = db.insert("walletdata", null, cv);
+        db.close();
+        dbHelper.close();
+
 
     }
 

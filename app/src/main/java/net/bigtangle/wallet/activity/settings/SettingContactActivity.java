@@ -17,6 +17,7 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.settings.adapter.ContactItemListAdapter;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
@@ -26,7 +27,9 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,7 +112,9 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
 
     private void initData() {
         HashMap<String, String> requestParam = new HashMap<String, String>();
-
+        String un = SPUtil.get(this, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, this);
+        WalletContextHolder.loadWallet(stream);
         List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 

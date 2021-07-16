@@ -34,6 +34,7 @@ import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.AliMainActivity;
 import net.bigtangle.wallet.activity.MainActivity;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountHisListAdapter;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
@@ -51,6 +52,7 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,7 +97,9 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
 
     private void initData() {
 
-
+        String un = SPUtil.get(getContext(), "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+        WalletContextHolder.loadWallet(stream);
         List<IdentityVO> identityDatas = null;
         try {
             identityDatas = new URLUtil().calculateIdentity().get();

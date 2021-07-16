@@ -1,8 +1,11 @@
 package net.bigtangle.wallet.activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,10 +37,15 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.LocalStorageContext;
+import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -67,13 +75,15 @@ public class RegActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
         showPrivacy();
-//        String un = (String) SPUtil.get(RegActivity.this, "username", "");
-//        String pwd = (String) SPUtil.get(RegActivity.this, "password", "");
-//        if (un != null && !"".equals(un.trim())) {
-//            Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
+        String un = SPUtil.get(this, "username", "").toString();
+
+        if (un != null && !"".equals(un.trim())) {
+            InputStream stream = CommonUtil.loadFromDB(un, RegActivity.this);
+            WalletContextHolder.loadWallet(stream);
+            Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
         findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +93,7 @@ public class RegActivity extends AppCompatActivity {
 
     }
 
+
     private void startClicked() {
 
         EditText textSignin = (EditText) findViewById(R.id.textSignin);
@@ -91,12 +102,15 @@ public class RegActivity extends AppCompatActivity {
         password = textPassword.getText().toString();
         try {
             doReg();
+            Thread.sleep(1000);
+            InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
+            WalletContextHolder.loadWallet(stream);
             showlog("注册成功");
-
-            //SPUtil.put(RegActivity.this, "username", signin);
-            //SPUtil.put(RegActivity.this, "password", password);
-            WalletContextHolder.username=signin;
-            WalletContextHolder.userpwd=password;
+            Thread.sleep(1000);
+            WalletContextHolder.username = signin;
+            WalletContextHolder.userpwd = password;
+            SPUtil.put(this, "username", signin);
+            SPUtil.put(this, "userpwd", password);
             Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -111,7 +125,6 @@ public class RegActivity extends AppCompatActivity {
     }
 
 
-
     private void doReg() throws InterruptedException, ExecutionException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
@@ -123,7 +136,8 @@ public class RegActivity extends AppCompatActivity {
                         "/public/reg?username=" + signin + "&password=" + password).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
-                    WalletContextHolder.loadWallet(response.body().byteStream());
+                    CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
+
                 } else {
                     throw new RuntimeException("" + response);
                 }
@@ -142,6 +156,7 @@ public class RegActivity extends AppCompatActivity {
 
 
     }
+
 
     private void showPrivacy() {
 
@@ -219,7 +234,7 @@ public class RegActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 SPUtil.put(RegActivity.this, SP_PRIVACY, false);
-               // finish();
+                // finish();
             }
         });
 

@@ -166,7 +166,7 @@ public class URLUtil {
                 .build();
 
         Log.d("bigtangle-wallet", url);
-        final InputStream[] is = {};
+
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .connectTimeout(160, TimeUnit.SECONDS)//设置连接超时时间
                 .readTimeout(600, TimeUnit.SECONDS)//设置读取超时时间;

@@ -23,6 +23,7 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
@@ -33,8 +34,10 @@ import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +87,9 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onLazyLoad() {
         this.itemList.clear();
+        String un = SPUtil.get(getContext(), "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+        WalletContextHolder.loadWallet(stream);
         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
@@ -158,7 +164,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
             public void onClick(View v) {
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
                     @Override
-                    public void downloadFileStatus(boolean success,Exception e) {
+                    public void downloadFileStatus(boolean success, Exception e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

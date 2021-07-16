@@ -20,6 +20,7 @@ import com.alibaba.security.realidentity.RPVerify;
 
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -37,7 +38,7 @@ import okhttp3.Response;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 public class AliMainActivity extends AppCompatActivity {
-    public static final String HTTPS_BIGTANGLE = "https://m.bigtangle.xyz";
+    public static final String HTTPS_BIGTANGLE = WalletContextHolder.getMBigtangle();
     String verifyToken;
     String bizId;
     String signin;

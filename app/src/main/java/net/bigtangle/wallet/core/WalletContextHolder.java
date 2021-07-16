@@ -118,7 +118,6 @@ public class WalletContextHolder {
 
     public static Wallet loadWallet(InputStream is) {
         try {
-            inputStream=is;
             wallet = WalletUtil.loadWallet(false, is, networkParameters);
             return wallet;
         } catch (Exception e) {
