@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:background="@drawable/bottom_confirm"
             android:elevation="24dp"
-            android:text="@string/aliverify_button" />
+            android:text="@string/aliverify_btn" />
     </LinearLayout>
     <View
         android:layout_width="match_parent"

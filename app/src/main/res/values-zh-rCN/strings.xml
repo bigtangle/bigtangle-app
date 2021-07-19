@@ -207,6 +207,7 @@
     <string name="payoff_button">提现</string>
     <string name="mining_button">矿机</string>
     <string name="aliverify_button">实人认证下载</string>
+    <string name="aliverify_btn">实人认证</string>
     <string name="help_button">帮助</string>
     <string name="current_wallet_eckeys_empty">当前钱包中没有地址</string>
     <string name="refresh_button">刷新数据</string>
