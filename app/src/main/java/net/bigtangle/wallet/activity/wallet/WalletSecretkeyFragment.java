@@ -173,6 +173,9 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     String directory = file.getParent() + "/";
                                     String filename = file.getName();
                                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
+                                    String un = SPUtil.get(getContext(), "username", "").toString();
+                                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                                    WalletContextHolder.loadWallet(stream);
                                     WalletContextHolder.get().reloadWalletFile(directory, prefix);
                                     if (WalletContextHolder.checkWalletHavePassword()) {
                                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
@@ -272,9 +275,12 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     String directory = file.getParent() + "/";
                     String filename = file.getName();
                     String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
+                    String un = SPUtil.get(getContext(), "username", "").toString();
+                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                    WalletContextHolder.loadWallet(stream);
                     WalletContextHolder.get().reloadWalletFile(directory, prefix);
                     LocalStorageContext.get().writeWalletPath(directory, prefix);
-                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                    if (WalletContextHolder.checkWalletHavePassword()) {
                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
 

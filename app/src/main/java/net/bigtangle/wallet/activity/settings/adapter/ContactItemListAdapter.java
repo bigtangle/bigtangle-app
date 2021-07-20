@@ -25,6 +25,7 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
 import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -32,13 +33,17 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.alibaba.security.rp.RPSDK.getContext;
 
 public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemListAdapter.ItemViewHolder> {
 
@@ -178,12 +183,14 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
 
         coinbase.setDataClassName(DataClassName.CONTACTINFO.name());
         coinbase.setData(contactInfo.toByteArray());
-
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        String un = SPUtil.get(mContext, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, mContext);
+        WalletContextHolder.loadWallet(stream);
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 
         Sha256Hash sighash = coinbase.getHash();
-        ECKey.ECDSASignature party1Signature = pubKeyTo.sign(sighash, WalletContextHolder.get().getAesKey());
+        ECKey.ECDSASignature party1Signature = pubKeyTo.sign(sighash, WalletContextHolder.getAesKey());
         byte[] buf1 = party1Signature.encodeToDER();
 
         List<MultiSignBy> multiSignBies = new ArrayList<MultiSignBy>();

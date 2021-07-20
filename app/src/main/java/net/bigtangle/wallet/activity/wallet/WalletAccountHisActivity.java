@@ -18,6 +18,7 @@ import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountHisListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountHisItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
@@ -25,8 +26,10 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -79,7 +82,10 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
     private void initData() {
         String tokenId_ = getIntent().getStringExtra("tokenId");
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+        String un = SPUtil.get(this, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, this);
+        WalletContextHolder.loadWallet(stream);
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(this).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {

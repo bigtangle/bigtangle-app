@@ -36,6 +36,7 @@ import net.bigtangle.utils.OkHttp3Util;
 
 import net.bigtangle.utils.WalletUtil;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.market.adapter.CurAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.components.BaseLazyFragment;
@@ -47,10 +48,12 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -143,15 +146,18 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     private void cancelOrderDo(MarketOrderItem marketOrderItem) {
         try {
-            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            String un = SPUtil.get(getContext(), "username", "").toString();
+            InputStream stream = CommonUtil.loadFromDB(un, getContext());
+            WalletContextHolder.loadWallet(stream);
+            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
             ECKey legitimatingKey = null;
 
-            List<ECKey> keys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
+            List<ECKey> keys = WalletContextHolder.wallet.walletKeys(WalletContextHolder.getAesKey());
             for (ECKey ecKey : keys) {
                 if (marketOrderItem.getAddress().equals(ecKey.toAddress(WalletContextHolder.networkParameters).toString())) {
                     legitimatingKey = ecKey;
-                    WalletContextHolder.get().wallet().cancelOrder(hash, legitimatingKey);
+                    WalletContextHolder.wallet.cancelOrder(hash, legitimatingKey);
                     break;
                 }
             }
@@ -248,7 +254,10 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
         requestParam.put("state", state);
         requestParam.put("spent", "publish".equals(state) ? "false" : "true");
         if (onlyMeSwitch.isChecked()) {
-            List<ECKey> walletKeys = WalletContextHolder.get().walletKeys();
+            String un = SPUtil.get(getContext(), "username", "").toString();
+            InputStream stream = CommonUtil.loadFromDB(un, getContext());
+            WalletContextHolder.loadWallet(stream);
+            List<ECKey> walletKeys = WalletContextHolder.walletKeys();
             List<String> addressList = new ArrayList<String>();
             for (ECKey ecKey : walletKeys) {
                 addressList.add(ecKey.toAddress(WalletContextHolder.networkParameters).toString());

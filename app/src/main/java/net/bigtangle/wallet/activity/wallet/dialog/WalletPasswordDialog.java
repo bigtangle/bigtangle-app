@@ -11,7 +11,11 @@ import android.widget.Button;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.utils.CommonUtil;
+
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +61,10 @@ public class WalletPasswordDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 final String password = passwordTextInput.getText().toString();
-                boolean b = WalletContextHolder.get().saveAndCheckPassword(password);
+                String un = SPUtil.get(context, "username", "").toString();
+                InputStream stream = CommonUtil.loadFromDB(un, context);
+                WalletContextHolder.loadWallet(stream);
+                boolean b = WalletContextHolder.saveAndCheckPassword(password);
                 if (!b) {
                     new LovelyInfoDialog(context)
                             .setTopColorRes(R.color.colorPrimary)

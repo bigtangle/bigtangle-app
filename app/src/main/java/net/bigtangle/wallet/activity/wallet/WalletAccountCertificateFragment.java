@@ -15,6 +15,7 @@ import net.bigtangle.apps.data.Certificate;
 import net.bigtangle.apps.data.IdentityData;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountCertificateListAdapter;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
@@ -25,7 +26,9 @@ import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -62,6 +65,9 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
     private void initData() {
         List<CertificateVO> certificates=null;
         try {
+            String un = SPUtil.get(getContext(), "username", "").toString();
+            InputStream stream = CommonUtil.loadFromDB(un, getContext());
+            WalletContextHolder.loadWallet(stream);
             Log.i(LogConstant.TAG, "initdata 1" );
             certificates = new URLUtil().calculateCertificate().get();
         } catch (Exception e) {

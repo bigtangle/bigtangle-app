@@ -17,10 +17,12 @@ import net.bigtangle.core.response.GetOutputsResponse;
 import net.bigtangle.core.response.GetTokensResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -141,7 +143,8 @@ public class HttpService {
 
     public static List<TokenItem> getValidTokenItemList() throws Exception {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
@@ -192,7 +195,7 @@ public class HttpService {
     public static Serializable getUserdata(String type) throws IOException {
         HashMap<String, String> requestParam = new HashMap<String, String>();
         // 读取 ECKey
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
 
         ECKey pubKeyTo = issuedKeys.get(0);
 

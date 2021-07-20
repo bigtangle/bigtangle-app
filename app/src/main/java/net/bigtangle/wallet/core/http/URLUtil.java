@@ -210,12 +210,12 @@ public class URLUtil {
     public Future<List<CertificateVO>> calculateCertificate() {
         return executor.submit(() -> {
 
-            Wallet wallet = WalletContextHolder.get().wallet();
+            Wallet wallet = WalletContextHolder.wallet;
             List<CertificateVO> certificates = new ArrayList<CertificateVO>();
 
             List<SignedDataWithToken> sds = null;
             try {
-                sds = WalletUtil.signedTokenList(wallet.walletKeys(WalletContextHolder.get().getAesKey()), TokenType.certificate, HttpConnectConstant.HTTP_SERVER_URL);
+                sds = WalletUtil.signedTokenList(wallet.walletKeys(WalletContextHolder.getAesKey()), TokenType.certificate, HttpConnectConstant.HTTP_SERVER_URL);
                 if (sds != null && !sds.isEmpty()) {
                     for (SignedDataWithToken s : sds) {
                         Certificate certificate = new Certificate()
@@ -253,10 +253,10 @@ public class URLUtil {
 
     public Future<UserSettingDataInfo> calculateUserdata() {
         return executor.submit(() -> {
-            List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+            List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
             ECKey pubKeyTo = issuedKeys.get(0);
-            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
-            UserSettingDataInfo userSettingDataInfo = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
+            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            UserSettingDataInfo userSettingDataInfo = WalletContextHolder.wallet.getUserSettingDataInfo(pubKeyTo, false);
             return userSettingDataInfo;
         });
     }

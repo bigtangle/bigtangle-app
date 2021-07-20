@@ -18,17 +18,22 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.InputStream;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.alibaba.security.rp.RPSDK.getContext;
 
 public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrderItemListAdapter.ItemViewHolder> {
 
@@ -166,16 +171,19 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         if (marketOrderItem == null) {
             return;
         }
-        WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+        String un = SPUtil.get(mContext, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, mContext);
+        WalletContextHolder.loadWallet(stream);
+        WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
         Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
         ECKey legitimatingKey = null;
 
         boolean find = false;
-        List<ECKey> keys = WalletContextHolder.get().wallet().walletKeys(WalletContextHolder.get().getAesKey());
+        List<ECKey> keys = WalletContextHolder.wallet.walletKeys(WalletContextHolder.get().getAesKey());
         for (ECKey ecKey : keys) {
             if (marketOrderItem.getAddress().equals(ecKey.toAddress(WalletContextHolder.networkParameters).toString())) {
                 legitimatingKey = ecKey;
-                WalletContextHolder.get().wallet().cancelOrder(hash, legitimatingKey);
+                WalletContextHolder.wallet.cancelOrder(hash, legitimatingKey);
                 find = true;
                 break;
             }

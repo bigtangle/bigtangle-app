@@ -34,6 +34,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
@@ -49,11 +50,13 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -124,7 +127,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
     @Override
     public void onLazyLoad() {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+        String un = SPUtil.get(getContext(), "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+        WalletContextHolder.loadWallet(stream);
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
@@ -241,8 +247,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         }
 
                         Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
-
-                        Wallet wallet = WalletContextHolder.get().wallet();
+                        String un = SPUtil.get(getContext(), "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                        WalletContextHolder.loadWallet(stream);
+                        Wallet wallet = WalletContextHolder.wallet;
                         wallet.setServerURL(CONTEXT_ROOT);
 
                         byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
@@ -254,7 +262,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
                         final String memo = memoTextInput.getText().toString();
                         try {
-                            wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
+                            wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
                         }catch (InsufficientMoneyException e){
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }

@@ -16,10 +16,14 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.wallet.Protos;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.spongycastle.crypto.params.KeyParameter;
+
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,18 +93,21 @@ public class ResetPasswordDialog extends Dialog {
                     }
 
                     try {
+                        String un = SPUtil.get(context, "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, context);
+                        WalletContextHolder.loadWallet(stream);
                         KeyCrypterScrypt scrypt = new KeyCrypterScrypt(SCRYPT_PARAMETERS);
                         KeyParameter aesKey = scrypt.deriveKey(password);
-                        if (WalletContextHolder.get().wallet().isEncrypted()) {
-                            WalletContextHolder.get().wallet().decrypt(WalletContextHolder.get().getCurrentPassword());
+                        if (WalletContextHolder.wallet.isEncrypted()) {
+                            WalletContextHolder.wallet.decrypt(WalletContextHolder.getCurrentPassword());
                         }
-                        WalletContextHolder.get().wallet().encrypt(scrypt, aesKey);
+                        WalletContextHolder.wallet.encrypt(scrypt, aesKey);
 
                         Toast toast = Toast.makeText(context, context.getString(R.string.password_setting_successfully), Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.BOTTOM, 0, 0);
                         toast.show();
 
-                        WalletContextHolder.get().savePasswordToLocal(password);
+                        WalletContextHolder.savePasswordToLocal(password);
 
                         dismiss();
                     } catch (Exception e) {

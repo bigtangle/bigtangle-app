@@ -22,6 +22,7 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.exception.InsufficientMoneyException;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
@@ -34,10 +35,12 @@ import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +151,10 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 }, new HttpRunaExecute() {
                     @Override
                     public void execute() throws Exception {
-                        WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                        String un = SPUtil.get(getContext(), "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                        WalletContextHolder.loadWallet(stream);
+                        WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
@@ -174,7 +180,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
 
-                        Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
+                        Token t = WalletContextHolder.wallet.checkTokenId(tokenid);
                         Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
                                 t.getDecimals());
                         if (quantity.getValue().signum() <= 0) {
@@ -184,7 +190,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
-                        Token base = WalletContextHolder.get().wallet().checkTokenId(basetokenValue);
+                        Token base = WalletContextHolder.wallet.checkTokenId(basetokenValue);
 
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString(),
                                 Utils.HEX.decode(basetokenValue), base.getDecimals() + priceshift);
@@ -214,7 +220,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             dateEndLong = dateBeginLong;
                         }
                         String priceTemp = unitPriceInput.getText().toString();
-                        BigDecimal lastPrice = WalletContextHolder.get().wallet().getLastPrice(tokenid, basetokenValue);
+                        BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
                         if (!flag)
                             if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
                                     || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
@@ -224,12 +230,12 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
                             }
                         try {
-                            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
-                                WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                WalletContextHolder.wallet.sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             } else {
-                                WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                WalletContextHolder.wallet.buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
                             flag = false;

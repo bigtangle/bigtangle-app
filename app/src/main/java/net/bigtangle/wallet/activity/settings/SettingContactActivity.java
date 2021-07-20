@@ -115,7 +115,7 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
         String un = SPUtil.get(this, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, this);
         WalletContextHolder.loadWallet(stream);
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 
         requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());

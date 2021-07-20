@@ -8,9 +8,13 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.InputStream;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,8 +31,10 @@ public class BrowserAccessTokenContext {
 
 
     public static void open(Context context, String url) throws Exception {
-
-            ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
+        String un = SPUtil.get(context, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, context);
+        WalletContextHolder.loadWallet(stream);
+            ECKey ecKey = WalletContextHolder.walletKeys().get(0);
             OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
             Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
