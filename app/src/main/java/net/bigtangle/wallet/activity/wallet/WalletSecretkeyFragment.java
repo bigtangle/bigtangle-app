@@ -61,15 +61,13 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @BindView(R.id.new_key_button)
     Button newKeyButton;
 
-    @BindView(R.id.import_key_button)
-    Button importKeyButton;
+
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
     private List<WalletSecretkeyItem> itemList;
 
-    @BindView(R.id.load_key_button)
-    Button loadKeyButton;
+
 
     public static WalletSecretkeyFragment newInstance() {
         return new WalletSecretkeyFragment();
@@ -145,65 +143,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
             }
         });
 
-        this.importKeyButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                new LFilePicker()
-                        .withSupportFragment(WalletSecretkeyFragment.this)
-                        .withRequestCode(REQUESTCODE_FROM_ACTIVITY)
-                        .withStartPath(LocalStorageContext.get().readWalletDirectory())
-                        .withIsGreater(false)
-                        .withFileSize(500 * 1024)
-                        .start();
-            }
-        });
-
-        this.loadKeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
-                    @Override
-                    public void downloadFileStatus(boolean success, Exception e) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (success) {
-                                    File file = new File(LocalStorageContext.get().readWalletDirectory() + "download.wallet");
-                                    String directory = file.getParent() + "/";
-                                    String filename = file.getName();
-                                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                                    String un = SPUtil.get(getContext(), "username", "").toString();
-                                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
-                                    WalletContextHolder.loadWallet(stream);
-                                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    if (WalletContextHolder.checkWalletHavePassword()) {
-                                        new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
-                                                .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
-
-                                                    @Override
-                                                    public void verifyPassword(String password) {
-                                                        onLazyLoad();
-                                                    }
-                                                }).show();
-                                    } else {
-                                        onLazyLoad();
-                                    }
-                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                }
-                            }
-                        });
-                    }
-                }).show();
-            }
-        });
     }
 
     @Override
