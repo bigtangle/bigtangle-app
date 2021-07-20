@@ -189,6 +189,20 @@ public class CommonUtil {
 
 
     }
+    public static void updateDB(String signin, byte[] bytes, Context context) {
+        MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (bytes == null)
+            Log.i("updateDB", "inputStream==null");
+        cv.put("file_data", bytes);
+        db.update("walletdata",cv,"username=?", new String[] { signin});
+        db.close();
+        dbHelper.close();
+
+
+    }
 
 
 }
