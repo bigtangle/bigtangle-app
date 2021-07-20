@@ -25,6 +25,11 @@ public class BigtangleWlletApplication extends Application implements LifecycleO
         String un = SPUtil.get(this, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, this);
         WalletContextHolder.loadWallet(stream);
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
         WalletContextHolder walletContextHolder = WalletContextHolder.get();
         if (!walletContextHolder.checkWalletExists()) {
             WalletFileUtils.createWalletFileAndLoad();

@@ -41,6 +41,7 @@ import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.update.UpdateManager;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.ByteArrayInputStream;
@@ -67,8 +68,7 @@ public class RegActivity extends AppCompatActivity {
     String signin;
     String password;
     private String SP_PRIVACY = "sp_privacy";
-    private boolean isCheckPrivacy = false;
-    private static final int NOT_NOTICE = 2; //如果勾选了不再询问
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,12 @@ public class RegActivity extends AppCompatActivity {
         if (un != null && !"".equals(un.trim())) {
             InputStream stream = CommonUtil.loadFromDB(un, RegActivity.this);
             WalletContextHolder.loadWallet(stream);
+            try {
+                Thread.sleep(2000);
+            }catch (Exception e){
+
+            }
+
             Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -102,11 +108,12 @@ public class RegActivity extends AppCompatActivity {
         password = textPassword.getText().toString();
         try {
             doReg();
-            Thread.sleep(1000);
+            Thread.sleep(3000);
             InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
+            Thread.sleep(3000);
             WalletContextHolder.loadWallet(stream);
-            showlog("注册成功");
-            Thread.sleep(1000);
+            Thread.sleep(3000);
+
             WalletContextHolder.username = signin;
             WalletContextHolder.userpwd = password;
             SPUtil.put(this, "username", signin);

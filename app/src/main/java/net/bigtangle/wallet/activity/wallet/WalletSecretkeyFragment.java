@@ -87,7 +87,13 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
         this.itemList.clear();
         String un = SPUtil.get(getContext(), "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, getContext());
+
         WalletContextHolder.loadWallet(stream);
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
@@ -218,6 +224,11 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     String un = SPUtil.get(getContext(), "username", "").toString();
                     InputStream stream = CommonUtil.loadFromDB(un, getContext());
                     WalletContextHolder.loadWallet(stream);
+                    try {
+                        Thread.sleep(2000);
+                    }catch (Exception e){
+
+                    }
                     WalletContextHolder.get().reloadWalletFile(directory, prefix);
                     LocalStorageContext.get().writeWalletPath(directory, prefix);
                     if (WalletContextHolder.checkWalletHavePassword()) {

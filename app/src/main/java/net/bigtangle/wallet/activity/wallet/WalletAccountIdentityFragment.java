@@ -100,6 +100,11 @@ public class WalletAccountIdentityFragment extends BaseLazyFragment implements S
         String un = SPUtil.get(getContext(), "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, getContext());
         WalletContextHolder.loadWallet(stream);
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
         List<IdentityVO> identityDatas = null;
         try {
             identityDatas = new URLUtil().calculateIdentity().get();

@@ -63,26 +63,23 @@ public class VerifyWalletActivity extends AppCompatActivity {
 
     @BindView(R.id.verify_password_button)
     Button verifyWalletButton;
-
     private UpdateManager mUpdateManager;
-    private String SP_PRIVACY = "sp_privacy";
-    private boolean isCheckPrivacy = false;
     private static final int NOT_NOTICE = 2; //如果勾选了不再询问
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requetPermission();
 
+        if (this.checkVersion()) {
+            return;
+        }
         setContentView(R.layout.activity_verify_wallet);
+
         ButterKnife.bind(this);
 
-        //isCheckPrivacy = (boolean) SPUtil.get(VerifyWalletActivity.this, SP_PRIVACY, false);
 
-        // if (!isCheckPrivacy) {
-        //showPrivacy();
-        //} else {
         checkPassword();
-        // }
+
     }
 
     public void checkPassword() {
@@ -129,6 +126,13 @@ public class VerifyWalletActivity extends AppCompatActivity {
 //            finish();
         }
 
+    }
+
+    private boolean checkVersion() {
+        //这里来检测版本是否需要更新
+        setContentView(R.layout.progress);
+        mUpdateManager = new UpdateManager(this);
+        return mUpdateManager.checkUpdateInfo();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,7 +201,5 @@ public class VerifyWalletActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 }

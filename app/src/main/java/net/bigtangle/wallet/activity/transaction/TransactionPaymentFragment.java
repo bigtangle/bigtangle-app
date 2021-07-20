@@ -130,6 +130,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         String un = SPUtil.get(getContext(), "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, getContext());
         WalletContextHolder.loadWallet(stream);
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
@@ -250,6 +255,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         String un = SPUtil.get(getContext(), "username", "").toString();
                         InputStream stream = CommonUtil.loadFromDB(un, getContext());
                         WalletContextHolder.loadWallet(stream);
+                        try {
+                            Thread.sleep(2000);
+                        }catch (Exception e){
+
+                        }
                         Wallet wallet = WalletContextHolder.wallet;
                         wallet.setServerURL(CONTEXT_ROOT);
 
