@@ -82,7 +82,7 @@ public class RegActivity extends AppCompatActivity {
             WalletContextHolder.loadWallet(stream);
             try {
                 Thread.sleep(2000);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -93,21 +93,28 @@ public class RegActivity extends AppCompatActivity {
         findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startClicked();
+                startClicked(true);
             }
         });
-
+        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startClicked(false);
+            }
+        });
     }
 
 
-    private void startClicked() {
+    private void startClicked(boolean flag) {
 
         EditText textSignin = (EditText) findViewById(R.id.textSignin);
         signin = textSignin.getText().toString();
         EditText textPassword = (EditText) findViewById(R.id.textPassword);
         password = textPassword.getText().toString();
         try {
-            doReg();
+            if (flag)
+                doReg();
+            else login();
             Thread.sleep(3000);
             InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
             Thread.sleep(3000);
@@ -123,8 +130,14 @@ public class RegActivity extends AppCompatActivity {
             startActivity(intent);
         } catch (Exception e) {
             String msg = e.getMessage();
-            if (msg.contains("404")) {
-                msg = "该手机号码已被注册";
+            if (flag) {
+                if (msg.contains("404")) {
+                    msg = "该手机号码已被注册";
+                }
+            } else {
+                if (msg.contains("404")) {
+                    msg = "文件下载失败，或该用户不存在";
+                }
             }
             showlog(msg);
         }
@@ -133,6 +146,7 @@ public class RegActivity extends AppCompatActivity {
 
 
     private void doReg() throws InterruptedException, ExecutionException {
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
             @Override
@@ -141,6 +155,27 @@ public class RegActivity extends AppCompatActivity {
 
                 Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
                         "/public/reg?username=" + signin + "&password=" + password).get().build();
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
+
+                } else {
+                    throw new RuntimeException("" + response);
+                }
+                return "";
+            }
+        });
+    }
+
+    private void login() throws InterruptedException, ExecutionException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
+
+                Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
+                        "/public/walletfilepullout?signin=" + signin + "&password=" + password).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
