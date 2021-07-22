@@ -2,7 +2,8 @@
 
     <string name="app_name" translatable="false">bigtangle blockchain 钱包APP软件V1.0</string>
     <string name="version" translatable="false">Version</string>
-
+    <string name="reg">register</string>
+    <string name="login">login</string>
     <string name="title_tab_transaction">Transaction</string>
     <string name="title_tab_wallet">Wallet</string>
     <string name="title_tab_market">Market</string>
@@ -237,4 +238,5 @@
     <string name="opt_terms">Terms of Use</string>
     <string name="opt_privacy">Privacy Policy</string>
     <string name="otherPrice">otherPrice</string>
+    <string name="walletPassword">wallet password</string>
 </resources>

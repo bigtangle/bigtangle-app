@@ -1,6 +1,7 @@
 <resources>
     <string name="version" translatable="false">版本号</string>
-
+    <string name="reg">注册</string>
+    <string name="login">登录</string>
     <string name="title_tab_transaction">交易</string>
     <string name="title_tab_wallet">钱包</string>
     <string name="title_tab_market">市场</string>
@@ -236,4 +237,5 @@
     <string name="opt_privacy">隐私政策</string>
     <string name="insufficient_token">Insufficient Token Amount</string>
     <string name="otherPrice">外盘</string>
+    <string name="walletPassword">大网钱包密码</string>
 </resources>

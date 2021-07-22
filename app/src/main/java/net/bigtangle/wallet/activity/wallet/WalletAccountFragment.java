@@ -68,11 +68,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     private List<WalletAccountItem> itemList;
 
-
-    @BindView(R.id.aliverify_button)
-    Button aliverifyButton;
-
-
     @BindView(R.id.help_button)
     Button helpButton;
 
@@ -150,26 +145,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
-        this.aliverifyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.VIEW");
-                            Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
-                            intent.setData(content_url);
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
+
 
         this.helpButton.setOnClickListener(new View.OnClickListener() {
             @Override

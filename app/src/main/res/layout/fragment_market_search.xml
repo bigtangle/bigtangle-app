@@ -74,6 +74,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/match" />
         </RadioGroup>
+
     </LinearLayout>
 
     <LinearLayout
