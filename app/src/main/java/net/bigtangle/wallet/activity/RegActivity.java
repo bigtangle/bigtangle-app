@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -146,11 +147,13 @@ public class RegActivity extends AppCompatActivity {
 
 
     private void doReg() throws InterruptedException, ExecutionException {
+        final ProgressDialog progressDialog = ProgressDialog.show(RegActivity.this, getString(R.string.dialog_please_wait), getString(R.string.data_efforts_request_loading));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {
+
                 OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
                 Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
@@ -162,6 +165,7 @@ public class RegActivity extends AppCompatActivity {
                 } else {
                     throw new RuntimeException("" + response);
                 }
+                progressDialog.dismiss();
                 return "";
             }
         });

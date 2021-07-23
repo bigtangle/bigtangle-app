@@ -5,7 +5,45 @@
     android:orientation="vertical">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
+        <Button
+            android:id="@+id/shop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/shop_button" />
+
+        <Button
+            android:id="@+id/recharge_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/recharge_button" />
+
+        <Button
+            android:id="@+id/payoff_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/payoff_button" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +52,17 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
+
+        <Button
+            android:id="@+id/mining_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="@string/mining_button" />
 
         <Button
             android:id="@+id/help_button"

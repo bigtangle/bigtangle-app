@@ -84,10 +84,7 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
         @BindView(R.id.executedQuantity_text_view)
         TextView executedQuantityView;
 
-        @BindView(R.id.buy_button)
-        Button buyButton;
-        @BindView(R.id.sell_button)
-        Button sellButton;
+
         @BindView(R.id.chart_button)
         Button chartButton;
         @BindView(R.id.other_button)
@@ -104,18 +101,7 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
             this.tokenidTextView.setText(marketPrice.getTokenid());
             this.tokennameTextView.setText(marketPrice.getTokenname());
             this.executedQuantityView.setText(marketPrice.getExecutedQuantity());
-            this.buyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });
-            this.sellButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
             this.chartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,7 +112,7 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
                                 Uri content_url = Uri.parse(
-                                        "https://m.bigtangle.net/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
+                                        "https://m.bigtangle.xyz/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
                                 intent.setData(content_url);
                                 mContext.startActivity(intent);
                             } catch (Exception e) {
