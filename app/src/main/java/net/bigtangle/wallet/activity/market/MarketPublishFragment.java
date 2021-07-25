@@ -83,7 +83,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
     private boolean dateEndInputFlag;
 
     private List<TokenItem> tokenItemList;
-    //private boolean flag = false;
+    private boolean flag = false;
 
 
     public static MarketPublishFragment newInstance() {
@@ -227,7 +227,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             dateEndLong = dateBeginLong;
                         }
                         String priceTemp = unitPriceInput.getText().toString();
-                /*        BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
+                         BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
                         if (!flag)
                             if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
                                     || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
@@ -237,7 +237,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
                             }
 
-                 */
+
                         try {
                             WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
@@ -247,7 +247,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 WalletContextHolder.wallet.buyOrder(WalletContextHolder.getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
-                       //     flag = false;
+
                             amountTextInput.setText("");
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
