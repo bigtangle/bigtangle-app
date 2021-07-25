@@ -113,7 +113,7 @@
     <string name="network_request_failed">Network request failed, whether to restart?</string>
     <string name="wallet_operation_failed">The wallet operation failed. Please try again later？</string>
     <string name="network_response_data_failed">Network response data parsing failure</string>
-    <string name="network_request_loading">Request loading...</string>
+    <string name="network_request_loading">Request Loading</string>
     <string name="server_processing_failed">Server processing failure，Message : {0}，Whether to retry?</string>
     <string name="data_parsing">Data Parsing</string>
     <string name="server_address">Server Address</string>
@@ -122,7 +122,7 @@
     <string name="please_select_your_wallet_file">Please_select_your_wallet_file</string>
     <string name="current_selection_file_error">Current selection file error</string>
     <string name="current_selection_file">Current selection file</string>
-    <string name="data_efforts_request_loading">Data efforts request loading...</string>
+    <string name="data_efforts_request_loading">Data efforts request loading</string>
 
     <string name="dialog_secretkey_add_key_message">Are you sure you want to add a new key?</string>
     <string name="dialog_wallet_secretkey_add_key">Add Key</string>
@@ -181,17 +181,17 @@
     <string name="shop_goods_type">Goods type</string>
     <string name="shop_goods_RMB">RMB</string>
     <string name="shop_goods_bigtang_currency">Bigtang Currency</string>
-    <string name="shop_goods_name">Goods Name</string>
-    <string name="shop_goods_price">Goods Price</string>
-    <string name="shop_goods_num">Goods Num</string>
+    <string name="shop_goods_name">Name</string>
+    <string name="shop_goods_price">Price</string>
+    <string name="shop_goods_num">Quantity</string>
     <string name="shop_buy_now">BUY NOW</string>
     <string name="shop_join_cart">JOIN CART</string>
-    <string name="shop_payment">payment</string>
-    <string name="shop_payment_goodsid">Pay Goodsid</string>
-    <string name="shop_payment_name">pay Name</string>
-    <string name="shop_payment_num">Pay Num</string>
-    <string name="order_remove_success">Order cancel success</string>
-    <string name="order_remove_fail">Order cancel fail</string>
+    <string name="shop_payment">Payment</string>
+    <string name="shop_payment_goodsid">Id</string>
+    <string name="shop_payment_name">Name</string>
+    <string name="shop_payment_num">Quantity</string>
+    <string name="order_remove_success">Cancel Success</string>
+    <string name="order_remove_fail">Cancel Failed</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -203,7 +203,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
 
-    <string name="chart">Order Chart</string>
+    <string name="chart">Chart</string>
     <string name="register_button">Register</string>
     <string name="recharge_button">Recharge</string>
     <string name="payoff_button">Payoff</string>
@@ -216,8 +216,8 @@
 
     <string name="shop_button">Shop</string>
     <string name="qrscan">QR Scan</string>
-    <string name="price_warn">price_warn:30%</string>
-    <string name="lastPrice">lastPrice</string>
+    <string name="price_warn"> Warning Price > 30% </string>
+    <string name="lastPrice">Last Price</string>
 
     <string name="pricetable">Chart</string>
 
@@ -238,5 +238,5 @@
     <string name="opt_terms">Terms of Use</string>
     <string name="opt_privacy">Privacy Policy</string>
     <string name="otherPrice">Extern Price </string>
-    <string name="walletPassword">wallet password</string>
+    <string name="walletPassword">Wallet Password</string>
 </resources>

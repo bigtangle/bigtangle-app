@@ -29,7 +29,9 @@ public class WalletContextHolder {
 
     private WalletAppKit walletAppKit;
 
-    public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
+    public static NetworkParameters networkParameters =
+          //  TestParams.get();
+    MainNetParams.get();
     public static InputStream inputStream;
     public static Wallet wallet;
     private static String password;
@@ -102,7 +104,7 @@ public class WalletContextHolder {
 
     private static WalletContextHolder instance = new WalletContextHolder();
 
-    public static final WalletContextHolder get() {
+    public static  WalletContextHolder get() {
         return instance;
     }
 
@@ -111,8 +113,7 @@ public class WalletContextHolder {
         if (walletAppKit == null) {
             return null;
         }
-        Wallet wallet = this.walletAppKit.wallet();
-        return wallet;
+        return this.walletAppKit.wallet();
     }
 
 
