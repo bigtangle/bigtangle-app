@@ -202,7 +202,7 @@
     <string name="username">用户名</string>
     <string name="password">密码</string>
 
-    <string name="chart">订单行情</string>
+    <string name="chart">行情</string>
     <string name="register_button">注册</string>
     <string name="recharge_button">充值</string>
     <string name="payoff_button">提现</string>

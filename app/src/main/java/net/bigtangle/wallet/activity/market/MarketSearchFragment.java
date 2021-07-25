@@ -1,11 +1,8 @@
 package net.bigtangle.wallet.activity.market;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,22 +15,18 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.ECKey;
-import net.bigtangle.utils.Json;
 import net.bigtangle.core.OrderRecord;
 import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.core.response.OrderdataResponse;
 import net.bigtangle.params.ReqCmd;
+import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.utils.OkHttp3Util;
-
 import net.bigtangle.utils.WalletUtil;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
@@ -64,11 +57,7 @@ import butterknife.BindView;
 
 public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @BindView(R.id.address_text_input)
-    TextInputEditText addressTextInput;
 
-    @BindView(R.id.state_radio_group)
-    RadioGroup stateRadioGroup;
 
     @BindView(R.id.only_me_switch)
     Switch onlyMeSwitch;
@@ -244,17 +233,9 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
     }
 
     private void initOrderdata() {
-        String state = "";
-        for (int i = 0; i < stateRadioGroup.getChildCount(); i++) {
-            RadioButton radioButton = (RadioButton) stateRadioGroup.getChildAt(i);
-            if (radioButton.isChecked()) {
-                state = radioButton.getText().equals(getContext().getString(R.string.publish)) ? "publish" : "match";
-                break;
-            }
-        }
+        String state = "publish";
 
         HashMap<String, Object> requestParam = new HashMap<String, Object>();
-        requestParam.put("address", addressTextInput.getText().toString());
         requestParam.put("state", state);
         requestParam.put("spent", "publish".equals(state) ? "false" : "true");
         if (onlyMeSwitch.isChecked()) {
