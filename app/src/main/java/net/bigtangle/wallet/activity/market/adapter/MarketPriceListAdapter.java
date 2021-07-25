@@ -93,6 +93,7 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
         public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+           // otherButton.setVisibility(View.INVISIBLE);
         }
 
         public void bind(MarketPrice marketPrice) {
@@ -101,7 +102,11 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
             this.tokenidTextView.setText(marketPrice.getTokenid());
             this.tokennameTextView.setText(marketPrice.getTokenname());
             this.executedQuantityView.setText(marketPrice.getExecutedQuantity());
-
+            if( marketPrice.getUrl()==null || "".equals(marketPrice.getUrl())){
+                otherButton.setVisibility(View.INVISIBLE);
+            }else{
+                otherButton.setVisibility(View.VISIBLE);
+            }
             this.chartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,7 +117,7 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
                                 Uri content_url = Uri.parse(
-                                        "https://m.bigtangle.xyz/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
+                                        WalletContextHolder.getMBigtangle()+  "/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
                                 intent.setData(content_url);
                                 mContext.startActivity(intent);
                             } catch (Exception e) {
