@@ -111,9 +111,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         }
         if (this.payMethodArray == null) {
             payMethodArray = new String[]{getContext().getString(R.string.pay),
-                    getContext().getString(R.string.multiple_signature_pay),
-                    getContext().getString(R.string.multiple_addresses_pay),
-                    getContext().getString(R.string.multiple_signature_addresses_pay)};
+               //     getContext().getString(R.string.multiple_signature_pay),
+               //     getContext().getString(R.string.multiple_addresses_pay),
+               //     getContext().getString(R.string.multiple_signature_addresses_pay)
+            };
         }
         this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -135,6 +136,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         }catch (Exception e){
 
         }
+
+
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
@@ -161,6 +164,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                 }
             }
         });
+
     }
 
     @Override
