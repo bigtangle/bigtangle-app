@@ -104,7 +104,10 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
             this.tokenidTextView.setText(marketPrice.getTokenid());
             this.tokennameTextView.setText(marketPrice.getTokenname());
             this.executedQuantityView.setText(marketPrice.getExecutedQuantity());
-
+            if(marketPrice.getUrl() ==null || "".equals(marketPrice.getUrl() ))
+                    {
+                otherButton.setVisibility(View.INVISIBLE);
+                    }
             this.chartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
