@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.core.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import net.bigtangle.kits.WalletUtil;
@@ -34,12 +35,12 @@ public class WalletFileUtils {
         }
     }
 
-    public static void download(String username, String password, WalletDownfileDialog.OnWalletDownfileListenter listenter) {
+    public static void download(String username, String password, WalletDownfileDialog.OnWalletDownfileListenter listenter, Context context) {
         try {
-            HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter);
+            HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter, context);
         } catch (Exception e) {
             Log.e(LogConstant.TAG, "download", e);
-            listenter.downloadFileStatus(false,e);
+            listenter.downloadFileStatus(false, e);
         }
     }
 }
