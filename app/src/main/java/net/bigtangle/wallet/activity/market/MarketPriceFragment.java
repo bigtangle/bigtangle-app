@@ -93,7 +93,7 @@ public class MarketPriceFragment extends BaseLazyFragment implements SwipeRefres
                 String priceChange = tokenprice.getString("priceChange");
                 String executedQuantity = tokenprice.getString("executedQuantity");
                 String url = tokenprice.getString("url");
-                itemList.add(new MarketPrice(tokenid, tokenname, price + "（" + priceChange + "）", executedQuantity, url));
+                itemList.add(new MarketPrice(tokenid, tokenname, price + " " + priceChange + " ", executedQuantity, url));
             }
         } catch (Exception e) {
         }

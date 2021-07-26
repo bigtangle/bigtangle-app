@@ -98,6 +98,9 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
         public void bind(MarketPrice marketPrice) {
 
             this.priceTextView.setText(marketPrice.getPrice());
+            if (marketPrice.getPrice().indexOf("+") > 0)
+                priceTextView.setTextColor(Color.RED);
+            else priceTextView.setTextColor(Color.GREEN);
             this.tokenidTextView.setText(marketPrice.getTokenid());
             this.tokennameTextView.setText(marketPrice.getTokenname());
             this.executedQuantityView.setText(marketPrice.getExecutedQuantity());
