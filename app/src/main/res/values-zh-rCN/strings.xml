@@ -212,7 +212,7 @@
     <string name="help_button">帮助</string>
     <string name="current_wallet_eckeys_empty">当前钱包中没有地址</string>
     <string name="refresh_button">刷新数据</string>
-
+    <string name="skip">跳过</string>
 
     <string name="shop_button">商城</string>
     <string name="qrscan">扫码登录</string>

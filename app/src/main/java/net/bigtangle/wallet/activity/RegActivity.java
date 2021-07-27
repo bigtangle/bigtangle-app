@@ -80,7 +80,6 @@ public class RegActivity extends AppCompatActivity {
     private String SP_PRIVACY = "sp_privacy";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +103,16 @@ public class RegActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        findViewById(R.id.btn_start).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+        );
         findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,7 +300,6 @@ public class RegActivity extends AppCompatActivity {
         });
 
     }
-
 
 
 }
