@@ -202,6 +202,7 @@
 
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="inviter">inviter</string>
 
     <string name="chart">Chart</string>
     <string name="register_button">Register</string>

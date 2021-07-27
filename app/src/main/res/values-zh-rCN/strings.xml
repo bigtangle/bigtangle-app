@@ -201,7 +201,7 @@
     <string name="dialog_wallet_secretkey_load_key">加载密钥</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
-
+    <string name="inviter">邀请人</string>
     <string name="chart">行情</string>
     <string name="register_button">注册</string>
     <string name="recharge_button">充值</string>

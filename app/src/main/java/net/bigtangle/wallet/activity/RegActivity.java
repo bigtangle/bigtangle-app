@@ -74,56 +74,65 @@ public class RegActivity extends AppCompatActivity {
 
     String signin;
     String password;
+    String inviter;
     private String SP_PRIVACY = "sp_privacy";
-    private static final int NOT_NOTICE = 2; //如果勾选了不再询问
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requetPermission();
+
         setContentView(R.layout.activity_reg);
         showPrivacy();
         String un = SPUtil.get(this, "username", "").toString();
 
         if (un != null && !"".equals(un.trim())) {
             InputStream stream = CommonUtil.loadFromDB(un, RegActivity.this);
-            WalletContextHolder.loadWallet(stream);
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
+            if (stream != null) {
+                WalletContextHolder.loadWallet(stream);
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
 
+                }
+
+                Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
-
-            Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
         findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText textSignin = (EditText) findViewById(R.id.textSignin);
+                signin = textSignin.getText().toString();
+                EditText textPassword = (EditText) findViewById(R.id.textPassword);
+                password = textPassword.getText().toString();
+                EditText textInviter = (EditText) findViewById(R.id.textInviter);
+                inviter = textInviter.getText().toString();
+                if (signin == null || "".equals(signin.trim())) {
+                    showlog("用户名不能空");
+                    return;
+                }
+                if (password == null || "".equals(password.trim())) {
+                    showlog("密码不能空");
+                    return;
+                }
                 startClicked(true);
             }
         });
-        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startClicked(false);
-            }
-        });
+
     }
 
 
     private void startClicked(boolean flag) {
 
-        EditText textSignin = (EditText) findViewById(R.id.textSignin);
-        signin = textSignin.getText().toString();
-        EditText textPassword = (EditText) findViewById(R.id.textPassword);
-        password = textPassword.getText().toString();
+
         try {
             if (flag)
                 doReg();
-            else login();
+
             Thread.sleep(3000);
             InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
             Thread.sleep(3000);
@@ -139,15 +148,11 @@ public class RegActivity extends AppCompatActivity {
             startActivity(intent);
         } catch (Exception e) {
             String msg = e.getMessage();
-            if (flag) {
-                if (msg.contains("404")) {
-                    msg = "该手机号码已被注册";
-                }
-            } else {
-                if (msg.contains("404")) {
-                    msg = "文件下载失败，或该用户不存在";
-                }
+
+            if (msg.contains("404")) {
+                msg = "该手机号码已被注册";
             }
+
             showlog(msg);
         }
 
@@ -165,7 +170,7 @@ public class RegActivity extends AppCompatActivity {
                 OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
                 Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
-                        "/public/reg?username=" + signin + "&password=" + password).get().build();
+                        "/public/reg?username=" + signin + "&password=" + password + "&inviter=" + inviter).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
@@ -179,26 +184,6 @@ public class RegActivity extends AppCompatActivity {
         });
     }
 
-    private void login() throws InterruptedException, ExecutionException {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
-
-                Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
-                        "/public/walletfilepullout?signin=" + signin + "&password=" + password).get().build();
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
-
-                } else {
-                    throw new RuntimeException("" + response);
-                }
-                return "";
-            }
-        });
-    }
 
     private void showlog(String log) {
         new LovelyInfoDialog(RegActivity.this)
@@ -306,72 +291,6 @@ public class RegActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NOT_NOTICE) {
-            //由于不知道是否选择了允许所以需要再次判断
-            requetPermission();
-        }
-    }
 
-    private void requetPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(this, "" + RegActivity.this.getString(R.string.permissions) + permissions[i] + RegActivity.this.getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
-                } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {//用户选择了禁止不再询问
-                        new LovelyStandardDialog(RegActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                                .setTopColorRes(R.color.colorPrimary)
-                                .setButtonsColor(Color.WHITE)
-                                .setIcon(R.drawable.ic_error_white_24px)
-                                .setTitle(RegActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage(RegActivity.this.getString(R.string.click_permit))
-                                .setPositiveButton(RegActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                        Uri uri = Uri.fromParts("package", getPackageName(), null);//注意就是"package",不用改成自己的包名
-                                        intent.setData(uri);
-                                        startActivityForResult(intent, NOT_NOTICE);
-                                    }
-                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
-                        }).show();
-                    } else {//选择禁止
-                        new LovelyStandardDialog(RegActivity.this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                                .setTopColorRes(R.color.colorPrimary)
-                                .setButtonsColor(Color.WHITE)
-                                .setIcon(R.drawable.ic_error_white_24px)
-                                .setTitle(RegActivity.this.getString(R.string.dialog_title_info))
-                                .setMessage(RegActivity.this.getString(R.string.click_permit))
-                                .setPositiveButton(RegActivity.this.getString(R.string.to_allow), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ActivityCompat.requestPermissions(RegActivity.this,
-                                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                                    }
-                                }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
-                        }).show();
-                    }
-                }
-            }
-        }
-    }
 
 }

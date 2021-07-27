@@ -30,6 +30,7 @@ import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.RegActivity;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
@@ -84,7 +85,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.refresh_button)
     Button refreshButton;
-
+    @BindView(R.id.reg_button)
+    Button regButton;
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -148,6 +150,14 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     @Override
     public void initEvent() {
 
+        this.regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), RegActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
         this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
