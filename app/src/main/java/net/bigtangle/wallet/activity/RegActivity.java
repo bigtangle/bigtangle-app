@@ -103,7 +103,7 @@ public class RegActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
-        findViewById(R.id.btn_start).setOnClickListener(
+        findViewById(R.id.skip_start).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
