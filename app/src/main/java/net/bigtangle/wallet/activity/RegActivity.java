@@ -28,6 +28,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -160,7 +162,6 @@ public class RegActivity extends AppCompatActivity {
 
 
     private void doReg() throws InterruptedException, ExecutionException {
-        final ProgressDialog progressDialog = ProgressDialog.show(RegActivity.this, getString(R.string.dialog_please_wait), getString(R.string.data_efforts_request_loading));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
@@ -178,7 +179,7 @@ public class RegActivity extends AppCompatActivity {
                 } else {
                     throw new RuntimeException("" + response);
                 }
-                progressDialog.dismiss();
+
                 return "";
             }
         });

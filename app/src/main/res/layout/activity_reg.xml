@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".activity.RegActivity">
+    tools:context=".activity.RegActivity"
+    android:id="@+id/regLayout">
 
     <TextView
         android:id="@+id/textView2"
