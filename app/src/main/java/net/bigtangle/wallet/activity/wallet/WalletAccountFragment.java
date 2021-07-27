@@ -177,7 +177,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.rechargeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<ECKey> ecKeys = WalletContextHolder.get().walletKeys();
+                List<ECKey> ecKeys = WalletContextHolder.walletKeys();
                 if (CollectionUtils.isEmpty(ecKeys)) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)

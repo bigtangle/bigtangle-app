@@ -22,27 +22,14 @@ public class BigtangleWlletApplication extends Application implements LifecycleO
     }
 
     private void initWallet() {
-        String un = SPUtil.get(this, "username", "").toString();
-        InputStream stream = CommonUtil.loadFromDB(un, this);
-        WalletContextHolder.loadWallet(stream);
         try {
-            Thread.sleep(2000);
+            WalletFileUtils.createWalletDB(getApplicationContext());
         }catch (Exception e){
 
         }
-        WalletContextHolder walletContextHolder = WalletContextHolder.get();
-        if (!walletContextHolder.checkWalletExists()) {
-            WalletFileUtils.createWalletFileAndLoad();
-        }
-        walletContextHolder.initData();
 
-//        if (walletContextHolder.walletKeys() == null ){
-//            WalletFileUtils.createWalletFileAndLoad();
-//        }
-//        if (walletContextHolder.walletKeys() != null && walletContextHolder.walletKeys().size()<=0){
-//            WalletFileUtils.createWalletFileAndLoad();
-//        }
-//        walletContextHolder.initData();
+
+
     }
 
     private void initLocalStorage() {

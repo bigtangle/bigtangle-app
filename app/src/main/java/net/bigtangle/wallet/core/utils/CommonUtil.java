@@ -155,7 +155,7 @@ public class CommonUtil {
         Log.i("loadFromDB", "un==" + un);
         MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select  * from walletdata where username=?", new String[]{un});
+        Cursor cursor = db.rawQuery("select  * from walletdata where username=?", new String[]{"bigtangle"});
         if (cursor.moveToFirst()) {
             Log.i("loadFromDBcursor", cursor.getString(0));
             if (cursor.getBlob(1) == null) {
@@ -179,7 +179,7 @@ public class CommonUtil {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("username", signin);
+        cv.put("username", "bigtangle");
         if (bytes == null)
             Log.i("saveDB", "inputStream==null");
         cv.put("file_data", bytes);
@@ -197,7 +197,7 @@ public class CommonUtil {
         if (bytes == null)
             Log.i("updateDB", "inputStream==null");
         cv.put("file_data", bytes);
-        db.update("walletdata",cv,"username=?", new String[] { signin});
+        db.update("walletdata",cv,"username=?", new String[] { "bigtangle"});
         db.close();
         dbHelper.close();
 
