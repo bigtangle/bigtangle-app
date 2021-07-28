@@ -87,23 +87,8 @@ public class RegActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_reg);
         showPrivacy();
-        String un = SPUtil.get(this, "username", "").toString();
 
-        if (un != null && !"".equals(un.trim())) {
-            InputStream stream = CommonUtil.loadFromDB(un, RegActivity.this);
-            if (stream != null) {
-                WalletContextHolder.loadWallet(stream);
-                try {
-                    Thread.sleep(2000);
-                } catch (Exception e) {
 
-                }
-
-                Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        }
         findViewById(R.id.skip_start).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
