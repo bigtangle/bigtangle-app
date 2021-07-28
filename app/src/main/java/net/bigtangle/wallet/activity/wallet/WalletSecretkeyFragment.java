@@ -23,6 +23,7 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.WalletProtobufSerializer;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
@@ -36,6 +37,7 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -45,6 +47,7 @@ import java.util.List;
 import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
+import static net.bigtangle.wallet.core.WalletContextHolder.wallet;
 
 public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -72,7 +75,6 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     private List<WalletSecretkeyItem> itemList;
 
 
-
     public static WalletSecretkeyFragment newInstance() {
         return new WalletSecretkeyFragment();
     }
@@ -95,7 +97,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
         WalletContextHolder.loadWallet(stream);
         try {
             Thread.sleep(2000);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
@@ -196,10 +198,18 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                         .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ECKey ecKey = new ECKey();
-                                WalletContextHolder.wallet.importKey(ecKey);
+                                try {
+                                    ECKey ecKey = new ECKey();
+                                    WalletContextHolder.wallet.importKey(ecKey);
+                                    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                                    new WalletProtobufSerializer().writeWallet(wallet, outStream);
+                                    byte[] a = outStream.toByteArray();
+                                    CommonUtil.updateDB("bigtangle", a, getContext());
+                                    onLazyLoad();
+                                } catch (Exception e) {
 
-                                onLazyLoad();
+                                }
+
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
@@ -249,6 +259,10 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                 walletKeys.add(ecKey);
                                 WalletContextHolder.wallet.importKeysAndEncrypt(walletKeys,
                                         WalletContextHolder.getAesKey());
+                                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                                new WalletProtobufSerializer().writeWallet(wallet, outStream);
+                                byte[] a = outStream.toByteArray();
+                                CommonUtil.updateDB("bigtangle", a, getContext());
                             }
                             onLazyLoad();
                         } catch (Exception e) {
@@ -280,16 +294,16 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 }
                 try {
                     File file = new File(list.get(0));
-                    InputStream uodateStram=new FileInputStream(file);
-                    byte[] updateBytes=CommonUtil.urlTobyte(uodateStram);
+                    InputStream uodateStram = new FileInputStream(file);
+                    byte[] updateBytes = CommonUtil.urlTobyte(uodateStram);
 
                     String un = SPUtil.get(getContext(), "username", "").toString();
-                    CommonUtil.updateDB(un,updateBytes,getContext());
+                    CommonUtil.updateDB(un, updateBytes, getContext());
                     InputStream stream = CommonUtil.loadFromDB(un, getContext());
                     WalletContextHolder.loadWallet(stream);
                     try {
                         Thread.sleep(2000);
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
 
