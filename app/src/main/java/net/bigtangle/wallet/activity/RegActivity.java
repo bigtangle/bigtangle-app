@@ -119,6 +119,12 @@ public class RegActivity extends AppCompatActivity {
                 startClicked(true);
             }
         });
+        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startClicked(false);
+            }
+        });
 
     }
 
@@ -127,7 +133,7 @@ public class RegActivity extends AppCompatActivity {
         try {
             if (flag)
                 doReg();
-
+            else login();
             Thread.sleep(3000);
             InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
             Thread.sleep(3000);
@@ -143,9 +149,14 @@ public class RegActivity extends AppCompatActivity {
             startActivity(intent);
         } catch (Exception e) {
             String msg = e.getMessage();
-
-            if (msg.contains("404")) {
-                msg = "该手机号码已被注册";
+            if (flag) {
+                if (msg.contains("404")) {
+                    msg = "该手机号码已被注册";
+                }
+            } else {
+                if (msg.contains("404")) {
+                    msg = "文件下载失败，或该用户不存在";
+                }
             }
 
             showlog(msg);
@@ -156,10 +167,10 @@ public class RegActivity extends AppCompatActivity {
 
     private void doReg() throws InterruptedException, ExecutionException {
         LinearLayout layout = findViewById(R.id.regLayout); //specify here Root layout Id
-        ProgressBar  progressBar = new ProgressBar(RegActivity.this,null,android.R.attr.progressBarStyleLarge);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
+        ProgressBar progressBar = new ProgressBar(RegActivity.this, null, android.R.attr.progressBarStyleLarge);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        layout.addView(progressBar,params);
+        layout.addView(progressBar, params);
         progressBar.setVisibility(View.VISIBLE);  //To show ProgressBar
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -184,6 +195,26 @@ public class RegActivity extends AppCompatActivity {
         });
     }
 
+    private void login() throws InterruptedException, ExecutionException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
+
+                Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
+                        "/public/walletfilepullout?signin=" + signin + "&password=" + password).get().build();
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
+
+                } else {
+                    throw new RuntimeException("" + response);
+                }
+                return "";
+            }
+        });
+    }
 
     private void showlog(String log) {
         new LovelyInfoDialog(RegActivity.this)

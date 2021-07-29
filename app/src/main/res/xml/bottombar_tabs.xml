@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
 
-
+    <!--
+        <tab
+            id="@+id/tab_transaction"
+            icon="@drawable/ic_transaction_black"
+            title="@string/title_tab_transaction"
+            barColorWhenSelected="#4F6194" />
+    -->
     <tab
-        id="@+id/tab_transaction"
-        icon="@drawable/ic_transaction_black"
-        title="@string/title_tab_transaction"
-        barColorWhenSelected="#4F6194" />
-
-    <tab
-        id="@+id/tab_wallet"
+        barColorWhenSelected="#4F6194"
         icon="@drawable/ic_wallet_black"
-        title="@string/title_tab_wallet"
-        barColorWhenSelected="#4F6194" />
+        id="@+id/tab_wallet"
+        title="@string/title_tab_wallet" />
+    <!--
+        <tab
+            id="@+id/tab_market"
+            icon="@drawable/ic_market_black"
+            title="@string/title_tab_market"
+            barColorWhenSelected="#4F6194"/>
 
+        <tab
+            id="@+id/tab_token"
+            icon="@drawable/ic_token_black"
+            title="@string/title_tab_token"
+            barColorWhenSelected="#4F6194" />
+    -->
     <tab
-        id="@+id/tab_market"
-        icon="@drawable/ic_market_black"
-        title="@string/title_tab_market"
-        barColorWhenSelected="#4F6194"/>
-
-    <tab
-        id="@+id/tab_token"
-        icon="@drawable/ic_token_black"
-        title="@string/title_tab_token"
-        barColorWhenSelected="#4F6194" />
-
-    <tab
+        barColorWhenSelected="#4F6194"
+        icon="@drawable/ic_settings_black"
         id="@+id/tab_settings"
-        icon="@drawable/ic_settings_black"
-        title="@string/title_tab_settings"
-        barColorWhenSelected="#4F6194" />
+        title="@string/title_tab_settings" />
     <tab
-        id="@+id/tab_scanlogin"
+        barColorWhenSelected="#4F6194"
         icon="@drawable/ic_settings_black"
-        title="@string/qrscan"
-        barColorWhenSelected="#4F6194" />
+        id="@+id/tab_scanlogin"
+        title="@string/qrscan" />
 
 </tabs>

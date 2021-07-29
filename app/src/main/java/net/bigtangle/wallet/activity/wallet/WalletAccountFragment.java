@@ -69,7 +69,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     private List<WalletAccountItem> itemList;
 
-    @BindView(R.id.shop_button)
+  /*  @BindView(R.id.shop_button)
     Button shopButton;
 
     @BindView(R.id.recharge_button)
@@ -78,7 +78,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     Button miningButton;
 
     @BindView(R.id.payoff_button)
-    Button payoffButton;
+    Button payoffButton;*/
 
     @BindView(R.id.help_button)
     Button helpButton;
@@ -158,7 +158,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 startActivity(intent);
             }
         });
-        this.shopButton.setOnClickListener(new View.OnClickListener() {
+      /*  this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new Runnable() {
@@ -230,7 +230,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     }
                 }).start();
             }
-        });
+        });*/
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
