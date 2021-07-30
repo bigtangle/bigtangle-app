@@ -40,6 +40,8 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +67,12 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @BindView(R.id.new_key_button)
     Button newKeyButton;
 
-   /* @BindView(R.id.load_key_button)
+  /*  @BindView(R.id.load_key_button)
     Button loadKeyButton;
     @BindView(R.id.import_key_button)
     Button importKeyButton;
-*/
+    @BindView(R.id.backup_button)
+    Button backupButton;*/
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
@@ -121,6 +124,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void initEvent() {
 /*
+
         this.importKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -175,7 +179,8 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     }
                 }).show();
             }
-        });*/
+        });
+*/
 
 
         this.addKeyButton.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +190,46 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 showDialog();
             }
         });
+       /* this.backupButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                InputStream is = CommonUtil.loadFromDB("bigtangle", getContext());
+                if (is == null) return;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                FileOutputStream fos = null;
+                String filename = "/storage/emulated/0/Download/download.wallet";
+                File file = new File(filename);
+                try {
+                    long total = is.available();
+                    fos = new FileOutputStream(file);
+                    long sum = 0;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                        sum += len;
+                        int progress = (int) (sum * 1.0f / total * 100);
+                        //下载中更新进度条
+                        //listener.onDownloading(progress);
+                    }
+                    fos.flush();
+
+                } catch (Exception e) {
+                } finally {
+
+                    try {
+                        if (is != null) {
+                            is.close();
+                        }
+                        if (fos != null) {
+                            fos.close();
+                        }
+                    } catch (IOException e) {
+
+                    }
+                }
+            }
+        });*/
         this.newKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

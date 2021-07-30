@@ -240,4 +240,6 @@
     <string name="opt_privacy">Privacy Policy</string>
     <string name="otherPrice">Price </string>
     <string name="walletPassword">wallet password</string>
+
+    <string name="backup">backup</string>
 </resources>

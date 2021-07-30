@@ -158,7 +158,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 startActivity(intent);
             }
         });
-      /*  this.shopButton.setOnClickListener(new View.OnClickListener() {
+      /*this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new Runnable() {

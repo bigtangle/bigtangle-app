@@ -33,20 +33,20 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAllowedSwipeDirection(SwipeDirection.none); // Disable swiping
 
         ArrayList<Fragment> fragments = new ArrayList<>();
-       // fragments.add(TransactionFragment.newInstance());
+       //fragments.add(TransactionFragment.newInstance());
         fragments.add(WalletFragment.newInstance());
-       //fragments.add(MarketFragment.newInstance());
-      // fragments.add(TokenFragment.newInstance());
-       fragments.add(SettingsFragment.newInstance());
-        fragments.add(ScanLoginFragment.newInstance());
+        //fragments.add(MarketFragment.newInstance());
+        //fragments.add(TokenFragment.newInstance());
+        fragments.add(SettingsFragment.newInstance());
+        //fragments.add(ScanLoginFragment.newInstance());
 
         String[] title = new String[]{//getString(R.string.title_tab_transaction),
                 getString(R.string.title_tab_wallet),
-             //  getString(R.string.title_tab_market),
-             // getString(R.string.title_tab_token),
-               getString(R.string.title_tab_settings),
-                getString(R.string.qrscan)
-                };
+                //getString(R.string.title_tab_market),
+                //getString(R.string.title_tab_token),
+                getString(R.string.title_tab_settings)
+               // getString(R.string.qrscan)
+        };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(2);
 
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -71,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (tabId) {
 /*
-                 case R.id.tab_transaction:
+                    case R.id.tab_transaction:
                         position = 0;
                         break;*/
 
                     case R.id.tab_wallet:
                         position = 0;
                         break;
-                /*  case R.id.tab_market:
-                       position = 2;
+                   /* case R.id.tab_market:
+                        position = 2;
                         break;
 
 
@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_settings:
                         position = 1;
                         break;
-                    case R.id.tab_scanlogin:
-                        position = 2;
-                        break;
+                  /*  case R.id.tab_scanlogin:
+                        position = 5;
+                        break;*/
                 }
 
                 mViewPager.setCurrentItem(position);

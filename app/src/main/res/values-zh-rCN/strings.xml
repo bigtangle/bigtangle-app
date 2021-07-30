@@ -238,4 +238,6 @@
     <string name="insufficient_token">Insufficient Token Amount</string>
     <string name="otherPrice">外盘</string>
     <string name="walletPassword">大网钱包密码</string>
+
+    <string name="backup">备份到文件</string>
 </resources>

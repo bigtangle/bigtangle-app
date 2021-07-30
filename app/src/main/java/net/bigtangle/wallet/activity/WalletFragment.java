@@ -66,7 +66,7 @@ public class WalletFragment extends BaseLazyFragment {
                 this.getString(R.string.wallet_tab_account),
                 this.getString(R.string.wallet_tab_secretkey),
                 this.getString(R.string.wallet_tab_identity)
-               // this.getString(R.string.wallet_tab_certificate)
+                //this.getString(R.string.wallet_tab_certificate)
         };
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);

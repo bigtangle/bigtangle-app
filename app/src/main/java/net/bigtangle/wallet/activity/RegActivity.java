@@ -119,6 +119,7 @@ public class RegActivity extends AppCompatActivity {
                 startClicked(true);
             }
         });
+
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
