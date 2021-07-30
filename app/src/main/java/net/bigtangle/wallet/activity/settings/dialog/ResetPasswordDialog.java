@@ -16,6 +16,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.crypto.KeyCrypterScrypt;
 import net.bigtangle.wallet.Protos;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.WalletProtobufSerializer;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.utils.CommonUtil;
@@ -23,10 +24,14 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.spongycastle.crypto.params.KeyParameter;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static net.bigtangle.wallet.core.WalletContextHolder.wallet;
 
 public class ResetPasswordDialog extends Dialog {
 
@@ -98,16 +103,19 @@ public class ResetPasswordDialog extends Dialog {
                         WalletContextHolder.loadWallet(stream);
                         try {
                             Thread.sleep(2000);
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                         KeyCrypterScrypt scrypt = new KeyCrypterScrypt(SCRYPT_PARAMETERS);
                         KeyParameter aesKey = scrypt.deriveKey(password);
-                        if (WalletContextHolder.wallet.isEncrypted()) {
-                            WalletContextHolder.wallet.decrypt(WalletContextHolder.getCurrentPassword());
+                        if (wallet.isEncrypted()) {
+                            wallet.decrypt(WalletContextHolder.getCurrentPassword());
                         }
-                        WalletContextHolder.wallet.encrypt(scrypt, aesKey);
-
+                        wallet.encrypt(scrypt, aesKey);
+                        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                        new WalletProtobufSerializer().writeWallet(wallet, outStream);
+                        byte[] a = outStream.toByteArray();
+                        CommonUtil.updateDB("bigtangle", a, context);
                         Toast toast = Toast.makeText(context, context.getString(R.string.password_setting_successfully), Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.BOTTOM, 0, 0);
                         toast.show();

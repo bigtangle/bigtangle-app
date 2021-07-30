@@ -303,7 +303,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
             public void execute() throws Exception {
                 tokenItemList.clear();
                 if (!isBuy) {
-                    for (TokenItem tokenItem : HttpService.getValidTokenItemList()) {
+                    for (TokenItem tokenItem : HttpService.getTokensItemList()) {
 
                         tokenItemList.add(tokenItem);
 

@@ -58,7 +58,6 @@ import butterknife.BindView;
 public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-
     @BindView(R.id.only_me_switch)
     Switch onlyMeSwitch;
 
@@ -70,7 +69,6 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
-
 
 
     private List<net.bigtangle.utils.MarketOrderItem> itemList;
@@ -139,7 +137,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             WalletContextHolder.loadWallet(stream);
             try {
                 Thread.sleep(2000);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
@@ -244,7 +242,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             WalletContextHolder.loadWallet(stream);
             try {
                 Thread.sleep(2000);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             List<ECKey> walletKeys = WalletContextHolder.walletKeys();
@@ -271,27 +269,33 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
                     OrderdataResponse orderdataResponse = Json.jsonmapper().readValue(jsonStr, OrderdataResponse.class);
                     itemList.clear();
-                    for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                        MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
-                        String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
-                        if (StringUtils.isBlank(tokenName)) {
-                            tokenName = marketOrderItem.getTokenId();
-                        }
-                        marketOrderItem.setTokenName(tokenName);
-                        if (getString(R.string.buy).equals(marketOrderItem.getType()))
-                            marketOrderItem.setType("buy");
-                        else
-                            marketOrderItem.setType("sell");
-                        itemList.add(marketOrderItem);
+                    List<net.bigtangle.utils.MarketOrderItem> tempList = new ArrayList<MarketOrderItem>();
 
-                    }
-                    if (itemList != null && !itemList.isEmpty()) {
-                        itemList = WalletUtil.resetOrderList(itemList);
-                        for (MarketOrderItem marketOrderItem : itemList) {
-                            if ("buy".equals(marketOrderItem.getType()))
-                                marketOrderItem.setType(getString(R.string.buy));
-                            else
-                                marketOrderItem.setType(getString(R.string.sell));
+                    if (orderdataResponse.getAllOrdersSorted() != null && orderdataResponse.getAllOrdersSorted().size() > 0) {
+                        for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
+                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
+                            String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
+                            if (StringUtils.isBlank(tokenName)) {
+                                tokenName = marketOrderItem.getTokenId();
+                            }
+                            marketOrderItem.setTokenName(tokenName);
+                            if (getString(R.string.buy).equals(marketOrderItem.getType())) {
+                                marketOrderItem.setType("buy");
+                            } else {
+                                marketOrderItem.setType("sell");
+                            }
+                            tempList.add(marketOrderItem);
+
+                        }
+                        if (tempList != null && !tempList.isEmpty()) {
+                            tempList = WalletUtil.resetOrderList(tempList);
+                            for (MarketOrderItem marketOrderItem : tempList) {
+                                if ("buy".equals(marketOrderItem.getType()))
+                                    marketOrderItem.setType(getString(R.string.buy));
+                                else
+                                    marketOrderItem.setType(getString(R.string.sell));
+                                itemList.add(marketOrderItem);
+                            }
                         }
                     }
 

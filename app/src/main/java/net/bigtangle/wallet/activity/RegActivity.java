@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,6 +28,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +41,7 @@ import com.alibaba.security.realidentity.RPEventListener;
 import com.alibaba.security.realidentity.RPResult;
 import com.alibaba.security.realidentity.RPVerify;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
@@ -61,6 +69,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.alibaba.security.rp.RPSDK.getContext;
 
 public class RegActivity extends AppCompatActivity {
@@ -68,50 +77,60 @@ public class RegActivity extends AppCompatActivity {
 
     String signin;
     String password;
+    String inviter;
     private String SP_PRIVACY = "sp_privacy";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_reg);
         showPrivacy();
-        String un = SPUtil.get(this, "username", "").toString();
 
-        if (un != null && !"".equals(un.trim())) {
-            InputStream stream = CommonUtil.loadFromDB(un, RegActivity.this);
-            WalletContextHolder.loadWallet(stream);
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
 
-            }
-
-            Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
+        findViewById(R.id.skip_start).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RegActivity.this, VerifyWalletActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+        );
         findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText textSignin = (EditText) findViewById(R.id.textSignin);
+                signin = textSignin.getText().toString();
+                EditText textPassword = (EditText) findViewById(R.id.textPassword);
+                password = textPassword.getText().toString();
+                EditText textInviter = (EditText) findViewById(R.id.textInviter);
+                inviter = textInviter.getText().toString();
+                if (signin == null || "".equals(signin.trim())) {
+                    showlog("用户名不能空");
+                    return;
+                }
+                if (password == null || "".equals(password.trim())) {
+                    showlog("密码不能空");
+                    return;
+                }
                 startClicked(true);
             }
         });
+/*
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startClicked(false);
             }
-        });
+        });*/
+
     }
 
 
     private void startClicked(boolean flag) {
-
-        EditText textSignin = (EditText) findViewById(R.id.textSignin);
-        signin = textSignin.getText().toString();
-        EditText textPassword = (EditText) findViewById(R.id.textPassword);
-        password = textPassword.getText().toString();
         try {
             if (flag)
                 doReg();
@@ -140,6 +159,7 @@ public class RegActivity extends AppCompatActivity {
                     msg = "文件下载失败，或该用户不存在";
                 }
             }
+
             showlog(msg);
         }
 
@@ -147,7 +167,12 @@ public class RegActivity extends AppCompatActivity {
 
 
     private void doReg() throws InterruptedException, ExecutionException {
-        final ProgressDialog progressDialog = ProgressDialog.show(RegActivity.this, getString(R.string.dialog_please_wait), getString(R.string.data_efforts_request_loading));
+        LinearLayout layout = findViewById(R.id.regLayout); //specify here Root layout Id
+        ProgressBar progressBar = new ProgressBar(RegActivity.this, null, android.R.attr.progressBarStyleLarge);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layout.addView(progressBar, params);
+        progressBar.setVisibility(View.VISIBLE);  //To show ProgressBar
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
@@ -157,7 +182,7 @@ public class RegActivity extends AppCompatActivity {
                 OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
                 Request request = new Request.Builder().url(HTTPS_BIGTANGLE +
-                        "/public/reg?username=" + signin + "&password=" + password).get().build();
+                        "/public/reg?username=" + signin + "&password=" + password + "&inviter=" + inviter).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
@@ -165,7 +190,7 @@ public class RegActivity extends AppCompatActivity {
                 } else {
                     throw new RuntimeException("" + response);
                 }
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);     // To Hide ProgressBar
                 return "";
             }
         });
@@ -297,5 +322,6 @@ public class RegActivity extends AppCompatActivity {
         });
 
     }
+
 
 }

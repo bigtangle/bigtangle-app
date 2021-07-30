@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.core.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import net.bigtangle.kits.WalletUtil;
@@ -9,11 +10,29 @@ import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class WalletFileUtils {
+
+    public static void createWalletDB(Context context) throws IOException {
+        byte[] b = WalletUtil.createWallet(WalletContextHolder.networkParameters);
+        InputStream stream = CommonUtil.loadFromDB("bigtangle", context);
+        if (stream == null) {
+            CommonUtil.saveDB("bigtangle", b, context);
+            if (b != null && b.length > 0) {
+                stream = new ByteArrayInputStream(b);
+            } else {
+                stream = CommonUtil.loadFromDB("bigtangle", context);
+
+            }
+        }
+        WalletContextHolder.loadWallet(stream);
+
+    }
 
     public static void createWalletFile(String walletDirectory, String walletFilename) throws IOException {
         byte[] b = WalletUtil.createWallet(WalletContextHolder.networkParameters);
@@ -34,12 +53,12 @@ public class WalletFileUtils {
         }
     }
 
-    public static void download(String username, String password, WalletDownfileDialog.OnWalletDownfileListenter listenter) {
+    public static void download(String username, String password, WalletDownfileDialog.OnWalletDownfileListenter listenter, Context context) {
         try {
-            HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter);
+            HttpService.downloadWalletFile(username, password, LocalStorageContext.get().readWalletDirectory() + "download.wallet", listenter, context);
         } catch (Exception e) {
             Log.e(LogConstant.TAG, "download", e);
-            listenter.downloadFileStatus(false,e);
+            listenter.downloadFileStatus(false, e);
         }
     }
 }
