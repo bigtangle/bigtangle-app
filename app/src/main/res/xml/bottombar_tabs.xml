@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
 
-<!--
     <tab
         barColorWhenSelected="#4F6194"
         icon="@drawable/ic_transaction_black"
         id="@+id/tab_transaction"
         title="@string/title_tab_transaction" />
--->
+
     <tab
         barColorWhenSelected="#4F6194"
         icon="@drawable/ic_wallet_black"
         id="@+id/tab_wallet"
         title="@string/title_tab_wallet" />
-<!--
+
     <tab
         barColorWhenSelected="#4F6194"
         icon="@drawable/ic_market_black"
@@ -25,17 +24,17 @@
         icon="@drawable/ic_token_black"
         id="@+id/tab_token"
         title="@string/title_tab_token" />
--->
+
     <tab
         barColorWhenSelected="#4F6194"
         icon="@drawable/ic_settings_black"
         id="@+id/tab_settings"
         title="@string/title_tab_settings" />
-    <!--
+
     <tab
         barColorWhenSelected="#4F6194"
         icon="@drawable/ic_settings_black"
         id="@+id/tab_scanlogin"
         title="@string/qrscan" />
--->
+
 </tabs>

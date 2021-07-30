@@ -61,17 +61,17 @@ public class WalletFragment extends BaseLazyFragment {
         fragments.add(WalletAccountFragment.newInstance());
         fragments.add(WalletSecretkeyFragment.newInstance());
         fragments.add(WalletAccountIdentityFragment.newInstance());
-        //fragments.add(WalletAccountCertificateFragment.newInstance());
+        fragments.add(WalletAccountCertificateFragment.newInstance());
         String[] title = new String[]{
                 this.getString(R.string.wallet_tab_account),
                 this.getString(R.string.wallet_tab_secretkey),
-                this.getString(R.string.wallet_tab_identity)
-                //this.getString(R.string.wallet_tab_certificate)
+                this.getString(R.string.wallet_tab_identity),
+                this.getString(R.string.wallet_tab_certificate)
         };
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
     }
 
     @Override

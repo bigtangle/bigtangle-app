@@ -67,12 +67,12 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @BindView(R.id.new_key_button)
     Button newKeyButton;
 
-  /*  @BindView(R.id.load_key_button)
+    @BindView(R.id.load_key_button)
     Button loadKeyButton;
     @BindView(R.id.import_key_button)
     Button importKeyButton;
     @BindView(R.id.backup_button)
-    Button backupButton;*/
+    Button backupButton;
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
@@ -123,7 +123,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
 
     @Override
     public void initEvent() {
-/*
+
 
         this.importKeyButton.setOnClickListener(new View.OnClickListener() {
 
@@ -180,7 +180,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 }).show();
             }
         });
-*/
+
 
 
         this.addKeyButton.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +190,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 showDialog();
             }
         });
-       /* this.backupButton.setOnClickListener(new View.OnClickListener() {
+      this.backupButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -229,7 +229,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     }
                 }
             }
-        });*/
+        });
         this.newKeyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
