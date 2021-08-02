@@ -96,7 +96,7 @@ public class BackupActivity extends AppCompatActivity {
                     new LovelyInfoDialog(BackupActivity.this)
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
-                            .setTitle(getString(R.string.dialog_title_error))
+                            .setTitle("")
                             .setMessage(getString(R.string.backupok))
                             .show();
                 } catch (Exception e) {
