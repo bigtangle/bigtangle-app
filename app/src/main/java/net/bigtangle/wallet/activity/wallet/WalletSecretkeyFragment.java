@@ -99,11 +99,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
         InputStream stream = CommonUtil.loadFromDB(un, getContext());
 
         WalletContextHolder.loadWallet(stream);
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
 
-        }
         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
@@ -346,11 +342,6 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                     CommonUtil.updateDB(un, updateBytes, getContext());
                     InputStream stream = CommonUtil.loadFromDB(un, getContext());
                     WalletContextHolder.loadWallet(stream);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-
-                    }
 
                     if (WalletContextHolder.checkWalletHavePassword()) {
                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)

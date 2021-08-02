@@ -85,11 +85,7 @@ public class WalletAccountHisActivity extends AppCompatActivity implements Swipe
         String un = SPUtil.get(this, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, this);
         WalletContextHolder.loadWallet(stream);
-        try {
-            Thread.sleep(2000);
-        }catch (Exception e){
 
-        }
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }

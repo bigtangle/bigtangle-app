@@ -174,11 +174,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         String un = SPUtil.get(mContext, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, mContext);
         WalletContextHolder.loadWallet(stream);
-        try {
-            Thread.sleep(2000);
-        }catch (Exception e){
 
-        }
         WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
         Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
         ECKey legitimatingKey = null;

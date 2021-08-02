@@ -135,11 +135,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             String un = SPUtil.get(getContext(), "username", "").toString();
             InputStream stream = CommonUtil.loadFromDB(un, getContext());
             WalletContextHolder.loadWallet(stream);
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
 
-            }
             WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
             ECKey legitimatingKey = null;
@@ -240,11 +236,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             String un = SPUtil.get(getContext(), "username", "").toString();
             InputStream stream = CommonUtil.loadFromDB(un, getContext());
             WalletContextHolder.loadWallet(stream);
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
 
-            }
             List<ECKey> walletKeys = WalletContextHolder.walletKeys();
             List<String> addressList = new ArrayList<String>();
             for (ECKey ecKey : walletKeys) {

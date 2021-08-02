@@ -68,11 +68,7 @@ public class WalletAccountCertificateFragment extends BaseLazyFragment implement
             String un = SPUtil.get(getContext(), "username", "").toString();
             InputStream stream = CommonUtil.loadFromDB(un, getContext());
             WalletContextHolder.loadWallet(stream);
-            try {
-                Thread.sleep(2000);
-            }catch (Exception e){
 
-            }
             Log.i(LogConstant.TAG, "initdata 1" );
             certificates = new URLUtil().calculateCertificate().get();
         } catch (Exception e) {

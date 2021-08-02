@@ -101,11 +101,7 @@ public class ResetPasswordDialog extends Dialog {
                         String un = SPUtil.get(context, "username", "").toString();
                         InputStream stream = CommonUtil.loadFromDB(un, context);
                         WalletContextHolder.loadWallet(stream);
-                        try {
-                            Thread.sleep(2000);
-                        } catch (Exception e) {
 
-                        }
                         KeyCrypterScrypt scrypt = new KeyCrypterScrypt(SCRYPT_PARAMETERS);
                         KeyParameter aesKey = scrypt.deriveKey(password);
                         if (wallet.isEncrypted()) {

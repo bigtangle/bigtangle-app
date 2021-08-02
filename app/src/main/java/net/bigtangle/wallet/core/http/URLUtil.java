@@ -188,11 +188,7 @@ public class URLUtil {
                 if (response.body().byteStream() != null) {
                     try {
                         WalletContextHolder.loadWallet(response.body().byteStream());
-                        try {
-                            Thread.sleep(2000);
-                        }catch (Exception e){
 
-                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

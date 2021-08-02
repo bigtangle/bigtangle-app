@@ -141,11 +141,7 @@ public class ContactAddDialog extends Dialog {
                         String un = SPUtil.get(context, "username", "").toString();
                         InputStream stream = CommonUtil.loadFromDB(un, context);
                         WalletContextHolder.loadWallet(stream);
-                        try {
-                            Thread.sleep(2000);
-                        }catch (Exception e){
 
-                        }
                         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
                         ECKey pubKeyTo = issuedKeys.get(0);
 

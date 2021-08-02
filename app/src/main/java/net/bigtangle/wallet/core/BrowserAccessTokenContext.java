@@ -22,34 +22,29 @@ import okhttp3.Response;
 
 public class BrowserAccessTokenContext {
 
-   // private static BrowserAccessTokenContext instance = new BrowserAccessTokenContext();
+    // private static BrowserAccessTokenContext instance = new BrowserAccessTokenContext();
 
-   // public static final BrowserAccessTokenContext get() {
-   //     return instance;
-   // }
-
+    // public static final BrowserAccessTokenContext get() {
+    //     return instance;
+    // }
 
 
     public static void open(Context context, String url) throws Exception {
         String un = SPUtil.get(context, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, context);
         WalletContextHolder.loadWallet(stream);
-        try {
-            Thread.sleep(2000);
-        }catch (Exception e){
 
-        }
-            ECKey ecKey = WalletContextHolder.walletKeys().get(0);
-            OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
+        ECKey ecKey = WalletContextHolder.walletKeys().get(0);
+        OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
-            Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
-                    "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
-            Response response = client.newCall(request).execute();
-            String accessToken = response.body().string();
+        Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
+                "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
+        Response response = client.newCall(request).execute();
+        String accessToken = response.body().string();
 
-            byte[] buf = Utils.HEX.decode(accessToken);
-            byte[] bytes = ECIESCoder.decrypt(ecKey.getPrivKey(), buf);
-            String verifyHex = new String(bytes);
+        byte[] buf = Utils.HEX.decode(accessToken);
+        byte[] bytes = ECIESCoder.decrypt(ecKey.getPrivKey(), buf);
+        String verifyHex = new String(bytes);
 
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");

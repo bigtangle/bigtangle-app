@@ -135,11 +135,10 @@ public class RegActivity extends AppCompatActivity {
             if (flag)
                 doReg();
             else login();
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             InputStream stream = CommonUtil.loadFromDB(signin, RegActivity.this);
-            Thread.sleep(3000);
+
             WalletContextHolder.loadWallet(stream);
-            Thread.sleep(3000);
 
             WalletContextHolder.username = signin;
             WalletContextHolder.userpwd = password;

@@ -154,11 +154,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         String un = SPUtil.get(getContext(), "username", "").toString();
                         InputStream stream = CommonUtil.loadFromDB(un, getContext());
                         WalletContextHolder.loadWallet(stream);
-                        try {
-                            Thread.sleep(2000);
-                        }catch (Exception e){
 
-                        }
                         WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
