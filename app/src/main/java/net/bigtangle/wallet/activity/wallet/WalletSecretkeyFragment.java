@@ -24,6 +24,8 @@ import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.WalletProtobufSerializer;
+import net.bigtangle.wallet.activity.BackupActivity;
+import net.bigtangle.wallet.activity.RegActivity;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
@@ -190,40 +192,9 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
 
             @Override
             public void onClick(View view) {
-                InputStream is = CommonUtil.loadFromDB("bigtangle", getContext());
-                if (is == null) return;
-                byte[] buf = new byte[2048];
-                int len = 0;
-                FileOutputStream fos = null;
-                String filename = "/storage/emulated/0/Download/download.wallet";
-                File file = new File(filename);
-                try {
-                    long total = is.available();
-                    fos = new FileOutputStream(file);
-                    long sum = 0;
-                    while ((len = is.read(buf)) != -1) {
-                        fos.write(buf, 0, len);
-                        sum += len;
-                        int progress = (int) (sum * 1.0f / total * 100);
-                        //下载中更新进度条
-                        //listener.onDownloading(progress);
-                    }
-                    fos.flush();
-
-                } catch (Exception e) {
-                } finally {
-
-                    try {
-                        if (is != null) {
-                            is.close();
-                        }
-                        if (fos != null) {
-                            fos.close();
-                        }
-                    } catch (IOException e) {
-
-                    }
-                }
+                Intent intent = new Intent(getContext(), BackupActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
         this.newKeyButton.setOnClickListener(new View.OnClickListener() {

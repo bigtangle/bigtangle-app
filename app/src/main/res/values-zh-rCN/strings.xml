@@ -240,4 +240,6 @@
     <string name="walletPassword">大网钱包密码</string>
 
     <string name="backup">备份到文件</string>
+    <string name="filename">文件名</string>
+    <string name="backupok">文件备份成功</string>
 </resources>
