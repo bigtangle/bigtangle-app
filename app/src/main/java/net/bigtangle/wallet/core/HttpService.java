@@ -127,6 +127,9 @@ public class HttpService {
     }
 
     public static List<TokenItem> getValidTokenItemList() throws Exception {
+        return  getTokensItemList();
+    }
+    public static List<TokenItem> getMyValidTokenItemList() throws Exception {
         List<String> keyStrHex = new ArrayList<String>();
 
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
