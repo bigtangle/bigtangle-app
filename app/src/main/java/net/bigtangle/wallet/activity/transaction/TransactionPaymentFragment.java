@@ -64,7 +64,7 @@ import java.util.concurrent.FutureTask;
 
 import butterknife.BindView;
 
-public class TransactionPaymentFragment extends BaseLazyFragment    {
+public class TransactionPaymentFragment extends BaseLazyFragment {
 
     @BindView(R.id.pay_method_spinner)
     Spinner payMethodSpinner;
@@ -111,16 +111,17 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         }
         if (this.payMethodArray == null) {
             payMethodArray = new String[]{getContext().getString(R.string.pay),
-               //     getContext().getString(R.string.multiple_signature_pay),
-               //     getContext().getString(R.string.multiple_addresses_pay),
-               //     getContext().getString(R.string.multiple_signature_addresses_pay)
+                    //     getContext().getString(R.string.multiple_signature_pay),
+                    //     getContext().getString(R.string.multiple_addresses_pay),
+                    //     getContext().getString(R.string.multiple_signature_addresses_pay)
             };
         }
         this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
         setFroceLoadData(true);
-        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);;
+        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        ;
         qrScan.setOrientationLocked(false);
 
     }
@@ -267,7 +268,25 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         final String memo = memoTextInput.getText().toString();
                         try {
                             wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
-                        }catch (InsufficientMoneyException e){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new LovelyInfoDialog(getContext())
+                                            .setTopColorRes(R.color.colorPrimary)
+                                            .setIcon(R.drawable.ic_info_white_24px)
+                                            .setTitle(getContext().getString(R.string.dialog_title_info))
+                                            .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                            .show()
+                                            .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialog) {
+                                                    cleanInputContent();
+                                                }
+                                            });
+                                }
+                            });
+
+                        } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
@@ -301,9 +320,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
         this.qrscanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)     {    //initiating the qr code scan
+            public void onClick(View v) {    //initiating the qr code scan
                 qrScan.initiateScan();
-        }});
+            }
+        });
 
 
     }
@@ -312,9 +332,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 //https://www.simplifiedcoding.net/android-qr-code-scanner-tutorial/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-          super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getContext(),  result.getContents() ,Toast.LENGTH_LONG  ).show();
+        Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
 
         if (result != null) {
             //if qrcode has nothing in it
@@ -329,12 +349,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
                     toAddressTextInput.setText(obj.getString("address"));
                     if (obj.has("quantity"))
-                    amountTextInput.setText(obj.getString("quantity"));
-                    int count=tokenAdapter.getCount();
-                    for (int i=0;i<count;i++){
-                        TokenItem token= (TokenItem) tokenAdapter.getItem(i);
-                        if (token.getTokenId().equals(obj.getString("tokenid")))
-                        {
+                        amountTextInput.setText(obj.getString("quantity"));
+                    int count = tokenAdapter.getCount();
+                    for (int i = 0; i < count; i++) {
+                        TokenItem token = (TokenItem) tokenAdapter.getItem(i);
+                        if (token.getTokenId().equals(obj.getString("tokenid"))) {
                             tokenSpinner.setSelection(i);
                             break;
                         }
@@ -351,6 +370,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
         }
     }
+
     private void cleanInputContent() {
         amountTextInput.setText("");
         toAddressTextInput.setText("");

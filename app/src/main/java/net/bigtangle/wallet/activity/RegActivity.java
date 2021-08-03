@@ -34,43 +34,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.security.realidentity.ALRealIdentityCallback;
-import com.alibaba.security.realidentity.ALRealIdentityCallbackExt;
-import com.alibaba.security.realidentity.ALRealIdentityResult;
-import com.alibaba.security.realidentity.RPEventListener;
-import com.alibaba.security.realidentity.RPResult;
-import com.alibaba.security.realidentity.RPVerify;
+
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
+
 
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.core.LocalStorageContext;
-import net.bigtangle.wallet.core.MySQLiteOpenHelper;
+
 import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.LogConstant;
-import net.bigtangle.wallet.core.http.URLUtil;
-import net.bigtangle.wallet.core.update.UpdateManager;
+
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
+
 import java.io.InputStream;
-import java.util.UUID;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.alibaba.security.rp.RPSDK.getContext;
+
 
 public class RegActivity extends AppCompatActivity {
     public static final String HTTPS_BIGTANGLE = WalletContextHolder.getMBigtangle();
