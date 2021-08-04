@@ -23,6 +23,10 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.WalletProtobufSerializer;
+import net.bigtangle.wallet.activity.BackupActivity;
+import net.bigtangle.wallet.activity.RegActivity;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
@@ -33,14 +37,21 @@ import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
+import static net.bigtangle.wallet.core.WalletContextHolder.wallet;
 
 public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -58,15 +69,17 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @BindView(R.id.new_key_button)
     Button newKeyButton;
 
+    @BindView(R.id.load_key_button)
+    Button loadKeyButton;
     @BindView(R.id.import_key_button)
     Button importKeyButton;
+    @BindView(R.id.backup_button)
+    Button backupButton;
 
     private WalletSecretkeyItemListAdapter mAdapter;
 
     private List<WalletSecretkeyItem> itemList;
 
-    @BindView(R.id.load_key_button)
-    Button loadKeyButton;
 
     public static WalletSecretkeyFragment newInstance() {
         return new WalletSecretkeyFragment();
@@ -84,7 +97,12 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onLazyLoad() {
         this.itemList.clear();
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        String un = SPUtil.get(getContext(), "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+
+        WalletContextHolder.loadWallet(stream);
+
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         if (issuedKeys != null && !issuedKeys.isEmpty()) {
             for (ECKey ecKey : issuedKeys) {
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
@@ -103,41 +121,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
 
     @Override
     public void initEvent() {
-        this.addKeyButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
-
-        this.newKeyButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                new LovelyStandardDialog(getContext(), LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setButtonsColor(Color.WHITE)
-                        .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle(getContext().getString(R.string.dialog_title_info))
-                        .setMessage(getContext().getString(R.string.dialog_secretkey_add_key_message))
-                        .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ECKey ecKey = new ECKey();
-                                WalletContextHolder.get().wallet().importKey(ecKey);
-
-                                onLazyLoad();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
-                        })
-                        .show();
-            }
-        });
 
         this.importKeyButton.setOnClickListener(new View.OnClickListener() {
 
@@ -157,18 +141,18 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
             @Override
             public void onClick(View v) {
                 new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
+
+
                     @Override
-                    public void downloadFileStatus(boolean success,Exception e) {
+                    public void downloadFileStatus(boolean success, Exception e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (success) {
-                                    File file = new File(LocalStorageContext.get().readWalletDirectory() + "download.wallet");
-                                    String directory = file.getParent() + "/";
-                                    String filename = file.getName();
-                                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                                    String un = SPUtil.get(getContext(), "username", "").toString();
+                                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                                    WalletContextHolder.loadWallet(stream);
+                                    if (WalletContextHolder.checkWalletHavePassword()) {
                                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
 
@@ -180,7 +164,6 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                                     } else {
                                         onLazyLoad();
                                     }
-                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
                                     Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
@@ -195,6 +178,62 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 }).show();
             }
         });
+
+
+
+        this.addKeyButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+      this.backupButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), BackupActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        this.newKeyButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                new LovelyStandardDialog(getContext(), LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setButtonsColor(Color.WHITE)
+                        .setIcon(R.drawable.ic_error_white_24px)
+                        .setTitle(getContext().getString(R.string.dialog_title_info))
+                        .setMessage(getContext().getString(R.string.dialog_secretkey_add_key_message))
+                        .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    ECKey ecKey = new ECKey();
+                                    WalletContextHolder.wallet.importKey(ecKey);
+                                    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                                    new WalletProtobufSerializer().writeWallet(wallet, outStream);
+                                    byte[] a = outStream.toByteArray();
+                                    CommonUtil.updateDB("bigtangle", a, getContext());
+                                    onLazyLoad();
+                                } catch (Exception e) {
+
+                                }
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        })
+                        .show();
+            }
+        });
+
+
     }
 
     @Override
@@ -225,13 +264,17 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                             byte[] pubKeyBuf = Utils.HEX.decode(publicKey);
                             byte[] privKeyBuf = Utils.HEX.decode(privateKey);
                             ECKey ecKey = ECKey.fromPrivateAndPrecalculatedPublic(privKeyBuf, pubKeyBuf);
-                            if (WalletContextHolder.get().getAesKey() == null) {
-                                WalletContextHolder.get().wallet().importKey(ecKey);
+                            if (WalletContextHolder.getAesKey() == null) {
+                                WalletContextHolder.wallet.importKey(ecKey);
                             } else {
                                 List<ECKey> walletKeys = new ArrayList<ECKey>();
                                 walletKeys.add(ecKey);
-                                WalletContextHolder.get().wallet().importKeysAndEncrypt(walletKeys,
-                                        WalletContextHolder.get().getAesKey());
+                                WalletContextHolder.wallet.importKeysAndEncrypt(walletKeys,
+                                        WalletContextHolder.getAesKey());
+                                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                                new WalletProtobufSerializer().writeWallet(wallet, outStream);
+                                byte[] a = outStream.toByteArray();
+                                CommonUtil.updateDB("bigtangle", a, getContext());
                             }
                             onLazyLoad();
                         } catch (Exception e) {
@@ -263,12 +306,15 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 }
                 try {
                     File file = new File(list.get(0));
-                    String directory = file.getParent() + "/";
-                    String filename = file.getName();
-                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                    LocalStorageContext.get().writeWalletPath(directory, prefix);
-                    if (WalletContextHolder.get().checkWalletHavePassword()) {
+                    InputStream uodateStram = new FileInputStream(file);
+                    byte[] updateBytes = CommonUtil.urlTobyte(uodateStram);
+
+                    String un = SPUtil.get(getContext(), "username", "").toString();
+                    CommonUtil.updateDB(un, updateBytes, getContext());
+                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                    WalletContextHolder.loadWallet(stream);
+
+                    if (WalletContextHolder.checkWalletHavePassword()) {
                         new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
                                 .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
 

@@ -16,12 +16,12 @@ import android.widget.TextView;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Coin;
-import net.bigtangle.core.NetworkParameters;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
 import net.bigtangle.core.exception.InsufficientMoneyException;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
@@ -34,10 +34,12 @@ import net.bigtangle.wallet.core.exception.ToastException;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.DateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +61,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
     @BindView(R.id.amount_text_input)
     TextInputEditText amountTextInput;
 
-    @BindView(R.id.search_button)
-    Button searchButton;
+    @BindView(R.id.save_button)
+    Button saveButton;
 
     @BindView(R.id.start_date_text_view)
     TextView startDateTextView;
@@ -82,7 +84,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
 
     private List<TokenItem> tokenItemList;
     private boolean flag = false;
-    private boolean publishFlag = false;
+
 
     public static MarketPublishFragment newInstance() {
         MarketPublishFragment fragment = new MarketPublishFragment();
@@ -128,7 +130,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
         this.basetokenSpinner.setAdapter(basetokenAdapter);
         this.basetokenSpinner.setSelection(0);
         // unitPriceInput.setText("50");
-        this.searchButton.setOnClickListener(new View.OnClickListener() {
+
+        this.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -140,15 +143,21 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 .setIcon(R.drawable.ic_info_white_24px)
                                 .setTitle(getContext().getString(R.string.dialog_title_info))
                                 .setMessage(getContext().getString(R.string.successful_order_release))
-                                .show();
-                        tokenSpinner.setSelection(0, true);
-                        amountTextInput.setText("");
-                        //     unitPriceInput.setText("50");
+                                .show().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                cleanInputContent();
+                            }
+                        });
                     }
                 }, new HttpRunaExecute() {
                     @Override
                     public void execute() throws Exception {
-                        WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                        String un = SPUtil.get(getContext(), "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                        WalletContextHolder.loadWallet(stream);
+
+                        WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                         if (tokenSpinner.getSelectedItem() == null) {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
@@ -174,7 +183,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.amount_not_empty));
                         }
 
-                        Token t = WalletContextHolder.get().wallet().checkTokenId(tokenid);
+                        Token t = WalletContextHolder.wallet.checkTokenId(tokenid);
                         Coin quantity = MonetaryFormat.FIAT.noCode().parse(amountTextInput.getText().toString(), Utils.HEX.decode(tokenid),
                                 t.getDecimals());
                         if (quantity.getValue().signum() <= 0) {
@@ -184,7 +193,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         if (StringUtils.isBlank(unitPriceInput.getText().toString())) {
                             throw new ToastException(getContext().getString(R.string.unit_price_not_empty));
                         }
-                        Token base = WalletContextHolder.get().wallet().checkTokenId(basetokenValue);
+                        Token base = WalletContextHolder.wallet.checkTokenId(basetokenValue);
 
                         Coin price = MonetaryFormat.FIAT.noCode().parse(unitPriceInput.getText().toString(),
                                 Utils.HEX.decode(basetokenValue), base.getDecimals() + priceshift);
@@ -214,7 +223,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             dateEndLong = dateBeginLong;
                         }
                         String priceTemp = unitPriceInput.getText().toString();
-                        BigDecimal lastPrice = WalletContextHolder.get().wallet().getLastPrice(tokenid, basetokenValue);
+                         BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
                         if (!flag)
                             if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
                                     || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
@@ -223,30 +232,24 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
 
                             }
+
+
                         try {
-                            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
-                                WalletContextHolder.get().wallet().sellOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                WalletContextHolder.wallet.sellOrder(WalletContextHolder.getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             } else {
-                                WalletContextHolder.get().wallet().buyOrder(WalletContextHolder.get().getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
+                                WalletContextHolder.wallet.buyOrder(WalletContextHolder.getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
-                            flag = false;
-                            publishFlag = true;
 
+                            amountTextInput.setText("");
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
                 }).execute();
-                if (publishFlag)
-                    new LovelyInfoDialog(getContext())
-                            .setTopColorRes(R.color.colorPrimary)
-                            .setIcon(R.drawable.ic_info_white_24px)
-                            .setTitle(getContext().getString(R.string.dialog_title_info))
-                            .setMessage(getContext().getString(R.string.successful_order_release))
-                            .show();
             }
         });
 
@@ -296,7 +299,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
             public void execute() throws Exception {
                 tokenItemList.clear();
                 if (!isBuy) {
-                    for (TokenItem tokenItem : HttpService.getValidTokenItemList()) {
+                    for (TokenItem tokenItem : HttpService.getTokensItemList()) {
 
                         tokenItemList.add(tokenItem);
 
@@ -306,7 +309,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                         tokenItemList.add(tokenItem);
                     }
                 }
-                getActivity().runOnUiThread(new Runnable() {
+                   getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         tokenAdapter.notifyDataSetChanged();
@@ -316,10 +319,14 @@ public class MarketPublishFragment extends BaseLazyFragment {
         }).execute();
     }
 
+    private void cleanInputContent() {
+        amountTextInput.setText("");
+    }
+
     private void initTimerPicker() {
 
         String beginTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
-        String endTime = DateFormatUtils.long2Str(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(6), true);
+        String endTime = DateFormatUtils.long2Str(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(8), true);
 
         startDateTextView.setText(beginTime);
         endDateTextView.setText(endTime);

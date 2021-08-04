@@ -91,7 +91,7 @@ public class WalletDownfileDialog extends Dialog {
                                 .show();
                         return;
                     }
-                    WalletFileUtils.download(username, password, listener);
+                    WalletFileUtils.download(username, password, listener,context);
                     dismiss();
                 }
             });

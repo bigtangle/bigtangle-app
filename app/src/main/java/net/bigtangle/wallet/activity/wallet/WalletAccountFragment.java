@@ -1,6 +1,10 @@
 package net.bigtangle.wallet.activity.wallet;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +29,10 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.RegActivity;
+import net.bigtangle.wallet.activity.SPUtil;
+import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
@@ -33,6 +41,7 @@ import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.BrowserAccessTokenContext;
 import net.bigtangle.wallet.core.LocalStorageContext;
+import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -40,6 +49,7 @@ import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,17 +80,13 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     @BindView(R.id.payoff_button)
     Button payoffButton;
 
-    @BindView(R.id.aliverify_button)
-    Button aliverifyButton;
-
-
     @BindView(R.id.help_button)
     Button helpButton;
 
     @BindView(R.id.refresh_button)
     Button refreshButton;
-    @BindView(R.id.load_key_button)
-    Button loadKeyButton;
+    @BindView(R.id.reg_button)
+    Button regButton;
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -94,6 +100,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (this.itemList == null) {
             this.itemList = new ArrayList<WalletAccountItem>();
@@ -105,7 +112,8 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     public void refreshData() {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
@@ -141,7 +149,16 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @Override
     public void initEvent() {
-        this.shopButton.setOnClickListener(new View.OnClickListener() {
+
+        this.regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), RegActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+       this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new Runnable() {
@@ -160,7 +177,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.rechargeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<ECKey> ecKeys = WalletContextHolder.get().walletKeys();
+                List<ECKey> ecKeys = WalletContextHolder.walletKeys();
                 if (CollectionUtils.isEmpty(ecKeys)) {
                     new LovelyInfoDialog(getContext())
                             .setTopColorRes(R.color.colorPrimary)
@@ -214,7 +231,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 }).start();
             }
         });
-
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,26 +238,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
-        this.aliverifyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.VIEW");
-                            Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/app/identity_verify.apk");//此处填链接
-                            intent.setData(content_url);
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-            }
-        });
 
         this.helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,49 +260,23 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             }
         });
 
-        this.loadKeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new WalletDownfileDialog(getContext(), R.style.CustomDialogStyle).setListenter(new WalletDownfileDialog.OnWalletDownfileListenter() {
-                    @Override
-                    public void downloadFileStatus(boolean success, Exception e) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (success) {
-                                    File file = new File(LocalStorageContext.get().readWalletDirectory() + "download.wallet");
-                                    String directory = file.getParent() + "/";
-                                    String filename = file.getName();
-                                    String prefix = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
-                                    WalletContextHolder.get().reloadWalletFile(directory, prefix);
-                                    if (WalletContextHolder.get().checkWalletHavePassword()) {
-                                        new WalletPasswordDialog(getContext(), R.style.CustomDialogStyle)
-                                                .setListenter(new WalletPasswordDialog.OnWalletVerifyPasswordListenter() {
 
-                                                    @Override
-                                                    public void verifyPassword(String password) {
-                                                        onLazyLoad();
-                                                    }
-                                                }).show();
-                                    } else {
-                                        onLazyLoad();
-                                    }
-                                    LocalStorageContext.get().writeWalletPath(directory, prefix);
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_success), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.download_wallet_file_fail) + e.getMessage(), Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER, 0, 0);
-                                    toast.show();
-                                }
-                            }
-                        });
-                    }
-                }).show();
-            }
-        });
+    }
 
+    /**
+     * 检查包是否存在
+     *
+     * @param packname
+     * @return
+     */
+    private boolean checkPackInfo(String packname) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getActivity().getPackageManager().getPackageInfo(packname, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo != null;
     }
 
     @Override

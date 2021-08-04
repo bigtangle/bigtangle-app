@@ -10,12 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.MarketExchangeFragment;
-import net.bigtangle.wallet.activity.market.MarketOverCounterTradingFragment;
 import net.bigtangle.wallet.activity.market.MarketPriceFragment;
 import net.bigtangle.wallet.activity.market.MarketPublishFragment;
 import net.bigtangle.wallet.activity.market.MarketSearchFragment;
-import net.bigtangle.wallet.activity.market.MarketSignatureFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
 
@@ -50,16 +47,18 @@ public class MarketFragment extends BaseLazyFragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(MarketPriceFragment.newInstance());
         fragments.add(MarketSearchFragment.newInstance());
         fragments.add(MarketPublishFragment.newInstance());
-        fragments.add(MarketPriceFragment.newInstance());
+
 //        fragments.add(MarketOverCounterTradingFragment.newInstance());
 //        fragments.add(MarketExchangeFragment.newInstance());
 //        fragments.add(MarketSignatureFragment.newInstance());
 
         String[] title = new String[]{
+                getString(R.string.pricetable),
                 this.getString(R.string.search),
-                this.getString(R.string.market_tab_order), getString(R.string.pricetable)
+                this.getString(R.string.market_tab_order),
 //                this.getString(R.string.market_tab_outside_trade),
 //                this.getString(R.string.market_tab_exchange),
 //                this.getString(R.string.transaction_tab_signature)

@@ -5,9 +5,13 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.WalletFileUtils;
+
+import java.io.InputStream;
 
 public class BigtangleWlletApplication extends Application implements LifecycleObserver {
 
@@ -18,19 +22,14 @@ public class BigtangleWlletApplication extends Application implements LifecycleO
     }
 
     private void initWallet() {
-        WalletContextHolder walletContextHolder = WalletContextHolder.get();
-        if (!walletContextHolder.checkWalletExists()) {
-            WalletFileUtils.createWalletFileAndLoad();
-        }
-        walletContextHolder.initData();
+        try {
+            WalletFileUtils.createWalletDB(getApplicationContext());
+        }catch (Exception e){
 
-//        if (walletContextHolder.walletKeys() == null ){
-//            WalletFileUtils.createWalletFileAndLoad();
-//        }
-//        if (walletContextHolder.walletKeys() != null && walletContextHolder.walletKeys().size()<=0){
-//            WalletFileUtils.createWalletFileAndLoad();
-//        }
-//        walletContextHolder.initData();
+        }
+
+
+
     }
 
     private void initLocalStorage() {

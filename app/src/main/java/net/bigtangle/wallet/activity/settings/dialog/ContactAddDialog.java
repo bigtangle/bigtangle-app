@@ -25,15 +25,18 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,11 +138,14 @@ public class ContactAddDialog extends Dialog {
                 }, new HttpRunaExecute() {
                     @Override
                     public void execute() throws Exception {
+                        String un = SPUtil.get(context, "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, context);
+                        WalletContextHolder.loadWallet(stream);
 
-                        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+                        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
                         ECKey pubKeyTo = issuedKeys.get(0);
-
-                        UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
+                        WalletContextHolder.wallet.setServerURL( HttpConnectConstant.HTTP_SERVER_URL);
+                        UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.wallet.getUserSettingDataInfo(pubKeyTo, false);
                         if (userSettingDataInfo0 == null) {
                             userSettingDataInfo0 = new UserSettingDataInfo();
                         }
@@ -156,7 +162,7 @@ public class ContactAddDialog extends Dialog {
                         userSettingDataInfo0.setUserSettingDatas(contacts);
                         transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
                         transaction.setData(userSettingDataInfo0.toByteArray());
-                        WalletContextHolder.get().wallet().saveUserdata(pubKeyTo, transaction, false);
+                        WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false);
                     }
                 }).execute();
             }

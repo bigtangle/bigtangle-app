@@ -34,6 +34,7 @@ import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.Wallet;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.settings.dialog.ContactAddDialog;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
@@ -49,11 +50,13 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -61,7 +64,7 @@ import java.util.concurrent.FutureTask;
 
 import butterknife.BindView;
 
-public class TransactionPaymentFragment extends BaseLazyFragment    {
+public class TransactionPaymentFragment extends BaseLazyFragment {
 
     @BindView(R.id.pay_method_spinner)
     Spinner payMethodSpinner;
@@ -108,15 +111,17 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
         }
         if (this.payMethodArray == null) {
             payMethodArray = new String[]{getContext().getString(R.string.pay),
-                    getContext().getString(R.string.multiple_signature_pay),
-                    getContext().getString(R.string.multiple_addresses_pay),
-                    getContext().getString(R.string.multiple_signature_addresses_pay)};
+                    //     getContext().getString(R.string.multiple_signature_pay),
+                    //     getContext().getString(R.string.multiple_addresses_pay),
+                    //     getContext().getString(R.string.multiple_signature_addresses_pay)
+            };
         }
         this.payMethodAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, payMethodArray);
         this.payMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenNames);
         setFroceLoadData(true);
-        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);;
+        qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        ;
         qrScan.setOrientationLocked(false);
 
     }
@@ -124,7 +129,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
     @Override
     public void onLazyLoad() {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+        String un = SPUtil.get(getContext(), "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+        WalletContextHolder.loadWallet(stream);
+
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
         new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
@@ -150,6 +159,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                 }
             }
         });
+
     }
 
     @Override
@@ -241,8 +251,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
                         }
 
                         Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
+                        String un = SPUtil.get(getContext(), "username", "").toString();
+                        InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                        WalletContextHolder.loadWallet(stream);
 
-                        Wallet wallet = WalletContextHolder.get().wallet();
+                        Wallet wallet = WalletContextHolder.wallet;
                         wallet.setServerURL(CONTEXT_ROOT);
 
                         byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
@@ -254,8 +267,36 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
                         final String memo = memoTextInput.getText().toString();
                         try {
-                            wallet.pay(WalletContextHolder.get().getAesKey(), destination, amount, memo);
-                        }catch (InsufficientMoneyException e){
+                            wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
+                                            .setAddress(toAddressTextInput.getText().toString())
+                                            .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                                @Override
+                                                public void refreshView() {
+                                                    cleanInputContent();
+                                                }
+                                            })
+                                            .show();
+                                    new LovelyInfoDialog(getContext())
+                                            .setTopColorRes(R.color.colorPrimary)
+                                            .setIcon(R.drawable.ic_info_white_24px)
+                                            .setTitle(getContext().getString(R.string.dialog_title_info))
+                                            .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                            .show()
+                                            .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialog) {
+                                                    cleanInputContent();
+                                                }
+                                            });
+                                }
+                            });
+
+                        } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
@@ -289,9 +330,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
         this.qrscanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)     {    //initiating the qr code scan
+            public void onClick(View v) {    //initiating the qr code scan
                 qrScan.initiateScan();
-        }});
+            }
+        });
 
 
     }
@@ -300,9 +342,9 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 //https://www.simplifiedcoding.net/android-qr-code-scanner-tutorial/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-          super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getContext(),  result.getContents() ,Toast.LENGTH_LONG  ).show();
+        Toast.makeText(getContext(), result.getContents(), Toast.LENGTH_LONG).show();
 
         if (result != null) {
             //if qrcode has nothing in it
@@ -317,12 +359,11 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
                     toAddressTextInput.setText(obj.getString("address"));
                     if (obj.has("quantity"))
-                    amountTextInput.setText(obj.getString("quantity"));
-                    int count=tokenAdapter.getCount();
-                    for (int i=0;i<count;i++){
-                        TokenItem token= (TokenItem) tokenAdapter.getItem(i);
-                        if (token.getTokenId().equals(obj.getString("tokenid")))
-                        {
+                        amountTextInput.setText(obj.getString("quantity"));
+                    int count = tokenAdapter.getCount();
+                    for (int i = 0; i < count; i++) {
+                        TokenItem token = (TokenItem) tokenAdapter.getItem(i);
+                        if (token.getTokenId().equals(obj.getString("tokenid"))) {
                             tokenSpinner.setSelection(i);
                             break;
                         }
@@ -339,6 +380,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment    {
 
         }
     }
+
     private void cleanInputContent() {
         amountTextInput.setText("");
         toAddressTextInput.setText("");

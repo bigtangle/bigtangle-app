@@ -1,6 +1,7 @@
 package net.bigtangle.wallet.activity;
 
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.title_tab_token),
                 getString(R.string.title_tab_settings),
                 getString(R.string.qrscan)
-                };
+        };
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), fragments, title));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -69,29 +70,34 @@ public class MainActivity extends AppCompatActivity {
                 int position = 0;
 
                 switch (tabId) {
+
                     case R.id.tab_transaction:
                         position = 0;
                         break;
+
                     case R.id.tab_wallet:
                         position = 1;
                         break;
                     case R.id.tab_market:
                         position = 2;
                         break;
+
+
                     case R.id.tab_token:
                         position = 3;
                         break;
                     case R.id.tab_settings:
                         position = 4;
                         break;
-                   case R.id.tab_scanlogin:
-                       position = 5;
+                    case R.id.tab_scanlogin:
+                        position = 5;
                         break;
                 }
 
                 mViewPager.setCurrentItem(position);
             }
         });
+        PackageManager packageManager = getPackageManager();
     }
 
 }

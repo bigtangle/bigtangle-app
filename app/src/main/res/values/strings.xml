@@ -2,7 +2,8 @@
 
     <string name="app_name" translatable="false">bigtangle blockchain 钱包APP软件V1.0</string>
     <string name="version" translatable="false">Version</string>
-
+    <string name="reg">register</string>
+    <string name="login">login</string>
     <string name="title_tab_transaction">Transaction</string>
     <string name="title_tab_wallet">Wallet</string>
     <string name="title_tab_market">Market</string>
@@ -177,18 +178,18 @@
     <string name="shop_cart_market">Hypermarket</string>
     <string name="shop_category">All categories</string>
     <string name="shop_market_goods">Marker Goods</string>
-    <string name="shop_goods_type">Goods type</string>
+    <string name="shop_goods_type">Type</string>
     <string name="shop_goods_RMB">RMB</string>
-    <string name="shop_goods_bigtang_currency">Bigtang Currency</string>
-    <string name="shop_goods_name">Goods Name</string>
-    <string name="shop_goods_price">Goods Price</string>
-    <string name="shop_goods_num">Goods Num</string>
+    <string name="shop_goods_bigtang_currency">BIG</string>
+    <string name="shop_goods_name">Name</string>
+    <string name="shop_goods_price">Price</string>
+    <string name="shop_goods_num">Quantity</string>
     <string name="shop_buy_now">BUY NOW</string>
     <string name="shop_join_cart">JOIN CART</string>
     <string name="shop_payment">payment</string>
-    <string name="shop_payment_goodsid">Pay Goodsid</string>
+    <string name="shop_payment_goodsid">Pay Id</string>
     <string name="shop_payment_name">pay Name</string>
-    <string name="shop_payment_num">Pay Num</string>
+    <string name="shop_payment_num">Pay Quantity</string>
     <string name="order_remove_success">Order cancel success</string>
     <string name="order_remove_fail">Order cancel fail</string>
 
@@ -201,13 +202,15 @@
 
     <string name="username">Username</string>
     <string name="password">Password</string>
-
-    <string name="chart">Order Chart</string>
+    <string name="inviter">inviter</string>
+    <string name="skip">Skip</string>
+    <string name="chart">Chart</string>
     <string name="register_button">Register</string>
     <string name="recharge_button">Recharge</string>
     <string name="payoff_button">Payoff</string>
     <string name="mining_button">Mining</string>
     <string name="aliverify_button">ID Verify</string>
+    <string name="aliverify_btn">ID Verify</string>
     <string name="help_button">Help</string>
     <string name="current_wallet_eckeys_empty">Current Wallet ECKey Empty</string>
     <string name="refresh_button">Refresh</string>
@@ -217,14 +220,14 @@
     <string name="price_warn">price_warn:30%</string>
     <string name="lastPrice">lastPrice</string>
 
-    <string name="pricetable">pricetable</string>
+    <string name="pricetable">Chart</string>
 
-    <string name="identitynumber">identitynumber</string>
-    <string name="sex">identitynumber</string>
-    <string name="name">identitynumber</string>
-    <string name="homeaddress">homeaddress</string>
-    <string name="birthday">identitynumber</string>
-    <string name="photo">identitynumber</string>
+    <string name="identitynumber">Identity Number</string>
+    <string name="sex">Sex</string>
+    <string name="name">Name</string>
+    <string name="homeaddress">Address</string>
+    <string name="birthday">Birthday</string>
+    <string name="photo">Photo</string>
 
     <string name="privacy_exit">Exit</string>
     <string name="privacy_agree">Agree</string>
@@ -235,5 +238,10 @@
     <string name="confirmed">The user note has been confirmed</string>
     <string name="opt_terms">Terms of Use</string>
     <string name="opt_privacy">Privacy Policy</string>
-    <string name="otherPrice">otherPrice</string>
+    <string name="otherPrice">Price </string>
+    <string name="walletPassword">wallet password</string>
+
+    <string name="backup">backup</string>
+    <string name="filename">filename</string>
+    <string name="backupok">backupok</string>
 </resources>

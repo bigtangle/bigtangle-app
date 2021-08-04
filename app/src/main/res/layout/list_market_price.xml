@@ -161,37 +161,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/buy_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@color/base_00000000"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/buy"
-                        android:textColor="@color/color_333333"
-                        android:textSize="16sp" />
-
-                    <Button
-                        android:id="@+id/sell_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@color/base_00000000"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/sell"
-                        android:textColor="@color/color_333333"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>

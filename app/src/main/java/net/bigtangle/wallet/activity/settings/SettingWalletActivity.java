@@ -16,11 +16,7 @@ import butterknife.ButterKnife;
 
 public class SettingWalletActivity extends AppCompatActivity {
 
-    @BindView(R.id.wallet_name_text_view)
-    TextView walletNameTextView;
 
-    @BindView(R.id.wallet_path_text_view)
-    TextView walletPathTextView;
 
     @BindView(R.id.toolbar_localMain)
     Toolbar toolbarLocalMain;
@@ -39,8 +35,6 @@ public class SettingWalletActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        this.walletNameTextView.setText(LocalStorageContext.get().readWalletFilePrefix());
-        this.walletPathTextView.setText(LocalStorageContext.get().readWalletDirectory());
 
         this.resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override

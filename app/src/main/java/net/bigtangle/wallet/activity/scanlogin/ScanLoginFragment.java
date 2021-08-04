@@ -31,6 +31,7 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.scanlogin.adapter.TokenInfoItemListAdapter;
 import net.bigtangle.wallet.activity.scanlogin.model.TokenInfoItem;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
@@ -49,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,7 +134,11 @@ public class ScanLoginFragment extends BaseLazyFragment {
                 try {
                     JSONObject obj = new JSONObject(string);
                     String uuid = obj.getString("uuid");
-                    ECKey ecKey = WalletContextHolder.get().walletKeys().get(0);
+                    String un = SPUtil.get(getContext(), "username", "").toString();
+                    InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                    WalletContextHolder.loadWallet(stream);
+
+                    ECKey ecKey = WalletContextHolder.walletKeys().get(0);
                     String jsonStr = "";
                     String url = obj.getString("url");
                     String url1 = url + "?flag=0&uuid=" + uuid + "&pubKey=" + ecKey.getPublicKeyAsHex();

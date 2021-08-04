@@ -21,6 +21,7 @@ import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.settings.adapter.ContactItemListAdapter;
 import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
@@ -30,10 +31,12 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.spongycastle.crypto.InvalidCipherTextException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,13 +126,17 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
 
     private void initData() {
 
+        String un = SPUtil.get(context, "username", "").toString();
+        InputStream stream = CommonUtil.loadFromDB(un, context);
+        WalletContextHolder.loadWallet(stream);
 
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
         ECKey pubKeyTo = issuedKeys.get(0);
 
 
         try {
-            WalletContextHolder.get().wallet().setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+
+            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
 
             HashMap<String, String> requestParam = new HashMap<String, String>();
@@ -154,7 +161,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
                         ContactInfo contactInfo = new ContactInfo().parse(bytes);
                         List<Contact> list = contactInfo.getContactList();
                         if (list != null && !list.isEmpty()) {
-                            UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.get().wallet().getUserSettingDataInfo(pubKeyTo, false);
+                            UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.wallet.getUserSettingDataInfo(pubKeyTo, false);
                             if (userSettingDataInfo0 == null) {
                                 userSettingDataInfo0 = new UserSettingDataInfo();
                             }
@@ -177,7 +184,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
                             userSettingDataInfo0.setUserSettingDatas(contacts);
                             transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
                             transaction.setData(userSettingDataInfo0.toByteArray());
-                            WalletContextHolder.get().wallet().saveUserdata(pubKeyTo, transaction, false);
+                            WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false);
                         }
                     }
                 }).execute();

@@ -1,5 +1,6 @@
 package net.bigtangle.wallet.core;
 
+import android.content.Context;
 import android.util.Log;
 
 import net.bigtangle.core.ContactInfo;
@@ -17,10 +18,12 @@ import net.bigtangle.core.response.GetOutputsResponse;
 import net.bigtangle.core.response.GetTokensResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +44,7 @@ import okhttp3.Response;
 
 public class HttpService {
 
-    public static void downloadWalletFile(String signin, String password, String filename, WalletDownfileDialog.OnWalletDownfileListenter listenter) throws Exception {
+    public static void downloadWalletFile(String signin, String password, String filename, WalletDownfileDialog.OnWalletDownfileListenter listenter, Context context) throws Exception {
         //
 //        https://m.bigtangle.com.cn/vm/walletfiledownload?id=201905250100000005&userid=201905250100000004
 //                    https://testcc.bigtangle.xyz
@@ -80,40 +83,24 @@ public class HttpService {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
                 int len = 0;
-                FileOutputStream fos = null;
-                File file = new File(filename);
 
                 boolean success = true;
                 try {
 
                     is = response.body().byteStream();
-                    long total = response.body().contentLength();
-                    fos = new FileOutputStream(file);
-                    long sum = 0;
-                    while ((len = is.read(buf)) != -1) {
-                        fos.write(buf, 0, len);
-                        sum += len;
-                        int progress = (int) (sum * 1.0f / total * 100);
-                        //下载中更新进度条
-                        //listener.onDownloading(progress);
+
+                    InputStream stream = CommonUtil.loadFromDB(signin, context);
+                    byte[] bytes=CommonUtil.urlTobyte(is);
+                    if (stream==null){
+                        CommonUtil.saveDB(signin,bytes,context);
+                    }else {
+                        CommonUtil.updateDB(signin,bytes,context);
                     }
-                    fos.flush();
+                    SPUtil.put(context,"username",signin);
                     //下载完成
                     success = true;
                 } catch (Exception e) {
                     success = false;
-                } finally {
-
-                    try {
-                        if (is != null) {
-                            is.close();
-                        }
-                        if (fos != null) {
-                            fos.close();
-                        }
-                    } catch (IOException e) {
-
-                    }
                 }
                 listenter.downloadFileStatus(success,null);
             }
@@ -140,8 +127,12 @@ public class HttpService {
     }
 
     public static List<TokenItem> getValidTokenItemList() throws Exception {
+        return  getTokensItemList();
+    }
+    public static List<TokenItem> getMyValidTokenItemList() throws Exception {
         List<String> keyStrHex = new ArrayList<String>();
-        for (ECKey ecKey : WalletContextHolder.get().walletKeys()) {
+
+        for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
 
@@ -192,7 +183,7 @@ public class HttpService {
     public static Serializable getUserdata(String type) throws IOException {
         HashMap<String, String> requestParam = new HashMap<String, String>();
         // 读取 ECKey
-        List<ECKey> issuedKeys = WalletContextHolder.get().walletKeys();
+        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
 
         ECKey pubKeyTo = issuedKeys.get(0);
 
