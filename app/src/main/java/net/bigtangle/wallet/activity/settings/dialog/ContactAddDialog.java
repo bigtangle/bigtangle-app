@@ -144,7 +144,7 @@ public class ContactAddDialog extends Dialog {
 
                         List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
                         ECKey pubKeyTo = issuedKeys.get(0);
-
+                        WalletContextHolder.wallet.setServerURL( HttpConnectConstant.HTTP_SERVER_URL);
                         UserSettingDataInfo userSettingDataInfo0 = WalletContextHolder.wallet.getUserSettingDataInfo(pubKeyTo, false);
                         if (userSettingDataInfo0 == null) {
                             userSettingDataInfo0 = new UserSettingDataInfo();

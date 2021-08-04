@@ -271,6 +271,16 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
+                                            .setAddress(toAddressTextInput.getText().toString())
+                                            .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                                @Override
+                                                public void refreshView() {
+                                                    cleanInputContent();
+                                                }
+                                            })
+                                            .show();
                                     new LovelyInfoDialog(getContext())
                                             .setTopColorRes(R.color.colorPrimary)
                                             .setIcon(R.drawable.ic_info_white_24px)
