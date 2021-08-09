@@ -36,6 +36,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -67,6 +70,11 @@ public class BackupActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        EditText textInviter = (EditText) findViewById(R.id.filenameText);
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+        String now=dateFormat.format(new Date());
+        textInviter.setText("backup-"+now);
         findViewById(R.id.btn_backup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
