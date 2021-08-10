@@ -29,8 +29,8 @@ public class BrowserAccessTokenContext {
     // }
 
 
-    public static void open(Context context, String url) throws Exception {
-       // String un = SPUtil.get(context, "username", "").toString();
+    public static String open(Context context, String url) throws Exception {
+        // String un = SPUtil.get(context, "username", "").toString();
         //InputStream stream = CommonUtil.loadFromDB(un, context);
         //WalletContextHolder.loadWallet(stream);
 
@@ -41,7 +41,8 @@ public class BrowserAccessTokenContext {
                 "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
         Response response = client.newCall(request).execute();
         String accessToken = response.body().string();
-
+        if ("405".equals(accessToken))
+            return "405";
         byte[] buf = Utils.HEX.decode(accessToken);
         byte[] bytes = ECIESCoder.decrypt(ecKey.getPrivKey(), buf);
         String verifyHex = new String(bytes);
@@ -51,6 +52,7 @@ public class BrowserAccessTokenContext {
         Uri content_url = Uri.parse(url + "?user_access_token=" + verifyHex);
         intent.setData(content_url);
         context.startActivity(intent);
+        return "";
     }
 
 }
