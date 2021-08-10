@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
@@ -121,12 +122,16 @@ public class ScanLoginFragment extends BaseLazyFragment {
                     @Override
                     public void run() {
                         try {
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.VIEW");
-                            Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk"  );//此处填链接
-                            intent.setData(content_url);
-                            startActivity(intent);
+                            String code = BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk");
+                            if ("405".equals(code))
+                                new LovelyInfoDialog(getContext())
+                                        .setTopColorRes(R.color.colorPrimary)
+                                        .setIcon(R.drawable.ic_info_white_24px)
+                                        .setTitle(R.string.dialog_title_error)
+                                        .setMessage("请先注册或登录")
+                                        .show();
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -141,12 +146,14 @@ public class ScanLoginFragment extends BaseLazyFragment {
                     @Override
                     public void run() {
                         try {
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.VIEW");
-                            Uri content_url = Uri.parse(
-                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn"  );//此处填链接
-                            intent.setData(content_url);
-                            startActivity(intent);
+                            String code = BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn");
+                            if ("405".equals(code))
+                                new LovelyInfoDialog(getContext())
+                                        .setTopColorRes(R.color.colorPrimary)
+                                        .setIcon(R.drawable.ic_info_white_24px)
+                                        .setTitle(R.string.dialog_title_error)
+                                        .setMessage("请先注册或登录")
+                                        .show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
