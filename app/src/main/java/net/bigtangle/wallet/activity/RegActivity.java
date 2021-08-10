@@ -173,6 +173,7 @@ public class RegActivity extends AppCompatActivity {
                         "/public/reg?username=" + signin + "&password=" + password + "&inviter=" + inviter).get().build();
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
+                    CommonUtil.deleteDB(RegActivity.this);
                     CommonUtil.saveDB(signin, CommonUtil.urlTobyte(response.body().byteStream()), RegActivity.this);
 
                 } else {
