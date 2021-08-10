@@ -155,12 +155,12 @@ public class RegActivity extends AppCompatActivity {
 
 
     private void doReg() throws InterruptedException, ExecutionException {
-        LinearLayout layout = findViewById(R.id.regLayout); //specify here Root layout Id
-        ProgressBar progressBar = new ProgressBar(RegActivity.this, null, android.R.attr.progressBarStyleLarge);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        layout.addView(progressBar, params);
-        progressBar.setVisibility(View.VISIBLE);  //To show ProgressBar
+//        LinearLayout layout = findViewById(R.id.regLayout); //specify here Root layout Id
+//        ProgressBar progressBar = new ProgressBar(RegActivity.this, null, android.R.attr.progressBarStyleLarge);
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
+//        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//        layout.addView(progressBar, params);
+//        progressBar.setVisibility(View.VISIBLE);  //To show ProgressBar
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         @SuppressWarnings({"unchecked", "rawtypes"}) final Future<String> handler = executor.submit(new Callable<String>() {
@@ -179,7 +179,7 @@ public class RegActivity extends AppCompatActivity {
                 } else {
                     throw new RuntimeException("" + response);
                 }
-                progressBar.setVisibility(View.GONE);     // To Hide ProgressBar
+//                progressBar.setVisibility(View.GONE);     // To Hide ProgressBar
                 return "";
             }
         });
