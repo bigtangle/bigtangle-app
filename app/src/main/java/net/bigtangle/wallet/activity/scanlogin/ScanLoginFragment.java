@@ -3,6 +3,7 @@ package net.bigtangle.wallet.activity.scanlogin;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -77,7 +78,10 @@ public class ScanLoginFragment extends BaseLazyFragment {
 
     @BindView(R.id.qrscanlogin_button)
     Button qrscanloginButton;
-
+    @BindView(R.id.vpn_button)
+    Button vpnButton;
+    @BindView(R.id.vpnfile_button)
+    Button vpnfileButton;
 
     //qr code scanner object
     private IntentIntegrator qrScan;
@@ -108,6 +112,46 @@ public class ScanLoginFragment extends BaseLazyFragment {
             @Override
             public void onClick(View v) {    //initiating the qr code scan
                 qrScan.initiateScan();
+            }
+        });
+        this.vpnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(
+                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk"  );//此处填链接
+                            intent.setData(content_url);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+        this.vpnfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(
+                                    "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn"  );//此处填链接
+                            intent.setData(content_url);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
     }
