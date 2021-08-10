@@ -118,11 +118,12 @@ public class ScanLoginFragment extends BaseLazyFragment {
         this.vpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk");
+                            String code = BrowserAccessTokenContext.check(getContext());
                             if ("405".equals(code))
                                 new LovelyInfoDialog(getContext())
                                         .setTopColorRes(R.color.colorPrimary)
@@ -130,13 +131,16 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                         .setTitle(R.string.dialog_title_error)
                                         .setMessage("请先注册或登录")
                                         .show();
-
+                            else
+                                BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk", code);
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
+
+
             }
         });
         this.vpnfileButton.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +150,7 @@ public class ScanLoginFragment extends BaseLazyFragment {
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn");
+                            String code = BrowserAccessTokenContext.check(getContext());
                             if ("405".equals(code))
                                 new LovelyInfoDialog(getContext())
                                         .setTopColorRes(R.color.colorPrimary)
@@ -154,6 +158,8 @@ public class ScanLoginFragment extends BaseLazyFragment {
                                         .setTitle(R.string.dialog_title_error)
                                         .setMessage("请先注册或登录")
                                         .show();
+                            else
+                                BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn", code);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

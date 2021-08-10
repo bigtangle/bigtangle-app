@@ -208,7 +208,7 @@ public class CommonUtil {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.delete("walletdata","username=?", new String[] { "bigtangle"});
+        db.delete("walletdata","", new String[] { });
         db.close();
         dbHelper.close();
 

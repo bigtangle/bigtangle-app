@@ -165,8 +165,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/browse.jsf");
+                            String code = BrowserAccessTokenContext.check(getContext());
                             if ("405".equals(code))
                                 new LovelyInfoDialog(getContext())
                                         .setTopColorRes(R.color.colorPrimary)
@@ -174,6 +173,10 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                                         .setTitle(R.string.dialog_title_error)
                                         .setMessage("请先注册或登录")
                                         .show();
+                            else
+                                BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                        "/shop/browse.jsf", code);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -213,8 +216,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/payoff.jsf");
+                            String code = BrowserAccessTokenContext.check(getContext());
                             if ("405".equals(code))
                                 new LovelyInfoDialog(getContext())
                                         .setTopColorRes(R.color.colorPrimary)
@@ -222,6 +224,9 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                                         .setTitle(R.string.dialog_title_error)
                                         .setMessage("请先注册或登录")
                                         .show();
+                            else
+                                BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                        "/shop/payoff.jsf", code);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -236,8 +241,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/wallet/miningreward.jsf");
+                            String code = BrowserAccessTokenContext.check(getContext());
                             if ("405".equals(code))
                                 new LovelyInfoDialog(getContext())
                                         .setTopColorRes(R.color.colorPrimary)
@@ -245,6 +249,9 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                                         .setTitle(R.string.dialog_title_error)
                                         .setMessage("请先注册或登录")
                                         .show();
+                            else
+                                BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                        "/shop/miningreward.jsf", code);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
