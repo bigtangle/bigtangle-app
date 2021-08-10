@@ -31,8 +31,8 @@ public class BrowserAccessTokenContext {
 
     public static String open(Context context, String url) throws Exception {
         // String un = SPUtil.get(context, "username", "").toString();
-        //InputStream stream = CommonUtil.loadFromDB(un, context);
-        //WalletContextHolder.loadWallet(stream);
+        InputStream stream = CommonUtil.loadFromDB("", context);
+        WalletContextHolder.loadWallet(stream);
 
         ECKey ecKey = WalletContextHolder.walletKeys().get(0);
         OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
