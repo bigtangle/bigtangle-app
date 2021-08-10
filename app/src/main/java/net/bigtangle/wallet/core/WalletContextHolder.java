@@ -29,7 +29,7 @@ public class WalletContextHolder {
 
     private WalletAppKit walletAppKit;
 
-    public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
+    public static NetworkParameters networkParameters = MainNetParams.get();//MainNetParams.get();
     public static InputStream inputStream;
     public static Wallet wallet;
     private static String password;
