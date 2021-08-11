@@ -83,7 +83,7 @@ public class ScanLoginFragment extends BaseLazyFragment {
     Button vpnButton;
     @BindView(R.id.vpnfile_button)
     Button vpnfileButton;
-
+    String code = "";
     //qr code scanner object
     private IntentIntegrator qrScan;
 
@@ -118,53 +118,59 @@ public class ScanLoginFragment extends BaseLazyFragment {
         this.vpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                code = "";
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.check(getContext());
-                            if ("405".equals(code))
-                                new LovelyInfoDialog(getContext())
-                                        .setTopColorRes(R.color.colorPrimary)
-                                        .setIcon(R.drawable.ic_info_white_24px)
-                                        .setTitle(R.string.dialog_title_error)
-                                        .setMessage("请先注册或登录")
-                                        .show();
-                            else
-                                BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk", code);
-
+                            code = BrowserAccessTokenContext.check(getContext());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
 
+                if ("".equals(code))
+                    Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                else if ("405".equals(code))
+                    Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
+                else {
+                    try {
+                        BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk", code);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
+
         this.vpnfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                code = "";
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            String code = BrowserAccessTokenContext.check(getContext());
-                            if ("405".equals(code))
-                                new LovelyInfoDialog(getContext())
-                                        .setTopColorRes(R.color.colorPrimary)
-                                        .setIcon(R.drawable.ic_info_white_24px)
-                                        .setTitle(R.string.dialog_title_error)
-                                        .setMessage("请先注册或登录")
-                                        .show();
-                            else
-                                BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn", code);
+                            code = BrowserAccessTokenContext.check(getContext());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
+                if ("".equals(code))
+                    Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                else if ("405".equals(code))
+                    Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
+                else {
+                    try {
+                        BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn", code);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
     }

@@ -3,6 +3,7 @@ package net.bigtangle.wallet.core;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
@@ -35,18 +36,22 @@ public class BrowserAccessTokenContext {
         WalletContextHolder.loadWallet(stream);
 
         ECKey ecKey = WalletContextHolder.walletKeys().get(0);
+
         OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
         Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
                 "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
+
         Response response = client.newCall(request).execute();
+
         String accessToken = response.body().string();
 
         return accessToken;
     }
-    public static void open(Context context, String url,String accessToken) throws Exception {
-        InputStream stream = CommonUtil.loadFromDB("", context);
-        WalletContextHolder.loadWallet(stream);
+
+    public static void open(Context context, String url, String accessToken) throws Exception {
+        // InputStream stream = CommonUtil.loadFromDB("", context);
+        //WalletContextHolder.loadWallet(stream);
         ECKey ecKey = WalletContextHolder.walletKeys().get(0);
 
         byte[] buf = Utils.HEX.decode(accessToken);
