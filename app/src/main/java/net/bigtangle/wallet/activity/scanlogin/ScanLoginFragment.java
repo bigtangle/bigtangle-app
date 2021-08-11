@@ -118,29 +118,19 @@ public class ScanLoginFragment extends BaseLazyFragment {
         this.vpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                code = "";
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            code = BrowserAccessTokenContext.check(getContext());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-                if ("".equals(code))
-                    Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
-                else if ("405".equals(code))
-                    Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
-                else {
-                    try {
+                try {
+                    code = BrowserAccessTokenContext.check(getContext());
+                    if ("".equals(code))
+                        Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                    else if ("405".equals(code))
+                        Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
+                    else {
                         BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/ics-openvpn-0.7.23.apk", code);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    Log.e("bigtangle", "", e);
                 }
+
 
             }
         });
@@ -148,28 +138,19 @@ public class ScanLoginFragment extends BaseLazyFragment {
         this.vpnfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                code = "";
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            code = BrowserAccessTokenContext.check(getContext());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-                if ("".equals(code))
-                    Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
-                else if ("405".equals(code))
-                    Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
-                else {
-                    try {
+                try {
+                    code = BrowserAccessTokenContext.check(getContext());
+                    if ("".equals(code))
+                        Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                    else if ("405".equals(code))
+                        Toast.makeText(getContext(), "请先注册或登录", Toast.LENGTH_LONG).show();
+                    else {
                         BrowserAccessTokenContext.open(getContext(), "http://bigtangle.oss-cn-beijing.aliyuncs.com/download/bigtangle-de.ovpn", code);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    Log.e("bigtangle", "", e);
                 }
+
 
             }
         });

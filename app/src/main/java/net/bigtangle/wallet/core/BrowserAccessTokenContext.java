@@ -11,6 +11,7 @@ import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,15 +37,11 @@ public class BrowserAccessTokenContext {
         WalletContextHolder.loadWallet(stream);
 
         ECKey ecKey = WalletContextHolder.walletKeys().get(0);
+        String url = WalletContextHolder.getMBigtangle() +
+                "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex();
 
-        OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
 
-        Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
-                "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
-
-        Response response = client.newCall(request).execute();
-
-        String accessToken = response.body().string();
+        String accessToken = new URLUtil().calculateString(url).get();
 
         return accessToken;
     }
