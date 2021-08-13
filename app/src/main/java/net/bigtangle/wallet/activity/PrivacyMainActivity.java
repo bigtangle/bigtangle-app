@@ -13,11 +13,10 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import net.bigtangle.wallet.R;
 

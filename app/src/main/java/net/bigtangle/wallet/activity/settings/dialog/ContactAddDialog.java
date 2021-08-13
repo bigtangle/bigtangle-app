@@ -3,30 +3,20 @@ package net.bigtangle.wallet.activity.settings.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
+import com.google.android.material.textfield.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import net.bigtangle.core.Block;
-import net.bigtangle.core.Contact;
-import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.UserSettingData;
 import net.bigtangle.core.UserSettingDataInfo;
-import net.bigtangle.utils.Json;
-import net.bigtangle.core.MultiSignBy;
-import net.bigtangle.core.Sha256Hash;
 import net.bigtangle.core.Transaction;
-import net.bigtangle.core.Utils;
-import net.bigtangle.params.ReqCmd;
-import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
-import net.bigtangle.wallet.core.HttpService;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -38,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;

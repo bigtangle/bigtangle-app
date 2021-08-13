@@ -1,23 +1,16 @@
 package net.bigtangle.wallet.activity.settings;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import net.bigtangle.core.Contact;
-import net.bigtangle.core.ContactInfo;
-import net.bigtangle.core.DataClassName;
-import net.bigtangle.core.ECKey;
 import net.bigtangle.core.UserSettingData;
 import net.bigtangle.core.UserSettingDataInfo;
-import net.bigtangle.utils.Json;
-import net.bigtangle.params.ReqCmd;
-import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.settings.adapter.ContactItemListAdapter;
@@ -26,15 +19,11 @@ import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.http.HttpNetComplete;
-import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
-import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;

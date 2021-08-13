@@ -1,15 +1,13 @@
 package net.bigtangle.wallet.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.security.realidentity.ALRealIdentityCallback;
 import com.alibaba.security.realidentity.ALRealIdentityCallbackExt;

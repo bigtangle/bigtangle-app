@@ -59,7 +59,7 @@
         <activity android:name=".activity.RegActivity" />
         <activity android:name=".activity.BackupActivity" />
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="net.bigtangle.wallet.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true"

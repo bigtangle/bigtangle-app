@@ -2,16 +2,15 @@ package net.bigtangle.wallet.activity.shoping;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.shoping.adapter.ShopGoodsItemListAdapter;
 import net.bigtangle.wallet.activity.shoping.model.PaymentGoogsItem;
-import net.bigtangle.wallet.activity.shoping.model.ShopGoogsItem;
 
 import java.util.ArrayList;
 import java.util.List;

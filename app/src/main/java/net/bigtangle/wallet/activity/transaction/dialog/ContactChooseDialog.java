@@ -3,9 +3,9 @@ package net.bigtangle.wallet.activity.transaction.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,9 +33,6 @@ import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
-import org.spongycastle.crypto.InvalidCipherTextException;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,30 +1,16 @@
 package net.bigtangle.wallet.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Environment;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -40,15 +26,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class BackupActivity extends AppCompatActivity {
     private static final int REQUESTCODE_FROM_ACTIVITY = 1000;
@@ -72,7 +49,7 @@ public class BackupActivity extends AppCompatActivity {
         );
 
         EditText textInviter = (EditText) findViewById(R.id.filenameText);
-        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String now=dateFormat.format(new Date());
         textInviter.setText("backup-"+now);
         findViewById(R.id.btn_backup).setOnClickListener(new View.OnClickListener() {
@@ -87,8 +64,9 @@ public class BackupActivity extends AppCompatActivity {
                 byte[] buf = new byte[2048];
                 int len = 0;
                 FileOutputStream fos = null;
-                String filepath = "/storage/emulated/0/Download/" + filename + ".wallet";
-                File file = new File(filepath);
+               // String filepath = + ;
+                   //     "/storage/emulated/0/Download/" + filename + ".wallet";
+                File file = new File(getFilesDir(),filename + ".wallet" );
                 try {
                     long total = is.available();
                     fos = new FileOutputStream(file);
@@ -105,9 +83,19 @@ public class BackupActivity extends AppCompatActivity {
                             .setTopColorRes(R.color.colorPrimary)
                             .setIcon(R.drawable.ic_error_white_24px)
                             .setTitle("")
-                            .setMessage(getString(R.string.backupok))
+                            .setMessage( getString(R.string.save)
+                                            +
+                                    file.getAbsoluteFile())
                             .show();
                 } catch (Exception e) {
+                    Log.e(LogConstant.TAG, "backup file", e);
+                    new LovelyInfoDialog(BackupActivity.this)
+                            .setTopColorRes(R.color.colorPrimary)
+                            .setIcon(R.drawable.ic_error_white_24px)
+                            .setTitle(getString(R.string.dialog_title_error))
+                            .setMessage(getString(R.string.current_selection_file_error)
+                            + "\n " + e.getLocalizedMessage())
+                            .show();
                 } finally {
 
                     try {

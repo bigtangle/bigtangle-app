@@ -3,11 +3,11 @@ package net.bigtangle.wallet.activity.wallet;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +25,6 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.WalletProtobufSerializer;
 import net.bigtangle.wallet.activity.BackupActivity;
-import net.bigtangle.wallet.activity.RegActivity;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletSecretkeyItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
@@ -42,8 +41,6 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +127,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 new LFilePicker()
                         .withSupportFragment(WalletSecretkeyFragment.this)
                         .withRequestCode(REQUESTCODE_FROM_ACTIVITY)
-                        .withStartPath(LocalStorageContext.get().readWalletDirectory())
+                        .withStartPath(getContext().getFilesDir().getAbsolutePath())
                         .withIsGreater(false)
                         .withFileSize(500 * 1024)
                         .start();

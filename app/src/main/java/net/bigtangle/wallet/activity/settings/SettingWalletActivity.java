@@ -1,15 +1,13 @@
 package net.bigtangle.wallet.activity.settings;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.settings.dialog.ResetPasswordDialog;
-import net.bigtangle.wallet.core.LocalStorageContext;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

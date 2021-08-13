@@ -1,71 +1,37 @@
 package net.bigtangle.wallet.activity.scanlogin;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import net.bigtangle.core.Coin;
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
 import net.bigtangle.encrypt.ECIESCoder;
-import net.bigtangle.params.ReqCmd;
-import net.bigtangle.utils.Gzip;
-import net.bigtangle.utils.Json;
-import net.bigtangle.utils.MonetaryFormat;
-import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
-import net.bigtangle.wallet.activity.scanlogin.adapter.TokenInfoItemListAdapter;
-import net.bigtangle.wallet.activity.scanlogin.model.TokenInfoItem;
-import net.bigtangle.wallet.activity.transaction.model.TokenItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
-import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.BrowserAccessTokenContext;
 import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.constant.LogConstant;
-import net.bigtangle.wallet.core.http.HttpNetComplete;
-import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import butterknife.BindView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * @author lijian
