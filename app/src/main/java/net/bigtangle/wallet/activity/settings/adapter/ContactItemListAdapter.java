@@ -17,6 +17,8 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.UserSettingData;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.utils.Json;
 import net.bigtangle.core.MultiSignBy;
 import net.bigtangle.core.Sha256Hash;
@@ -33,6 +35,7 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.InputStream;
@@ -159,53 +162,35 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
         String name = item.getContactName();
         String address = item.getAddress();
 
-        HashMap<String, String> requestParam = new HashMap<String, String>();
+        WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+        UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
+        itemList.clear();
+        if (userSettingDataInfo != null) {
+            List<UserSettingData> userSettingDataList = userSettingDataInfo.getUserSettingDatas();
+            if (userSettingDataList != null) {
+                List<UserSettingData> contacts = new ArrayList<UserSettingData>();
+                for (UserSettingData userSettingData : userSettingDataList) {
+                    if (userSettingData.getDomain().equals("ContactInfo")) {
+                        if (!address.equals(userSettingData.getKey())) {
+                            ContactInfoItem contactInfoItem = ContactInfoItem.build(userSettingData.getValue(), userSettingData.getKey());
 
-        byte[] data = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getTip.name(),
-                Json.jsonmapper().writeValueAsString(requestParam));
+                            itemList.add(contactInfoItem);
+                            contacts.add(userSettingData);
+                        }
+                    }
+                }
+                Transaction transaction = new Transaction(WalletContextHolder.networkParameters);
 
-        Block block = WalletContextHolder.networkParameters.getDefaultSerializer().makeBlock(data);
-        block.setBlockType(Block.Type.BLOCKTYPE_USERDATA);
-
-        Transaction coinbase = new Transaction(WalletContextHolder.networkParameters);
-
-        ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
-        List<Contact> list = contactInfo.getContactList();
-        List<Contact> tempList = new ArrayList<Contact>();
-        for (Contact contact : list) {
-            if (name.trim().equals(contact.getName().trim())
-                    && address.trim().equals(contact.getAddress().trim())) {
-                continue;
+                UserSettingDataInfo userSettingDataInfo0 = new UserSettingDataInfo();
+                userSettingDataInfo0.setUserSettingDatas(contacts);
+                transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
+                transaction.setData(userSettingDataInfo0.toByteArray());
+                List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
+                ECKey pubKeyTo = issuedKeys.get(0);
+                WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false);
             }
-            tempList.add(contact);
         }
-        contactInfo.setContactList(tempList);
 
-        coinbase.setDataClassName(DataClassName.CONTACTINFO.name());
-        coinbase.setData(contactInfo.toByteArray());
-        String un = SPUtil.get(mContext, "username", "").toString();
-        InputStream stream = CommonUtil.loadFromDB(un, mContext);
-        WalletContextHolder.loadWallet(stream);
-
-        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
-        ECKey pubKeyTo = issuedKeys.get(0);
-
-        Sha256Hash sighash = coinbase.getHash();
-        ECKey.ECDSASignature party1Signature = pubKeyTo.sign(sighash, WalletContextHolder.getAesKey());
-        byte[] buf1 = party1Signature.encodeToDER();
-
-        List<MultiSignBy> multiSignBies = new ArrayList<MultiSignBy>();
-        MultiSignBy multiSignBy0 = new MultiSignBy();
-        multiSignBy0.setAddress(pubKeyTo.toAddress(WalletContextHolder.networkParameters).toBase58());
-        multiSignBy0.setPublickey(Utils.HEX.encode(pubKeyTo.getPubKey()));
-        multiSignBy0.setSignature(Utils.HEX.encode(buf1));
-        multiSignBies.add(multiSignBy0);
-        coinbase.setDataSignature(Json.jsonmapper().writeValueAsBytes(multiSignBies));
-
-        block.addTransaction(coinbase);
-        block.solve();
-
-        OkHttp3Util.post(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.saveBlock.name(), block.bitcoinSerialize());
     }
 
     public interface OnContactRemCallbackListenter {
