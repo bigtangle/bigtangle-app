@@ -13,6 +13,8 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.UserSettingData;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.utils.Json;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.OkHttp3Util;
@@ -27,6 +29,7 @@ import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.InputStream;
@@ -103,42 +106,30 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void initData() {
-        HashMap<String, String> requestParam = new HashMap<String, String>();
+
         String un = SPUtil.get(this, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, this);
         WalletContextHolder.loadWallet(stream);
 
-        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
-        ECKey pubKeyTo = issuedKeys.get(0);
-
-        requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
-        requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
-
-        new HttpNetRunaDispatch(this, new HttpNetComplete() {
-            @Override
-            public void completeCallback(byte[] jsonStr) {
-                mAdapter.notifyDataSetChanged();
-            }
-        }, new HttpRunaExecute() {
-            @Override
-            public void execute() throws Exception {
-                itemList.clear();
-                byte[] bytes = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
-                        Json.jsonmapper().writeValueAsString(requestParam));
-
-                if (bytes == null || bytes.length == 0) {
-                    return;
-                }
-                ContactInfo contactInfo = new ContactInfo().parse(bytes);
-                List<Contact> list = contactInfo.getContactList();
-                if (list != null && !list.isEmpty()) {
-                    for (Contact contact : list) {
-                        ContactInfoItem contactInfoItem = ContactInfoItem.build(contact.getName(), contact.getAddress());
-                        itemList.add(contactInfoItem);
+        try {
+            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
+            if (userSettingDataInfo != null) {
+                List<UserSettingData> userSettingDataList = userSettingDataInfo.getUserSettingDatas();
+                if (userSettingDataList != null) {
+                    itemList.clear();
+                    for (UserSettingData userSettingData : userSettingDataList) {
+                        if (userSettingData.getDomain().equals("ContactInfo")) {
+                            ContactInfoItem contactInfoItem = ContactInfoItem.build(userSettingData.getValue(), userSettingData.getKey());
+                            itemList.add(contactInfoItem);
+                        }
                     }
+                    mAdapter.notifyDataSetChanged();
                 }
             }
-        }).execute();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
