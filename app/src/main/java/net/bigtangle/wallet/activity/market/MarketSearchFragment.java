@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -265,7 +266,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
                     if (orderdataResponse.getAllOrdersSorted() != null && orderdataResponse.getAllOrdersSorted().size() > 0) {
                         for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
+                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell), Locale.getDefault());
                             String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                             if (StringUtils.isBlank(tokenName)) {
                                 tokenName = marketOrderItem.getTokenId();
