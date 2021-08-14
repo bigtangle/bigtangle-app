@@ -1,12 +1,12 @@
 package net.bigtangle.wallet.activity.token;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputEditText;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,6 @@ import android.widget.Button;
 
 import net.bigtangle.core.Coin;
 import net.bigtangle.utils.Json;
-import net.bigtangle.core.Utils;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
@@ -27,7 +26,6 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;

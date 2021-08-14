@@ -11,7 +11,19 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/qrscanlogin_button"
+        android:id="@+id/qrscanlogin_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bottom_confirm"
+        android:elevation="24dp"
+        android:text="@string/qrscan" />
+        <Button
+            android:id="@+id/vpn_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
@@ -21,6 +33,18 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/bottom_confirm"
             android:elevation="24dp"
-            android:text="@string/qrscan" />
+            android:text="VPN软件下载" />
+        <Button
+            android:id="@+id/vpnfile_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bottom_confirm"
+            android:elevation="24dp"
+            android:text="vpn 下载配置文件" />
     </LinearLayout>
 </ScrollView>

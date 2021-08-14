@@ -1,26 +1,21 @@
 package net.bigtangle.wallet.activity.wallet;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.bigtangle.apps.data.Certificate;
-import net.bigtangle.apps.data.IdentityData;
-import net.bigtangle.core.ECKey;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountCertificateListAdapter;
-import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountIdentityListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountCertificateItem;
-import net.bigtangle.wallet.activity.wallet.model.WalletAccountIdentiyItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -31,7 +26,6 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import butterknife.BindView;
 

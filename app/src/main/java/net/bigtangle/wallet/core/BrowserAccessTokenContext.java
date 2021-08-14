@@ -3,6 +3,7 @@ package net.bigtangle.wallet.core;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import net.bigtangle.core.ECKey;
 import net.bigtangle.core.Utils;
@@ -10,6 +11,7 @@ import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,18 +31,25 @@ public class BrowserAccessTokenContext {
     // }
 
 
-    public static void open(Context context, String url) throws Exception {
-       // String un = SPUtil.get(context, "username", "").toString();
-        //InputStream stream = CommonUtil.loadFromDB(un, context);
-        //WalletContextHolder.loadWallet(stream);
+    public static String check(Context context) throws Exception {
+
+        InputStream stream = CommonUtil.loadFromDB("", context);
+        WalletContextHolder.loadWallet(stream);
 
         ECKey ecKey = WalletContextHolder.walletKeys().get(0);
-        OkHttpClient client = OkHttp3Util.getUnsafeOkHttpClient();
+        String url = WalletContextHolder.getMBigtangle() +
+                "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex();
 
-        Request request = new Request.Builder().url(WalletContextHolder.getMBigtangle() +
-                "/accessToken/generate?pubKey=" + ecKey.getPublicKeyAsHex()).get().build();
-        Response response = client.newCall(request).execute();
-        String accessToken = response.body().string();
+
+        String accessToken = new URLUtil().calculateString(url).get();
+
+        return accessToken;
+    }
+
+    public static void open(Context context, String url, String accessToken) throws Exception {
+        // InputStream stream = CommonUtil.loadFromDB("", context);
+        //WalletContextHolder.loadWallet(stream);
+        ECKey ecKey = WalletContextHolder.walletKeys().get(0);
 
         byte[] buf = Utils.HEX.decode(accessToken);
         byte[] bytes = ECIESCoder.decrypt(ecKey.getPrivKey(), buf);

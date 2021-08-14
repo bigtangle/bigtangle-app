@@ -1,12 +1,12 @@
 package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -265,7 +266,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
                     if (orderdataResponse.getAllOrdersSorted() != null && orderdataResponse.getAllOrdersSorted().size() > 0) {
                         for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
+                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell), Locale.getDefault());
                             String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                             if (StringUtils.isBlank(tokenName)) {
                                 tokenName = marketOrderItem.getTokenId();

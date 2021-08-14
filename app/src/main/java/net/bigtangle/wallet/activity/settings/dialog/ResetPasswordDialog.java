@@ -3,7 +3,7 @@ package net.bigtangle.wallet.activity.settings.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
+import com.google.android.material.textfield.TextInputEditText;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +24,6 @@ import net.bigtangle.wallet.core.utils.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.spongycastle.crypto.params.KeyParameter;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 

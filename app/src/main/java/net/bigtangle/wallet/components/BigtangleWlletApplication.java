@@ -1,17 +1,12 @@
 package net.bigtangle.wallet.components;
 
 import android.app.Application;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
-import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.core.LocalStorageContext;
-import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.WalletFileUtils;
-
-import java.io.InputStream;
 
 public class BigtangleWlletApplication extends Application implements LifecycleObserver {
 
