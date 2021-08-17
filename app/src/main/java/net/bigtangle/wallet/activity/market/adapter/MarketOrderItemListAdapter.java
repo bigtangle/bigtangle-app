@@ -28,7 +28,11 @@ import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,14 +116,16 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
         }
 
         public void bind(MarketOrderItem marketOrderItem) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ", Locale.getDefault());
+            dateFormat.setTimeZone(TimeZone.getDefault());
 
             this.priceTextView.setText(marketOrderItem.getPrice());
             this.amountTextView.setText(String.valueOf(marketOrderItem.getAmount()));
             this.addressTextView.setText(marketOrderItem.getAddress());
             this.typeTextView.setText(marketOrderItem.getType());
             this.statusTextView.setText("");
-            this.validateToTextView.setText(marketOrderItem.getValidateTo());
-            this.validateFromTextView.setText(marketOrderItem.getValidateFrom());
+            this.validateToTextView.setText(dateFormat.format(marketOrderItem.getValidateTo()));
+            this.validateFromTextView.setText(dateFormat.format(marketOrderItem.getValidateFrom()));
             this.tokenNameTextView.setText(marketOrderItem.getTokenName());
             this.cancelPendingTextView.setText(marketOrderItem.isCancelPending() ? mContext.getString(R.string.yes) : mContext.getString(R.string.no));
             this.totalTextView.setText(marketOrderItem.getTotal());

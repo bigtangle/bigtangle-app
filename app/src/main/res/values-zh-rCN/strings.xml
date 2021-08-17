@@ -218,7 +218,8 @@
     <string name="qrscan">扫码登录</string>
     <string name="price_warn">价格超出当前价格的30%</string>
     <string name="lastPrice">当前价格</string>
-
+    <string name="vpndownload">VPN软件下载</string>
+    <string name="vpnconfig">VPN下载配置文件</string>
     <string name="identitynumber">身份证号码</string>
     <string name="sex">性别</string>
     <string name="name">姓名</string>

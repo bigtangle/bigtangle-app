@@ -266,7 +266,8 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
 
                     if (orderdataResponse.getAllOrdersSorted() != null && orderdataResponse.getAllOrdersSorted().size() > 0) {
                         for (OrderRecord orderRecord : orderdataResponse.getAllOrdersSorted()) {
-                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell), Locale.getDefault());
+                            MarketOrderItem marketOrderItem = MarketOrderItem.build(orderRecord, orderdataResponse.getTokennames(), WalletContextHolder.networkParameters, getString(R.string.buy), getString(R.string.sell));
+
                             String tokenName = tokenNameMap.get(marketOrderItem.getTokenId());
                             if (StringUtils.isBlank(tokenName)) {
                                 tokenName = marketOrderItem.getTokenId();
