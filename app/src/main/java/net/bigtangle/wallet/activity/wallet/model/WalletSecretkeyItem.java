@@ -5,6 +5,7 @@ public class WalletSecretkeyItem {
     private String address;
 
     private String pubKeyHex;
+    private String privateKey;
 
     public String getAddress() {
         return address;
@@ -20,5 +21,13 @@ public class WalletSecretkeyItem {
 
     public void setPubKeyHex(String pubKeyHex) {
         this.pubKeyHex = pubKeyHex;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 }

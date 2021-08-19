@@ -105,6 +105,7 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
                 WalletSecretkeyItem walletSecretkeyItem = new WalletSecretkeyItem();
                 walletSecretkeyItem.setAddress(ecKey.toAddress(WalletContextHolder.networkParameters).toBase58());
                 walletSecretkeyItem.setPubKeyHex(ecKey.getPublicKeyAsHex());
+                walletSecretkeyItem.setPrivateKey(ecKey.getPrivateKeyAsHex());
                 this.itemList.add(walletSecretkeyItem);
             }
         }
