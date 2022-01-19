@@ -101,8 +101,8 @@ public class MarketPublishFragment extends BaseLazyFragment {
         this.tokenAdapter = new TokenItemListAdapter(getContext(), tokenItemList);
         List<TokenItem> basetokenItemList = new ArrayList<TokenItem>();
         TokenItem yuan = new TokenItem();
-        yuan.setTokenId("03bed6e75294e48556d8bb2a53caf6f940b70df95760ee4c9772681bbf90df85ba");
-        yuan.setTokenName("人民币@bigtangle");
+        yuan.setTokenId("0365ed3fbeb1454002baf34cc3cec48732ee8495d7a9d9ffc11f1d9acc22c0f1f2");
+        yuan.setTokenName("cny@etf.com");
         basetokenItemList.add(yuan);
         TokenItem bc = new TokenItem();
         bc.setTokenId("bc");
