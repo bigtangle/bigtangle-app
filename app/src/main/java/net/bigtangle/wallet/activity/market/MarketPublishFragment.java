@@ -244,13 +244,15 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                         dateEndLong, dateBeginLong, basetokenValue, true);
                             }
 
-                            amountTextInput.setText("");
+                          //  amountTextInput.setText("");
                         } catch (InsufficientMoneyException e) {
                             throw new ToastException(getContext().getString(R.string.insufficient_amount));
                         }
                     }
                 }).execute();
             }
+
+
         });
 
         this.statusRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
