@@ -1,21 +1,14 @@
 package net.bigtangle.wallet.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.settings.SettingVersionActivity;
-
-import butterknife.BindView;
 
 /**
  * 隐私政策

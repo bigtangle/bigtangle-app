@@ -1,21 +1,16 @@
 package net.bigtangle.wallet.activity.settings;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import net.bigtangle.core.Contact;
-import net.bigtangle.core.ContactInfo;
-import net.bigtangle.core.DataClassName;
-import net.bigtangle.core.ECKey;
-import net.bigtangle.utils.Json;
-import net.bigtangle.params.ReqCmd;
-import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.core.UserSettingData;
+import net.bigtangle.core.UserSettingDataInfo;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.settings.adapter.ContactItemListAdapter;
@@ -24,14 +19,11 @@ import net.bigtangle.wallet.activity.settings.model.ContactInfoItem;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.HttpConnectConstant;
-import net.bigtangle.wallet.core.http.HttpNetComplete;
-import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
-import net.bigtangle.wallet.core.http.HttpRunaExecute;
+import net.bigtangle.wallet.core.http.URLUtil;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -103,42 +95,30 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void initData() {
-        HashMap<String, String> requestParam = new HashMap<String, String>();
+
         String un = SPUtil.get(this, "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, this);
         WalletContextHolder.loadWallet(stream);
 
-        List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
-        ECKey pubKeyTo = issuedKeys.get(0);
-
-        requestParam.put("pubKey", pubKeyTo.getPublicKeyAsHex());
-        requestParam.put("dataclassname", DataClassName.CONTACTINFO.name());
-
-        new HttpNetRunaDispatch(this, new HttpNetComplete() {
-            @Override
-            public void completeCallback(byte[] jsonStr) {
-                mAdapter.notifyDataSetChanged();
-            }
-        }, new HttpRunaExecute() {
-            @Override
-            public void execute() throws Exception {
-                itemList.clear();
-                byte[] bytes = OkHttp3Util.postAndGetBlock(HttpConnectConstant.HTTP_SERVER_URL + ReqCmd.getUserData.name(),
-                        Json.jsonmapper().writeValueAsString(requestParam));
-
-                if (bytes == null || bytes.length == 0) {
-                    return;
-                }
-                ContactInfo contactInfo = new ContactInfo().parse(bytes);
-                List<Contact> list = contactInfo.getContactList();
-                if (list != null && !list.isEmpty()) {
-                    for (Contact contact : list) {
-                        ContactInfoItem contactInfoItem = ContactInfoItem.build(contact.getName(), contact.getAddress());
-                        itemList.add(contactInfoItem);
+        try {
+            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+            UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
+            if (userSettingDataInfo != null) {
+                List<UserSettingData> userSettingDataList = userSettingDataInfo.getUserSettingDatas();
+                if (userSettingDataList != null) {
+                    itemList.clear();
+                    for (UserSettingData userSettingData : userSettingDataList) {
+                        if (userSettingData.getDomain().equals("ContactInfo")) {
+                            ContactInfoItem contactInfoItem = ContactInfoItem.build(userSettingData.getValue(), userSettingData.getKey());
+                            itemList.add(contactInfoItem);
+                        }
                     }
+                    mAdapter.notifyDataSetChanged();
                 }
             }
-        }).execute();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

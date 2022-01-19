@@ -20,16 +20,10 @@ public class WalletFileUtils {
 
     public static void createWalletDB(Context context) throws IOException {
         byte[] b = WalletUtil.createWallet(WalletContextHolder.networkParameters);
-        InputStream stream = CommonUtil.loadFromDB("bigtangle", context);
-        if (stream == null) {
-            CommonUtil.saveDB("bigtangle", b, context);
-            if (b != null && b.length > 0) {
-                stream = new ByteArrayInputStream(b);
-            } else {
-                stream = CommonUtil.loadFromDB("bigtangle", context);
+        CommonUtil.deleteDB(context);
+        InputStream stream =new ByteArrayInputStream(b);
+        CommonUtil.saveDB("bigtangle", b, context);
 
-            }
-        }
         WalletContextHolder.loadWallet(stream);
 
     }

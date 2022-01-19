@@ -3,11 +3,11 @@ package net.bigtangle.wallet.activity.wallet.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import com.google.android.material.textfield.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.wallet.R;
@@ -20,7 +20,7 @@ import java.io.InputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalletPasswordDialog extends Dialog {
+public class PrivatekeyDialog extends Dialog {
 
     private Context context;
 
@@ -32,12 +32,12 @@ public class WalletPasswordDialog extends Dialog {
 
     private OnWalletVerifyPasswordListenter listenter;
 
-    public WalletPasswordDialog(Context context, int theme) {
+    public PrivatekeyDialog(Context context, int theme) {
         super(context, theme);
         this.context = context;
     }
 
-    public WalletPasswordDialog setListenter(OnWalletVerifyPasswordListenter listenter) {
+    public PrivatekeyDialog setListenter(OnWalletVerifyPasswordListenter listenter) {
         this.listenter = listenter;
         return this;
     }

@@ -203,6 +203,16 @@ public class CommonUtil {
 
 
     }
+    public static void deleteDB( Context context) {
+        MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
 
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.delete("walletdata","", new String[] { });
+        db.close();
+        dbHelper.close();
+
+
+    }
 
 }

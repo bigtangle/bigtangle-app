@@ -219,8 +219,9 @@
     <string name="qrscan">QR Scan</string>
     <string name="price_warn">price_warn:30%</string>
     <string name="lastPrice">lastPrice</string>
-
     <string name="pricetable">Chart</string>
+    <string name="vpndownload">VPN Download</string>
+    <string name="vpnconfig">VPN Config</string>
 
     <string name="identitynumber">Identity Number</string>
     <string name="sex">Sex</string>

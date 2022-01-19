@@ -1,41 +1,28 @@
 package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 
-import com.yarolegovich.lovelydialog.LovelyInfoDialog;
-
-import net.bigtangle.core.ECKey;
-import net.bigtangle.core.Sha256Hash;
-import net.bigtangle.utils.MarketOrderItem;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.activity.market.adapter.MarketOrderItemListAdapter;
 import net.bigtangle.wallet.activity.market.adapter.MarketPriceListAdapter;
 import net.bigtangle.wallet.activity.market.model.MarketPrice;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
-import net.bigtangle.wallet.core.WalletContextHolder;
-import net.bigtangle.wallet.core.constant.HttpConnectConstant;
 import net.bigtangle.wallet.core.http.URLUtil;
-import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;

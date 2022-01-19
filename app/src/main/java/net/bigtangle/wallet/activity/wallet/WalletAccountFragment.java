@@ -3,17 +3,14 @@ package net.bigtangle.wallet.activity.wallet;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,19 +26,12 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
-import net.bigtangle.wallet.Wallet;
 import net.bigtangle.wallet.activity.RegActivity;
-import net.bigtangle.wallet.activity.SPUtil;
-import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
-import net.bigtangle.wallet.activity.wallet.dialog.WalletDownfileDialog;
-import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.BrowserAccessTokenContext;
-import net.bigtangle.wallet.core.LocalStorageContext;
-import net.bigtangle.wallet.core.MySQLiteOpenHelper;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
@@ -49,8 +39,6 @@ import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +75,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     Button refreshButton;
     @BindView(R.id.reg_button)
     Button regButton;
+    String code = "";
 
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
@@ -158,20 +147,29 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 startActivity(intent);
             }
         });
-       this.shopButton.setOnClickListener(new View.OnClickListener() {
+        this.shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/browse.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    code = BrowserAccessTokenContext.check(getContext());
+                    if ("".equals(code))
+                        Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                    else if ("405".equals(code))
+                        new LovelyInfoDialog(getContext())
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_info_white_24px)
+                                .setTitle(R.string.dialog_title_error)
+                                .setMessage("请先注册或登录")
+                                .show();
+                    else {
+                        BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                "/shop/browse.jsf", code);
                     }
-                }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         this.rechargeButton.setOnClickListener(new View.OnClickListener() {
@@ -202,33 +200,51 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.payoffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/shop/payoff.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    code = BrowserAccessTokenContext.check(getContext());
+                    if ("".equals(code))
+                        Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                    else if ("405".equals(code))
+                        new LovelyInfoDialog(getContext())
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_info_white_24px)
+                                .setTitle(R.string.dialog_title_error)
+                                .setMessage("请先注册或登录")
+                                .show();
+                    else {
+                        BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                "/shop/payoff.jsf", code);
                     }
-                }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         this.miningButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
-                                    "/wallet/miningreward.jsf");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    code = BrowserAccessTokenContext.check(getContext());
+                    if ("".equals(code))
+                        Toast.makeText(getContext(), "网络慢,请重试", Toast.LENGTH_LONG).show();
+                    else if ("405".equals(code))
+                        new LovelyInfoDialog(getContext())
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_info_white_24px)
+                                .setTitle(R.string.dialog_title_error)
+                                .setMessage("请先注册或登录")
+                                .show();
+                    else {
+                        BrowserAccessTokenContext.open(getContext(), WalletContextHolder.getMBigtangle() +
+                                "/shop/miningreward.jsf", code);
                     }
-                }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
