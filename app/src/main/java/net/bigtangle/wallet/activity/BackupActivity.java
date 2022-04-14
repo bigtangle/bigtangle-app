@@ -66,7 +66,7 @@ public class BackupActivity extends AppCompatActivity {
                 FileOutputStream fos = null;
                // String filepath = + ;
                    //     "/storage/emulated/0/Download/" + filename + ".wallet";
-                String dirs="/storage/emulated/0/Download/";
+                String dirs="/storage/emulated/0/bigtangle/";
                 File dir=new File(dirs);
                 if (!dir.exists())
                     dir.mkdirs();
