@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.market.model.MarketPrice;
+import net.bigtangle.wallet.core.WalletContextHolder;
 
 import java.util.List;
 
@@ -88,10 +89,9 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
             this.tokenidTextView.setText(marketPrice.getTokenid());
             this.tokennameTextView.setText(marketPrice.getTokenname());
             this.executedQuantityView.setText(marketPrice.getExecutedQuantity());
-            if(marketPrice.getUrl() ==null || "".equals(marketPrice.getUrl() ))
-                    {
+            if (marketPrice.getUrl() == null || "".equals(marketPrice.getUrl())) {
                 otherButton.setVisibility(View.INVISIBLE);
-                    }
+            }
             this.chartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,8 +101,8 @@ public class MarketPriceListAdapter extends RecyclerView.Adapter<MarketPriceList
                             try {
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(
-                                        "https://m.bigtangle.xyz/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
+                                Uri content_url = Uri.parse(WalletContextHolder.getMBigtangle() +
+                                        "/chartdata/chart.html?tokenid=" + marketPrice.getTokenid());//此处填链接
                                 intent.setData(content_url);
                                 mContext.startActivity(intent);
                             } catch (Exception e) {
