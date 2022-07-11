@@ -125,10 +125,11 @@ public class WalletSecretkeyFragment extends BaseLazyFragment implements SwipeRe
 
             @Override
             public void onClick(View v) {
+                String dirs="/storage/emulated/0/bigtangle/";
                 new LFilePicker()
                         .withSupportFragment(WalletSecretkeyFragment.this)
                         .withRequestCode(REQUESTCODE_FROM_ACTIVITY)
-                        .withStartPath(getContext().getFilesDir().getAbsolutePath())
+                        .withStartPath(dirs)
                         .withIsGreater(false)
                         .withFileSize(500 * 1024)
                         .start();

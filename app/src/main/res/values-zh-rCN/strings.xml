@@ -206,7 +206,7 @@
     <string name="register_button">注册</string>
     <string name="recharge_button">充值</string>
     <string name="payoff_button">提现</string>
-    <string name="mining_button">矿机</string>
+    <string name="mining_button">孵化器</string>
     <string name="aliverify_button">实人认证下载</string>
     <string name="aliverify_btn">实人认证</string>
     <string name="help_button">帮助</string>
@@ -216,6 +216,7 @@
 
     <string name="shop_button">商城</string>
     <string name="qrscan">扫码登录</string>
+    <string name="qrscanPay">扫码支付</string>
     <string name="price_warn">价格超出当前价格的30%</string>
     <string name="lastPrice">当前价格</string>
     <string name="vpndownload">VPN软件下载</string>

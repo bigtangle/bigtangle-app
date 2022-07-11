@@ -359,6 +359,8 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                     toAddressTextInput.setText(obj.getString("address"));
                     if (obj.has("quantity"))
                         amountTextInput.setText(obj.getString("quantity"));
+                    if (obj.has("memo"))
+                        memoTextInput.setText(obj.getString("memo"));
                     int count = tokenAdapter.getCount();
                     for (int i = 0; i < count; i++) {
                         TokenItem token = (TokenItem) tokenAdapter.getItem(i);
