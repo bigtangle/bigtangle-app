@@ -34,6 +34,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup">
         <activity
             android:name=".activity.VerifyWalletActivity"
