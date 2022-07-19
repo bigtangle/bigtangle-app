@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.apps.data.Certificate;
 import net.bigtangle.apps.data.IdentityData;
@@ -28,6 +30,8 @@ import net.bigtangle.encrypt.ECIESCoder;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
+import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.BackupActivity;
 import net.bigtangle.wallet.activity.wallet.model.CertificateVO;
 import net.bigtangle.wallet.activity.wallet.model.IdentityVO;
 import net.bigtangle.wallet.core.MySQLiteOpenHelper;
@@ -37,8 +41,13 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -189,6 +198,7 @@ public class CommonUtil {
 
 
     }
+
     public static void updateDB(String signin, byte[] bytes, Context context) {
         MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
 
@@ -197,22 +207,78 @@ public class CommonUtil {
         if (bytes == null)
             Log.i("updateDB", "inputStream==null");
         cv.put("file_data", bytes);
-        db.update("walletdata",cv,"username=?", new String[] { "bigtangle"});
+        db.update("walletdata", cv, "username=?", new String[]{"bigtangle"});
         db.close();
         dbHelper.close();
 
 
     }
-    public static void deleteDB( Context context) {
+
+    public static void deleteDB(Context context) {
         MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(context);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.delete("walletdata","", new String[] { });
+        db.delete("walletdata", "", new String[]{});
         db.close();
         dbHelper.close();
 
 
+    }
+
+    public static void backupFile(String un, Context context) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String now = dateFormat.format(new Date());
+        String filename = "backup-" + now;
+        InputStream is = loadFromDB("bigtangle", context);
+        if (is == null) return;
+        byte[] buf = new byte[2048];
+        int len = 0;
+        FileOutputStream fos = null;
+
+        File dir = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir, filename + ".wallet");
+        try {
+            long total = is.available();
+            fos = new FileOutputStream(file);
+            long sum = 0;
+            while ((len = is.read(buf)) != -1) {
+                fos.write(buf, 0, len);
+                sum += len;
+                int progress = (int) (sum * 1.0f / total * 100);
+                //下载中更新进度条
+                //listener.onDownloading(progress);
+            }
+            fos.flush();
+            new LovelyInfoDialog(context)
+                    .setTopColorRes(R.color.colorPrimary)
+                    .setIcon(R.drawable.ic_error_white_24px)
+                    .setTitle("")
+                    .setMessage(R.string.save + file.getAbsolutePath())
+                    .show();
+        } catch (Exception e) {
+            Log.e(LogConstant.TAG, "backup file", e);
+            new LovelyInfoDialog(context)
+                    .setTopColorRes(R.color.colorPrimary)
+                    .setIcon(R.drawable.ic_error_white_24px)
+                    .setTitle(R.string.dialog_title_error)
+                    .setMessage(R.string.current_selection_file_error
+                            + "\n " + e.getLocalizedMessage())
+                    .show();
+        } finally {
+
+            try {
+                if (is != null) {
+                    is.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+
+            }
+        }
     }
 
 }

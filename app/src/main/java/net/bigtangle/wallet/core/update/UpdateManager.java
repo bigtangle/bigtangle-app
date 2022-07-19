@@ -25,8 +25,10 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.BuildConfig;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.VerifyWalletActivity;
 import net.bigtangle.wallet.core.LocalStorageContext;
 import net.bigtangle.wallet.core.constant.LogConstant;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import java.io.BufferedReader;
@@ -160,6 +162,7 @@ public class UpdateManager {
     }
 
     private void showDownloadDialog() {
+        CommonUtil.backupFile("bigtangle", mContext);
         AlertDialog.Builder builder = new Builder(mContext);
         builder.setTitle(mContext.getString(R.string.version_update));
 

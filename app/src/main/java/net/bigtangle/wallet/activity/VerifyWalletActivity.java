@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.textfield.TextInputEditText;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.update.UpdateManager;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -96,6 +98,7 @@ public class VerifyWalletActivity extends AppCompatActivity {
     }
 
     private boolean checkVersion() {
+
         //这里来检测版本是否需要更新
         setContentView(R.layout.progress);
         mUpdateManager = new UpdateManager(this);
