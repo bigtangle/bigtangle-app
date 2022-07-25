@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.WalletFileUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -91,6 +92,7 @@ public class WalletDownfileDialog extends Dialog {
                                 .show();
                         return;
                     }
+                    CommonUtil.backupFile("bigtangle", context);
                     WalletFileUtils.download(username, password, listener,context);
                     dismiss();
                 }
