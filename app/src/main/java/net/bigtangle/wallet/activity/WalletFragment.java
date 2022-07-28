@@ -104,16 +104,17 @@ public class WalletFragment extends BaseLazyFragment {
 
         //这里来检测版本是否需要更新
         getActivity().setContentView(R.layout.progress);
-        mUpdateManager = new UpdateManager(getContext());
+        mUpdateManager = new UpdateManager(getActivity());
         return mUpdateManager.checkUpdateInfo();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+        Toast.makeText(getActivity(), ""+requestCode, Toast.LENGTH_SHORT).show();
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
+                    Toast.makeText(getActivity(), "" +getString(R.string.permissions) + permissions[i] +  getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
                     if (this.checkVersion()) {
                         UpdateUtil.closeApp();
                     }

@@ -287,7 +287,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
         //这里来检测版本是否需要更新
         getActivity().setContentView(R.layout.progress);
-        mUpdateManager = new UpdateManager(getContext());
+        mUpdateManager = new UpdateManager(getActivity());
         return mUpdateManager.checkUpdateInfo();
     }
     /**

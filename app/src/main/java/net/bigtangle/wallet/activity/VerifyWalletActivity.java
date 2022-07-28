@@ -39,9 +39,9 @@ public class VerifyWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        if (this.checkVersion()) {
-            return;
-        }
+       // if (this.checkVersion()) {
+        //    return;
+       // }
         setContentView(R.layout.activity_verify_wallet);
 
         ButterKnife.bind(this);
