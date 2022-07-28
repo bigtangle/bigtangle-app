@@ -36,6 +36,8 @@ import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
+import net.bigtangle.wallet.core.update.UpdateManager;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -76,7 +78,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
     @BindView(R.id.reg_button)
     Button regButton;
     String code = "";
-
+    private UpdateManager mUpdateManager;
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
     }
@@ -258,6 +260,9 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkVersion()) {
+                    UpdateUtil.closeApp();
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -278,7 +283,13 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
 
     }
+    private boolean checkVersion() {
 
+        //这里来检测版本是否需要更新
+        getActivity().setContentView(R.layout.progress);
+        mUpdateManager = new UpdateManager(getContext());
+        return mUpdateManager.checkUpdateInfo();
+    }
     /**
      * 检查包是否存在
      *

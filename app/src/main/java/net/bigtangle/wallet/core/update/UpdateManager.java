@@ -15,6 +15,7 @@ import android.os.Message;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,6 +138,7 @@ public class UpdateManager {
             showNoticeDialog();
             return true;
         } else {
+            showNoticeDialog();
             return false;
         }
     }
@@ -154,15 +156,15 @@ public class UpdateManager {
                         showDownloadDialog();
                     }
                 }).setNegativeButton(mContext.getString(R.string.talk_later), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UpdateUtil.closeApp();
-                    }
+            @Override
+            public void onClick(View v) {
+                UpdateUtil.closeApp();
+            }
         }).show();
     }
 
     private void showDownloadDialog() {
-        CommonUtil.backupFile("bigtangle", mContext);
+
         AlertDialog.Builder builder = new Builder(mContext);
         builder.setTitle(mContext.getString(R.string.version_update));
 

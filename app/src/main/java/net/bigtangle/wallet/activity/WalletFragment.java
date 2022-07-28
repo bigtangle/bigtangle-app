@@ -26,6 +26,9 @@ import net.bigtangle.wallet.activity.wallet.WalletAccountIdentityFragment;
 import net.bigtangle.wallet.activity.wallet.WalletSecretkeyFragment;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.SectionsPagerAdapter;
+import net.bigtangle.wallet.core.update.UpdateManager;
+import net.bigtangle.wallet.core.utils.CommonUtil;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,7 @@ public class WalletFragment extends BaseLazyFragment {
     TabLayout mTabLayout;
     private static final int NOT_NOTICE = 2; //如果勾选了不再询问
     private SectionsPagerAdapter mAdapter;
+    private UpdateManager mUpdateManager;
 
     public static WalletFragment newInstance() {
         return new WalletFragment();
@@ -96,7 +100,13 @@ public class WalletFragment extends BaseLazyFragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
+    private boolean checkVersion() {
 
+        //这里来检测版本是否需要更新
+        getActivity().setContentView(R.layout.progress);
+        mUpdateManager = new UpdateManager(getContext());
+        return mUpdateManager.checkUpdateInfo();
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -104,7 +114,10 @@ public class WalletFragment extends BaseLazyFragment {
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(getActivity(), "" +getString(R.string.permissions) + permissions[i] + getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
+                    if (this.checkVersion()) {
+                        UpdateUtil.closeApp();
+                    }
+                    Toast.makeText(getActivity(), "" +getString(R.string.permissions) + permissions[i] +  getString(R.string.successful_application), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permissions[i])) {//用户选择了禁止不再询问
                         new LovelyStandardDialog(getContext(), LovelyStandardDialog.ButtonLayout.HORIZONTAL)
