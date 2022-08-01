@@ -51,7 +51,7 @@ public class UpdateManager {
     private AppNetInfo appNetInfo;
 
     //返回的 app 包 版本号
-    private String apkVersionUrl = "https://bigtangle.oss-cn-beijing.aliyuncs.com/download/test.version";
+    private String apkVersionUrl = "https://bigtangle.oss-cn-beijing.aliyuncs.com/download/app.version";
 
     private Dialog downloadDialog;
 
@@ -92,7 +92,7 @@ public class UpdateManager {
     public UpdateManager(Context context) {
         this.mContext = context;
         this.apkDownloadPath = LocalStorageContext.get().readWalletDirectory();
-        this.apkDownloadName = "test1.apk";
+        this.apkDownloadName = "app-release.apk";
     }
 
     /**
@@ -130,6 +130,7 @@ public class UpdateManager {
             appNetInfo = futureTask.get();
             Log.i(LogConstant.TAG, "dig");
         } catch (Exception e) {
+            Log.e(LogConstant.TAG, "dige",e);
             return false;
         }
 

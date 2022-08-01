@@ -5,11 +5,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,7 @@ import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetTaskRequest;
 import net.bigtangle.wallet.core.update.UpdateManager;
+import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -72,13 +75,15 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.help_button)
     Button helpButton;
-
+    @BindView(R.id.download_button)
+    Button downloadButton;
     @BindView(R.id.refresh_button)
     Button refreshButton;
     @BindView(R.id.reg_button)
     Button regButton;
     String code = "";
     private UpdateManager mUpdateManager;
+
     public static WalletAccountFragment newInstance() {
         return new WalletAccountFragment();
     }
@@ -260,9 +265,6 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         this.helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkVersion()) {
-                    UpdateUtil.closeApp();
-                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -280,9 +282,18 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                 }).start();
             }
         });
-
+        this.downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.backupFile("bigtangle",getContext());
+                if (checkVersion()) {
+                    UpdateUtil.closeApp();
+                }
+            }
+        });
 
     }
+
     private boolean checkVersion() {
 
         //这里来检测版本是否需要更新
@@ -290,6 +301,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         mUpdateManager = new UpdateManager(getActivity());
         return mUpdateManager.checkUpdateInfo();
     }
+
     /**
      * 检查包是否存在
      *
