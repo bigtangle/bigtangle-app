@@ -1,6 +1,7 @@
 package net.bigtangle.wallet.activity.market;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,10 +19,12 @@ import net.bigtangle.wallet.activity.market.model.MarketPrice;
 import net.bigtangle.wallet.components.BaseLazyFragment;
 import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.http.URLUtil;
+import net.bigtangle.wallet.core.utils.FormatUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,11 +79,14 @@ public class MarketPriceFragment extends BaseLazyFragment implements SwipeRefres
                 String tokenid = token.getString("tokenid");
                 String tokenname = token.getString("tokennameDisplay");
                 JSONObject tokenprice = data.getJSONObject(tokenid);
+
                 String price = tokenprice.getString("price");
+                BigDecimal priceBigDecimal = new BigDecimal(price);
+                String priceTemp = FormatUtil.getDecimalFormat(FormatUtil.getCurrentLocale(getContext())).format(priceBigDecimal.stripTrailingZeros());
                 String priceChange = tokenprice.getString("priceChange");
                 String executedQuantity = tokenprice.getString("executedQuantity");
                 String url = tokenprice.getString("url");
-                itemList.add(new MarketPrice(tokenid, tokenname, price + " " + priceChange + " ", executedQuantity, url));
+                itemList.add(new MarketPrice(tokenid, tokenname, priceTemp + " " + priceChange + " ", executedQuantity, url));
             }
         } catch (Exception e) {
         }
