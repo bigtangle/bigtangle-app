@@ -28,6 +28,7 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.response.GetBalancesResponse;
 import net.bigtangle.params.ReqCmd;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.AiChatActivity;
 import net.bigtangle.wallet.activity.RegActivity;
 import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
@@ -72,6 +73,9 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
 
     @BindView(R.id.payoff_button)
     Button payoffButton;
+
+    @BindView(R.id.aichat_button)
+    Button aichatButton;
 
     @BindView(R.id.help_button)
     Button helpButton;
@@ -150,6 +154,14 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), RegActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        this.aichatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AiChatActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }

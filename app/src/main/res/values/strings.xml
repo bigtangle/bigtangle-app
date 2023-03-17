@@ -246,4 +246,8 @@
     <string name="backup">backup</string>
     <string name="filename">filename</string>
     <string name="backupok">backupok</string>
+    <string name="send">send</string>
+    <string name="question">question</string>
+    <string name="answer">answer</string>
+    <string name="aichat">aichat</string>
 </resources>

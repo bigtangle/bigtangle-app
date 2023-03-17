@@ -244,4 +244,8 @@
     <string name="backup">备份到文件</string>
     <string name="filename">文件名</string>
     <string name="backupok">文件备份成功</string>
+    <string name="send">发送</string>
+    <string name="question">问题</string>
+    <string name="answer">回答</string>
+    <string name="aichat">人工智能</string>
 </resources>
