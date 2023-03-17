@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
+import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
 import net.bigtangle.wallet.core.WalletContextHolder;
@@ -73,11 +74,19 @@ public class AiChatActivity extends AppCompatActivity {
                         EditText questionText = (EditText) findViewById(R.id.questionText);
                         question = questionText.getText().toString();
                         try {
+                            Log.i("qa","qa:"+answer);
                             ask();
+                            Log.i("qa","qa"+answer);
                             EditText answerText = (EditText) findViewById(R.id.answerText);
                             answerText.setText(answer);
                         } catch (Exception e) {
-
+                            Log.e("qa",e.getMessage(),e);
+                            new LovelyInfoDialog(AiChatActivity.this)
+                                    .setTopColorRes(R.color.colorPrimary)
+                                    .setIcon(R.drawable.ic_error_white_24px)
+                                    .setTitle(AiChatActivity.this.getString(R.string.dialog_title_info))
+                                    .setMessage(e.getMessage())
+                                    .show();
                         }
                     }
                 }
@@ -94,6 +103,7 @@ public class AiChatActivity extends AppCompatActivity {
             @Override
             public String call() throws Exception {
                 doAsk(question);
+
                 return "";
             }
         });
@@ -109,6 +119,7 @@ public class AiChatActivity extends AppCompatActivity {
     }
 
     public void doAsk(String question) throws Exception {
+        Log.i("qa","qa:"+question);
         // Your API Key
         String apiKey = "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";
 
@@ -137,17 +148,19 @@ public class AiChatActivity extends AppCompatActivity {
         Request request = new Request.Builder().url(endpoint).headers(headers).post(body).build();
 
         // Make the request
-        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(5, TimeUnit.MINUTES)
+        OkHttpClient client =  OkHttp3Util.getUnsafeOkHttpClient().newBuilder().connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES).writeTimeout(5, TimeUnit.MINUTES).build();
         Response response = client.newCall(request).execute();
 
         // Parse the response
         String responseString = response.body().string();
+        Log.i("qa","qa:"+responseString);
         JSONObject responseJson = new JSONObject(responseString);
 
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String text = choices.getJSONObject(0).getString("text");
+        Log.i("qa","qa:"+text);
         answer = text;
 
     }

@@ -57,6 +57,7 @@
         <activity android:name=".activity.settings.SettingContactActivity" />
         <activity android:name=".activity.settings.SettingVersionActivity" />
         <activity android:name=".activity.AliMainActivity" />
+        <activity android:name=".activity.AiChatActivity" />
         <activity android:name=".activity.RegActivity" />
         <activity android:name=".activity.BackupActivity" />
         <activity android:name=".activity.PrivatekeyActivity" />
