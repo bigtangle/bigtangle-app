@@ -212,7 +212,7 @@
     <string name="help_button">帮助</string>
     <string name="current_wallet_eckeys_empty">当前钱包中没有地址</string>
     <string name="refresh_button">刷新数据</string>
-    <string name="skip">跳过</string>
+    <string name="skip">返回主界面</string>
     <string name="download_button">检查更新</string>
     <string name="shop_button">商城</string>
     <string name="qrscan">扫码登录</string>
@@ -244,8 +244,8 @@
     <string name="backup">备份到文件</string>
     <string name="filename">文件名</string>
     <string name="backupok">文件备份成功</string>
-    <string name="send">发送</string>
-    <string name="question">问题</string>
+    <string name="send">完成</string>
+    <string name="question">请输入问题</string>
     <string name="answer">回答</string>
     <string name="aichat">人工智能</string>
 </resources>

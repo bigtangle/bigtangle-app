@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/question"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:minLines="2"/>
 
     <Button
         android:id="@+id/btn_send"

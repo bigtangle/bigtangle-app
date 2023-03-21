@@ -110,6 +110,7 @@ public class AiChatActivity extends AppCompatActivity implements SwipeRefreshLay
                         questionItem.setInfo(question);
                         itemList.add(questionItem);
                         mAdapter.notifyDataSetChanged();
+                        questionText.setText("");
                         try {
                             ask();
                             AiChatItem answerItem = new AiChatItem();
