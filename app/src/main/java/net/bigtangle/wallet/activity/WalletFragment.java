@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.wallet.AiChatFragment;
 import net.bigtangle.wallet.activity.wallet.WalletAccountCertificateFragment;
 import net.bigtangle.wallet.activity.wallet.WalletAccountFragment;
 import net.bigtangle.wallet.activity.wallet.WalletAccountIdentityFragment;
@@ -70,16 +71,18 @@ public class WalletFragment extends BaseLazyFragment {
         fragments.add(WalletSecretkeyFragment.newInstance());
         fragments.add(WalletAccountIdentityFragment.newInstance());
         fragments.add(WalletAccountCertificateFragment.newInstance());
+        fragments.add(AiChatFragment.newInstance());
         String[] title = new String[]{
                 this.getString(R.string.wallet_tab_account),
                 this.getString(R.string.wallet_tab_secretkey),
                 this.getString(R.string.wallet_tab_identity),
-                this.getString(R.string.wallet_tab_certificate)
+                this.getString(R.string.wallet_tab_certificate),
+                this.getString(R.string.aichat)
         };
 
         mAdapter = new SectionsPagerAdapter(getChildFragmentManager(), fragments, title);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(5);
     }
 
     @Override
