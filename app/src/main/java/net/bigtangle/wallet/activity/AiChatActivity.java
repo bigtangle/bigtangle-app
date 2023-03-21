@@ -7,13 +7,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
+import net.bigtangle.core.response.GetStringResponse;
+import net.bigtangle.utils.Json;
 import net.bigtangle.utils.OkHttp3Util;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.aichat.adapter.AiChatItemListAdapter;
+import net.bigtangle.wallet.activity.aichat.model.AiChatItem;
+import net.bigtangle.wallet.activity.wallet.adapters.WalletAccountItemListAdapter;
 import net.bigtangle.wallet.activity.wallet.dialog.WalletPasswordDialog;
+import net.bigtangle.wallet.activity.wallet.model.WalletAccountItem;
+import net.bigtangle.wallet.components.WrapContentLinearLayoutManager;
 import net.bigtangle.wallet.core.WalletContextHolder;
 import net.bigtangle.wallet.core.constant.LogConstant;
 import net.bigtangle.wallet.core.utils.CommonUtil;
@@ -28,7 +40,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -38,6 +52,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -45,17 +61,34 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AiChatActivity extends AppCompatActivity {
+public class AiChatActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final int REQUESTCODE_FROM_ACTIVITY = 1000;
     String question;
     String answer;
+    @BindView(R.id.recycler_view_container)
+    RecyclerView recyclerViewContainer;
+
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
+    private AiChatItemListAdapter mAdapter;
+
+    private List<AiChatItem> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (this.itemList == null) {
+            this.itemList = new ArrayList<AiChatItem>();
+        }
         setContentView(R.layout.activity_aichat);
 
+        ButterKnife.bind(this);
+        this.swipeContainer.setOnRefreshListener(this);
+        this.recyclerViewContainer.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(this);
+        this.recyclerViewContainer.setLayoutManager(layoutManager);
+        this.mAdapter = new AiChatItemListAdapter(this, itemList);
+        this.recyclerViewContainer.setAdapter(this.mAdapter);
 
         findViewById(R.id.skip_btn).setOnClickListener(
                 new View.OnClickListener() {
@@ -73,14 +106,17 @@ public class AiChatActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         EditText questionText = (EditText) findViewById(R.id.questionText);
                         question = questionText.getText().toString();
+                        AiChatItem questionItem = new AiChatItem();
+                        questionItem.setInfo(question);
+                        itemList.add(questionItem);
+                        mAdapter.notifyDataSetChanged();
                         try {
-                            Log.i("qa","qa:"+answer);
                             ask();
-                            Log.i("qa","qa"+answer);
-                            EditText answerText = (EditText) findViewById(R.id.answerText);
-                            answerText.setText(answer);
+                            AiChatItem answerItem = new AiChatItem();
+                            answerItem.setInfo(answer);
+                            itemList.add(answerItem);
+                            mAdapter.notifyDataSetChanged();
                         } catch (Exception e) {
-                            Log.e("qa",e.getMessage(),e);
                             new LovelyInfoDialog(AiChatActivity.this)
                                     .setTopColorRes(R.color.colorPrimary)
                                     .setIcon(R.drawable.ic_error_white_24px)
@@ -91,8 +127,6 @@ public class AiChatActivity extends AppCompatActivity {
                     }
                 }
         );
-
-
     }
 
     private void ask()
@@ -119,49 +153,24 @@ public class AiChatActivity extends AppCompatActivity {
     }
 
     public void doAsk(String question) throws Exception {
-        Log.i("qa","qa:"+question);
-        // Your API Key
-        String apiKey = "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";
 
-        // The prompt to complete
-        String prompt = question;
+        String tradeserviceUrl = "https://bigtangle.de:8092/";
+        HashMap<String, String> requestParam = new HashMap<String, String>();
+        requestParam.put("prompt", question);
+        byte[] data = OkHttp3Util.postString(tradeserviceUrl + "relay",
+                Json.jsonmapper().writeValueAsString(requestParam));
+        GetStringResponse resp = Json.jsonmapper().readValue(data, GetStringResponse.class);
 
-        // The URL of the API endpoint
-        String endpoint = "https://api.openai.com/v1/completions";
-
-        // The request headers
-        Headers headers = new Headers.Builder().add("Content-Type", "application/json")
-                .add("Authorization", "Bearer " + apiKey).build();
-
-        // The request payload
-        JSONObject payload = new JSONObject();
-        payload.put("prompt", prompt);
-        payload.put("model", "text-davinci-003");
-        payload.put("max_tokens", 2000);
-        payload.put("temperature", 0.5);
-        payload.put("top_p", 1);
-
-        // Create the request body
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), payload.toString());
-
-        // Create the request
-        Request request = new Request.Builder().url(endpoint).headers(headers).post(body).build();
-
-        // Make the request
-        OkHttpClient client =  OkHttp3Util.getUnsafeOkHttpClient().newBuilder().connectTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES).writeTimeout(5, TimeUnit.MINUTES).build();
-        Response response = client.newCall(request).execute();
-
-        // Parse the response
-        String responseString = response.body().string();
-        Log.i("qa","qa:"+responseString);
-        JSONObject responseJson = new JSONObject(responseString);
-
+        JSONObject responseJson = new JSONObject(resp.getText());
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String text = choices.getJSONObject(0).getString("text");
-        Log.i("qa","qa:"+text);
         answer = text;
+
+    }
+
+    @Override
+    public void onRefresh() {
 
     }
 }
