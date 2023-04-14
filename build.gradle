@@ -4,10 +4,12 @@ buildscript {
         google()
         jcenter()
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/releases/'}
     }
     dependencies {
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.6"
         classpath 'com.android.tools.build:gradle:4.0.2'//TODO 看官网 版本超过xxx不一定能支持
+        classpath 'com.aliyun.ams:emas-services:1.0.1'
     }
 }
 
@@ -19,6 +21,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'http://developer.huawei.com/repo/'}
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/releases/'}
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
