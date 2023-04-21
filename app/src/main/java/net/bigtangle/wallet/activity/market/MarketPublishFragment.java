@@ -41,6 +41,7 @@ import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.utils.CommonUtil;
 import net.bigtangle.wallet.core.utils.DateTimeUtils;
+import net.bigtangle.wallet.core.utils.UpdateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -229,16 +230,16 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 dateEndLong = dateBeginLong;
                             }
                             String priceTemp = unitPriceInput.getText().toString();
-                            //BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
-//                            if (!flag)
-//                                if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
-//                                        || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
-//
-//                                    flag = true;
-//                                    Log.e("lastPrice",getContext().getString(R.string.lastPrice));
-//                                    throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
-//
-//                                }
+                            BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
+                            if (!flag)
+                                if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
+                                        || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
+
+                                    flag = true;
+                                    Log.e("lastPrice", getContext().getString(R.string.lastPrice));
+                                    throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
+
+                                }
 
 
                             WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
@@ -259,11 +260,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             });
                         } catch (InsufficientMoneyException e) {
                             Log.e("Insufficient", getContext().getString(R.string.insufficient_amount));
-                            showlog(getString(R.string.insufficient_amount));
-                        } catch (Exception e) {
-                            Log.e("error", e.getMessage(), e);
-                            showlog(e.getMessage());
-
+                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
 
                         }
                     }
