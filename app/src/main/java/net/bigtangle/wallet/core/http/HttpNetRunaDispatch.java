@@ -112,22 +112,22 @@ public class HttpNetRunaDispatch {
                 }).show();
 
                 return;
-            } else if (message.what == MessageStateCode.WALLET_ERROR) {
+            }  else if (message.what == MessageStateCode.TOAST_ERROR) {
+                String display=  message.obj == null? "": (String)message.obj;
+                new LovelyInfoDialog(context)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setIcon(R.drawable.ic_error_white_24px)
+                        .setTitle(display)
+                        .setMessage(display)
+                        .show();
+                return;
+            }
+            else if (message.what == MessageStateCode.WALLET_ERROR) {
                 HashMap<String, Object> infoMap = (HashMap<String, Object>) message.obj;
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
                         .setTitle(infoMap.get("eName").toString())
-                        .setMessage(infoMap.get("eInfo").toString())
-                        .show();
-                return;
-            } else {
-                HashMap<String, Object> infoMap = (HashMap<String, Object>) message.obj;
-                if (infoMap!=null&&!infoMap.isEmpty()&&!infoMap.containsKey("eInfo"))
-                new LovelyInfoDialog(context)
-                        .setTopColorRes(R.color.colorPrimary)
-                        .setIcon(R.drawable.ic_error_white_24px)
-                        .setTitle("")
                         .setMessage(infoMap.get("eInfo").toString())
                         .show();
                 return;
