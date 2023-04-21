@@ -106,14 +106,14 @@ public class HttpNetRunaDispatch {
                                 new HttpNetRunaDispatch(context, httpNetComplete, httpRunaExecute).execute();
                             }
                         }).setNegativeButton(android.R.string.cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                            }
+                    @Override
+                    public void onClick(View v) {
+                    }
                 }).show();
 
                 return;
             } else if (message.what == MessageStateCode.WALLET_ERROR) {
-                HashMap<String,Object> infoMap = (HashMap<String, Object>) message.obj;
+                HashMap<String, Object> infoMap = (HashMap<String, Object>) message.obj;
                 new LovelyInfoDialog(context)
                         .setTopColorRes(R.color.colorPrimary)
                         .setIcon(R.drawable.ic_error_white_24px)
@@ -121,10 +121,16 @@ public class HttpNetRunaDispatch {
                         .setMessage(infoMap.get("eInfo").toString())
                         .show();
                 return;
-            } else if (message.what == MessageStateCode.TOAST_ERROR) {
-                Toast toast = Toast.makeText(context, (String) message.obj, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
+            } else {
+                HashMap<String, Object> infoMap = (HashMap<String, Object>) message.obj;
+                if (infoMap!=null&&!infoMap.isEmpty()&&!infoMap.containsKey("eInfo"))
+                new LovelyInfoDialog(context)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setIcon(R.drawable.ic_error_white_24px)
+                        .setTitle("")
+                        .setMessage(infoMap.get("eInfo").toString())
+                        .show();
+                return;
             }
         }
     };

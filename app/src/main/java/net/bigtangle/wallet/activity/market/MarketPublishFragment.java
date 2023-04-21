@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import net.bigtangle.core.Utils;
 import net.bigtangle.core.exception.InsufficientMoneyException;
 import net.bigtangle.utils.MonetaryFormat;
 import net.bigtangle.wallet.R;
+import net.bigtangle.wallet.activity.AliMainActivity;
 import net.bigtangle.wallet.activity.SPUtil;
 import net.bigtangle.wallet.activity.transaction.adapter.TokenItemListAdapter;
 import net.bigtangle.wallet.activity.transaction.model.TokenItem;
@@ -227,15 +229,16 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 dateEndLong = dateBeginLong;
                             }
                             String priceTemp = unitPriceInput.getText().toString();
-                            BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
-                            if (!flag)
-                                if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
-                                        || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
-
-                                    flag = true;
-                                    throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
-
-                                }
+                            //BigDecimal lastPrice = WalletContextHolder.wallet.getLastPrice(tokenid, basetokenValue);
+//                            if (!flag)
+//                                if (new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("1.3"))) == 1
+//                                        || new BigDecimal(priceTemp).compareTo(lastPrice.multiply(new BigDecimal("0.7"))) == -1) {
+//
+//                                    flag = true;
+//                                    Log.e("lastPrice",getContext().getString(R.string.lastPrice));
+//                                    throw new ToastException(getContext().getString(R.string.lastPrice) + lastPrice.toString() + "," + getContext().getString(R.string.price_warn));
+//
+//                                }
 
 
                             WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
@@ -255,9 +258,13 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 }
                             });
                         } catch (InsufficientMoneyException e) {
-                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
+                            Log.e("Insufficient", getContext().getString(R.string.insufficient_amount));
+                            showlog(getString(R.string.insufficient_amount));
                         } catch (Exception e) {
-                            throw new ToastException(e.getMessage());
+                            Log.e("error", e.getMessage(), e);
+                            showlog(e.getMessage());
+
+
                         }
                     }
                 }).execute();
@@ -288,6 +295,17 @@ public class MarketPublishFragment extends BaseLazyFragment {
                 mTimerPicker.show(endDateTextView.getText().toString());
             }
         });
+    }
+
+    private void showlog(String log) {
+        new LovelyInfoDialog(getContext())
+                .setTopColorRes(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_error_white_24px)
+                .setTitle(getString(R.string.dialog_title_info))
+                .setMessage(log)
+                .show();
+
+
     }
 
     public void initData() {

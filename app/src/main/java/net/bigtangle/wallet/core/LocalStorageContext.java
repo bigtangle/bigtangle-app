@@ -36,6 +36,8 @@ public class LocalStorageContext {
             editor.commit();
         }
         HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://p.bigtangle.org:8088/");
+        if (HttpConnectConstant.HTTP_SERVER_URL == null || "".equals(HttpConnectConstant.HTTP_SERVER_URL))
+            HttpConnectConstant.HTTP_SERVER_URL = "https://p.bigtangle.org:8088/";
     }
 
     public void writeServerURL(String serverURL) {
@@ -44,11 +46,16 @@ public class LocalStorageContext {
         editor.putString("serverURL", serverURL);
         editor.commit();
         HttpConnectConstant.HTTP_SERVER_URL = sharedPreferences.getString("serverURL", "https://p.bigtangle.org:8088/");
+        if (HttpConnectConstant.HTTP_SERVER_URL == null || "".equals(HttpConnectConstant.HTTP_SERVER_URL))
+            HttpConnectConstant.HTTP_SERVER_URL = "https://p.bigtangle.org:8088/";
     }
 
     public String readServerURL() {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(walletName, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("serverURL", "https://p.bigtangle.org:8088/");
+        if (HttpConnectConstant.HTTP_SERVER_URL == null || "".equals(HttpConnectConstant.HTTP_SERVER_URL))
+            return "https://p.bigtangle.org:8088/";
+        else
+            return sharedPreferences.getString("serverURL", "https://p.bigtangle.org:8088/");
     }
 
     public void writeWalletPath(String directory, String prefix) {
