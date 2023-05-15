@@ -284,7 +284,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
                             Uri content_url = Uri.parse(
-                                    "https://www.bigtangle.xyz");//此处填链接
+                                    "https://www.bigtangle.org");//此处填链接
                             intent.setData(content_url);
                             startActivity(intent);
                         } catch (Exception e) {
