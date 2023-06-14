@@ -2,8 +2,10 @@ package net.bigtangle.wallet.activity.market.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import net.bigtangle.wallet.core.http.HttpNetComplete;
 import net.bigtangle.wallet.core.http.HttpNetRunaDispatch;
 import net.bigtangle.wallet.core.http.HttpRunaExecute;
 import net.bigtangle.wallet.core.utils.CommonUtil;
+import net.bigtangle.wallet.core.utils.FormatUtil;
 
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -76,7 +79,6 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
 
-
         @BindView(R.id.price_text_view)
         TextView priceTextView;
 
@@ -119,8 +121,8 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ", Locale.getDefault());
             dateFormat.setTimeZone(TimeZone.getDefault());
 
-            this.priceTextView.setText(marketOrderItem.getPrice());
-            this.amountTextView.setText(String.valueOf(marketOrderItem.getAmount()));
+            this.priceTextView.setText(FormatUtil.getDecimalFormat(FormatUtil.getCurrentLocale(mContext)).format(marketOrderItem.getPrice().stripTrailingZeros()));
+            this.amountTextView.setText(FormatUtil.getDecimalFormat(FormatUtil.getCurrentLocale(mContext)).format(marketOrderItem.getAmount().stripTrailingZeros()));
             this.addressTextView.setText(marketOrderItem.getAddress());
             this.typeTextView.setText(marketOrderItem.getType());
             this.statusTextView.setText("");
@@ -128,7 +130,7 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
             this.validateFromTextView.setText(dateFormat.format(marketOrderItem.getValidateFrom()));
             this.tokenNameTextView.setText(marketOrderItem.getTokenName());
             this.cancelPendingTextView.setText(marketOrderItem.isCancelPending() ? mContext.getString(R.string.yes) : mContext.getString(R.string.no));
-            this.totalTextView.setText(marketOrderItem.getTotal());
+            this.totalTextView.setText(FormatUtil.getDecimalFormat(FormatUtil.getCurrentLocale(mContext)).format(marketOrderItem.getTotal().stripTrailingZeros()));
             itemLine.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -181,22 +183,9 @@ public class MarketOrderItemListAdapter extends RecyclerView.Adapter<MarketOrder
 
         WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
         Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
-        ECKey legitimatingKey = null;
 
-        boolean find = false;
-        List<ECKey> keys = WalletContextHolder.wallet.walletKeys(WalletContextHolder.get().getAesKey());
-        for (ECKey ecKey : keys) {
-            if (marketOrderItem.getAddress().equals(ecKey.toAddress(WalletContextHolder.networkParameters).toString())) {
-                legitimatingKey = ecKey;
-                WalletContextHolder.wallet.cancelOrder(hash, legitimatingKey);
-                find = true;
-                break;
-            }
-        }
+        WalletContextHolder.wallet.cancelOrder(hash, WalletContextHolder.get().getAesKey(), marketOrderItem.getAddress());
 
-        if (!find) {
-            throw new ToastException(mContext.getString(R.string.order_remove_fail));
-        }
     }
 
     public interface OnOrderRemCallbackListener {

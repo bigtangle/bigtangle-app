@@ -3,8 +3,11 @@ package net.bigtangle.wallet.activity.transaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -249,7 +252,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                             throw new ToastException(getContext().getString(R.string.token_not_empty));
                         }
 
-                        Address destination = Address.fromBase58(WalletContextHolder.networkParameters, toAddress);
+
                         String un = SPUtil.get(getContext(), "username", "").toString();
                         InputStream stream = CommonUtil.loadFromDB(un, getContext());
                         WalletContextHolder.loadWallet(stream);
@@ -266,7 +269,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
                         final String memo = memoTextInput.getText().toString();
                         try {
-                            wallet.pay(WalletContextHolder.getAesKey(), destination, amount, memo);
+                            wallet.pay(WalletContextHolder.getAesKey(), toAddress, amount, memo);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
