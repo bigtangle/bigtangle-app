@@ -256,7 +256,7 @@ public class URLUtil {
         return executor.submit(() -> {
             List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
             ECKey pubKeyTo = issuedKeys.get(0);
-            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             UserSettingDataInfo userSettingDataInfo = WalletContextHolder.wallet.getUserSettingDataInfo(pubKeyTo, false);
             return userSettingDataInfo;
         });

@@ -137,7 +137,7 @@ public class MarketSearchFragment extends BaseLazyFragment implements SwipeRefre
             InputStream stream = CommonUtil.loadFromDB(un, getContext());
             WalletContextHolder.loadWallet(stream);
 
-            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             Sha256Hash hash = Sha256Hash.wrap(marketOrderItem.getInitialBlockHashHex());
             WalletContextHolder.wallet.cancelOrder(hash, WalletContextHolder.get().getAesKey(), marketOrderItem.getAddress());
 

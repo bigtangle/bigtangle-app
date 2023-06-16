@@ -258,7 +258,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         WalletContextHolder.loadWallet(stream);
 
                         Wallet wallet = WalletContextHolder.wallet;
-                        wallet.setServerURL(CONTEXT_ROOT);
+                       // wallet.setServerURL(CONTEXT_ROOT);
 
                         byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
                         Token t = wallet.checkTokenId(tokenValue);

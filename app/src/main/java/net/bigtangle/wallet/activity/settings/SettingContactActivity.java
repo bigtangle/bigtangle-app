@@ -101,7 +101,7 @@ public class SettingContactActivity extends AppCompatActivity implements SwipeRe
         WalletContextHolder.loadWallet(stream);
 
         try {
-            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
             if (userSettingDataInfo != null) {
                 List<UserSettingData> userSettingDataList = userSettingDataInfo.getUserSettingDatas();

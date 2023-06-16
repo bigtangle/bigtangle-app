@@ -164,7 +164,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                             InputStream stream = CommonUtil.loadFromDB(un, getContext());
                             WalletContextHolder.loadWallet(stream);
 
-                            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (tokenSpinner.getSelectedItem() == null) {
                                 throw new ToastException(getContext().getString(R.string.token_not_empty));
                             }
@@ -242,7 +242,7 @@ public class MarketPublishFragment extends BaseLazyFragment {
                                 }
 
 
-                            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+                           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
                             if (typeStr.equals("sell")) {
                                 WalletContextHolder.wallet.sellOrder(WalletContextHolder.getAesKey(), tokenid, price.getValue().longValue(), quantity.getValue().longValue(),
                                         dateEndLong, dateBeginLong, basetokenValue, true);

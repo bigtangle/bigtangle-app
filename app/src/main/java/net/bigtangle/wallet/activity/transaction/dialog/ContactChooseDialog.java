@@ -133,7 +133,7 @@ public class ContactChooseDialog extends Dialog implements SwipeRefreshLayout.On
 
         try {
 
-            WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+           // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
             UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
 
             HashMap<String, String> requestParam = new HashMap<String, String>();

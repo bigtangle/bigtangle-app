@@ -146,7 +146,7 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
         String name = item.getContactName();
         String address = item.getAddress();
 
-        WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
+       // WalletContextHolder.wallet.setServerURL(HttpConnectConstant.HTTP_SERVER_URL);
         UserSettingDataInfo userSettingDataInfo = new URLUtil().calculateUserdata().get();
         itemList.clear();
         if (userSettingDataInfo != null) {
