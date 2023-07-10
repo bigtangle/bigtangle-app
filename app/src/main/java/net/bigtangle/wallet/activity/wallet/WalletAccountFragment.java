@@ -116,7 +116,7 @@ public class WalletAccountFragment extends BaseLazyFragment implements SwipeRefr
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
-        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
+        new HttpNetTaskRequest(this.getContext()).httpRequest(ReqCmd.getAccountBalances, keyStrHex, new HttpNetComplete() {
             @Override
             public void completeCallback(byte[] jsonStr) {
                 try {

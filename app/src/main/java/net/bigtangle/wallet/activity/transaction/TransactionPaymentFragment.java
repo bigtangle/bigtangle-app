@@ -138,7 +138,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         for (ECKey ecKey : WalletContextHolder.walletKeys()) {
             keyStrHex.add(Utils.HEX.encode(ecKey.getPubKeyHash()));
         }
-        new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getBalances, keyStrHex, new HttpNetComplete() {
+        new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.getAccountBalances, keyStrHex, new HttpNetComplete() {
             @Override
             public void completeCallback(byte[] jsonStr) {
                 try {
