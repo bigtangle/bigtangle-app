@@ -151,7 +151,7 @@ public class ContactAddDialog extends Dialog {
                         userSettingDataInfo0.setUserSettingDatas(contacts);
                         transaction.setDataClassName(DataClassName.UserSettingDataInfo.name());
                         transaction.setData(userSettingDataInfo0.toByteArray());
-                        WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false);
+                        WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false,null);
                     }
                 }).execute();
             }

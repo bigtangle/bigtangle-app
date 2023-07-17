@@ -171,7 +171,7 @@ public class ContactItemListAdapter extends RecyclerView.Adapter<ContactItemList
                 transaction.setData(userSettingDataInfo0.toByteArray());
                 List<ECKey> issuedKeys = WalletContextHolder.walletKeys();
                 ECKey pubKeyTo = issuedKeys.get(0);
-                WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false);
+                WalletContextHolder.wallet.saveUserdata(pubKeyTo, transaction, false,null);
             }
         }
 

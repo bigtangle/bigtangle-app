@@ -29,7 +29,7 @@ public class WalletContextHolder {
 
     private WalletAppKit walletAppKit;
 
-    public static NetworkParameters networkParameters = MainNetParams.get();//MainNetParams.get();
+    public static NetworkParameters networkParameters = TestParams.get();//MainNetParams.get();
     public static InputStream inputStream;
     public static Wallet wallet;
     private static String password;
@@ -43,7 +43,7 @@ public class WalletContextHolder {
 
     public static String getMBigtangle() {
         if (networkParameters instanceof TestParams)
-            return "http://testm.bigtangle.org";
+            return "https://p.bigtangle.org:18088/";
         else return "https://m.bigtangle.org";
     }
 
