@@ -43,7 +43,7 @@ public class WalletContextHolder {
 
     public static String getMBigtangle() {
         if (networkParameters instanceof TestParams)
-            return "https://p.bigtangle.org:18088/";
+            return "https://m.bigtangle.org/";
         else return "https://m.bigtangle.org";
     }
 

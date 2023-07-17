@@ -97,10 +97,10 @@ public class SettingConnectionActivity extends AppCompatActivity {
 
     private List<ServerInfoItem> getProdServerInfoItems() {
         List<ServerInfoItem> itemList = new ArrayList<ServerInfoItem>();
-        itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:8088/"));
-        itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:8088/"));
-        itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:8088/"));
-        //itemList.add(ServerInfoItem.build("LOCAL", "http://10.0.3.2:8088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.org", "https://p.bigtangle.org:18088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.info", "https://p.bigtangle.info:18088/"));
+        itemList.add(ServerInfoItem.build("bigtangle.de", "https://p.bigtangle.de:18088/"));
+        //itemList.add(ServerInfoItem.build("LOCAL", "http://10.0.3.2:18088/"));
         return itemList;
     }
 
