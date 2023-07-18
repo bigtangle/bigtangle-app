@@ -273,7 +273,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                         try {
                             Stopwatch stopwatch= Stopwatch.createStarted();
                             wallet.pay(WalletContextHolder.getAesKey(), toAddress, amount, memo);
-                            long time=stopwatch.elapsed(TimeUnit.MINUTES);
+                            long time=stopwatch.elapsed(TimeUnit.MILLISECONDS);
                             Log.d("newApi:","time=="+time);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
