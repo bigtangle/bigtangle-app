@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Stopwatch;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
@@ -63,6 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -269,7 +271,10 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
 
                         final String memo = memoTextInput.getText().toString();
                         try {
+                            Stopwatch stopwatch= Stopwatch.createStarted();
                             wallet.pay(WalletContextHolder.getAesKey(), toAddress, amount, memo);
+                            long time=stopwatch.elapsed(TimeUnit.MINUTES);
+                            Log.d("newApi:","time=="+time);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
