@@ -43,6 +43,7 @@
     <string name="search">Search</string>
     <string name="query">query</string>
     <string name="pay">Pay</string>
+    <string name="payContract">Contract Pay</string>
     <string name="multiple_signature_pay">Multi-signature Pay</string>
     <string name="multiple_addresses_pay">Multi-addresses Pay</string>
     <string name="multiple_signature_addresses_pay">Multiple Signature Addresses Pay</string>
