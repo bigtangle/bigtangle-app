@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -29,7 +30,10 @@ import net.bigtangle.core.Contact;
 import net.bigtangle.core.ContactInfo;
 import net.bigtangle.core.DataClassName;
 import net.bigtangle.core.ECKey;
+import net.bigtangle.core.KeyValue;
+import net.bigtangle.core.TokenKeyValues;
 import net.bigtangle.core.exception.InsufficientMoneyException;
+import net.bigtangle.core.response.GetTokensResponse;
 import net.bigtangle.utils.Json;
 import net.bigtangle.core.Token;
 import net.bigtangle.core.Utils;
@@ -60,7 +64,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -115,7 +122,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         }
         if (this.payMethodArray == null) {
             payMethodArray = new String[]{getContext().getString(R.string.pay),
-                    //     getContext().getString(R.string.multiple_signature_pay),
+                    getContext().getString(R.string.payContract)
                     //     getContext().getString(R.string.multiple_addresses_pay),
                     //     getContext().getString(R.string.multiple_signature_addresses_pay)
             };
@@ -127,11 +134,47 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         qrScan = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
         ;
         qrScan.setOrientationLocked(false);
+        payMethodSpinner.setSelection(1);
 
     }
 
     @Override
     public void onLazyLoad() {
+        initToken();
+
+        String payMethod = payMethodSpinner.getSelectedItem().toString();
+    }
+
+    private void initContract() {
+        HashMap<String, Object> requestParam = new HashMap<String, Object>();
+        new HttpNetTaskRequest(getContext()).httpRequest(ReqCmd.searchContractTokens, requestParam, new HttpNetComplete() {
+            @Override
+            public void completeCallback(byte[] jsonStr) {
+                try {
+                    GetTokensResponse getTokensResponse = Json.jsonmapper().readValue(jsonStr, GetTokensResponse.class);
+
+                    tokenNames.clear();
+                    for (Token token : getTokensResponse.getTokens()) {
+                        TokenItem tokenItem = new TokenItem();
+                        tokenItem.setTokenId(token.getTokenid());
+                        tokenItem.setTokenName(token.getTokennameDisplay());
+                        tokenNames.add(tokenItem);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tokenAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void initToken() {
         List<String> keyStrHex = new ArrayList<String>();
         String un = SPUtil.get(getContext(), "username", "").toString();
         InputStream stream = CommonUtil.loadFromDB(un, getContext());
@@ -163,7 +206,6 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 }
             }
         });
-
     }
 
     @Override
@@ -176,138 +218,145 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
     public void initEvent() {
         initView();
         payButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
-                    @Override
-                    public void completeCallback(byte[] jsonStr) {
-                        FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
-                            @Override
-                            public Boolean call() throws Exception {
-                                ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
-                                List<Contact> list = contactInfo.getContactList();
-                                boolean find = false;
-                                for (Contact contact : list) {
-                                    if (contact.getAddress().equals(toAddressTextInput.getText().toString())) {
-                                        find = true;
-                                        break;
-                                    }
-                                }
-                                return find;
-                            }
-                        });
-                        // 启动线程请求当前应用程序版本号
-                        new Thread(futureTask).start();
-                        // 处理网络请求后的appNetInfo
-                        boolean find = true;
-                        try {
-                            find = futureTask.get();
-                            Log.i(LogConstant.TAG, "dig");
-                        } catch (Exception e) {
-                        }
-
-                        if (!find) {
-                            new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
-                                    .setAddress(toAddressTextInput.getText().toString())
-                                    .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
-
-                                        @Override
-                                        public void refreshView() {
-                                            cleanInputContent();
-                                        }
-                                    })
-                                    .show();
-                        } else {
-                            new LovelyInfoDialog(getContext())
-                                    .setTopColorRes(R.color.colorPrimary)
-                                    .setIcon(R.drawable.ic_info_white_24px)
-                                    .setTitle(getContext().getString(R.string.dialog_title_info))
-                                    .setMessage(getContext().getString(R.string.wallet_payment_success))
-                                    .show()
-                                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            cleanInputContent();
-                                        }
-                                    });
-                        }
-
-                    }
-                }, new HttpRunaExecute() {
-                    @Override
-                    public void execute() throws Exception {
-                        String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
-                        final String toAddress = toAddressTextInput.getText().toString();
-                        if (StringUtils.isBlank(toAddress)) {
-                            throw new ToastException(getContext().getString(R.string.address_not_empty));
-                        }
-                        final String amountValue = amountTextInput.getText().toString();
-                        if (StringUtils.isBlank(amountValue)) {
-                            throw new ToastException(getContext().getString(R.string.amount_not_empty));
-                        }
-                        if (tokenSpinner.getSelectedItem() == null) {
-                            throw new ToastException(getContext().getString(R.string.token_not_empty));
-                        }
-                        TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
-                        final String tokenValue = tokenIdTextView.getText().toString();
-                        if (StringUtils.isBlank(tokenValue)) {
-                            throw new ToastException(getContext().getString(R.string.token_not_empty));
-                        }
-
-
-                        String un = SPUtil.get(getContext(), "username", "").toString();
-                        InputStream stream = CommonUtil.loadFromDB(un, getContext());
-                        WalletContextHolder.loadWallet(stream);
-
-                        Wallet wallet = WalletContextHolder.wallet;
-                       // wallet.setServerURL(CONTEXT_ROOT);
-
-                        byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
-                        Token t = wallet.checkTokenId(tokenValue);
-                        Coin amount = MonetaryFormat.FIAT.noCode().parse(amountValue, tokenidBuf, t.getDecimals());
-
-                        long factor = 1;
-                        amount = amount.multiply(factor);
-
-                        final String memo = memoTextInput.getText().toString();
-                        try {
-                            Stopwatch stopwatch= Stopwatch.createStarted();
-                            wallet.pay(WalletContextHolder.getAesKey(), toAddress, amount, memo);
-                            long time=stopwatch.elapsed(TimeUnit.MILLISECONDS);
-                            Log.d("newApi:","time=="+time);
-                            getActivity().runOnUiThread(new Runnable() {
+                int pos = payMethodSpinner.getSelectedItemPosition();
+                if (pos == 2) {
+                    payContract();
+                } else {
+                    new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
+                        @Override
+                        public void completeCallback(byte[] jsonStr) {
+                            FutureTask<Boolean> futureTask = new FutureTask<Boolean>(new Callable<Boolean>() {
                                 @Override
-                                public void run() {
-                                    new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
-                                            .setAddress(toAddressTextInput.getText().toString())
-                                            .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
-
-                                                @Override
-                                                public void refreshView() {
-                                                    cleanInputContent();
-                                                }
-                                            })
-                                            .show();
-                                    new LovelyInfoDialog(getContext())
-                                            .setTopColorRes(R.color.colorPrimary)
-                                            .setIcon(R.drawable.ic_info_white_24px)
-                                            .setTitle(getContext().getString(R.string.dialog_title_info))
-                                            .setMessage(getContext().getString(R.string.wallet_payment_success))
-                                            .show()
-                                            .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                                @Override
-                                                public void onDismiss(DialogInterface dialog) {
-                                                    cleanInputContent();
-                                                }
-                                            });
+                                public Boolean call() throws Exception {
+                                    ContactInfo contactInfo = (ContactInfo) HttpService.getUserdata(DataClassName.CONTACTINFO.name());
+                                    List<Contact> list = contactInfo.getContactList();
+                                    boolean find = false;
+                                    for (Contact contact : list) {
+                                        if (contact.getAddress().equals(toAddressTextInput.getText().toString())) {
+                                            find = true;
+                                            break;
+                                        }
+                                    }
+                                    return find;
                                 }
                             });
+                            // 启动线程请求当前应用程序版本号
+                            new Thread(futureTask).start();
+                            // 处理网络请求后的appNetInfo
+                            boolean find = true;
+                            try {
+                                find = futureTask.get();
+                                Log.i(LogConstant.TAG, "dig");
+                            } catch (Exception e) {
+                            }
 
-                        } catch (InsufficientMoneyException e) {
-                            throw new ToastException(getContext().getString(R.string.insufficient_amount));
+                            if (!find) {
+                                new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
+                                        .setAddress(toAddressTextInput.getText().toString())
+                                        .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                            @Override
+                                            public void refreshView() {
+                                                cleanInputContent();
+                                            }
+                                        })
+                                        .show();
+                            } else {
+                                new LovelyInfoDialog(getContext())
+                                        .setTopColorRes(R.color.colorPrimary)
+                                        .setIcon(R.drawable.ic_info_white_24px)
+                                        .setTitle(getContext().getString(R.string.dialog_title_info))
+                                        .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                        .show()
+                                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                            @Override
+                                            public void onDismiss(DialogInterface dialog) {
+                                                cleanInputContent();
+                                            }
+                                        });
+                            }
+
                         }
-                    }
-                }).execute();
+                    }, new HttpRunaExecute() {
+                        @Override
+                        public void execute() throws Exception {
+                            String CONTEXT_ROOT = HttpConnectConstant.HTTP_SERVER_URL;
+                            final String toAddress = toAddressTextInput.getText().toString();
+                            if (StringUtils.isBlank(toAddress)) {
+                                throw new ToastException(getContext().getString(R.string.address_not_empty));
+                            }
+                            final String amountValue = amountTextInput.getText().toString();
+                            if (StringUtils.isBlank(amountValue)) {
+                                throw new ToastException(getContext().getString(R.string.amount_not_empty));
+                            }
+                            if (tokenSpinner.getSelectedItem() == null) {
+                                throw new ToastException(getContext().getString(R.string.token_not_empty));
+                            }
+                            TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
+                            final String tokenValue = tokenIdTextView.getText().toString();
+                            if (StringUtils.isBlank(tokenValue)) {
+                                throw new ToastException(getContext().getString(R.string.token_not_empty));
+                            }
+
+
+                            String un = SPUtil.get(getContext(), "username", "").toString();
+                            InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                            WalletContextHolder.loadWallet(stream);
+
+                            Wallet wallet = WalletContextHolder.wallet;
+                            // wallet.setServerURL(CONTEXT_ROOT);
+
+                            byte[] tokenidBuf = Utils.HEX.decode(tokenValue);
+                            Token t = wallet.checkTokenId(tokenValue);
+                            Coin amount = MonetaryFormat.FIAT.noCode().parse(amountValue, tokenidBuf, t.getDecimals());
+
+                            long factor = 1;
+                            amount = amount.multiply(factor);
+
+                            final String memo = memoTextInput.getText().toString();
+                            try {
+                                Stopwatch stopwatch = Stopwatch.createStarted();
+                                wallet.pay(WalletContextHolder.getAesKey(), toAddress, amount, memo);
+                                long time = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+                                Log.d("newApi:", "time==" + time);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new ContactAddDialog(getActivity(), R.style.CustomDialogStyle)
+                                                .setAddress(toAddressTextInput.getText().toString())
+                                                .setListenter(new ContactAddDialog.OnContactAddCallbackListenter() {
+
+                                                    @Override
+                                                    public void refreshView() {
+                                                        cleanInputContent();
+                                                    }
+                                                })
+                                                .show();
+                                        new LovelyInfoDialog(getContext())
+                                                .setTopColorRes(R.color.colorPrimary)
+                                                .setIcon(R.drawable.ic_info_white_24px)
+                                                .setTitle(getContext().getString(R.string.dialog_title_info))
+                                                .setMessage(getContext().getString(R.string.wallet_payment_success))
+                                                .show()
+                                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                    @Override
+                                                    public void onDismiss(DialogInterface dialog) {
+                                                        cleanInputContent();
+                                                    }
+                                                });
+                                    }
+                                });
+
+                            } catch (InsufficientMoneyException e) {
+                                throw new ToastException(getContext().getString(R.string.insufficient_amount));
+                            }
+                        }
+                    }).execute();
+                }
+
             }
         });
 
@@ -341,8 +390,71 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
                 qrScan.initiateScan();
             }
         });
+        payMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                if (pos == 1) {
+                    initToken();
+                } else if (pos == 2) {
+                    initContract();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
 
+    }
+
+    private void payContract() {
+        new HttpNetRunaDispatch(getContext(), new HttpNetComplete() {
+            @Override
+            public void completeCallback(byte[] jsonStr) {
+
+
+            }
+        }, new HttpRunaExecute() {
+            @Override
+            public void execute() throws Exception {
+                String un = SPUtil.get(getContext(), "username", "").toString();
+                InputStream stream = CommonUtil.loadFromDB(un, getContext());
+                WalletContextHolder.loadWallet(stream);
+
+                Wallet wallet = WalletContextHolder.wallet;
+                try {
+                    final String amountValue = amountTextInput.getText().toString();
+                    BigDecimal quantityItem = new BigDecimal(amountValue);
+                    BigDecimal lotteryPrice = new BigDecimal("50");
+                    BigDecimal winnerAmount = new BigDecimal("10000");
+
+                    String baseTokenid = "";
+                    TextView tokenIdTextView = tokenSpinner.getSelectedView().findViewById(R.id.token_id_text_view);
+                    final String tokenValue = tokenIdTextView.getText().toString();
+                    String lotteryAddress = tokenValue;
+                    Token contractToken = wallet.checkTokenId(tokenValue);
+                    TokenKeyValues tokenKeyValues = contractToken.getTokenKeyValues();
+                    if (tokenKeyValues.getKeyvalues() != null && !tokenKeyValues.getKeyvalues().isEmpty()) {
+                        for (KeyValue kv : tokenKeyValues.getKeyvalues()) {
+                            if (kv.getKey().equals("amount")) {
+                                lotteryPrice = new BigDecimal(kv.getValue());
+                            }
+                            if (kv.getKey().equals("winnerAmount")) {
+                                winnerAmount = new BigDecimal(kv.getValue());
+                            }
+                            if (kv.getKey().equals("token")) {
+                                baseTokenid = kv.getValue();
+                            }
+                        }
+                    }
+                    wallet.payContract(WalletContextHolder.getAesKey(), baseTokenid,
+                            new BigInteger(quantityItem.multiply(lotteryPrice).toPlainString()), null, null, lotteryAddress);
+                } catch (InsufficientMoneyException e) {
+                    throw new ToastException(getContext().getString(R.string.insufficient_amount));
+                }
+            }
+        }).execute();
     }
 
     //Getting the scan results
@@ -405,6 +517,7 @@ public class TransactionPaymentFragment extends BaseLazyFragment {
         payMethodSpinner.setAdapter(payMethodAdapter);
         payMethodSpinner.setSelection(0);
     }
+
 
     @Nullable
     @Override
