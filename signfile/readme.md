@@ -9,9 +9,9 @@ build apk
 
   select build -> generate signed Bundle / apk
 
-  key file = /signfile/bigTangleKey
-  key store  password =
-  key password =
+  key file = app/bigtangle.jks
+  key store password = net.bigtangle.wallet
+  key password = net.bigtangle.wallet
 
 
 select release
