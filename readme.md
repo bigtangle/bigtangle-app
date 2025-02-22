@@ -1,5 +1,5 @@
 # Bigtangle Wallet
-## https://bigtangle.net
+## https://www.bigtangle.org
 test
 SettingConnectionActivity,
 WalletContextHolder NetworkParameters networkParameters,
